@@ -1,6 +1,15 @@
 {
-    "BAN_LE": ["MWG", "PNJ", "FRT", "DGW", "PET", "HAX"],
-    "BAO_HIEM": ["BVH", "PVI", "BIC", "MIG", "BMI"],
+    "BAN_LE": [
+        "MWG",
+        "PNJ",
+        "FRT",
+        "DGW"
+    ],
+    "BAO_HIEM": [
+        "BVH",
+        "PVI",
+        "BIC"
+    ],
     "BAT_DONG_SAN": [
         "VHM",
         "VIC",
@@ -10,40 +19,22 @@
         "NVL",
         "NLG",
         "PDR",
-        "DIG",
         "TCH",
-        "DXG",
-        "CEO",
-        "HDC",
-        "SGR",
-        "KHG",
-        "SCR",
-        "AGG",
-        "HQC",
-        "NTL",
-        "TDC",
-        "ITC",
-        "NHA",
-        "HTN",
-        "NDN",
-        "HLD",
-        "LDG"
+        "HDC"
     ],
     "BAT_DONG_SAN_KCN": [
         "BCM",
         "KBC",
         "IDC",
         "VGC",
-        "SIP",
-        "NTC",
-        "SZC",
-        "LHG",
-        "TIP",
-        "D2D",
-        "DTD",
-        "IDV"
+        "SIP"
     ],
-    "CAO_SU": ["GVR", "PHR", "DRC", "DPR", "DRG", "DRI", "VRG"],
+    "CAO_SU": [
+        "GVR",
+        "PHR",
+        "DRC",
+        "DPR"
+    ],
     "CHUNG_KHOAN": [
         "SSI",
         "VND",
@@ -54,39 +45,51 @@
         "BSI",
         "FTS",
         "VIX",
-        "CTS",
-        "DSC",
-        "VDS",
-        "AGR",
-        "TVS",
-        "BVS",
-        "ORS",
-        "APG",
-        "TVB",
-        "EVS",
-        "TCI",
-        "SBS",
-        "APS",
-        "BMS"
+        "CTS"
     ],
     "CONG_NGHE": [
         "VGI",
         "FPT",
         "FOX",
         "CMG",
-        "SGT",
-        "ELC",
-        "VTK",
-        "TTN",
-        "MFS"
+        "SGT"
     ],
-    "DAU_KHI": ["GAS", "BSR", "PLX", "PVS", "PVD", "OIL", "CNG", "PVC"],
-    "DAU_TU_CONG": ["VCG", "HHV", "C4G", "LCG", "PLC", "FCN", "KSB", "G36"],
-    "DET_MAY": ["VGT", "TCM", "MSH", "TNG", "STK", "PPH", "GIL", "ADS", "EVE"],
-    "HANG_KHONG": ["ACV", "VJC", "HVN", "SCS", "SAS", "NCT", "SGN"],
-    "HOA_CHAT": ["DGC", "DCM", "DPM", "LAS", "DDV", "BFC", "CSV"],
-    "KHAI_KHOANG": ["MSR", "CST", "VPG", "NNC", "NBC", "BMC", "TNT"],
-    "NANG_LUONG": ["POW", "HDG", "QTP", "NT2", "GEG", "PPC"],
+    "DAU_KHI": [
+        "GAS",
+        "BSR",
+        "PLX",
+        "PVS"
+    ],
+    "DAU_TU_CONG": [
+        "VCG",
+        "HHV",
+        "C4G"
+    ],
+    "DET_MAY": [
+        "VGT",
+        "MSH",
+        "TNG"
+    ],
+    "HANG_KHONG": [
+        "ACV",
+        "VJC",
+        "HVN",
+        "SCS"
+    ],
+    "HOA_CHAT": [
+        "DGC",
+        "DCM",
+        "DPM"
+    ],
+    "KHAI_KHOANG": [
+        "CST",
+        "VPG"
+    ],
+    "NANG_LUONG": [
+        "POW",
+        "HDG",
+        "NT2"
+    ],
     "NGAN_HANG": [
         "VCB",
         "BID",
@@ -100,65 +103,37 @@
         "STB",
         "VIB",
         "TPB",
-        "SHB",
-        "EIB",
-        "OCB",
-        "MSB",
-        "EVF"
+        "SHB"
     ],
-    "NHUA": ["NTP", "BMP", "AAA", "APH", "NHH", "HCD"],
-    "NONG_NGHIEP": ["HAG", "DBC", "PAN", "VLC", "BAF", "LTG", "NAF", "TSC"],
+    "NHUA": [
+        "NTP",
+        "BMP",
+        "AAA"
+    ],
+    "NONG_NGHIEP": [
+        "HAG",
+        "DBC",
+        "PAN"
+    ],
     "OTHERS": [
         "VEA",
         "GEX",
-        "VCS",
-        "BWE",
-        "ACG",
-        "TDM",
-        "HHS",
-        "DHC",
-        "TIG",
-        "TTF",
-        "YEG",
-        "DSN",
-        "GDT"
+        "VCS"
     ],
     "PENNY": [
         "IPA",
         "FIT",
-        "EVG",
-        "CSC",
-        "VPH",
-        "VC7",
-        "DL1",
-        "HAP",
-        "MST",
-        "LIG",
-        "VIG",
-        "NRC",
-        "DAH",
-        "HID",
-        "CIG",
-        "RDP",
-        "DST",
-        "DAG",
-        "PXI"
+        "CSC"
     ],
-    "SUC_KHOE": ["DHG", "IMP", "DVN", "DHT", "TNH", "DCL", "JVC"],
+    "SUC_KHOE": [
+        "DHG",
+        "IMP",
+        "DVN"
+    ],
     "THEP": [
         "HPG",
-        "MSR",
         "HSG",
-        "KSV",
-        "ACG",
-        "TVN",
-        "VIF",
-        "NKG",
-        "PTB",
-        "GDA",
-        "VGS",
-        "SMC",
-        "TLH"
+        "NKG"
     ],
     "THUC_PHAM": [
         "VNM",
@@ -166,53 +141,31 @@
         "MSN",
         "SAB",
         "QNS",
-        "KDC",
-        "SBT",
-        "MCM",
-        "SLS",
-        "CLX",
-        "LSS"
+        "KDC"
     ],
-    "THUY_SAN": ["VHC", "MPC", "ANV", "FMC", "ASM", "IDI", "CMX", "ACL"],
+    "THUY_SAN": [
+        "VHC",
+        "MPC",
+        "ANV"
+    ],
     "VAN_TAI": [
         "GMD",
         "PVT",
         "VTP",
-        "PHP",
-        "HAH",
-        "DVP",
-        "VSC",
-        "VOS",
-        "PVP",
-        "TCD",
-        "TCL",
-        "VTO",
-        "VIP",
-        "SKG",
-        "DXP",
-        "VNA",
-        "MHC"
+        "HAH"
     ],
-    "VLXD": ["HT1", "PTB", "VLB", "BCC", "CTI", "BTS", "DHA", "HOM", "BTN"],
+    "VLXD": [
+        "HT1",
+        "VLB"
+    ],
     "XAY_DUNG": [
         "HUT",
         "CTD",
-        "CII",
-        "IJC",
-        "BCG",
-        "DPG",
-        "CKG",
-        "HBC",
-        "L18",
-        "IDJ",
-        "S99",
-        "VC2",
-        "C69",
-        "TLD",
-        "PHC",
-        "C47",
-        "BCE",
-        "FID"
+        "CII"
     ],
-    "XAY_LAP_DIEN": ["CTR", "PC1", "TV2", "VNE", "SCI"]
+    "XAY_LAP_DIEN": [
+        "CTR",
+        "PC1",
+        "TV2"
+    ]
 }
