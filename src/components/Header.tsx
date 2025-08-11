@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, TrendingUp, Grid3X3, Users } from "lucide-react";
+import { BarChart3, TrendingUp, Grid3X3, Users, Building2 } from "lucide-react";
 
 export default function Header() {
 	return (
@@ -29,6 +29,17 @@ export default function Header() {
 							<div className="flex items-center space-x-2">
 								<Users className="h-4 w-4" />
 								<span>Browse Tickers</span>
+							</div>
+						</Link>
+						
+						<Link 
+							to="/tickers" 
+							search={{ sector: "ALL" }}
+							className="transition-colors hover:text-foreground/80 text-foreground/60 [&.active]:text-foreground"
+						>
+							<div className="flex items-center space-x-2">
+								<Building2 className="h-4 w-4" />
+								<span>Sectors</span>
 							</div>
 						</Link>
 						

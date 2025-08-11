@@ -6,6 +6,7 @@ import {
 	TrendingDown,
 	Users,
 	BarChart3,
+	Grid3X3,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { StockChart } from "@/components/charts";
+import { ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTickerGroups, useMultipleTickerDataWithRange } from "@/lib/queries";
 import {
@@ -254,10 +255,31 @@ function SectorPage() {
 			{/* Comparison Chart */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="flex items-center gap-2">
-						<BarChart3 className="h-5 w-5" />
-						Sector Performance Comparison
-					</CardTitle>
+					<div className="flex items-center justify-between">
+						<CardTitle className="flex items-center gap-2">
+							<BarChart3 className="h-5 w-5" />
+							Sector Performance Comparison
+						</CardTitle>
+						{selectedTickers.length > 0 && (
+							<Link
+								to="/compare"
+								search={{
+									tickers: selectedTickers,
+									layout: "2x2",
+									range: range,
+									...(range === "CUSTOM" && {
+										startDate: startDate,
+										endDate: endDate,
+									}),
+								}}
+							>
+								<Button variant="outline" size="sm">
+									<Grid3X3 className="h-4 w-4 mr-1" />
+									Compare in Grid
+								</Button>
+							</Link>
+						)}
+					</div>
 				</CardHeader>
 				<CardContent>
 					{dataLoading ? (
@@ -288,7 +310,7 @@ function SectorPage() {
 
 							{/* Normalized Comparison Chart */}
 							<div className="h-[500px]">
-								<StockChart
+								<ComparisonChart
 									data={(() => {
 										// Normalize data for comparison - convert to percentage change from first data point
 										const normalizedData: any[] = [];
@@ -326,8 +348,9 @@ function SectorPage() {
 
 										return normalizedData;
 									})()}
+									tickers={selectedTickers.slice(0, 8)}
+									colors={chartColors}
 									height={500}
-									title=""
 								/>
 							</div>
 						</div>
