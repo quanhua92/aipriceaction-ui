@@ -14,6 +14,7 @@ import {
 	calculateSectorPerformance,
 	getSectorDisplayName,
 	type TimeRange,
+	type DateRangeConfig,
 	type TickerPerformance 
 } from "@/lib/stock-data";
 
@@ -220,8 +221,8 @@ function TopPerformers({
 }
 
 function Dashboard() {
-	const [timeRange, setTimeRange] = useState<TimeRange>("1M");
-	const dateRangeConfig = createDateRangeConfig(timeRange);
+	const [dateRangeConfig, setDateRangeConfig] = useState<DateRangeConfig>(createDateRangeConfig("1M"));
+	const timeRange = dateRangeConfig.range;
 	const { data: vnindexData, isLoading: vnindexLoading } = useTickerData(
 		"VNINDEX",
 		dateRangeConfig,
@@ -401,11 +402,7 @@ function Dashboard() {
 					</div>
 					<DateRangeSelector 
 						value={dateRangeConfig} 
-						onChange={(config) => {
-							if (config.range !== "CUSTOM") {
-								setTimeRange(config.range);
-							}
-						}}
+						onChange={setDateRangeConfig}
 						dataRange={vnindexData}
 					/>
 				</div>
