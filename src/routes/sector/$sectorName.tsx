@@ -292,7 +292,7 @@ function SectorPage() {
 				<CardHeader>
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 						<CardTitle>{t("sectors.sectorPerformance")}</CardTitle>
-						<div className="flex flex-col md:flex-row gap-2">
+						<div className="flex flex-col md:flex-row gap-4">
 							{selectedTickers.length > 0 && (
 								<Link
 									to="/compare"
@@ -311,13 +311,15 @@ function SectorPage() {
 									</Button>
 								</Link>
 							)}
-							<Button variant="outline" size="sm" onClick={selectAllTickers} className="w-full md:w-auto">
-								{t("sectors.addAll")}
-							</Button>
-							<Button variant="ghost" size="sm" onClick={clearAllTickers} className="w-full md:w-auto">
-								<X className="h-4 w-4 mr-1" />
-								{t("common.clearAll")}
-							</Button>
+							<div className="flex gap-2">
+								<Button variant="outline" size="sm" onClick={selectAllTickers} className="flex-1 md:flex-none">
+									{t("sectors.addAll")}
+								</Button>
+								<Button variant="ghost" size="sm" onClick={clearAllTickers} className="flex-1 md:flex-none">
+									<X className="h-4 w-4 mr-1" />
+									{t("common.clearAll")}
+								</Button>
+							</div>
 						</div>
 					</div>
 				</CardHeader>
