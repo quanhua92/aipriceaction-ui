@@ -13,7 +13,6 @@ import {
 	createDateRangeConfig, 
 	calculateSectorPerformance,
 	getSectorDisplayName,
-	type TimeRange,
 	type DateRangeConfig,
 	type TickerPerformance 
 } from "@/lib/stock-data";
