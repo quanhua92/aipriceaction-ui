@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Grid3X3, Settings, X } from "lucide-react";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Grid3X3, Settings, X, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -163,6 +163,76 @@ function ComparePage() {
 				</CardContent>
 			</Card>
 
+			{/* Quick Actions */}
+			{tickers.length > 0 && (
+				<Card>
+					<CardHeader>
+						<CardTitle>Quick Actions</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="flex flex-wrap gap-2">
+							<Link 
+								to="/portfolio" 
+								search={{ 
+									tickers: tickers,
+									range: dateRangeConfig.range !== "CUSTOM" ? dateRangeConfig.range : undefined,
+									startDate: dateRangeConfig.range === "CUSTOM" && dateRangeConfig.startDate 
+										? dateRangeConfig.startDate.toISOString().split('T')[0] 
+										: undefined,
+									endDate: dateRangeConfig.range === "CUSTOM" && dateRangeConfig.endDate 
+										? dateRangeConfig.endDate.toISOString().split('T')[0] 
+										: undefined,
+								}}
+							>
+								<Button variant="outline" className="flex items-center gap-2">
+									<Target className="h-4 w-4" />
+									Open in Portfolio
+								</Button>
+							</Link>
+							<Button
+								variant="outline"
+								onClick={() =>
+									updateSearchParams({
+										tickers: [
+											"VNINDEX",
+											...tickers.filter((t) => t !== "VNINDEX"),
+										],
+									})
+								}
+							>
+								Add VN-Index
+							</Button>
+							<Button
+								variant="outline"
+								onClick={() =>
+									updateSearchParams({
+										tickers: ["VCB", "BID", "CTG", "ACB"],
+									})
+								}
+							>
+								Banking Stocks
+							</Button>
+							<Button
+								variant="outline"
+								onClick={() =>
+									updateSearchParams({
+										tickers: ["VHM", "VIC", "VRE", "KDH"],
+									})
+								}
+							>
+								Real Estate
+							</Button>
+							<Button
+								variant="outline"
+								onClick={() => updateSearchParams({ tickers: [] })}
+							>
+								Clear All
+							</Button>
+						</div>
+					</CardContent>
+				</Card>
+			)}
+
 			{/* Grid Layout - Responsive 2 columns on desktop, 1 on mobile */}
 			{gridItems.length > 0 ? (
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -237,58 +307,6 @@ function ComparePage() {
 									Add tickers above to start comparing charts in a responsive grid
 								</p>
 							</div>
-						</div>
-					</CardContent>
-				</Card>
-			)}
-
-			{/* Quick Actions */}
-			{tickers.length > 0 && (
-				<Card>
-					<CardHeader>
-						<CardTitle>Quick Actions</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="flex flex-wrap gap-2">
-							<Button
-								variant="outline"
-								onClick={() =>
-									updateSearchParams({
-										tickers: [
-											"VNINDEX",
-											...tickers.filter((t) => t !== "VNINDEX"),
-										],
-									})
-								}
-							>
-								Add VN-Index
-							</Button>
-							<Button
-								variant="outline"
-								onClick={() =>
-									updateSearchParams({
-										tickers: ["VCB", "BID", "CTG", "ACB"],
-									})
-								}
-							>
-								Banking Stocks
-							</Button>
-							<Button
-								variant="outline"
-								onClick={() =>
-									updateSearchParams({
-										tickers: ["VHM", "VIC", "VRE", "KDH"],
-									})
-								}
-							>
-								Real Estate
-							</Button>
-							<Button
-								variant="outline"
-								onClick={() => updateSearchParams({ tickers: [] })}
-							>
-								Clear All
-							</Button>
 						</div>
 					</CardContent>
 				</Card>
