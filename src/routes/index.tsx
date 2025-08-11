@@ -1,9 +1,8 @@
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { TrendingUp, Search, Grid3X3, Building2, DollarSign, ArrowUp, ArrowDown } from "lucide-react";
+import { TrendingUp, Search, Grid3X3, Building2, DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
@@ -25,9 +24,10 @@ export const Route = createFileRoute("/")({
 interface SectorAnalyticsProps {
 	sector: string;
 	dateRangeConfig: any;
+	timeRange: string;
 }
 
-function SectorAnalytics({ sector, dateRangeConfig }: SectorAnalyticsProps) {
+function SectorAnalytics({ sector, dateRangeConfig, timeRange }: SectorAnalyticsProps) {
 	const { data: sectorData, isLoading } = useSectorData(sector, dateRangeConfig);
 	
 	const sectorPerformance = useMemo(() => {
@@ -59,37 +59,53 @@ function SectorAnalytics({ sector, dateRangeConfig }: SectorAnalyticsProps) {
 		);
 	}
 
-	const isPositive = sectorPerformance.averageChange >= 0;
+	const isDailyPositive = sectorPerformance.averageDailyChange >= 0;
+	const isRangePositive = sectorPerformance.averageRangeChange >= 0;
 
 	return (
 		<Link to="/sector/$sectorName" params={{ sectorName: sector }}>
 			<Card className="hover:shadow-md transition-shadow cursor-pointer">
 				<CardContent className="p-4">
-					<div className="flex items-start justify-between mb-2">
+					<div className="flex items-start justify-between mb-3">
 						<div className="flex items-center gap-2">
 							<Building2 className="h-5 w-5 text-primary" />
 							<h3 className="font-semibold text-sm">{sectorPerformance.sectorName}</h3>
 						</div>
-						<Badge variant={isPositive ? "default" : "destructive"} className="text-xs">
-							{isPositive ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
-							{isPositive ? "+" : ""}{sectorPerformance.averageChange.toFixed(2)}%
-						</Badge>
 					</div>
 					
-					<div className="space-y-1 text-xs text-muted-foreground">
-						<div className="flex justify-between">
-							<span>Active Tickers:</span>
-							<span className="font-medium">{sectorPerformance.activeTickersCount}/{sectorPerformance.totalTickers}</span>
+					<div className="space-y-2">
+						{/* Daily Performance */}
+						<div className="flex items-center justify-between">
+							<span className="text-xs text-muted-foreground">Daily:</span>
+							<span className={`text-xs font-semibold ${isDailyPositive ? "text-green-600" : "text-red-600"}`}>
+								{isDailyPositive ? "+" : ""}{sectorPerformance.averageDailyChange.toFixed(2)}%
+							</span>
 						</div>
 						
-						{sectorPerformance.topPerformers.length > 0 && (
-							<div>
-								<span>Top Performer:</span>
-								<span className={`font-medium ml-1 ${sectorPerformance.topPerformers[0].changePercent >= 0 ? "text-green-600" : "text-red-600"}`}>
-									{sectorPerformance.topPerformers[0].ticker} ({sectorPerformance.topPerformers[0].changePercent > 0 ? "+" : ""}{sectorPerformance.topPerformers[0].changePercent.toFixed(1)}%)
-								</span>
+						{/* Range Performance */}
+						<div className="flex items-center justify-between">
+							<span className="text-xs text-muted-foreground">{timeRange}:</span>
+							<span className={`text-sm font-bold ${isRangePositive ? "text-green-600" : "text-red-600"}`}>
+								{isRangePositive ? "+" : ""}{sectorPerformance.averageRangeChange.toFixed(2)}%
+							</span>
+						</div>
+						
+						{/* Additional Info */}
+						<div className="pt-1 space-y-1 text-xs text-muted-foreground border-t">
+							<div className="flex justify-between">
+								<span>Active:</span>
+								<span className="font-medium">{sectorPerformance.activeTickersCount}/{sectorPerformance.totalTickers}</span>
 							</div>
-						)}
+							
+							{sectorPerformance.topPerformers.length > 0 && (
+								<div className="flex justify-between">
+									<span>Top:</span>
+									<span className={`font-medium ${sectorPerformance.topPerformers[0].changePercent >= 0 ? "text-green-600" : "text-red-600"}`}>
+										{sectorPerformance.topPerformers[0].ticker} ({sectorPerformance.topPerformers[0].changePercent > 0 ? "+" : ""}{sectorPerformance.topPerformers[0].changePercent.toFixed(1)}%)
+									</span>
+								</div>
+							)}
+						</div>
 					</div>
 				</CardContent>
 			</Card>
@@ -97,7 +113,19 @@ function SectorAnalytics({ sector, dateRangeConfig }: SectorAnalyticsProps) {
 	);
 }
 
-function TopPerformers({ performers, title, isLoading }: { performers: TickerPerformance[], title: string, isLoading: boolean }) {
+function TopPerformers({ 
+	performers, 
+	title, 
+	isLoading, 
+	dailyPerformers, 
+	timeRange 
+}: { 
+	performers: TickerPerformance[], 
+	title: string, 
+	isLoading: boolean,
+	dailyPerformers: TickerPerformance[],
+	timeRange: string
+}) {
 	if (isLoading) {
 		return (
 			<Card>
@@ -121,6 +149,12 @@ function TopPerformers({ performers, title, isLoading }: { performers: TickerPer
 		);
 	}
 
+	// Create a map to quickly find daily performance for each ticker
+	const dailyPerformanceMap = dailyPerformers.reduce((acc, perf) => {
+		acc[perf.ticker] = perf;
+		return acc;
+	}, {} as Record<string, TickerPerformance>);
+
 	return (
 		<Card>
 			<CardHeader>
@@ -132,10 +166,13 @@ function TopPerformers({ performers, title, isLoading }: { performers: TickerPer
 			<CardContent>
 				<div className="space-y-3">
 					{performers.slice(0, 5).map((performer, index) => {
-						const isPositive = performer.changePercent >= 0;
+						const dailyPerf = dailyPerformanceMap[performer.ticker];
+						const isDailyPositive = dailyPerf?.changePercent >= 0;
+						const isRangePositive = performer.changePercent >= 0;
+						
 						return (
 							<Link key={performer.ticker} to="/ticker/$symbol" params={{ symbol: performer.ticker }}>
-								<div className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
+								<div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border">
 									<div className="flex items-center gap-3">
 										<div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium">
 											{index + 1}
@@ -153,17 +190,24 @@ function TopPerformers({ performers, title, isLoading }: { performers: TickerPer
 										</div>
 									</div>
 									<div className="text-right">
-										<p className={`text-sm font-semibold ${isPositive ? "text-green-600" : "text-red-600"}`}>
-											{isPositive ? "+" : ""}{performer.changePercent.toFixed(2)}%
-										</p>
-										<p className={`text-xs ${isPositive ? "text-green-600" : "text-red-600"}`}>
-											{isPositive ? "+" : ""}{new Intl.NumberFormat("vi-VN", {
-												style: "currency", 
-												currency: "VND",
-												minimumFractionDigits: 0,
-												maximumFractionDigits: 0,
-											}).format(performer.change)}
-										</p>
+										<div className="grid grid-cols-2 gap-4 items-center">
+											{/* Daily Performance */}
+											{dailyPerf && (
+												<div className="text-center">
+													<p className="text-xs text-muted-foreground mb-1">Daily</p>
+													<p className={`text-sm font-semibold ${isDailyPositive ? "text-green-600" : "text-red-600"}`}>
+														{isDailyPositive ? "+" : ""}{dailyPerf.changePercent.toFixed(2)}%
+													</p>
+												</div>
+											)}
+											{/* Range Performance */}
+											<div className="text-center">
+												<p className="text-xs text-muted-foreground mb-1">{timeRange}</p>
+												<p className={`text-sm font-bold ${isRangePositive ? "text-green-600" : "text-red-600"}`}>
+													{isRangePositive ? "+" : ""}{performer.changePercent.toFixed(2)}%
+												</p>
+											</div>
+										</div>
 									</div>
 								</div>
 							</Link>
@@ -189,39 +233,58 @@ function Dashboard() {
 	const { data: bankingData, isLoading: bankingLoading } = useSectorData("NGAN_HANG", dateRangeConfig);
 	const { data: realEstateData, isLoading: realEstateLoading } = useSectorData("BAT_DONG_SAN", dateRangeConfig);
 
-	// Calculate top performers across all sectors
+	// Calculate top performers across all sectors - both daily and range
 	const topPerformers = useMemo(() => {
 		const allData: Record<string, any> = {};
 		if (securitiesData) allData.CHUNG_KHOAN = securitiesData;
 		if (bankingData) allData.NGAN_HANG = bankingData;  
 		if (realEstateData) allData.BAT_DONG_SAN = realEstateData;
 
-		const allPerformances: TickerPerformance[] = [];
+		const dailyPerformances: TickerPerformance[] = [];
+		const rangePerformances: TickerPerformance[] = [];
+		
 		Object.values(allData).forEach((sectorData: any) => {
 			Object.entries(sectorData).forEach(([ticker, data]: [string, any]) => {
 				if (data.length >= 2) {
+					// Daily performance (last 2 data points)
 					const latest = data[data.length - 1];
 					const previous = data[data.length - 2];
-					const change = latest.close - previous.close;
-					const changePercent = (change / previous.close) * 100;
+					const dailyChange = latest.close - previous.close;
+					const dailyChangePercent = (dailyChange / previous.close) * 100;
 					
-					allPerformances.push({
+					dailyPerformances.push({
 						ticker,
 						currentPrice: latest.close,
-						change,
-						changePercent,
+						change: dailyChange,
+						changePercent: dailyChangePercent,
+						volume: latest.volume,
+					});
+
+					// Range performance (first vs last data point)
+					const first = data[0];
+					const rangeChange = latest.close - first.close;
+					const rangeChangePercent = (rangeChange / first.close) * 100;
+					
+					rangePerformances.push({
+						ticker,
+						currentPrice: latest.close,
+						change: rangeChange,
+						changePercent: rangeChangePercent,
 						volume: latest.volume,
 					});
 				}
 			});
 		});
 
-		const topGainers = [...allPerformances].sort((a, b) => b.changePercent - a.changePercent);
-		const topLosers = [...allPerformances].sort((a, b) => a.changePercent - b.changePercent);
-
 		return {
-			gainers: topGainers,
-			losers: topLosers,
+			daily: {
+				gainers: [...dailyPerformances].sort((a, b) => b.changePercent - a.changePercent),
+				losers: [...dailyPerformances].sort((a, b) => a.changePercent - b.changePercent),
+			},
+			range: {
+				gainers: [...rangePerformances].sort((a, b) => b.changePercent - a.changePercent),
+				losers: [...rangePerformances].sort((a, b) => a.changePercent - b.changePercent),
+			}
 		};
 	}, [securitiesData, bankingData, realEstateData]);
 
@@ -347,9 +410,9 @@ function Dashboard() {
 					/>
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-					<SectorAnalytics sector="CHUNG_KHOAN" dateRangeConfig={dateRangeConfig} />
-					<SectorAnalytics sector="NGAN_HANG" dateRangeConfig={dateRangeConfig} />
-					<SectorAnalytics sector="BAT_DONG_SAN" dateRangeConfig={dateRangeConfig} />
+					<SectorAnalytics sector="CHUNG_KHOAN" dateRangeConfig={dateRangeConfig} timeRange={timeRange} />
+					<SectorAnalytics sector="NGAN_HANG" dateRangeConfig={dateRangeConfig} timeRange={timeRange} />
+					<SectorAnalytics sector="BAT_DONG_SAN" dateRangeConfig={dateRangeConfig} timeRange={timeRange} />
 				</div>
 			</div>
 
@@ -482,17 +545,42 @@ function Dashboard() {
 			</div>
 
 			{/* Top Performers Section */}
-			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-				<TopPerformers 
-					performers={topPerformers.gainers} 
-					title="Top Gainers" 
-					isLoading={securitiesLoading || bankingLoading || realEstateLoading}
-				/>
-				<TopPerformers 
-					performers={topPerformers.losers} 
-					title="Top Losers" 
-					isLoading={securitiesLoading || bankingLoading || realEstateLoading}
-				/>
+			<div>
+				<h2 className="text-xl font-semibold mb-4">Top Performers</h2>
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+					{/* Daily Gainers/Losers */}
+					<TopPerformers 
+						performers={topPerformers.daily.gainers} 
+						title="Daily Top Gainers" 
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						dailyPerformers={topPerformers.daily.gainers}
+						timeRange={timeRange}
+					/>
+					<TopPerformers 
+						performers={topPerformers.daily.losers} 
+						title="Daily Top Losers" 
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						dailyPerformers={topPerformers.daily.losers}
+						timeRange={timeRange}
+					/>
+				</div>
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+					{/* Range Gainers/Losers */}
+					<TopPerformers 
+						performers={topPerformers.range.gainers} 
+						title={`${timeRange} Top Gainers`}
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						dailyPerformers={topPerformers.daily.gainers}
+						timeRange={timeRange}
+					/>
+					<TopPerformers 
+						performers={topPerformers.range.losers} 
+						title={`${timeRange} Top Losers`}
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						dailyPerformers={topPerformers.daily.losers}
+						timeRange={timeRange}
+					/>
+				</div>
 			</div>
 		</div>
 	);

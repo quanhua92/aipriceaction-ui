@@ -274,7 +274,8 @@ export interface TickerPerformance {
 export interface SectorPerformance {
 	sector: string;
 	sectorName: string;
-	averageChange: number;
+	averageDailyChange: number;
+	averageRangeChange: number;
 	totalVolume: number;
 	topPerformers: TickerPerformance[];
 	totalTickers: number;
@@ -284,11 +285,33 @@ export interface SectorPerformance {
 export function calculateTickerPerformance(data: StockDataPoint[]): TickerPerformance | null {
 	if (data.length < 2) return null;
 	
-	const latest = data[data.length - 1];
-	const previous = data[data.length - 2];
+	// Sort data by date to ensure chronological order
+	const sortedData = [...data].sort((a, b) => a.date.getTime() - b.date.getTime());
+	const latest = sortedData[sortedData.length - 1];
+	const previous = sortedData[sortedData.length - 2];
 	
 	const change = latest.close - previous.close;
 	const changePercent = (change / previous.close) * 100;
+	
+	return {
+		ticker: latest.ticker,
+		currentPrice: latest.close,
+		change,
+		changePercent,
+		volume: latest.volume,
+	};
+}
+
+export function calculateTickerRangePerformance(data: StockDataPoint[]): TickerPerformance | null {
+	if (data.length < 2) return null;
+	
+	// Sort data by date to ensure chronological order
+	const sortedData = [...data].sort((a, b) => a.date.getTime() - b.date.getTime());
+	const latest = sortedData[sortedData.length - 1];
+	const first = sortedData[0];
+	
+	const change = latest.close - first.close;
+	const changePercent = (change / first.close) * 100;
 	
 	return {
 		ticker: latest.ticker,
@@ -304,32 +327,46 @@ export function calculateSectorPerformance(
 	sector: string,
 	sectorDisplayName: string,
 ): SectorPerformance {
-	const tickerPerformances = Object.entries(sectorData)
+	// Calculate daily performances (last 2 data points)
+	const dailyPerformances = Object.entries(sectorData)
 		.map(([tickerSymbol, data]) => {
 			const performance = calculateTickerPerformance(data);
 			return performance ? { ...performance, ticker: tickerSymbol } : null;
 		})
 		.filter((p): p is TickerPerformance => p !== null);
 
-	const averageChange = tickerPerformances.length > 0 
-		? tickerPerformances.reduce((sum, p) => sum + p.changePercent, 0) / tickerPerformances.length
+	// Calculate range performances (first vs last data point)
+	const rangePerformances = Object.entries(sectorData)
+		.map(([tickerSymbol, data]) => {
+			const performance = calculateTickerRangePerformance(data);
+			return performance ? { ...performance, ticker: tickerSymbol } : null;
+		})
+		.filter((p): p is TickerPerformance => p !== null);
+
+	const averageDailyChange = dailyPerformances.length > 0 
+		? dailyPerformances.reduce((sum, p) => sum + p.changePercent, 0) / dailyPerformances.length
 		: 0;
 
-	const totalVolume = tickerPerformances.reduce((sum, p) => sum + p.volume, 0);
+	const averageRangeChange = rangePerformances.length > 0 
+		? rangePerformances.reduce((sum, p) => sum + p.changePercent, 0) / rangePerformances.length
+		: 0;
 
-	// Get top 3 performers by change percent
-	const topPerformers = tickerPerformances
+	const totalVolume = dailyPerformances.reduce((sum, p) => sum + p.volume, 0);
+
+	// Get top 3 performers by range change percent (more meaningful for overall performance)
+	const topPerformers = rangePerformances
 		.sort((a, b) => b.changePercent - a.changePercent)
 		.slice(0, 3);
 
 	return {
 		sector,
 		sectorName: sectorDisplayName,
-		averageChange,
+		averageDailyChange,
+		averageRangeChange,
 		totalVolume,
 		topPerformers,
 		totalTickers: Object.keys(sectorData).length,
-		activeTickersCount: tickerPerformances.length,
+		activeTickersCount: Math.max(dailyPerformances.length, rangePerformances.length),
 	};
 }
 
