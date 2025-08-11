@@ -14,6 +14,7 @@ import {
 	RiskAnalysis,
 	DiversificationAnalysis,
 	PerformanceAttribution,
+	EducationalGuide,
 } from "@/components/portfolio";
 import {
 	createDateRangeConfig,
@@ -383,6 +384,9 @@ function PortfolioPage() {
 						portfolioData={tickerData || {}}
 						portfolioTickers={portfolioTickers}
 					/>
+
+					{/* Educational Guide */}
+					<EducationalGuide />
 				</div>
 			)}
 		</div>

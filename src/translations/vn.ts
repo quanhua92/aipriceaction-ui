@@ -385,4 +385,113 @@ export const vn = {
     VLXD: "Vật liệu xây dựng",
     XAY_LAP_DIEN: "Xây lắp điện",
   },
+
+  // Hướng dẫn giáo dục
+  educationalGuide: {
+    title: "Hướng dẫn Phân tích Danh mục Đầu tư",
+    subtitle: "Hiểu rõ các khái niệm và thành phần chính được sử dụng trong phân tích danh mục",
+    
+    // Tổng quan hiệu suất
+    performanceOverview: {
+      title: "Tổng quan Hiệu suất",
+      description: "So sánh hiệu suất danh mục của bạn với chỉ số chuẩn VN-Index trong khoảng thời gian đã chọn.",
+      totalReturn: {
+        title: "Tổng Lợi nhuận",
+        description: "Phần trăm thay đổi giá trị danh mục từ đầu đến cuối kỳ, bao gồm tăng giá cổ phiếu.",
+      },
+      activeReturn: {
+        title: "Lợi nhuận Tích cực",
+        description: "Sự khác biệt giữa lợi nhuận danh mục và lợi nhuận chỉ số chuẩn. Giá trị dương cho thấy hiệu suất vượt trội.",
+      },
+      sharpeRatio: {
+        title: "Tỷ số Sharpe",
+        description: "Đo lường lợi nhuận điều chỉnh rủi ro. Giá trị cao hơn cho thấy hiệu suất điều chỉnh rủi ro tốt hơn. Giá trị trên 1.0 được coi là tốt.",
+      },
+    },
+
+    // Phân tích rủi ro
+    riskAnalysis: {
+      title: "Phân tích Rủi ro",
+      description: "Đánh giá tính biến động và đặc điểm rủi ro của danh mục so với thị trường.",
+      volatility: {
+        title: "Độ Biến động",
+        description: "Đo lường biến động giá cả. Độ biến động cao có nghĩa là biến động giá lớn hơn và rủi ro cao hơn.",
+      },
+      beta: {
+        title: "Hệ số Beta",
+        description: "Đo lường độ nhạy cảm với biến động thị trường. Beta > 1 có nghĩa là biến động nhiều hơn thị trường, < 1 có nghĩa là ít biến động hơn.",
+      },
+      maximumDrawdown: {
+        title: "Mức Sụt giảm Tối đa",
+        description: "Mức giảm lớn nhất từ đỉnh xuống đáy trong kỳ. Cho thấy tình huống xấu nhất về mặt tổn thất.",
+      },
+      valueAtRisk: {
+        title: "Giá trị có Rủi ro (VaR)",
+        description: "Ước tính tổn thất tối đa bạn có thể mong đợi trong 95% thời gian trong một khoảng thời gian nhất định.",
+      },
+    },
+
+    // Đóng góp hiệu suất
+    performanceAttribution: {
+      title: "Đóng góp Hiệu suất",
+      description: "Cho thấy mỗi cổ phiếu đóng góp bao nhiều vào hiệu suất tổng thể của danh mục.",
+      contribution: {
+        title: "Đóng góp từng Cổ phiếu",
+        description: "Đóng góp của từng cổ phiếu vào tổng lợi nhuận danh mục, giả định trọng số bằng nhau cho tất cả nắm giữ.",
+      },
+      topContributors: {
+        title: "Đóng góp Hàng đầu",
+        description: "Những cổ phiếu tạo ra giá trị nhiều nhất cho danh mục trong kỳ.",
+      },
+      worstPerformers: {
+        title: "Hiệu suất Kém nhất",
+        description: "Những cổ phiếu làm giảm hiệu suất danh mục nhiều nhất.",
+      },
+    },
+
+    // Phân tích đa dạng hóa
+    diversificationAnalysis: {
+      title: "Phân tích Đa dạng hóa",
+      description: "Đánh giá mức độ đa dạng hóa của danh mục qua các cổ phiếu và ngành khác nhau.",
+      correlation: {
+        title: "Tương quan Cổ phiếu",
+        description: "Cho thấy mức độ tương đồng trong biến động của các cổ phiếu. Tương quan thấp hơn (gần 0) cho thấy đa dạng hóa tốt hơn.",
+      },
+      recommendations: {
+        title: "Khuyến nghị Đa dạng hóa",
+        description: "Đề xuất cải thiện đa dạng hóa danh mục và giảm rủi ro tập trung.",
+      },
+      sectorDistribution: {
+        title: "Phân bố Ngành",
+        description: "Cho thấy cách phân bố nắm giữ qua các ngành thị trường khác nhau.",
+      },
+    },
+
+    // Chỉ số chính
+    keyMetrics: {
+      title: "Giải thích Chỉ số Danh mục Chính",
+      informationRatio: {
+        title: "Tỷ số Thông tin",
+        description: "Đo lường tính nhất quán trong hiệu suất vượt trội. Giá trị cao hơn cho thấy tạo alpha nhất quán hơn.",
+      },
+      trackingError: {
+        title: "Sai số Theo dõi",
+        description: "Đo lường mức độ sát danh mục theo chỉ số chuẩn. Giá trị thấp hơn cho thấy theo dõi sát hơn.",
+      },
+      correlation: {
+        title: "Tương quan với Chỉ số Chuẩn",
+        description: "Dao động từ -1 đến +1. Giá trị gần +1 có nghĩa là danh mục biến động tương tự thị trường.",
+      },
+    },
+
+    // Phần mẹo
+    tips: {
+      title: "Mẹo Đầu tư",
+      diversification: "Duy trì đa dạng hóa qua các ngành khác nhau và tránh tập trung quá mức vào các cổ phiếu tương tự.",
+      riskManagement: "Giám sát độ biến động và mức sụt giảm của danh mục để đảm bảo phù hợp với khả năng chịu rủi ro.",
+      benchmarking: "Thường xuyên so sánh hiệu suất với các chỉ số chuẩn phù hợp như VN-Index.",
+      rebalancing: "Cân nhắc cân bằng lại định kỳ để duy trì phân bổ tài sản mong muốn.",
+      longTerm: "Tập trung vào hiệu suất dài hạn thay vì biến động ngắn hạn.",
+    },
+  },
 } as const;

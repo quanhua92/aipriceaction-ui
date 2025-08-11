@@ -385,4 +385,113 @@ export const en = {
     VLXD: "Construction Materials",
     XAY_LAP_DIEN: "Electrical Installation",
   },
+
+  // Educational Guide
+  educationalGuide: {
+    title: "Portfolio Analysis Educational Guide",
+    subtitle: "Understanding the key concepts and components used in portfolio analysis",
+    
+    // Performance Overview
+    performanceOverview: {
+      title: "Performance Overview",
+      description: "Compares your portfolio's performance against the VN-Index benchmark over the selected time period.",
+      totalReturn: {
+        title: "Total Return",
+        description: "The percentage change in portfolio value from the start to the end of the period, including price appreciation.",
+      },
+      activeReturn: {
+        title: "Active Return",
+        description: "The difference between your portfolio's return and the benchmark return. Positive values indicate outperformance.",
+      },
+      sharpeRatio: {
+        title: "Sharpe Ratio",
+        description: "Measures risk-adjusted returns. Higher values indicate better risk-adjusted performance. Values above 1.0 are considered good.",
+      },
+    },
+
+    // Risk Analysis
+    riskAnalysis: {
+      title: "Risk Analysis",
+      description: "Evaluates the volatility and risk characteristics of your portfolio compared to the market.",
+      volatility: {
+        title: "Volatility",
+        description: "Measures price fluctuation. Higher volatility means larger price swings and higher risk.",
+      },
+      beta: {
+        title: "Beta",
+        description: "Measures sensitivity to market movements. Beta > 1 means more volatile than the market, < 1 means less volatile.",
+      },
+      maximumDrawdown: {
+        title: "Maximum Drawdown",
+        description: "The largest peak-to-trough decline during the period. Shows the worst-case scenario for losses.",
+      },
+      valueAtRisk: {
+        title: "Value at Risk (VaR)",
+        description: "Estimates the maximum loss you could expect 95% of the time over a given period.",
+      },
+    },
+
+    // Performance Attribution
+    performanceAttribution: {
+      title: "Performance Attribution",
+      description: "Shows how much each stock contributed to your portfolio's overall performance.",
+      contribution: {
+        title: "Individual Stock Contributions",
+        description: "Each stock's contribution to total portfolio return, assuming equal weighting across all holdings.",
+      },
+      topContributors: {
+        title: "Top Contributors",
+        description: "Stocks that added the most value to your portfolio during the period.",
+      },
+      worstPerformers: {
+        title: "Worst Performers",
+        description: "Stocks that detracted the most from your portfolio's performance.",
+      },
+    },
+
+    // Diversification Analysis
+    diversificationAnalysis: {
+      title: "Diversification Analysis",
+      description: "Evaluates how well your portfolio is diversified across different stocks and sectors.",
+      correlation: {
+        title: "Stock Correlations",
+        description: "Shows how similarly your stocks move. Lower correlations (closer to 0) indicate better diversification.",
+      },
+      recommendations: {
+        title: "Diversification Recommendations",
+        description: "Suggestions to improve your portfolio's diversification and reduce concentration risk.",
+      },
+      sectorDistribution: {
+        title: "Sector Distribution",
+        description: "Shows how your holdings are spread across different market sectors.",
+      },
+    },
+
+    // Key Metrics
+    keyMetrics: {
+      title: "Key Portfolio Metrics Explained",
+      informationRatio: {
+        title: "Information Ratio",
+        description: "Measures consistency of outperformance. Higher values indicate more consistent alpha generation.",
+      },
+      trackingError: {
+        title: "Tracking Error",
+        description: "Measures how closely your portfolio follows the benchmark. Lower values indicate closer tracking.",
+      },
+      correlation: {
+        title: "Correlation to Benchmark",
+        description: "Ranges from -1 to +1. Values closer to +1 mean your portfolio moves similarly to the market.",
+      },
+    },
+
+    // Tips Section
+    tips: {
+      title: "Investment Tips",
+      diversification: "Maintain diversification across different sectors and avoid overconcentration in similar stocks.",
+      riskManagement: "Monitor your portfolio's volatility and drawdowns to ensure they align with your risk tolerance.",
+      benchmarking: "Regularly compare your performance against relevant benchmarks like VN-Index.",
+      rebalancing: "Consider periodic rebalancing to maintain your desired asset allocation.",
+      longTerm: "Focus on long-term performance rather than short-term fluctuations.",
+    },
+  },
 } as const;
