@@ -293,6 +293,24 @@ function SectorPage() {
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 						<CardTitle>{t("sectors.sectorPerformance")}</CardTitle>
 						<div className="flex flex-col md:flex-row gap-2">
+							{selectedTickers.length > 0 && (
+								<Link
+									to="/compare"
+									search={{
+										tickers: selectedTickers,
+										range: range,
+										...(range === "CUSTOM" && {
+											startDate: startDate,
+											endDate: endDate,
+										}),
+									}}
+								>
+									<Button variant="outline" size="sm" className="w-full md:w-auto">
+										<Grid3X3 className="h-4 w-4 mr-1" />
+										{t("sectors.compareInGrid")}
+									</Button>
+								</Link>
+							)}
 							<Button variant="outline" size="sm" onClick={selectAllTickers} className="w-full md:w-auto">
 								{t("sectors.addAll")}
 							</Button>
@@ -505,24 +523,7 @@ function SectorPage() {
 							)}
 						</CardTitle>
 						<div className="flex flex-col md:flex-row md:items-center gap-2">
-							{chartTickers.length > 0 && (
-								<Link
-									to="/compare"
-									search={{
-										tickers: chartTickers,
-										range: range,
-										...(range === "CUSTOM" && {
-											startDate: startDate,
-											endDate: endDate,
-										}),
-									}}
-								>
-									<Button variant="outline" size="sm" className="w-full md:w-auto">
-										<Grid3X3 className="h-4 w-4 mr-1" />
-										{t("sectors.compareInGrid")}
-									</Button>
-								</Link>
-							)}
+							{/* Compare in Grid button moved to Sector Stocks Performance card for consistency */}
 						</div>
 					</div>
 				</CardHeader>
