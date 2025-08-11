@@ -221,7 +221,8 @@ export function getLatestPrice(data: StockDataPoint[]): StockDataPoint | null {
 
 export async function loadTickerGroups(): Promise<TickerGroup> {
 	try {
-		const response = await fetch("/ticker_group.json");
+		const url = "https://raw.githubusercontent.com/quanhua92/aipriceaction-ui/refs/heads/main/ticker_group.json";
+		const response = await fetch(url);
 		if (!response.ok) {
 			throw new Error("Failed to fetch ticker groups");
 		}
