@@ -167,6 +167,7 @@ export const en = {
     selected: "selected",
     selectStocksToCompare: "Select stocks to compare",
     compareInGrid: "Compare in Grid",
+    addAll: "Add All",
     sectorNotFound: "Sector \"{sector}\" not found",
     backToSectors: "Back to Sectors",
     compareSectorStocks: "Compare {count} stocks in this sector",

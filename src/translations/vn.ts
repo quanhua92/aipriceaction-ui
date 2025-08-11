@@ -167,6 +167,7 @@ export const vn = {
     selected: "đã chọn",
     selectStocksToCompare: "Chọn cổ phiếu để so sánh",
     compareInGrid: "So sánh trong lưới",
+    addAll: "Chọn tất cả",
     sectorNotFound: "Không tìm thấy ngành \"{sector}\"",
     backToSectors: "Quay lại Ngành",
     compareSectorStocks: "So sánh {count} cổ phiếu trong ngành này",

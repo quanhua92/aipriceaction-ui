@@ -123,6 +123,11 @@ function SectorPage() {
 		updateSearchParams({ compare: newSelection });
 	};
 
+	const selectAllTickers = () => {
+		setSelectedTickers([...sectorTickers]);
+		updateSearchParams({ compare: [...sectorTickers] });
+	};
+
 	const clearAllTickers = () => {
 		setSelectedTickers([]);
 		updateSearchParams({ compare: [] });
@@ -212,7 +217,7 @@ function SectorPage() {
 
 	if (groupsLoading) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="container mx-auto p-2 md:p-6">
 				<div className="flex items-center justify-center h-64">
 					<div className="text-muted-foreground">{t("loading.sectorData")}</div>
 				</div>
@@ -240,9 +245,9 @@ function SectorPage() {
 	}
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-2 md:p-6 space-y-4 md:space-y-6">
 			{/* Header */}
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 				<div className="flex items-center gap-4">
 					<Link to="/sectors">
 						<Button variant="ghost" size="sm">
@@ -258,7 +263,7 @@ function SectorPage() {
 					</div>
 				</div>
 
-				<div className="flex items-center gap-4">
+				<div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 w-full md:w-auto">
 					<DateRangeSelector
 						value={dateRangeConfig}
 						onChange={(config) => {
@@ -277,6 +282,7 @@ function SectorPage() {
 							}
 						}}
 						showNavigationButtons={true}
+						className="w-full md:w-auto"
 					/>
 				</div>
 			</div>
@@ -284,7 +290,18 @@ function SectorPage() {
 			{/* Stock Selection Table */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("sectors.sectorPerformance")}</CardTitle>
+					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+						<CardTitle>{t("sectors.sectorPerformance")}</CardTitle>
+						<div className="flex flex-col md:flex-row gap-2">
+							<Button variant="outline" size="sm" onClick={selectAllTickers} className="w-full md:w-auto">
+								{t("sectors.addAll")}
+							</Button>
+							<Button variant="ghost" size="sm" onClick={clearAllTickers} className="w-full md:w-auto">
+								<X className="h-4 w-4 mr-1" />
+								{t("common.clearAll")}
+							</Button>
+						</div>
+					</div>
 				</CardHeader>
 				<CardContent>
 					<Table>
@@ -477,7 +494,7 @@ function SectorPage() {
 			{/* Comparison Chart */}
 			<Card>
 				<CardHeader>
-					<div className="flex items-center justify-between">
+					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 						<CardTitle className="flex items-center gap-2">
 							<BarChart3 className="h-5 w-5" />
 							{t("sectors.performanceComparison")}
@@ -487,30 +504,24 @@ function SectorPage() {
 								</Badge>
 							)}
 						</CardTitle>
-						<div className="flex items-center gap-2">
+						<div className="flex flex-col md:flex-row md:items-center gap-2">
 							{chartTickers.length > 0 && (
-								<>
-									<Button variant="ghost" size="sm" onClick={clearAllTickers}>
-										<X className="h-4 w-4 mr-1" />
-										{t("common.clearAll")}
+								<Link
+									to="/compare"
+									search={{
+										tickers: chartTickers,
+										range: range,
+										...(range === "CUSTOM" && {
+											startDate: startDate,
+											endDate: endDate,
+										}),
+									}}
+								>
+									<Button variant="outline" size="sm" className="w-full md:w-auto">
+										<Grid3X3 className="h-4 w-4 mr-1" />
+										{t("sectors.compareInGrid")}
 									</Button>
-									<Link
-										to="/compare"
-										search={{
-											tickers: chartTickers,
-											range: range,
-											...(range === "CUSTOM" && {
-												startDate: startDate,
-												endDate: endDate,
-											}),
-										}}
-									>
-										<Button variant="outline" size="sm">
-											<Grid3X3 className="h-4 w-4 mr-1" />
-											{t("sectors.compareInGrid")}
-										</Button>
-									</Link>
-								</>
+								</Link>
 							)}
 						</div>
 					</div>
