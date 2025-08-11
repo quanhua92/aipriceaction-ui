@@ -128,14 +128,14 @@ export function CandlestickChart({
 		const maxPrice = Math.max(...allPrices);
 		const range = maxPrice - minPrice;
 		
-		// Use smaller padding to make price action use ~70% of chart height
+		// Use larger padding to give more breathing room at top and bottom
 		let padding: number;
 		if (range > 1000) {
-			padding = range * 0.05; // 5% for large ranges
+			padding = range * 0.15; // 15% for large ranges
 		} else if (range > 100) {
-			padding = range * 0.07; // 7% for medium ranges  
+			padding = range * 0.18; // 18% for medium ranges  
 		} else {
-			padding = Math.max(range * 0.1, 3); // 10% for small ranges, minimum 3
+			padding = Math.max(range * 0.25, 5); // 25% for small ranges, minimum 5
 		}
 		
 		return {
@@ -223,8 +223,8 @@ export function CandlestickChart({
 		
 		// Calculate Y positions using the domain
 		const [minY, maxY] = yDomain;
-		const chartHeight = height || 340; // Chart area height (400 - margins)
-		const topMargin = 5;
+		const chartHeight = height || 360; // Chart area height (400 - margins)
+		const topMargin = 20;
 		
 		// Scale prices to Y coordinates
 		const scale = (chartHeight - topMargin * 2) / (maxY - minY);
@@ -336,7 +336,7 @@ export function CandlestickChart({
 				<ResponsiveContainer width="100%" height={height}>
 					<ComposedChart
 						data={chartData}
-						margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+						margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
 					>
 						<CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
 						<XAxis
