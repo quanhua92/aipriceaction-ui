@@ -31,55 +31,60 @@ interface VPAButtonProps {
 	className?: string;
 }
 
-// Parse markdown content to extract recent entries (simplified for popup)
+// Simple parsing: split content into chunks and take from bottom
 const parseVPAContentSimple = (content: string, limit = 10) => {
-	const lines = content.split('\n');
-	const entries: Array<{
+	const lines = content.split('\n').filter(line => line.trim());
+	
+	// Split content into chunks based on patterns that look like dates or entries
+	const chunks: Array<{
 		date: string;
 		content: string;
 		analysis: string;
 	}> = [];
 	
-	let currentEntry: { date: string; content: string; analysis: string } | null = null;
-	let isAnalysisSection = false;
+	let currentChunk = '';
+	let chunkIndex = 0;
 	
-	for (const line of lines) {
-		// Match date patterns
-		const dateMatch = line.match(/\*\*(?:Ngày\s+)?(\d{4}-\d{2}-\d{2})[:：]\*\*/);
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
 		
-		if (dateMatch) {
-			if (currentEntry) {
-				entries.push(currentEntry);
-				if (entries.length >= limit) break;
+		// Look for any date pattern (flexible matching)
+		const dateMatch = line.match(/(\d{4}[-/]\d{2}[-/]\d{2})|(?:Ngày.*?(\d{4}[-/]\d{2}[-/]\d{2}))/);
+		
+		// If we find a date or we've accumulated enough content, start a new chunk
+		if (dateMatch || currentChunk.length > 200) {
+			if (currentChunk.trim()) {
+				// Extract date if possible, otherwise use index
+				const extractedDate = currentChunk.match(/(\d{4}[-/]\d{2}[-/]\d{2})/);
+				const date = extractedDate ? extractedDate[1] : `Entry ${chunkIndex + 1}`;
+				
+				chunks.push({
+					date: date,
+					content: currentChunk.replace(/\*\*/g, '').trim(),
+					analysis: ''
+				});
+				chunkIndex++;
 			}
-			
-			currentEntry = {
-				date: dateMatch[1],
-				content: line.replace(/\*\*/g, '').trim(),
-				analysis: ''
-			};
-			isAnalysisSection = false;
-		} else if (currentEntry) {
-			if (line.includes('**Phân tích VPA/Wyckoff:**') || line.includes('**VPA Analysis:**')) {
-				isAnalysisSection = true;
-				currentEntry.analysis += line.replace(/\*\*/g, '').trim() + '\n';
-			} else if (line.trim().startsWith('-') && line.includes('**')) {
-				isAnalysisSection = true;
-				currentEntry.analysis += line.replace(/\*\*/g, '').trim() + '\n';
-			} else if (isAnalysisSection && line.trim() && line.trim().length > 5) {
-				currentEntry.analysis += line.trim() + '\n';
-			} else if (!isAnalysisSection && line.trim() && !line.startsWith('#')) {
-				currentEntry.content += ' ' + line.trim();
-			}
+			currentChunk = line;
+		} else {
+			currentChunk += '\n' + line;
 		}
 	}
 	
-	if (currentEntry) {
-		entries.push(currentEntry);
+	// Don't forget the last chunk
+	if (currentChunk.trim()) {
+		const extractedDate = currentChunk.match(/(\d{4}[-/]\d{2}[-/]\d{2})/);
+		const date = extractedDate ? extractedDate[1] : `Entry ${chunkIndex + 1}`;
+		
+		chunks.push({
+			date: date,
+			content: currentChunk.replace(/\*\*/g, '').trim(),
+			analysis: ''
+		});
 	}
 	
-	// Reverse to show latest dates first, then limit
-	return entries.reverse().slice(0, limit);
+	// Take latest entries from the bottom (reverse order)
+	return chunks.slice(-limit).reverse();
 };
 
 function VPAContent({ ticker, isOpen }: { ticker: string, isOpen: boolean }) {

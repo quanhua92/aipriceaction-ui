@@ -28,6 +28,7 @@ import { ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerGroups, useMultipleTickerData } from "@/lib/queries";
+import { VPAButton } from "@/components/vpa";
 import {
 	getTickersBySector,
 	calculatePriceChange,
@@ -407,12 +408,19 @@ function SectorPage() {
 										)}
 									</TableCell>
 									<TableCell>
-										<Link to="/ticker/$symbol" params={{ symbol: item.ticker }}>
-											<Button variant="outline" size="sm">
-												<BarChart3 className="h-4 w-4 mr-1" />
-												{t("common.view")}
-											</Button>
-										</Link>
+										<div className="flex gap-2">
+											<Link to="/ticker/$symbol" params={{ symbol: item.ticker }}>
+												<Button variant="outline" size="sm">
+													<BarChart3 className="h-4 w-4 mr-1" />
+													{t("common.view")}
+												</Button>
+											</Link>
+											<VPAButton 
+												ticker={item.ticker}
+												variant="badge"
+												mode="popover"
+											/>
+										</div>
 									</TableCell>
 								</TableRow>
 							))}

@@ -3,6 +3,7 @@ import { Target, Trophy, TrendingUp, TrendingDown, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from "@/components/ui/badge";
+import { VPAButton } from "@/components/vpa";
 import { Progress } from "@/components/ui/progress";
 import {
 	calculateStockMetrics,
@@ -144,9 +145,16 @@ export function PerformanceAttribution({
 						<div className="flex items-center justify-between">
 							<div>
 								<p className="text-sm text-muted-foreground">{t("attribution.bestPerformer")}</p>
-								<p className="text-sm font-bold text-green-600">
-									{attributionData.bestPerformer.stock.ticker}
-								</p>
+								<div className="flex items-center gap-2">
+									<p className="text-sm font-bold text-green-600">
+										{attributionData.bestPerformer.stock.ticker}
+									</p>
+									<VPAButton 
+										ticker={attributionData.bestPerformer.stock.ticker}
+										variant="icon"
+										mode="popover"
+									/>
+								</div>
 								<p className="text-xs text-muted-foreground">
 									+{(attributionData.bestPerformer.stock.totalReturn * 100).toFixed(1)}%
 								</p>
@@ -163,9 +171,16 @@ export function PerformanceAttribution({
 						<div className="flex items-center justify-between">
 							<div>
 								<p className="text-sm text-muted-foreground">{t("attribution.worstPerformer")}</p>
-								<p className="text-sm font-bold text-red-600">
-									{attributionData.worstPerformer.stock.ticker}
-								</p>
+								<div className="flex items-center gap-2">
+									<p className="text-sm font-bold text-red-600">
+										{attributionData.worstPerformer.stock.ticker}
+									</p>
+									<VPAButton 
+										ticker={attributionData.worstPerformer.stock.ticker}
+										variant="icon"
+										mode="popover"
+									/>
+								</div>
 								<p className="text-xs text-muted-foreground">
 									{(attributionData.worstPerformer.stock.totalReturn * 100).toFixed(1)}%
 								</p>
@@ -219,6 +234,12 @@ export function PerformanceAttribution({
 											<Badge variant="outline">
 												{((1 / portfolioTickers.length) * 100).toFixed(1)}% {t("attribution.weight")}
 											</Badge>
+											<VPAButton 
+												ticker={attribution.stock.ticker}
+												variant="icon"
+												mode="popover"
+												className="ml-2"
+											/>
 										</div>
 										<div className="text-right">
 											<p className={`text-lg font-bold ${getPerformanceColor(attribution.stock.totalReturn)}`}>
@@ -286,7 +307,14 @@ export function PerformanceAttribution({
 							<div className="space-y-2">
 								{attributionData.positiveContributors.map((contributor) => (
 									<div key={contributor.stock.ticker} className="flex items-center justify-between p-2 bg-green-50 rounded">
-										<span className="text-sm font-medium">{contributor.stock.ticker}</span>
+										<div className="flex items-center gap-2">
+											<span className="text-sm font-medium">{contributor.stock.ticker}</span>
+											<VPAButton 
+												ticker={contributor.stock.ticker}
+												variant="icon"
+												mode="popover"
+											/>
+										</div>
 										<span className="text-sm font-bold text-green-600">
 											+{(contributor.weightedContribution * 100).toFixed(2)}%
 										</span>
@@ -310,7 +338,14 @@ export function PerformanceAttribution({
 							<div className="space-y-2">
 								{attributionData.negativeContributors.map((contributor) => (
 									<div key={contributor.stock.ticker} className="flex items-center justify-between p-2 bg-red-50 rounded">
-										<span className="text-sm font-medium">{contributor.stock.ticker}</span>
+										<div className="flex items-center gap-2">
+											<span className="text-sm font-medium">{contributor.stock.ticker}</span>
+											<VPAButton 
+												ticker={contributor.stock.ticker}
+												variant="icon"
+												mode="popover"
+											/>
+										</div>
 										<span className="text-sm font-bold text-red-600">
 											{(contributor.weightedContribution * 100).toFixed(2)}%
 										</span>
