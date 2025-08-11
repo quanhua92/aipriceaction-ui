@@ -8,6 +8,7 @@ import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { TickerPerformanceTable } from "@/components/ui/TickerPerformanceTable";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useMultipleTickerData } from "@/lib/queries";
 import {
 	createDateRangeConfig,
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/compare")({
 
 
 function ComparePage() {
+	const { t } = useTranslation();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const { tickers = [], range = "3M", startDate, endDate } = Route.useSearch();
 	
@@ -105,10 +107,10 @@ function ComparePage() {
 			<div>
 				<h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
 					<Grid3X3 className="h-8 w-8" />
-					Compare Charts
+					{t("compare.title")}
 				</h1>
 				<p className="text-muted-foreground">
-					Compare unlimited stock charts in a responsive 2-column grid (1 column on mobile)
+					{t("compare.subtitle")}
 				</p>
 			</div>
 
@@ -117,20 +119,20 @@ function ComparePage() {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Settings className="h-5 w-5" />
-						Chart Configuration
+						{t("compare.chartConfiguration")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					{/* Ticker Selection */}
 					<div>
 						<label className="text-sm font-medium mb-2 block">
-							Select Tickers
+							{t("compare.selectTickers")}
 						</label>
 						<MultiTickerSearch
 							selectedTickers={tickers}
 							onTickersChange={handleTickersChange}
 							maxSelection={100}
-							placeholder="Add tickers to compare..."
+							placeholder={t("compare.searchPlaceholder")}
 							className="w-full"
 						/>
 					</div>
@@ -138,7 +140,7 @@ function ComparePage() {
 					{/* Date Range Selection */}
 					<div>
 						<label className="text-sm font-medium mb-2 block">
-							Date Range
+							{t("compare.dateRange")}
 						</label>
 						<DateRangeSelector
 							value={dateRangeConfig}
@@ -168,7 +170,7 @@ function ComparePage() {
 			{tickers.length > 0 && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Quick Actions</CardTitle>
+						<CardTitle>{t("home.quickActions")}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="flex flex-wrap gap-2">
@@ -187,7 +189,7 @@ function ComparePage() {
 							>
 								<Button variant="outline" className="flex items-center gap-2">
 									<Target className="h-4 w-4" />
-									Open in Portfolio
+									{t("compare.openInPortfolio")}
 								</Button>
 							</Link>
 							<Button
@@ -201,7 +203,7 @@ function ComparePage() {
 									})
 								}
 							>
-								Add VN-Index
+								{t("compare.addVnIndex")}
 							</Button>
 							<Button
 								variant="outline"
@@ -211,7 +213,7 @@ function ComparePage() {
 									})
 								}
 							>
-								Banking Stocks
+								{t("compare.bankingStocks")}
 							</Button>
 							<Button
 								variant="outline"
@@ -221,13 +223,13 @@ function ComparePage() {
 									})
 								}
 							>
-								Real Estate
+								{t("compare.realEstate")}
 							</Button>
 							<Button
 								variant="outline"
 								onClick={() => updateSearchParams({ tickers: [] })}
 							>
-								Clear All
+								{t("common.clearAll")}
 							</Button>
 						</div>
 					</CardContent>
@@ -241,7 +243,7 @@ function ComparePage() {
 					tickers={tickers}
 					timeRange={dateRangeConfig.range}
 					isLoading={isLoading}
-					title="Selected Stocks Performance"
+					title={t("compare.selectedStocksPerformance")}
 				/>
 			)}
 
@@ -280,7 +282,7 @@ function ComparePage() {
 								{item.data.length > 0 ? (
 									isLoading ? (
 										<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
-											<div className="text-muted-foreground">Loading...</div>
+											<div className="text-muted-foreground">{t("common.loading")}</div>
 										</div>
 									) : (
 										<CandlestickChart
@@ -291,13 +293,13 @@ function ComparePage() {
 								) : isLoading ? (
 									<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
 										<div className="text-muted-foreground">
-											Loading {item.ticker}...
+											{t("common.loadingData")} {item.ticker}...
 										</div>
 									</div>
 								) : (
 									<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
 										<div className="text-center space-y-2">
-											<p className="text-muted-foreground">No data available</p>
+											<p className="text-muted-foreground">{t("common.noData")}</p>
 											<p className="text-xs text-muted-foreground">
 												for {item.ticker}
 											</p>
@@ -314,9 +316,9 @@ function ComparePage() {
 						<div className="text-center space-y-4">
 							<Grid3X3 className="h-16 w-16 text-muted-foreground/40 mx-auto" />
 							<div>
-								<p className="text-xl font-medium text-muted-foreground mb-2">No tickers selected</p>
+								<p className="text-xl font-medium text-muted-foreground mb-2">{t("compare.noTickersSelected")}</p>
 								<p className="text-sm text-muted-foreground">
-									Add tickers above to start comparing charts in a responsive grid
+									{t("compare.noTickersMessage")}
 								</p>
 							</div>
 						</div>

@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, TrendingUp, Users, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerGroups } from "@/lib/queries";
 
 export const Route = createFileRoute("/sectors/")({
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/sectors/")({
 });
 
 function SectorsPage() {
+	const { t } = useTranslation();
 	const { data: tickerGroups, isLoading } = useTickerGroups();
 
 	const sectorData = useMemo(() => {
@@ -17,7 +19,7 @@ function SectorsPage() {
 
 		return Object.entries(tickerGroups).map(([sectorName, tickers]) => ({
 			name: sectorName,
-			displayName: sectorName.replace(/_/g, " "),
+			displayName: t(`sectorNames.${sectorName}`) || sectorName.replace(/_/g, " "),
 			tickerCount: tickers.length,
 			tickers: tickers.slice(0, 5), // Show first 5 tickers as preview
 		}));
@@ -27,7 +29,7 @@ function SectorsPage() {
 		return (
 			<div className="container mx-auto p-6">
 				<div className="flex items-center justify-center h-64">
-					<div className="text-muted-foreground">Loading sectors...</div>
+					<div className="text-muted-foreground">{t("loading.sectorData")}</div>
 				</div>
 			</div>
 		);
@@ -39,10 +41,10 @@ function SectorsPage() {
 			<div>
 				<h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
 					<Building2 className="h-8 w-8" />
-					Market Sectors
+					{t("sectors.title")}
 				</h1>
 				<p className="text-muted-foreground">
-					Browse Vietnamese stock market sectors and analyze sector performance
+					{t("sectors.subtitle")}
 				</p>
 			</div>
 
@@ -55,7 +57,7 @@ function SectorsPage() {
 						</div>
 						<div>
 							<p className="text-sm font-medium text-muted-foreground">
-								Total Sectors
+								{t("sectors.totalSectors")}
 							</p>
 							<p className="text-2xl font-bold">{sectorData.length}</p>
 						</div>
@@ -69,7 +71,7 @@ function SectorsPage() {
 						</div>
 						<div>
 							<p className="text-sm font-medium text-muted-foreground">
-								Total Stocks
+								{t("sectors.totalStocks")}
 							</p>
 							<p className="text-2xl font-bold">
 								{sectorData.reduce((sum, sector) => sum + sector.tickerCount, 0)}
@@ -85,7 +87,7 @@ function SectorsPage() {
 						</div>
 						<div>
 							<p className="text-sm font-medium text-muted-foreground">
-								Avg per Sector
+								{t("sectors.avgPerSector")}
 							</p>
 							<p className="text-2xl font-bold">
 								{sectorData.length > 0 ? Math.round(
@@ -104,7 +106,7 @@ function SectorsPage() {
 						<CardHeader className="pb-3">
 							<div className="flex items-center justify-between">
 								<CardTitle className="text-lg">{sector.displayName}</CardTitle>
-								<Badge variant="secondary">{sector.tickerCount} stocks</Badge>
+								<Badge variant="secondary">{sector.tickerCount} {t("risk.stocks")}</Badge>
 							</div>
 						</CardHeader>
 						<CardContent className="space-y-3">
@@ -117,7 +119,7 @@ function SectorsPage() {
 								))}
 								{sector.tickerCount > 5 && (
 									<Badge variant="outline" className="text-xs text-muted-foreground">
-										+{sector.tickerCount - 5} more
+										+{sector.tickerCount - 5} {t("common.more")}
 									</Badge>
 								)}
 							</div>
@@ -131,7 +133,7 @@ function SectorsPage() {
 								>
 									<div className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-2">
 										<BarChart3 className="h-4 w-4" />
-										Compare Performance
+										{t("sectors.comparePerformance")}
 									</div>
 								</Link>
 								<Link

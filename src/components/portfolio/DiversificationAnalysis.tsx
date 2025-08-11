@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { PieChart, Network, Layers, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -22,7 +23,7 @@ interface SectorAllocation {
 	displayName: string;
 }
 
-function CorrelationHeatmap({ correlationMatrix }: { correlationMatrix: CorrelationMatrix }) {
+function CorrelationHeatmap({ correlationMatrix, t }: { correlationMatrix: CorrelationMatrix; t: any }) {
 	const getCorrelationColor = (correlation: number): string => {
 		if (correlation >= 0.8) return "bg-red-500";
 		if (correlation >= 0.6) return "bg-orange-500";
@@ -34,13 +35,13 @@ function CorrelationHeatmap({ correlationMatrix }: { correlationMatrix: Correlat
 	};
 
 	const getCorrelationText = (correlation: number): string => {
-		if (correlation >= 0.8) return "Very High";
-		if (correlation >= 0.6) return "High";
-		if (correlation >= 0.4) return "Moderate";
-		if (correlation >= 0.2) return "Low";
-		if (correlation >= -0.2) return "Minimal";
-		if (correlation >= -0.4) return "Negative";
-		return "Strong Negative";
+		if (correlation >= 0.8) return t("diversification.correlationLevels.veryHigh");
+		if (correlation >= 0.6) return t("diversification.correlationLevels.high");
+		if (correlation >= 0.4) return t("diversification.correlationLevels.moderate");
+		if (correlation >= 0.2) return t("diversification.correlationLevels.low");
+		if (correlation >= -0.2) return t("diversification.correlationLevels.minimal");
+		if (correlation >= -0.4) return t("diversification.correlationLevels.negative");
+		return t("diversification.correlationLevels.strongNegative");
 	};
 
 	return (
@@ -77,23 +78,23 @@ function CorrelationHeatmap({ correlationMatrix }: { correlationMatrix: Correlat
 			<div className="flex flex-wrap gap-2 text-xs">
 				<div className="flex items-center gap-1">
 					<div className="w-3 h-3 bg-red-500 rounded"></div>
-					<span>Very High (0.8+)</span>
+					<span>{t("diversification.correlationLevels.veryHigh")} (0.8+)</span>
 				</div>
 				<div className="flex items-center gap-1">
 					<div className="w-3 h-3 bg-orange-500 rounded"></div>
-					<span>High (0.6+)</span>
+					<span>{t("diversification.correlationLevels.high")} (0.6+)</span>
 				</div>
 				<div className="flex items-center gap-1">
 					<div className="w-3 h-3 bg-yellow-500 rounded"></div>
-					<span>Moderate (0.4+)</span>
+					<span>{t("diversification.correlationLevels.moderate")} (0.4+)</span>
 				</div>
 				<div className="flex items-center gap-1">
 					<div className="w-3 h-3 bg-green-500 rounded"></div>
-					<span>Low (0.2+)</span>
+					<span>{t("diversification.correlationLevels.low")} (0.2+)</span>
 				</div>
 				<div className="flex items-center gap-1">
 					<div className="w-3 h-3 bg-blue-500 rounded"></div>
-					<span>Minimal (&lt;0.2)</span>
+					<span>{t("diversification.correlationLevels.minimal")} (&lt;0.2)</span>
 				</div>
 			</div>
 		</div>
@@ -104,6 +105,7 @@ export function DiversificationAnalysis({
 	portfolioData, 
 	portfolioTickers 
 }: DiversificationAnalysisProps) {
+	const { t } = useTranslation();
 	const { data: tickerGroups } = useTickerGroups();
 	
 	const correlationMatrix = useMemo(() => {
@@ -128,20 +130,7 @@ export function DiversificationAnalysis({
 		}
 
 		const sectorMap: Record<string, string[]> = {};
-		const sectorNames: Record<string, string> = {
-			"NGAN_HANG": "Banking",
-			"BAT_DONG_SAN": "Real Estate", 
-			"CHUNG_KHOAN": "Securities",
-			"THEP": "Steel",
-			"HOA_CHAT": "Chemicals",
-			"THUC_PHAM": "Food & Beverage",
-			"NONG_NGHIEP": "Agriculture",
-			"VAN_TAI": "Transportation",
-			"VLXD": "Building Materials",
-			"XAY_DUNG": "Construction",
-			"BAN_LE": "Retail",
-			"CONG_NGHE": "Technology",
-		};
+		// Use translation system for sector names
 
 		// Group tickers by sector
 		for (const [sector, tickers] of Object.entries(tickerGroups)) {
@@ -158,7 +147,7 @@ export function DiversificationAnalysis({
 			sector,
 			tickers,
 			allocation: (tickers.length / portfolioTickers.length) * 100,
-			displayName: sectorNames[sector] || sector.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+			displayName: t(`sectorNames.${sector}`) || sector.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
 		}));
 
 		// Add unclassified tickers
@@ -170,7 +159,7 @@ export function DiversificationAnalysis({
 				sector: "OTHER",
 				tickers: unclassifiedTickers,
 				allocation: (unclassifiedTickers.length / portfolioTickers.length) * 100,
-				displayName: "Other"
+				displayName: t("diversification.other") || "Other"
 			});
 		}
 
@@ -224,15 +213,15 @@ export function DiversificationAnalysis({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<PieChart className="h-5 w-5" />
-						Diversification Analysis
+						{t("portfolio.diversificationAnalysis")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="text-center p-8">
 						<p className="text-muted-foreground">
 							{portfolioTickers.length < 2 ? 
-								"Need at least 2 stocks for diversification analysis" :
-								"Calculating diversification metrics..."
+								t("diversification.needTwoStocks") :
+								t("diversification.calculatingMetrics")
 							}
 						</p>
 					</div>
@@ -259,7 +248,7 @@ export function DiversificationAnalysis({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Diversification Score</p>
+								<p className="text-sm text-muted-foreground">{t("diversification.diversificationScore")}</p>
 								<p className={`text-2xl font-bold ${diversificationLevel.color}`}>
 									{diversificationMetrics.diversificationScore.toFixed(0)}%
 								</p>
@@ -276,11 +265,11 @@ export function DiversificationAnalysis({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Average Correlation</p>
+								<p className="text-sm text-muted-foreground">{t("diversification.averageCorrelation")}</p>
 								<p className="text-2xl font-bold text-orange-600">
 									{(diversificationMetrics.avgCorrelation * 100).toFixed(0)}%
 								</p>
-								<p className="text-xs text-muted-foreground">Lower is better</p>
+								<p className="text-xs text-muted-foreground">{t("diversification.lowerIsBetter")}</p>
 							</div>
 							<div className="p-2 rounded-full bg-orange-100">
 								<BarChart3 className="h-5 w-5 text-orange-600" />
@@ -293,12 +282,12 @@ export function DiversificationAnalysis({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">High Correlations</p>
+								<p className="text-sm text-muted-foreground">{t("diversification.highCorrelations")}</p>
 								<p className="text-2xl font-bold text-red-600">
 									{diversificationMetrics.highCorrelations}
 								</p>
 								<p className="text-xs text-muted-foreground">
-									of {diversificationMetrics.totalPairs} pairs
+									{t("diversification.ofPairs", { total: diversificationMetrics.totalPairs })}
 								</p>
 							</div>
 							<div className="p-2 rounded-full bg-red-100">
@@ -314,7 +303,7 @@ export function DiversificationAnalysis({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<PieChart className="h-5 w-5" />
-						Sector Allocation
+						{t("diversification.sectorAllocation")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
@@ -325,7 +314,7 @@ export function DiversificationAnalysis({
 									<div className="flex items-center gap-2">
 										<h4 className="font-medium">{allocation.displayName}</h4>
 										<Badge variant="outline">
-											{allocation.tickers.length} stock{allocation.tickers.length !== 1 ? 's' : ''}
+											{allocation.tickers.length} {t("risk.stocks")}
 										</Badge>
 									</div>
 									<span className="text-sm font-medium">
@@ -346,20 +335,20 @@ export function DiversificationAnalysis({
 					
 					{/* Sector Diversification Insights */}
 					<div className="mt-6 p-4 bg-muted/50 rounded-lg">
-						<h4 className="font-medium mb-2">Sector Diversification Analysis</h4>
+						<h4 className="font-medium mb-2">{t("diversification.sectorDiversificationAnalysis")}</h4>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
 							<div>
-								<p className="text-muted-foreground">Most Concentrated Sector:</p>
+								<p className="text-muted-foreground">{t("diversification.mostConcentratedSector")}:</p>
 								<p className="font-medium">
 									{sectorAllocation[0]?.displayName} ({sectorAllocation[0]?.allocation.toFixed(1)}%)
 								</p>
 							</div>
 							<div>
-								<p className="text-muted-foreground">Sector Count:</p>
+								<p className="text-muted-foreground">{t("diversification.sectorCount")}:</p>
 								<p className="font-medium">
-									{sectorAllocation.length} sectors
+									{sectorAllocation.length} {t("diversification.sectors")}
 									{sectorAllocation.length < 3 && (
-										<span className="text-orange-600 ml-2">⚠ Consider more diversification</span>
+										<span className="text-orange-600 ml-2">⚠ {t("diversification.considerMoreDiversification")}</span>
 									)}
 								</p>
 							</div>
@@ -373,50 +362,47 @@ export function DiversificationAnalysis({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Network className="h-5 w-5" />
-						Stock Correlation Matrix
+						{t("diversification.stockCorrelationMatrix")}
 					</CardTitle>
 					<p className="text-sm text-muted-foreground">
-						Shows how closely stock movements are correlated. Lower correlations indicate better diversification.
+						{t("diversification.correlationDescription")}
 					</p>
 				</CardHeader>
 				<CardContent>
-					<CorrelationHeatmap correlationMatrix={correlationMatrix} />
+					<CorrelationHeatmap correlationMatrix={correlationMatrix} t={t} />
 				</CardContent>
 			</Card>
 
 			{/* Diversification Recommendations */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Diversification Recommendations</CardTitle>
+					<CardTitle>{t("diversification.recommendations")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-4">
 						{diversificationMetrics.highCorrelations > 0 && (
 							<div className="p-4 border-l-4 border-orange-500 bg-orange-50">
-								<h4 className="font-medium text-orange-800">High Correlation Alert</h4>
+								<h4 className="font-medium text-orange-800">{t("diversification.highCorrelation")}</h4>
 								<p className="text-sm text-orange-700 mt-1">
-									You have {diversificationMetrics.highCorrelations} pairs of stocks with correlation &gt; 70%. 
-									Consider replacing some highly correlated stocks with assets from different sectors.
+									{t("diversification.highCorrelationMessage", { count: diversificationMetrics.highCorrelations })}
 								</p>
 							</div>
 						)}
 						
 						{sectorAllocation.length < 3 && (
 							<div className="p-4 border-l-4 border-yellow-500 bg-yellow-50">
-								<h4 className="font-medium text-yellow-800">Limited Sector Diversification</h4>
+								<h4 className="font-medium text-yellow-800">{t("diversification.limitedSector")}</h4>
 								<p className="text-sm text-yellow-700 mt-1">
-									Your portfolio spans only {sectorAllocation.length} sectors. 
-									Consider adding stocks from different industries to reduce sector concentration risk.
+									{t("diversification.limitedSectorMessage", { count: sectorAllocation.length })}
 								</p>
 							</div>
 						)}
 						
 						{diversificationMetrics.diversificationScore >= 60 && (
 							<div className="p-4 border-l-4 border-green-500 bg-green-50">
-								<h4 className="font-medium text-green-800">Well Diversified</h4>
+								<h4 className="font-medium text-green-800">{t("diversification.wellDiversified")}</h4>
 								<p className="text-sm text-green-700 mt-1">
-									Your portfolio shows good diversification with low average correlation between stocks. 
-									This helps reduce overall portfolio risk.
+									{t("diversification.wellDiversifiedMessage")}
 								</p>
 							</div>
 						)}

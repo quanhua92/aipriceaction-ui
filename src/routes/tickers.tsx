@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
 	Select,
 	SelectContent,
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/tickers")({
 });
 
 function TickersPage() {
+	const { t } = useTranslation();
 	const [search, setSearch] = useState("");
 	const [selectedSector, setSelectedSector] = useState<string>("ALL");
 	const [sortBy, setSortBy] = useState<"ticker" | "sector">("ticker");
@@ -77,7 +79,7 @@ function TickersPage() {
 		if (!tickerGroups) return [];
 		return Object.keys(tickerGroups).map((sector) => ({
 			value: sector,
-			label: sector.replace(/_/g, " "),
+			label: t(`sectorNames.${sector}`) || sector.replace(/_/g, " "),
 			count: tickerGroups[sector].length,
 		}));
 	}, [tickerGroups]);
@@ -106,7 +108,7 @@ function TickersPage() {
 		return (
 			<div className="container mx-auto p-6">
 				<div className="flex items-center justify-center h-64">
-					<div className="text-muted-foreground">Loading tickers...</div>
+					<div className="text-muted-foreground">{t("loading.tickerData")}</div>
 				</div>
 			</div>
 		);
@@ -115,10 +117,9 @@ function TickersPage() {
 	return (
 		<div className="container mx-auto p-6 space-y-6">
 			<div>
-				<h1 className="text-3xl font-bold mb-2">All Stock Tickers</h1>
+				<h1 className="text-3xl font-bold mb-2">{t("tickers.title")}</h1>
 				<p className="text-muted-foreground">
-					Browse and search through {allTickers.length} Vietnamese stocks across{" "}
-					{sectorOptions.length} sectors
+					{t("tickers.subtitle", { tickerCount: allTickers.length, sectorCount: sectorOptions.length })}
 				</p>
 			</div>
 
@@ -127,14 +128,14 @@ function TickersPage() {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Search className="h-5 w-5" />
-						Search & Filter
+						{t("tickers.searchAndFilter")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="flex flex-col sm:flex-row gap-4">
 						<div className="flex-1">
 							<Input
-								placeholder="Search tickers..."
+								placeholder={t("tickers.searchTickers")}
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
 								className="w-full"
@@ -143,10 +144,10 @@ function TickersPage() {
 
 						<Select value={selectedSector} onValueChange={setSelectedSector}>
 							<SelectTrigger className="w-[180px]">
-								<SelectValue placeholder="Select sector" />
+								<SelectValue placeholder={t("tickers.selectSector")} />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="ALL">All Sectors</SelectItem>
+								<SelectItem value="ALL">{t("tickers.allSectors")}</SelectItem>
 								{sectorOptions.map((option) => (
 									<SelectItem key={option.value} value={option.value}>
 										{option.label} ({option.count})
@@ -163,8 +164,8 @@ function TickersPage() {
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="ticker">By Ticker</SelectItem>
-								<SelectItem value="sector">By Sector</SelectItem>
+								<SelectItem value="ticker">{t("tickers.byTicker")}</SelectItem>
+								<SelectItem value="sector">{t("tickers.bySector")}</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -175,14 +176,13 @@ function TickersPage() {
 			<Card>
 				<CardHeader>
 					<CardTitle>
-						{filteredTickers.length} Stock
-						{filteredTickers.length !== 1 ? "s" : ""} Found
+						{t("tickers.stocksFound", { count: filteredTickers.length })}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					{filteredTickers.length === 0 ? (
 						<div className="text-center py-8 text-muted-foreground">
-							No tickers found matching your criteria
+							{t("tickers.noTickersFound")}
 						</div>
 					) : (
 						<div className="space-y-4">
@@ -191,15 +191,15 @@ function TickersPage() {
 								<Table>
 									<TableHeader>
 										<TableRow>
-											<TableHead>Ticker</TableHead>
-											<TableHead>Sector</TableHead>
-											<TableHead>Actions</TableHead>
+											<TableHead>{t("common.ticker")}</TableHead>
+											<TableHead>{t("tickers.sector")}</TableHead>
+											<TableHead>{t("common.actions")}</TableHead>
 										</TableRow>
 									</TableHeader>
 									<TableBody>
 										{filteredTickers.map((ticker, index) => {
 											const sector = findTickerSector(tickerGroups!, ticker);
-											const sectorLabel = sector?.replace(/_/g, " ");
+											const sectorLabel = sector ? (t(`sectorNames.${sector}`) || sector.replace(/_/g, " ")) : "";
 
 											return (
 												<TableRow key={`${ticker}-${index}`}>
@@ -235,7 +235,7 @@ function TickersPage() {
 															>
 																<Button variant="outline" size="sm">
 																	<BarChart3 className="h-4 w-4 mr-1" />
-																	Chart
+																	{t("tickers.chart")}
 																</Button>
 															</Link>
 														</div>
@@ -251,7 +251,7 @@ function TickersPage() {
 							<div className="md:hidden space-y-3">
 								{filteredTickers.map((ticker, index) => {
 									const sector = findTickerSector(tickerGroups!, ticker);
-									const sectorLabel = sector?.replace(/_/g, " ");
+									const sectorLabel = sector ? (t(`sectorNames.${sector}`) || sector.replace(/_/g, " ")) : "";
 
 									return (
 										<Card key={`${ticker}-grid-${index}`} className="p-4">

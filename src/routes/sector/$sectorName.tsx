@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/table";
 import { ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerGroups, useMultipleTickerData } from "@/lib/queries";
 import {
 	getTickersBySector,
@@ -57,6 +58,7 @@ export const Route = createFileRoute("/sector/$sectorName")({
 });
 
 function SectorPage() {
+	const { t } = useTranslation();
 	const { sectorName } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const searchParams = Route.useSearch();
@@ -125,7 +127,7 @@ function SectorPage() {
 		updateSearchParams({ compare: [] });
 	};
 
-	const sectorLabel = sectorName.replace(/_/g, " ");
+	const sectorLabel = t(`sectorNames.${sectorName}`) || sectorName.replace(/_/g, " ");
 
 	const formatPrice = (value: number) => {
 		return new Intl.NumberFormat("vi-VN", {
@@ -211,7 +213,7 @@ function SectorPage() {
 		return (
 			<div className="container mx-auto p-6">
 				<div className="flex items-center justify-center h-64">
-					<div className="text-muted-foreground">Loading sector data...</div>
+					<div className="text-muted-foreground">{t("loading.sectorData")}</div>
 				</div>
 			</div>
 		);
@@ -224,10 +226,10 @@ function SectorPage() {
 					<CardContent className="flex items-center justify-center h-64">
 						<div className="text-center space-y-4">
 							<p className="text-red-600 font-semibold">
-								Sector "{sectorLabel}" not found
+								{t("sectors.sectorNotFound", { sector: sectorLabel })}
 							</p>
 							<Link to="/sectors">
-								<Button variant="outline">Back to Sectors</Button>
+								<Button variant="outline">{t("sectors.backToSectors")}</Button>
 							</Link>
 						</div>
 					</CardContent>
@@ -244,13 +246,13 @@ function SectorPage() {
 					<Link to="/sectors">
 						<Button variant="ghost" size="sm">
 							<ArrowLeft className="h-4 w-4 mr-1" />
-							Back
+							{t("common.back")}
 						</Button>
 					</Link>
 					<div>
 						<h1 className="text-3xl font-bold">{sectorLabel}</h1>
 						<p className="text-muted-foreground">
-							Compare {sectorTickers.length} stocks in this sector
+							{t("sectors.compareSectorStocks", { count: sectorTickers.length })}
 						</p>
 					</div>
 				</div>
@@ -281,7 +283,7 @@ function SectorPage() {
 			{/* Stock Selection Table */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Sector Stocks Performance</CardTitle>
+					<CardTitle>{t("sectors.sectorPerformance")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Table>
@@ -294,7 +296,7 @@ function SectorPage() {
 										onClick={() => handleSort('compare')}
 										className="h-auto p-0 font-medium"
 									>
-										Compare {getSortIcon('compare')}
+										{t("common.compare")} {getSortIcon('compare')}
 									</Button>
 								</TableHead>
 								<TableHead>
@@ -304,7 +306,7 @@ function SectorPage() {
 										onClick={() => handleSort('ticker')}
 										className="h-auto p-0 font-medium"
 									>
-										Ticker {getSortIcon('ticker')}
+										{t("common.ticker")} {getSortIcon('ticker')}
 									</Button>
 								</TableHead>
 								<TableHead>
@@ -314,7 +316,7 @@ function SectorPage() {
 										onClick={() => handleSort('price')}
 										className="h-auto p-0 font-medium"
 									>
-										Current Price {getSortIcon('price')}
+										{t("common.price")} {getSortIcon('price')}
 									</Button>
 								</TableHead>
 								<TableHead>
@@ -324,7 +326,7 @@ function SectorPage() {
 										onClick={() => handleSort('change')}
 										className="h-auto p-0 font-medium"
 									>
-										Change {getSortIcon('change')}
+										{t("common.change")} {getSortIcon('change')}
 									</Button>
 								</TableHead>
 								<TableHead>
@@ -334,10 +336,10 @@ function SectorPage() {
 										onClick={() => handleSort('changePercent')}
 										className="h-auto p-0 font-medium"
 									>
-										Change % {getSortIcon('changePercent')}
+										{t("common.changePercent")} {getSortIcon('changePercent')}
 									</Button>
 								</TableHead>
-								<TableHead>Actions</TableHead>
+								<TableHead>{t("common.actions")}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -408,7 +410,7 @@ function SectorPage() {
 										<Link to="/ticker/$symbol" params={{ symbol: item.ticker }}>
 											<Button variant="outline" size="sm">
 												<BarChart3 className="h-4 w-4 mr-1" />
-												View
+												{t("common.view")}
 											</Button>
 										</Link>
 									</TableCell>
@@ -428,7 +430,7 @@ function SectorPage() {
 						</div>
 						<div>
 							<p className="text-sm font-medium text-muted-foreground">
-								Total Stocks
+								{t("sectors.totalStocks")}
 							</p>
 							<p className="text-2xl font-bold">{sectorTickers.length}</p>
 						</div>
@@ -442,7 +444,7 @@ function SectorPage() {
 						</div>
 						<div>
 							<p className="text-sm font-medium text-muted-foreground">
-								Comparing
+								{t("sectors.comparing")}
 							</p>
 							<p className="text-2xl font-bold">{chartTickers.length}</p>
 						</div>
@@ -456,7 +458,7 @@ function SectorPage() {
 						</div>
 						<div>
 							<p className="text-sm font-medium text-muted-foreground">
-								Time Range
+								{t("sectors.timeRange")}
 							</p>
 							<p className="text-2xl font-bold">{range}</p>
 						</div>
@@ -470,10 +472,10 @@ function SectorPage() {
 					<div className="flex items-center justify-between">
 						<CardTitle className="flex items-center gap-2">
 							<BarChart3 className="h-5 w-5" />
-							Sector Performance Comparison
+							{t("sectors.performanceComparison")}
 							{chartTickers.length > 0 && (
 								<Badge variant="secondary" className="text-xs">
-									{chartTickers.length} selected
+									{chartTickers.length} {t("sectors.selected")}
 								</Badge>
 							)}
 						</CardTitle>
@@ -482,7 +484,7 @@ function SectorPage() {
 								<>
 									<Button variant="ghost" size="sm" onClick={clearAllTickers}>
 										<X className="h-4 w-4 mr-1" />
-										Clear All
+										{t("common.clearAll")}
 									</Button>
 									<Link
 										to="/compare"
@@ -497,7 +499,7 @@ function SectorPage() {
 									>
 										<Button variant="outline" size="sm">
 											<Grid3X3 className="h-4 w-4 mr-1" />
-											Compare in Grid
+											{t("sectors.compareInGrid")}
 										</Button>
 									</Link>
 								</>
@@ -509,7 +511,7 @@ function SectorPage() {
 					{dataLoading ? (
 						<div className="h-[500px] flex items-center justify-center">
 							<div className="text-muted-foreground">
-								Loading comparison data...
+								{t("loading.comparisonData")}
 							</div>
 						</div>
 					) : chartTickers.length > 0 ? (
@@ -581,7 +583,7 @@ function SectorPage() {
 					) : (
 						<div className="h-[500px] flex items-center justify-center">
 							<div className="text-muted-foreground">
-								Select stocks to compare
+								{t("sectors.selectStocksToCompare")}
 							</div>
 						</div>
 					)}
