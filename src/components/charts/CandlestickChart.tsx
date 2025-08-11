@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {
 	ResponsiveContainer,
 	ComposedChart,
@@ -91,21 +91,57 @@ export function CandlestickChart({
 	title,
 	height = 400,
 }: CandlestickChartProps) {
-	// Calculate auto range
-	const minPrice = data?.length ? Math.min(...data.map((d) => d.low)) : 0;
-	const maxPrice = data?.length ? Math.max(...data.map((d) => d.high)) : 0;
-	const range = maxPrice - minPrice;
-	const padding = Math.max(range * 0.05, 100);
-	
-	const autoMin = minPrice - padding;
-	const autoMax = maxPrice + padding;
-
 	// Axis control state
 	const [customAxis, setCustomAxis] = useState<{min?: number, max?: number}>({});
 	const [tempAxis, setTempAxis] = useState<{min: string, max: string}>({
 		min: "",
 		max: ""
 	});
+
+	// Calculate auto range from actual data - always recalculate to be safe
+	const autoRange = useMemo(() => {
+		if (!data?.length) {
+			return { min: 0, max: 100 };
+		}
+		
+		// Extract all OHLC values to find true min/max
+		const allPrices: number[] = [];
+		data.forEach(point => {
+			allPrices.push(point.open, point.high, point.low, point.close);
+		});
+		
+		const minPrice = Math.min(...allPrices);
+		const maxPrice = Math.max(...allPrices);
+		const range = maxPrice - minPrice;
+		
+		// Use dynamic padding based on price range
+		let padding: number;
+		if (range > 1000) {
+			padding = range * 0.1; // 10% for large ranges
+		} else if (range > 100) {
+			padding = range * 0.15; // 15% for medium ranges  
+		} else {
+			padding = Math.max(range * 0.2, 5); // 20% for small ranges, minimum 5
+		}
+		
+		return {
+			min: Math.max(0, minPrice - padding), // Never go below 0 for stock prices
+			max: maxPrice + padding
+		};
+	}, [data]);
+
+	// Reset custom axis whenever data changes
+	const dataFingerprint = data ? `${data.length}_${data[0]?.date}_${data[data.length-1]?.date}` : '';
+	const prevFingerprintRef = useRef(dataFingerprint);
+	
+	useEffect(() => {
+		if (dataFingerprint !== prevFingerprintRef.current) {
+			// Data changed - reset any custom axis settings
+			setCustomAxis({});
+			setTempAxis({ min: "", max: "" });
+			prevFingerprintRef.current = dataFingerprint;
+		}
+	}, [dataFingerprint]);
 
 	if (!data || data.length === 0) {
 		return (
@@ -132,8 +168,8 @@ export function CandlestickChart({
 
 	// Use custom range if set, otherwise use auto range
 	const yDomain = [
-		customAxis.min ?? autoMin,
-		customAxis.max ?? autoMax,
+		customAxis.min ?? autoRange.min,
+		customAxis.max ?? autoRange.max,
 	];
 
 	const handleAxisUpdate = () => {
@@ -242,7 +278,7 @@ export function CandlestickChart({
 									<Input
 										id="min-price"
 										type="number"
-										placeholder={Math.round(autoMin).toLocaleString()}
+										placeholder={Math.round(autoRange.min).toLocaleString()}
 										value={tempAxis.min}
 										onChange={(e) => setTempAxis(prev => ({...prev, min: e.target.value}))}
 										className="h-8 text-xs"
@@ -253,7 +289,7 @@ export function CandlestickChart({
 									<Input
 										id="max-price"
 										type="number"
-										placeholder={Math.round(autoMax).toLocaleString()}
+										placeholder={Math.round(autoRange.max).toLocaleString()}
 										value={tempAxis.max}
 										onChange={(e) => setTempAxis(prev => ({...prev, max: e.target.value}))}
 										className="h-8 text-xs"
