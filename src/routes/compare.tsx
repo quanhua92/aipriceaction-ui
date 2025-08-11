@@ -11,7 +11,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { StockChart } from "@/components/charts";
+import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { useMultipleTickerDataWithRange } from "@/lib/queries";
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/compare")({
 				? (search.tickers as string[])
 				: [],
 			layout: (search.layout as GridLayout) || "2x2",
-			range: (search.range as TimeRange) || "1Y",
+			range: (search.range as TimeRange) || "3M",
 			startDate: search.startDate as string,
 			endDate: search.endDate as string,
 		};
@@ -56,7 +56,7 @@ const LAYOUT_OPTIONS = [
 
 function ComparePage() {
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { tickers = [], layout = "2x2", range = "1Y", startDate, endDate } = Route.useSearch();
+	const { tickers = [], layout = "2x2", range = "3M", startDate, endDate } = Route.useSearch();
 
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
@@ -280,10 +280,9 @@ function ComparePage() {
 										<div className="text-muted-foreground">Loading...</div>
 									</div>
 								) : (
-									<StockChart
+									<CandlestickChart
 										data={item.data}
 										height={300}
-										color={chartColors[index % chartColors.length]}
 									/>
 								)
 							) : item.ticker && isLoading ? (

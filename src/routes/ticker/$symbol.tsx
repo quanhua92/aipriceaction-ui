@@ -5,14 +5,12 @@ import {
 	TrendingDown,
 	Volume2,
 	Calendar,
-	BarChart3,
 	ChartCandlestick,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { StockChart, CandlestickChart, VolumeChart } from "@/components/charts";
+import { CandlestickChart, VolumeChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
 import {
@@ -28,16 +26,14 @@ interface TickerPageSearch {
 	range?: TimeRange;
 	startDate?: string;
 	endDate?: string;
-	type?: "line" | "candlestick";
 }
 
 export const Route = createFileRoute("/ticker/$symbol")({
 	validateSearch: (search: Record<string, unknown>): TickerPageSearch => {
 		return {
-			range: (search.range as TimeRange) || "ALL",
+			range: (search.range as TimeRange) || "3M",
 			startDate: search.startDate as string,
 			endDate: search.endDate as string,
-			type: (search.type as "line" | "candlestick") || "line",
 		};
 	},
 	component: TickerPage,
@@ -46,7 +42,7 @@ export const Route = createFileRoute("/ticker/$symbol")({
 function TickerPage() {
 	const { symbol } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { range = "ALL", startDate, endDate, type = "line" } = Route.useSearch();
+	const { range = "3M", startDate, endDate } = Route.useSearch();
 
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
@@ -266,32 +262,10 @@ function TickerPage() {
 			<div className="space-y-6">
 				<Card>
 					<CardHeader>
-						<div className="flex items-center justify-between">
-							<CardTitle className="flex items-center gap-2">
-								<BarChart3 className="h-5 w-5" />
-								Price Chart
-							</CardTitle>
-							<Tabs
-								value={type}
-								onValueChange={(value) =>
-									updateSearchParams({ type: value as "line" | "candlestick" })
-								}
-							>
-								<TabsList>
-									<TabsTrigger value="line" className="flex items-center gap-2">
-										<BarChart3 className="h-4 w-4" />
-										Line
-									</TabsTrigger>
-									<TabsTrigger
-										value="candlestick"
-										className="flex items-center gap-2"
-									>
-										<ChartCandlestick className="h-4 w-4" />
-										Candlestick
-									</TabsTrigger>
-								</TabsList>
-							</Tabs>
-						</div>
+						<CardTitle className="flex items-center gap-2">
+							<ChartCandlestick className="h-5 w-5" />
+							Price Chart
+						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						{isLoading ? (
@@ -302,15 +276,7 @@ function TickerPage() {
 							</div>
 						) : tickerData && tickerData.length > 0 ? (
 							<div className="space-y-4">
-								{type === "line" ? (
-									<StockChart
-										data={tickerData}
-										height={500}
-										color="hsl(var(--primary))"
-									/>
-								) : (
-									<CandlestickChart data={tickerData} height={500} />
-								)}
+								<CandlestickChart data={tickerData} height={500} />
 							</div>
 						) : (
 							<div className="h-[500px] flex items-center justify-center">

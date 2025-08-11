@@ -1,13 +1,11 @@
 import { useState } from "react";
 import {
 	ResponsiveContainer,
-	LineChart,
-	Line,
+	ComposedChart,
 	XAxis,
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-	ReferenceLine,
 } from "recharts";
 import { format } from "date-fns";
 import { Settings, RotateCcw } from "lucide-react";
@@ -28,13 +26,6 @@ interface CandlestickChartProps {
 	height?: number;
 }
 
-interface CandlestickData extends StockDataPoint {
-	candleBody: [number, number];
-	isGreen: boolean;
-	wickTop: number;
-	wickBottom: number;
-}
-
 function formatPrice(value: number): string {
 	return new Intl.NumberFormat("vi-VN", {
 		style: "currency",
@@ -46,7 +37,7 @@ function formatPrice(value: number): string {
 
 function CustomTooltip({ active, payload }: any) {
 	if (active && payload && payload.length) {
-		const data = payload[0].payload as CandlestickData;
+		const data = payload[0].payload;
 		return (
 			<div className="bg-background border rounded-lg shadow-lg p-3">
 				<p className="font-semibold">
@@ -68,22 +59,84 @@ function CustomTooltip({ active, payload }: any) {
 					<span className="text-primary">Close: </span>
 					{formatPrice(data.close)}
 				</p>
-				<p className="text-sm">
-					<span className={data.isGreen ? "text-green-600" : "text-red-600"}>
-						{data.isGreen ? "▲" : "▼"}{" "}
-						{formatPrice(Math.abs(data.close - data.open))}(
-						{(((data.close - data.open) / data.open) * 100).toFixed(2)}%)
-					</span>
-				</p>
 			</div>
 		);
 	}
 	return null;
 }
 
-// Working axis controls with line chart - will implement candlesticks properly next
+// Custom content component that renders candlesticks using SVG directly
+const CandlestickContent = (props: any) => {
+	const { payload, viewBox, xAxisMap, yAxisMap } = props;
+	
+	if (!payload || !payload.length || !xAxisMap || !yAxisMap || !viewBox) {
+		return null;
+	}
+	
+	const xAxis = xAxisMap[Object.keys(xAxisMap)[0]];
+	const yAxis = yAxisMap[Object.keys(yAxisMap)[0]];
+	
+	if (!xAxis || !yAxis) return null;
+	
+	const { x: chartX, y: chartY, width: chartWidth, height: chartHeight } = viewBox;
+	
+	return (
+		<svg
+			x={chartX}
+			y={chartY}
+			width={chartWidth}
+			height={chartHeight}
+			style={{ overflow: 'visible' }}
+		>
+			{payload.map((entry: any, index: number) => {
+				const data = entry.payload;
+				if (!data) return null;
+				
+				const isGreen = data.close >= data.open;
+				const color = isGreen ? "#16a34a" : "#dc2626";
+				
+				// Calculate positions using the axis scales
+				const xPos = xAxis.scale(index);
+				const highY = yAxis.scale(data.high);
+				const lowY = yAxis.scale(data.low);
+				const openY = yAxis.scale(data.open);
+				const closeY = yAxis.scale(data.close);
+				
+				const bodyTop = Math.min(openY, closeY);
+				const bodyHeight = Math.max(Math.abs(closeY - openY), 1);
+				
+				const candleWidth = Math.max(chartWidth / payload.length * 0.6, 2);
+				const wickX = xPos;
+				const bodyX = xPos - candleWidth / 2;
+				
+				return (
+					<g key={index}>
+						{/* Wick */}
+						<line
+							x1={wickX}
+							y1={highY}
+							x2={wickX}
+							y2={lowY}
+							stroke={color}
+							strokeWidth={1}
+						/>
+						{/* Body */}
+						<rect
+							x={bodyX}
+							y={bodyTop}
+							width={candleWidth}
+							height={bodyHeight}
+							fill={color}
+							stroke={color}
+						/>
+					</g>
+				);
+			})}
+		</svg>
+	);
+};
 
-export function CandlestickChart({
+export function SimpleCandlestickChart({
 	data,
 	title,
 	height = 400,
@@ -117,13 +170,11 @@ export function CandlestickChart({
 		);
 	}
 
-	const chartData = data.map((point) => {
-		return {
-			...point,
-			time: format(point.date, "MMM dd"),
-			close: point.close, // Use close price for the line chart
-		};
-	});
+	const chartData = data.map((point, index) => ({
+		...point,
+		time: format(point.date, "MMM dd"),
+		index,
+	}));
 
 	// Use custom range if set, otherwise use auto range
 	const yDomain = [
@@ -145,8 +196,6 @@ export function CandlestickChart({
 		setCustomAxis({});
 		setTempAxis({ min: "", max: "" });
 	};
-
-	// No need for separate shapes anymore
 
 	return (
 		<Card>
@@ -207,7 +256,7 @@ export function CandlestickChart({
 			</CardHeader>
 			<CardContent>
 				<ResponsiveContainer width="100%" height={height}>
-					<LineChart
+					<ComposedChart
 						data={chartData}
 						margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
 					>
@@ -224,23 +273,8 @@ export function CandlestickChart({
 							className="fill-muted-foreground"
 						/>
 						<Tooltip content={<CustomTooltip />} />
-						{/* Invisible line to establish coordinate system */}
-						<Line 
-							type="monotone"
-							dataKey="close" 
-							stroke="transparent"
-							strokeWidth={0}
-							dot={false}
-						/>
-						{/* Blue line showing close price - visible for now */}
-						<Line 
-							type="monotone"
-							dataKey="close" 
-							stroke="#3B82F6"
-							strokeWidth={2}
-							dot={false}
-						/>
-					</LineChart>
+						<CandlestickContent />
+					</ComposedChart>
 				</ResponsiveContainer>
 			</CardContent>
 		</Card>

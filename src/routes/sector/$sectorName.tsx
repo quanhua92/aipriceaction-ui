@@ -40,7 +40,7 @@ interface SectorPageSearch {
 export const Route = createFileRoute("/sector/$sectorName")({
 	validateSearch: (search: Record<string, unknown>): SectorPageSearch => {
 		return {
-			range: (search.range as TimeRange) || "1Y",
+			range: (search.range as TimeRange) || "3M",
 			startDate: search.startDate as string,
 			endDate: search.endDate as string,
 			compare: Array.isArray(search.compare)
@@ -54,7 +54,7 @@ export const Route = createFileRoute("/sector/$sectorName")({
 function SectorPage() {
 	const { sectorName } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { range = "1Y", startDate, endDate, compare = [] } = Route.useSearch();
+	const { range = "3M", startDate, endDate, compare = [] } = Route.useSearch();
 
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);

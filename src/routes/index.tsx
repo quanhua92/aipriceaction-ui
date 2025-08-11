@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { TrendingUp, Search, BarChart3, Grid3X3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { StockChart } from "@/components/charts";
+import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
@@ -150,10 +150,9 @@ function Dashboard() {
 									</div>
 								</div>
 							) : vnindexData ? (
-								<StockChart
+								<CandlestickChart
 									data={vnindexData}
 									height={400}
-									color="hsl(var(--primary))"
 								/>
 							) : (
 								<div className="h-[400px] flex items-center justify-center">

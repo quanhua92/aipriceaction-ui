@@ -215,7 +215,9 @@ export async function loadTickerGroups(): Promise<TickerGroup> {
 }
 
 export function getAllTickers(tickerGroups: TickerGroup): string[] {
-	return Object.values(tickerGroups).flat();
+	const allTickers = Object.values(tickerGroups).flat();
+	// Include VNINDEX as it's not a stock but has chartable data
+	return ["VNINDEX", ...allTickers];
 }
 
 export function getTickersBySector(
@@ -229,6 +231,11 @@ export function findTickerSector(
 	tickerGroups: TickerGroup,
 	ticker: string,
 ): string | null {
+	// VNINDEX is a market index, not part of any sector
+	if (ticker === "VNINDEX") {
+		return null;
+	}
+	
 	for (const [sector, tickers] of Object.entries(tickerGroups)) {
 		if (tickers.includes(ticker)) {
 			return sector;
