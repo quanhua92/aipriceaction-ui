@@ -262,3 +262,114 @@ export function findTickerSector(
 	}
 	return null;
 }
+
+export interface TickerPerformance {
+	ticker: string;
+	currentPrice: number;
+	change: number;
+	changePercent: number;
+	volume: number;
+}
+
+export interface SectorPerformance {
+	sector: string;
+	sectorName: string;
+	averageChange: number;
+	totalVolume: number;
+	topPerformers: TickerPerformance[];
+	totalTickers: number;
+	activeTickersCount: number;
+}
+
+export function calculateTickerPerformance(data: StockDataPoint[]): TickerPerformance | null {
+	if (data.length < 2) return null;
+	
+	const latest = data[data.length - 1];
+	const previous = data[data.length - 2];
+	
+	const change = latest.close - previous.close;
+	const changePercent = (change / previous.close) * 100;
+	
+	return {
+		ticker: latest.ticker,
+		currentPrice: latest.close,
+		change,
+		changePercent,
+		volume: latest.volume,
+	};
+}
+
+export function calculateSectorPerformance(
+	sectorData: Record<string, StockDataPoint[]>,
+	sector: string,
+	sectorDisplayName: string,
+): SectorPerformance {
+	const tickerPerformances = Object.entries(sectorData)
+		.map(([tickerSymbol, data]) => {
+			const performance = calculateTickerPerformance(data);
+			return performance ? { ...performance, ticker: tickerSymbol } : null;
+		})
+		.filter((p): p is TickerPerformance => p !== null);
+
+	const averageChange = tickerPerformances.length > 0 
+		? tickerPerformances.reduce((sum, p) => sum + p.changePercent, 0) / tickerPerformances.length
+		: 0;
+
+	const totalVolume = tickerPerformances.reduce((sum, p) => sum + p.volume, 0);
+
+	// Get top 3 performers by change percent
+	const topPerformers = tickerPerformances
+		.sort((a, b) => b.changePercent - a.changePercent)
+		.slice(0, 3);
+
+	return {
+		sector,
+		sectorName: sectorDisplayName,
+		averageChange,
+		totalVolume,
+		topPerformers,
+		totalTickers: Object.keys(sectorData).length,
+		activeTickersCount: tickerPerformances.length,
+	};
+}
+
+export function getTopPerformingTickers(
+	allSectorData: Record<string, Record<string, StockDataPoint[]>>,
+	limit: number = 10,
+): TickerPerformance[] {
+	const allPerformances: TickerPerformance[] = [];
+	
+	Object.values(allSectorData).forEach(sectorData => {
+		Object.entries(sectorData).forEach(([tickerSymbol, data]) => {
+			const performance = calculateTickerPerformance(data);
+			if (performance) {
+				// Override the ticker from the performance with the actual key
+				allPerformances.push({ ...performance, ticker: tickerSymbol });
+			}
+		});
+	});
+	
+	return allPerformances
+		.sort((a, b) => b.changePercent - a.changePercent)
+		.slice(0, limit);
+}
+
+export function getSectorDisplayName(sector: string): string {
+	const sectorNames: Record<string, string> = {
+		"CHUNG_KHOAN": "Securities",
+		"NGAN_HANG": "Banking", 
+		"BAT_DONG_SAN": "Real Estate",
+		"CONG_NGHE": "Technology",
+		"BAN_LE": "Retail",
+		"THEP": "Steel",
+		"HOA_CHAT": "Chemicals",
+		"THUC_PHAM": "Food & Beverage",
+		"NONG_NGHIEP": "Agriculture",
+		"VAN_TAI": "Transportation",
+		"VLXD": "Building Materials",
+		"XAY_DUNG": "Construction",
+		// Add more as needed
+	};
+	
+	return sectorNames[sector] || sector.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+}
