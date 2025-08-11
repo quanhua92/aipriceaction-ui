@@ -7,7 +7,7 @@ interface VPAData {
 }
 
 const fetchVPAData = async (ticker: string): Promise<VPAData> => {
-	const url = `https://raw.githubusercontent.com/quanhua92/aipriceaction/refs/heads/main/vpa_data/${ticker}.md`;
+	const url = `https://raw.githubusercontent.com/quanhua92/aipriceaction/main/vpa_data/${ticker}.md`;
 	
 	try {
 		const response = await fetch(url);

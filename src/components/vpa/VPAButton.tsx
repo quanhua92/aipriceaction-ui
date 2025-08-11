@@ -206,13 +206,12 @@ export function VPAButton({
 		switch (variant) {
 			case "badge":
 				return (
-					<Badge 
-						variant="outline" 
-						className={`cursor-pointer hover:bg-muted transition-colors ${className}`}
+					<div 
+						className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors cursor-pointer hover:bg-muted border-border text-foreground ${className}`}
 					>
 						<FileText className="h-3 w-3 mr-1" />
 						VPA
-					</Badge>
+					</div>
 				);
 			case "icon":
 				return (
