@@ -25,7 +25,6 @@ test.describe('Mobile Navigation - Improved', () => {
     const mobileMenu = page.locator('div.md\\:hidden.border-t');
     await expect(mobileMenu).not.toBeVisible();
     
-    console.log('✅ Mobile navigation is properly hidden initially');
   });
 
   test('should open mobile menu when hamburger is clicked', async ({ page }) => {
@@ -58,7 +57,6 @@ test.describe('Mobile Navigation - Improved', () => {
     const closeIcon = hamburgerButton.locator('svg').first();
     await expect(closeIcon).toBeVisible();
     
-    console.log('✅ Mobile menu opens correctly with all navigation links');
   });
 
   test('should close mobile menu when navigation link is clicked', async ({ page }) => {
@@ -86,7 +84,6 @@ test.describe('Mobile Navigation - Improved', () => {
     // Mobile menu should be closed
     await expect(mobileMenu).not.toBeVisible();
     
-    console.log('✅ Mobile menu closes when navigation link is clicked');
   });
 
   test('should work properly on desktop (show desktop nav, hide hamburger)', async ({ page }) => {
@@ -113,7 +110,6 @@ test.describe('Mobile Navigation - Improved', () => {
     const mobileMenu = page.locator('div.md\\:hidden.border-t');
     await expect(mobileMenu).not.toBeVisible();
     
-    console.log('✅ Desktop navigation works correctly');
   });
 
   test('should test responsive breakpoints', async ({ page }) => {
@@ -126,8 +122,6 @@ test.describe('Mobile Navigation - Improved', () => {
     ];
     
     for (const bp of breakpoints) {
-      console.log(`Testing ${bp.name} (${bp.width}x${bp.height})`);
-      
       await page.setViewportSize({ width: bp.width, height: bp.height });
       await page.goto('/?lang=en');
       await page.waitForLoadState('domcontentloaded');
@@ -139,11 +133,9 @@ test.describe('Mobile Navigation - Improved', () => {
       if (bp.expectMobile) {
         await expect(hamburgerButton).toBeVisible();
         await expect(desktopNav).not.toBeVisible();
-        console.log(`  ✅ ${bp.name}: Mobile navigation active`);
       } else {
         await expect(hamburgerButton).not.toBeVisible(); 
         await expect(desktopNav).toBeVisible();
-        console.log(`  ✅ ${bp.name}: Desktop navigation active`);
       }
     }
   });

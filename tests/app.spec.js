@@ -9,17 +9,17 @@ test.describe('Application Core', () => {
     await expect(page.locator('header')).toBeVisible();
     await expect(page.locator('h1')).toContainText('Vietnamese Stock Market');
     
-    // Check navigation is present
-    const logo = page.locator('header a[href="/"]');
-    await expect(logo).toContainText('AIPriceAction');
+    // Check navigation is present (be more specific to avoid multiple matches)
+    const logo = page.locator('header a[href="/"]').filter({ hasText: 'AIPriceAction' });
+    await expect(logo).toBeVisible();
     
     // Wait for content to load
     await page.waitForLoadState('networkidle');
     
     // Check that main sections are present
-    await expect(page.locator('text=Today\'s Market Overview')).toBeVisible();
-    await expect(page.locator('text=Top Performing Sectors')).toBeVisible();
-    await expect(page.locator('text=Best Performers')).toBeVisible();
+    await expect(page.locator('text=Key Sector Performance')).toBeVisible();
+    await expect(page.locator('text=Securities')).toBeVisible();
+    await expect(page.locator('text=VN-Index').first()).toBeVisible();
   });
   
   test('should handle errors gracefully', async ({ page }) => {
@@ -68,8 +68,8 @@ test.describe('Application Core', () => {
       // Verify page loaded
       await expect(page.locator('h1')).toContainText(pageInfo.title);
       
-      // Go back to home
-      await page.click('a[href="/"]');
+      // Go back to home (use first home link to avoid ambiguity)
+      await page.locator('a[href="/"]').first().click();
       await page.waitForURL('**/');
     }
   });

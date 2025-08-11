@@ -461,7 +461,17 @@ function Dashboard() {
 				<div className="space-y-4">
 					<Card>
 						<CardHeader>
-							<CardTitle className="text-lg">{t("home.marketOverview")}</CardTitle>
+							<div className="flex items-center justify-between">
+								<CardTitle className="text-lg">{t("home.marketOverview")}</CardTitle>
+								<p className="text-sm text-muted-foreground">
+									{new Date().toLocaleDateString('vi-VN', {
+										weekday: 'long',
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric'
+									})}
+								</p>
+							</div>
 						</CardHeader>
 						<CardContent className="space-y-4">
 							{latestPrice && (
