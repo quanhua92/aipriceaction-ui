@@ -405,7 +405,7 @@ function Dashboard() {
 
 			{/* Sector Analytics */}
 			<div>
-				<div className="flex items-center justify-between mb-4">
+				<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
 					<div>
 						<h2 className="text-xl font-semibold">{t("home.keySectorPerformance")}</h2>
 						<p className="text-sm text-muted-foreground">{t("common.daily")} performance of major sectors</p>
@@ -414,6 +414,7 @@ function Dashboard() {
 						value={dateRangeConfig} 
 						onChange={setDateRangeConfig}
 						dataRange={vnindexData}
+						className="w-full md:w-auto"
 					/>
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
