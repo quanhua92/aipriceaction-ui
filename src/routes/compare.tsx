@@ -102,7 +102,7 @@ function ComparePage() {
 	];
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-2 md:p-6 space-y-4 md:space-y-6">
 			{/* Header */}
 			<div>
 				<h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
@@ -288,6 +288,7 @@ function ComparePage() {
 										<CandlestickChart
 											data={item.data}
 											height={isMobile ? 250 : 300}
+											showCard={false}
 										/>
 									)
 								) : isLoading ? (

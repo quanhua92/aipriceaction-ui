@@ -111,7 +111,7 @@ function TickerPage() {
 	}
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-2 md:p-6 space-y-4 md:space-y-6">
 			{/* Header */}
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
@@ -287,7 +287,7 @@ function TickerPage() {
 							</div>
 						) : tickerData && tickerData.length > 0 ? (
 							<div className="space-y-4">
-								<CandlestickChart data={tickerData} height={500} />
+								<CandlestickChart data={tickerData} height={500} showCard={false} />
 							</div>
 						) : (
 							<div className="h-[500px] flex items-center justify-center">

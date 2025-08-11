@@ -105,7 +105,7 @@ export function CandlestickChart({
 	data,
 	title,
 	height = 400,
-	showCard = true,
+	showCard = false,
 }: CandlestickChartProps) {
 	// Axis control state
 	const [customAxis, setCustomAxis] = useState<{min?: number, max?: number}>({});

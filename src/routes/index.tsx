@@ -446,7 +446,6 @@ function Dashboard() {
 									<CandlestickChart
 										data={vnindexData}
 										height={0} // Will use container height
-										showCard={false}
 									/>
 								</div>
 							) : (
