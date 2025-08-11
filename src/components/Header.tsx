@@ -6,6 +6,7 @@ import {
 	Grid3X3,
 	Users,
 	Building2,
+	Target,
 	Menu,
 	X,
 } from "lucide-react";
@@ -34,6 +35,11 @@ export default function Header() {
 			to: "/compare",
 			icon: Grid3X3,
 			label: "Compare Charts",
+		},
+		{
+			to: "/portfolio",
+			icon: Target,
+			label: "Portfolio Analysis",
 		},
 	];
 

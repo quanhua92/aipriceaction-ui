@@ -225,12 +225,12 @@ export function DateRangeSelector({
 								</div>
 							</div>
 
-							{dataBounds && (
+							{dataBounds && dataBounds.startDate && dataBounds.endDate && (
 								<div className="text-xs text-muted-foreground space-y-1">
 									<p>Available data range:</p>
 									<p>
-										{formatDateForUrl(dataBounds.startDate!)} to{" "}
-										{formatDateForUrl(dataBounds.endDate!)}
+										{formatDateForUrl(dataBounds.startDate)} to{" "}
+										{formatDateForUrl(dataBounds.endDate)}
 									</p>
 								</div>
 							)}

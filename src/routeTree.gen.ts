@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TickersRouteImport } from './routes/tickers'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectorsIndexRouteImport } from './routes/sectors/index'
@@ -20,6 +21,11 @@ import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-qu
 const TickersRoute = TickersRouteImport.update({
   id: '/tickers',
   path: '/tickers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -56,6 +62,7 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
+  '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
+  '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
+  '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/compare'
+    | '/portfolio'
     | '/tickers'
     | '/demo/tanstack-query'
     | '/sector/$sectorName'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/compare'
+    | '/portfolio'
     | '/tickers'
     | '/demo/tanstack-query'
     | '/sector/$sectorName'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/compare'
+    | '/portfolio'
     | '/tickers'
     | '/demo/tanstack-query'
     | '/sector/$sectorName'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CompareRoute: typeof CompareRoute
+  PortfolioRoute: typeof PortfolioRoute
   TickersRoute: typeof TickersRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   SectorSectorNameRoute: typeof SectorSectorNameRoute
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/tickers'
       fullPath: '/tickers'
       preLoaderRoute: typeof TickersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -178,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CompareRoute: CompareRoute,
+  PortfolioRoute: PortfolioRoute,
   TickersRoute: TickersRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   SectorSectorNameRoute: SectorSectorNameRoute,
