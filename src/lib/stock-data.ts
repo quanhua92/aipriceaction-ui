@@ -29,7 +29,7 @@ export type DateRangeConfig =
 	| CustomDateRange;
 
 const GITHUB_RAW_BASE_URL =
-	"https://raw.githubusercontent.com/quanhua92/aipriceaction-ui/refs/heads/main/market_data";
+	"https://raw.githubusercontent.com/quanhua92/aipriceaction-data/refs/heads/main/market_data";
 
 export function getTickerCsvUrl(ticker: string): string {
 	return `${GITHUB_RAW_BASE_URL}/${ticker}.csv`;
@@ -222,7 +222,7 @@ export function getLatestPrice(data: StockDataPoint[]): StockDataPoint | null {
 
 export async function loadTickerGroups(): Promise<TickerGroup> {
 	try {
-		const url = "https://raw.githubusercontent.com/quanhua92/aipriceaction-ui/refs/heads/main/ticker_group.json";
+		const url = "https://raw.githubusercontent.com/quanhua92/aipriceaction-data/refs/heads/main/ticker_group.json";
 		const response = await fetch(url);
 		if (!response.ok) {
 			throw new Error("Failed to fetch ticker groups");
