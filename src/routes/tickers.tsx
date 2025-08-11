@@ -197,12 +197,12 @@ function TickersPage() {
 										</TableRow>
 									</TableHeader>
 									<TableBody>
-										{filteredTickers.map((ticker) => {
+										{filteredTickers.map((ticker, index) => {
 											const sector = findTickerSector(tickerGroups!, ticker);
 											const sectorLabel = sector?.replace(/_/g, " ");
 
 											return (
-												<TableRow key={ticker}>
+												<TableRow key={`${ticker}-${index}`}>
 													<TableCell>
 														<Link
 															to="/ticker/$symbol"
@@ -249,12 +249,12 @@ function TickersPage() {
 
 							{/* Card view for smaller screens */}
 							<div className="md:hidden space-y-3">
-								{filteredTickers.map((ticker) => {
+								{filteredTickers.map((ticker, index) => {
 									const sector = findTickerSector(tickerGroups!, ticker);
 									const sectorLabel = sector?.replace(/_/g, " ");
 
 									return (
-										<Card key={ticker} className="p-4">
+										<Card key={`${ticker}-grid-${index}`} className="p-4">
 											<div className="flex items-center justify-between">
 												<div className="flex-1">
 													<div className="flex items-center gap-3">
