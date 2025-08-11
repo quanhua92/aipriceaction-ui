@@ -7,7 +7,7 @@ import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
-import { calculatePriceChange, createDateRangeConfig, type TimeRange } from "@/lib/stock-data";
+import { calculatePriceChange, calculateRangeChange, createDateRangeConfig, type TimeRange } from "@/lib/stock-data";
 
 export const Route = createFileRoute("/")({
 	component: Dashboard,
@@ -22,7 +22,8 @@ function Dashboard() {
 	);
 	const { data: tickerGroups } = useTickerGroups();
 
-	const priceChange = vnindexData ? calculatePriceChange(vnindexData) : null;
+	const dailyChange = vnindexData ? calculatePriceChange(vnindexData) : null;
+	const rangeChange = vnindexData ? calculateRangeChange(vnindexData) : null;
 	const latestPrice = vnindexData?.[vnindexData.length - 1];
 
 	const sectorCount = tickerGroups ? Object.keys(tickerGroups).length : 0;
@@ -102,16 +103,16 @@ function Dashboard() {
 									{latestPrice && (
 										<span
 											className={
-												priceChange && priceChange.changePercent >= 0
+												dailyChange && dailyChange.changePercent >= 0
 													? "text-green-600"
 													: "text-red-600"
 											}
 										>
 											{latestPrice.close.toLocaleString()}
-											{priceChange && (
+											{dailyChange && (
 												<span className="ml-1">
-													({priceChange.changePercent > 0 ? "+" : ""}
-													{priceChange.changePercent.toFixed(2)}%)
+													({dailyChange.changePercent > 0 ? "+" : ""}
+													{dailyChange.changePercent.toFixed(2)}%)
 												</span>
 											)}
 										</span>
@@ -183,30 +184,43 @@ function Dashboard() {
 										</p>
 									</div>
 
-									{priceChange && (
-										<div>
-											<p className="text-sm font-medium text-muted-foreground">
-												Change
-											</p>
+									<div>
+										<p className="text-sm font-medium text-muted-foreground">
+											Change
+										</p>
+										{/* Daily Change */}
+										{dailyChange && (
 											<p
-												className={`text-lg font-semibold ${priceChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
+												className={`text-sm font-medium ${dailyChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
 											>
-												{priceChange.changePercent > 0 ? "+" : ""}
+												Daily: {dailyChange.changePercent > 0 ? "+" : ""}
 												{new Intl.NumberFormat("vi-VN", {
 													style: "currency",
 													currency: "VND",
 													minimumFractionDigits: 0,
 													maximumFractionDigits: 2,
-												}).format(priceChange.change)}
+												}).format(dailyChange.change)}
+												{" "}({dailyChange.changePercent > 0 ? "+" : ""}
+												{dailyChange.changePercent.toFixed(2)}%)
 											</p>
+										)}
+										{/* Range Change */}
+										{rangeChange && (
 											<p
-												className={`text-sm ${priceChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
+												className={`text-lg font-semibold ${rangeChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
 											>
-												({priceChange.changePercent > 0 ? "+" : ""}
-												{priceChange.changePercent.toFixed(2)}%)
+												{timeRange}: {rangeChange.changePercent > 0 ? "+" : ""}
+												{new Intl.NumberFormat("vi-VN", {
+													style: "currency",
+													currency: "VND",
+													minimumFractionDigits: 0,
+													maximumFractionDigits: 2,
+												}).format(rangeChange.change)}
+												{" "}({rangeChange.changePercent > 0 ? "+" : ""}
+												{rangeChange.changePercent.toFixed(2)}%)
 											</p>
-										</div>
-									)}
+										)}
+									</div>
 
 									<div>
 										<p className="text-sm font-medium text-muted-foreground">

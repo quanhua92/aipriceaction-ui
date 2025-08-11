@@ -15,6 +15,7 @@ import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
 import {
 	calculatePriceChange,
+	calculateRangeChange,
 	getLatestPrice,
 	findTickerSector,
 	createDateRangeConfig,
@@ -56,7 +57,8 @@ function TickerPage() {
 		});
 	};
 
-	const priceChange = tickerData ? calculatePriceChange(tickerData) : null;
+	const dailyChange = tickerData ? calculatePriceChange(tickerData) : null;
+	const rangeChange = tickerData ? calculateRangeChange(tickerData) : null;
 	const latestPrice = tickerData ? getLatestPrice(tickerData) : null;
 	const sector = tickerGroups ? findTickerSector(tickerGroups, symbol) : null;
 	const sectorLabel = sector?.replace(/_/g, " ");
@@ -184,38 +186,46 @@ function TickerPage() {
 						</CardContent>
 					</Card>
 
-					{priceChange && (
-						<Card>
-							<CardContent className="flex items-center gap-3 p-4">
-								<div
-									className={`p-2 rounded-full ${priceChange.changePercent >= 0 ? "bg-green-100" : "bg-red-100"}`}
-								>
-									{priceChange.changePercent >= 0 ? (
-										<TrendingUp className="h-6 w-6 text-green-600" />
-									) : (
-										<TrendingDown className="h-6 w-6 text-red-600" />
-									)}
-								</div>
-								<div>
-									<p className="text-sm font-medium text-muted-foreground">
-										Change
-									</p>
+					<Card>
+						<CardContent className="flex items-center gap-3 p-4">
+							<div
+								className={`p-2 rounded-full ${(rangeChange?.changePercent ?? 0) >= 0 ? "bg-green-100" : "bg-red-100"}`}
+							>
+								{(rangeChange?.changePercent ?? 0) >= 0 ? (
+									<TrendingUp className="h-6 w-6 text-green-600" />
+								) : (
+									<TrendingDown className="h-6 w-6 text-red-600" />
+								)}
+							</div>
+							<div>
+								<p className="text-sm font-medium text-muted-foreground">
+									Change
+								</p>
+								{/* Daily Change */}
+								{dailyChange && (
 									<p
-										className={`text-lg font-semibold ${priceChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
+										className={`text-sm font-medium ${dailyChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
 									>
-										{priceChange.changePercent > 0 ? "+" : ""}
-										{formatPrice(priceChange.change)}
+										Daily: {dailyChange.changePercent > 0 ? "+" : ""}
+										{formatPrice(dailyChange.change)}
+										{" "}({dailyChange.changePercent > 0 ? "+" : ""}
+										{dailyChange.changePercent.toFixed(2)}%)
 									</p>
+								)}
+								{/* Range Change */}
+								{rangeChange && (
 									<p
-										className={`text-sm ${priceChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
+										className={`text-lg font-semibold ${rangeChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
 									>
-										({priceChange.changePercent > 0 ? "+" : ""}
-										{priceChange.changePercent.toFixed(2)}%)
+										{range}: {rangeChange.changePercent > 0 ? "+" : ""}
+										{formatPrice(rangeChange.change)}
+										{" "}({rangeChange.changePercent > 0 ? "+" : ""}
+										{rangeChange.changePercent.toFixed(2)}%)
 									</p>
-								</div>
-							</CardContent>
-						</Card>
-					)}
+								)}
+							</div>
+						</CardContent>
+					</Card>
 
 					<Card>
 						<CardContent className="flex items-center gap-3 p-4">

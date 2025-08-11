@@ -197,6 +197,21 @@ export function calculatePriceChange(data: StockDataPoint[]): {
 	return { change, changePercent };
 }
 
+export function calculateRangeChange(data: StockDataPoint[]): {
+	change: number;
+	changePercent: number;
+} {
+	if (data.length < 2) return { change: 0, changePercent: 0 };
+
+	const latest = data[data.length - 1];
+	const first = data[0];
+
+	const change = latest.close - first.close;
+	const changePercent = (change / first.close) * 100;
+
+	return { change, changePercent };
+}
+
 export function getLatestPrice(data: StockDataPoint[]): StockDataPoint | null {
 	return data.length > 0 ? data[data.length - 1] : null;
 }

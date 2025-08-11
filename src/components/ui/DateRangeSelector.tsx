@@ -72,6 +72,11 @@ export function DateRangeSelector({
 			: undefined;
 		const endDate = customEndDate ? parseDateString(customEndDate) || undefined : undefined;
 
+		// Basic validation - ensure dates are valid if provided
+		if (customStartDate && !startDate) return; // Invalid start date
+		if (customEndDate && !endDate) return; // Invalid end date
+		if (startDate && endDate && startDate > endDate) return; // Start after end
+
 		if (startDate || endDate) {
 			onChange({
 				range: "CUSTOM",
@@ -163,7 +168,7 @@ export function DateRangeSelector({
 							<div className="space-y-2">
 								<h4 className="font-medium leading-none">Custom Date Range</h4>
 								<p className="text-sm text-muted-foreground">
-									Select a custom date range for the chart data
+									Enter dates in yyyy-mm-dd format (e.g., 2024-01-15)
 								</p>
 							</div>
 
@@ -174,20 +179,23 @@ export function DateRangeSelector({
 									</Label>
 									<Input
 										id="start-date"
-										type="date"
+										type="text"
+										placeholder="2024-01-15"
 										value={customStartDate}
-										onChange={(e) => setCustomStartDate(e.target.value)}
-										className="col-span-3"
-										min={
-											dataBounds?.startDate
-												? formatDateForUrl(dataBounds.startDate)
-												: undefined
-										}
-										max={
-											dataBounds?.endDate
-												? formatDateForUrl(dataBounds.endDate)
-												: undefined
-										}
+										onChange={(e) => {
+											let value = e.target.value.replace(/[^0-9-]/g, '');
+											// Auto-format as user types: 2024-01-15
+											if (value.length === 4 && !value.includes('-')) {
+												value = value + '-';
+											} else if (value.length === 7 && value.split('-').length === 2) {
+												value = value + '-';
+											}
+											if (value.length <= 10) {
+												setCustomStartDate(value);
+											}
+										}}
+										className="col-span-3 font-mono text-sm"
+										maxLength={10}
 									/>
 								</div>
 								<div className="grid grid-cols-4 items-center gap-4">
@@ -196,21 +204,23 @@ export function DateRangeSelector({
 									</Label>
 									<Input
 										id="end-date"
-										type="date"
+										type="text"
+										placeholder="2024-08-15"
 										value={customEndDate}
-										onChange={(e) => setCustomEndDate(e.target.value)}
-										className="col-span-3"
-										min={
-											customStartDate ||
-											(dataBounds?.startDate
-												? formatDateForUrl(dataBounds.startDate)
-												: undefined)
-										}
-										max={
-											dataBounds?.endDate
-												? formatDateForUrl(dataBounds.endDate)
-												: undefined
-										}
+										onChange={(e) => {
+											let value = e.target.value.replace(/[^0-9-]/g, '');
+											// Auto-format as user types: 2024-01-15
+											if (value.length === 4 && !value.includes('-')) {
+												value = value + '-';
+											} else if (value.length === 7 && value.split('-').length === 2) {
+												value = value + '-';
+											}
+											if (value.length <= 10) {
+												setCustomEndDate(value);
+											}
+										}}
+										className="col-span-3 font-mono text-sm"
+										maxLength={10}
 									/>
 								</div>
 							</div>
