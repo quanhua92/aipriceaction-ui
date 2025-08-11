@@ -15,12 +15,14 @@ interface PerformanceOverviewProps {
 	portfolioData: Record<string, StockDataPoint[]>;
 	benchmarkData: StockDataPoint[];
 	portfolioTickers: string[];
+	hasVnIndex?: boolean;
 }
 
 export function PerformanceOverview({ 
 	portfolioData, 
 	benchmarkData, 
-	portfolioTickers 
+	portfolioTickers,
+	hasVnIndex = false
 }: PerformanceOverviewProps) {
 	const { t } = useTranslation();
 	const portfolioMetrics = useMemo(() => {
@@ -115,7 +117,16 @@ export function PerformanceOverview({
 				</CardHeader>
 				<CardContent>
 					<div className="text-center p-8">
-						<p className="text-muted-foreground">{t("loading.portfolioData")}</p>
+						{!hasVnIndex ? (
+							<div className="space-y-2">
+								<p className="text-muted-foreground">{t("portfolio.missingBenchmark")}</p>
+								<p className="text-xs text-muted-foreground">{t("portfolio.addVnindexForComparison")}</p>
+							</div>
+						) : Object.keys(portfolioData).length === 0 ? (
+							<p className="text-muted-foreground">{t("portfolio.noStocksInPortfolio")}</p>
+						) : (
+							<p className="text-muted-foreground">{t("loading.portfolioData")}</p>
+						)}
 					</div>
 				</CardContent>
 			</Card>

@@ -246,6 +246,21 @@ function PortfolioPage() {
 							className="w-full"
 							keepOpenAfterSelect={true}
 						/>
+						{!hasVnIndex && (
+							<div className="mt-2">
+								<Button 
+									variant="outline" 
+									size="sm" 
+									onClick={() => handleAddTicker("VNINDEX")}
+									className="text-xs"
+								>
+									+ VNINDEX
+								</Button>
+								<p className="text-xs text-muted-foreground mt-1">
+									{t("portfolio.addVnindexQuickly")}
+								</p>
+							</div>
+						)}
 					</div>
 
 					{/* Current Portfolio */}
@@ -354,6 +369,7 @@ function PortfolioPage() {
 						portfolioData={tickerData || {}}
 						benchmarkData={vnindexData}
 						portfolioTickers={portfolioTickers}
+						hasVnIndex={hasVnIndex}
 					/>
 
 					{/* Ticker Performance Table */}
