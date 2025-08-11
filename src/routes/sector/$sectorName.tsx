@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
 	ArrowLeft,
@@ -7,6 +7,7 @@ import {
 	Users,
 	BarChart3,
 	Grid3X3,
+	X,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -55,8 +56,9 @@ export const Route = createFileRoute("/sector/$sectorName")({
 function SectorPage() {
 	const { sectorName } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { range = "3M", startDate, endDate, compare = [] } = Route.useSearch();
-
+	const searchParams = Route.useSearch();
+	const { range = "3M", startDate, endDate, compare = [] } = searchParams;
+	
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
 
@@ -71,22 +73,31 @@ function SectorPage() {
 		300,
 	);
 
+	// Use local state for selected tickers - initialize from URL
+	const [selectedTickers, setSelectedTickers] = useState<string[]>(compare);
+
+	// Chart displays only what user has selected
+	const chartTickers = selectedTickers;
+
 	const updateSearchParams = (updates: Partial<SectorPageSearch>) => {
 		navigate({
 			search: (prev) => ({ ...prev, ...updates }),
 		});
 	};
 
-	const selectedTickers =
-		compare.length > 0
-			? compare.filter((ticker) => sectorTickers.includes(ticker))
-			: sectorTickers.slice(0, 5);
 
 	const toggleTicker = (ticker: string, checked: boolean) => {
-		const newCompare = checked
-			? [...compare, ticker]
-			: compare.filter((t) => t !== ticker);
-		updateSearchParams({ compare: newCompare });
+		const newSelection = checked
+			? [...selectedTickers, ticker]
+			: selectedTickers.filter(t => t !== ticker);
+			
+		setSelectedTickers(newSelection);
+		updateSearchParams({ compare: newSelection });
+	};
+
+	const clearAllTickers = () => {
+		setSelectedTickers([]);
+		updateSearchParams({ compare: [] });
 	};
 
 	const sectorLabel = sectorName.replace(/_/g, " ");
@@ -232,7 +243,7 @@ function SectorPage() {
 							<p className="text-sm font-medium text-muted-foreground">
 								Comparing
 							</p>
-							<p className="text-2xl font-bold">{selectedTickers.length}</p>
+							<p className="text-2xl font-bold">{chartTickers.length}</p>
 						</div>
 					</CardContent>
 				</Card>
@@ -259,26 +270,39 @@ function SectorPage() {
 						<CardTitle className="flex items-center gap-2">
 							<BarChart3 className="h-5 w-5" />
 							Sector Performance Comparison
+							{chartTickers.length > 0 && (
+								<Badge variant="secondary" className="text-xs">
+									{chartTickers.length} selected
+								</Badge>
+							)}
 						</CardTitle>
-						{selectedTickers.length > 0 && (
-							<Link
-								to="/compare"
-								search={{
-									tickers: selectedTickers,
-									layout: "2x2",
-									range: range,
-									...(range === "CUSTOM" && {
-										startDate: startDate,
-										endDate: endDate,
-									}),
-								}}
-							>
-								<Button variant="outline" size="sm">
-									<Grid3X3 className="h-4 w-4 mr-1" />
-									Compare in Grid
-								</Button>
-							</Link>
-						)}
+						<div className="flex items-center gap-2">
+							{chartTickers.length > 0 && (
+								<>
+									<Button variant="ghost" size="sm" onClick={clearAllTickers}>
+										<X className="h-4 w-4 mr-1" />
+										Clear All
+									</Button>
+									<Link
+										to="/compare"
+										search={{
+											tickers: chartTickers,
+											layout: "2x2",
+											range: range,
+											...(range === "CUSTOM" && {
+												startDate: startDate,
+												endDate: endDate,
+											}),
+										}}
+									>
+										<Button variant="outline" size="sm">
+											<Grid3X3 className="h-4 w-4 mr-1" />
+											Compare in Grid
+										</Button>
+									</Link>
+								</>
+							)}
+						</div>
 					</div>
 				</CardHeader>
 				<CardContent>
@@ -288,11 +312,11 @@ function SectorPage() {
 								Loading comparison data...
 							</div>
 						</div>
-					) : selectedTickers.length > 0 ? (
+					) : chartTickers.length > 0 ? (
 						<div className="space-y-4">
 							{/* Chart Legend */}
 							<div className="flex flex-wrap gap-2">
-								{selectedTickers.slice(0, 8).map((ticker, index) => (
+								{chartTickers.slice(0, 8).map((ticker, index) => (
 									<Badge
 										key={ticker}
 										variant="outline"
@@ -315,9 +339,9 @@ function SectorPage() {
 										// Normalize data for comparison - convert to percentage change from first data point
 										const normalizedData: any[] = [];
 
-										if (tickerData && selectedTickers.length > 0) {
+										if (tickerData && chartTickers.length > 0) {
 											const maxLength = Math.max(
-												...selectedTickers.map(
+												...chartTickers.map(
 													(ticker) => tickerData[ticker]?.length || 0,
 												),
 											);
@@ -325,7 +349,7 @@ function SectorPage() {
 											for (let i = 0; i < maxLength; i++) {
 												const dataPoint: any = { time: "", date: null };
 
-												selectedTickers.slice(0, 8).forEach((ticker) => {
+												chartTickers.slice(0, 8).forEach((ticker) => {
 													const data = tickerData[ticker] || [];
 													if (data[i] && data[0]) {
 														const changePercent =
@@ -348,7 +372,7 @@ function SectorPage() {
 
 										return normalizedData;
 									})()}
-									tickers={selectedTickers.slice(0, 8)}
+									tickers={chartTickers.slice(0, 8)}
 									colors={chartColors}
 									height={500}
 								/>
