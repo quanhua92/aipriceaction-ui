@@ -8,6 +8,9 @@ import {
 	BarChart3,
 	Grid3X3,
 	X,
+	ArrowUpDown,
+	ArrowUp,
+	ArrowDown,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,6 +79,28 @@ function SectorPage() {
 	// Use local state for selected tickers - initialize from URL
 	const [selectedTickers, setSelectedTickers] = useState<string[]>(compare);
 
+	// Sorting state for the table
+	const [sortBy, setSortBy] = useState<'compare' | 'ticker' | 'price' | 'change' | 'changePercent'>('ticker');
+	const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+	const handleSort = (column: 'compare' | 'ticker' | 'price' | 'change' | 'changePercent') => {
+		if (sortBy === column) {
+			setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+		} else {
+			setSortBy(column);
+			setSortDirection('asc');
+		}
+	};
+
+	const getSortIcon = (column: 'compare' | 'ticker' | 'price' | 'change' | 'changePercent') => {
+		if (sortBy !== column) {
+			return <ArrowUpDown className="h-3 w-3 ml-1" />;
+		}
+		return sortDirection === 'asc' 
+			? <ArrowUp className="h-3 w-3 ml-1" />
+			: <ArrowDown className="h-3 w-3 ml-1" />;
+	};
+
 	// Chart displays only what user has selected
 	const chartTickers = selectedTickers;
 
@@ -129,12 +154,47 @@ function SectorPage() {
 				};
 			})
 			.sort((a, b) => {
-				// Sort by performance (change percent)
-				const aChange = a.priceChange?.changePercent || 0;
-				const bChange = b.priceChange?.changePercent || 0;
-				return bChange - aChange;
+				let aValue, bValue;
+				
+				switch (sortBy) {
+					case 'compare':
+						// Sort by selected status (selected first when desc)
+						aValue = a.selected ? 1 : 0;
+						bValue = b.selected ? 1 : 0;
+						break;
+					
+					case 'ticker':
+						aValue = a.ticker;
+						bValue = b.ticker;
+						return sortDirection === 'asc' 
+							? aValue.localeCompare(bValue)
+							: bValue.localeCompare(aValue);
+					
+					case 'price':
+						aValue = a.latestPrice?.close || 0;
+						bValue = b.latestPrice?.close || 0;
+						break;
+					
+					case 'change':
+						aValue = a.priceChange?.change || 0;
+						bValue = b.priceChange?.change || 0;
+						break;
+					
+					case 'changePercent':
+						aValue = a.priceChange?.changePercent || 0;
+						bValue = b.priceChange?.changePercent || 0;
+						break;
+						
+					default:
+						return 0;
+				}
+				
+				// For numeric comparisons
+				return sortDirection === 'asc' 
+					? (aValue as number) - (bValue as number)
+					: (bValue as number) - (aValue as number);
 			});
-	}, [tickerData, sectorTickers, selectedTickers]);
+	}, [tickerData, sectorTickers, selectedTickers, sortBy, sortDirection]);
 
 	const chartColors = [
 		"#3B82F6", // blue-500
@@ -217,6 +277,147 @@ function SectorPage() {
 					/>
 				</div>
 			</div>
+
+			{/* Stock Selection Table */}
+			<Card>
+				<CardHeader>
+					<CardTitle>Sector Stocks Performance</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead className="w-12">
+									<Button
+										variant="ghost"
+										size="sm"
+										onClick={() => handleSort('compare')}
+										className="h-auto p-0 font-medium"
+									>
+										Compare {getSortIcon('compare')}
+									</Button>
+								</TableHead>
+								<TableHead>
+									<Button
+										variant="ghost"
+										size="sm"
+										onClick={() => handleSort('ticker')}
+										className="h-auto p-0 font-medium"
+									>
+										Ticker {getSortIcon('ticker')}
+									</Button>
+								</TableHead>
+								<TableHead>
+									<Button
+										variant="ghost"
+										size="sm"
+										onClick={() => handleSort('price')}
+										className="h-auto p-0 font-medium"
+									>
+										Current Price {getSortIcon('price')}
+									</Button>
+								</TableHead>
+								<TableHead>
+									<Button
+										variant="ghost"
+										size="sm"
+										onClick={() => handleSort('change')}
+										className="h-auto p-0 font-medium"
+									>
+										Change {getSortIcon('change')}
+									</Button>
+								</TableHead>
+								<TableHead>
+									<Button
+										variant="ghost"
+										size="sm"
+										onClick={() => handleSort('changePercent')}
+										className="h-auto p-0 font-medium"
+									>
+										Change % {getSortIcon('changePercent')}
+									</Button>
+								</TableHead>
+								<TableHead>Actions</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{tickerPerformanceData.map((item) => (
+								<TableRow key={item.ticker}>
+									<TableCell>
+										<Checkbox
+											checked={item.selected}
+											onCheckedChange={(checked) =>
+												toggleTicker(item.ticker, checked as boolean)
+											}
+										/>
+									</TableCell>
+									<TableCell>
+										<Link
+											to="/ticker/$symbol"
+											params={{ symbol: item.ticker }}
+											className="font-mono font-semibold hover:underline"
+										>
+											{item.ticker}
+										</Link>
+									</TableCell>
+									<TableCell>
+										{item.latestPrice
+											? formatPrice(item.latestPrice.close)
+											: "-"}
+									</TableCell>
+									<TableCell>
+										{item.priceChange ? (
+											<span
+												className={
+													item.priceChange.changePercent >= 0
+														? "text-green-600"
+														: "text-red-600"
+												}
+											>
+												{item.priceChange.changePercent > 0 ? "+" : ""}
+												{formatPrice(item.priceChange.change)}
+											</span>
+										) : (
+											"-"
+										)}
+									</TableCell>
+									<TableCell>
+										{item.priceChange ? (
+											<div className="flex items-center gap-1">
+												{item.priceChange.changePercent >= 0 ? (
+													<TrendingUp className="h-4 w-4 text-green-600" />
+												) : (
+													<TrendingDown className="h-4 w-4 text-red-600" />
+												)}
+												<span
+													className={
+														item.priceChange.changePercent >= 0
+															? "text-green-600"
+															: "text-red-600"
+													}
+												>
+													{item.priceChange.changePercent > 0 ? "+" : ""}
+													{item.priceChange.changePercent.toFixed(2)}%
+												</span>
+											</div>
+										) : (
+											"-"
+										)}
+									</TableCell>
+									<TableCell>
+										<Link to="/ticker/$symbol" params={{ symbol: item.ticker }}>
+											<Button variant="outline" size="sm">
+												<BarChart3 className="h-4 w-4 mr-1" />
+												View
+											</Button>
+										</Link>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</CardContent>
+			</Card>
 
 			{/* Sector Overview */}
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -384,102 +585,6 @@ function SectorPage() {
 							</div>
 						</div>
 					)}
-				</CardContent>
-			</Card>
-
-			{/* Stock Selection Table */}
-			<Card>
-				<CardHeader>
-					<CardTitle>Sector Stocks Performance</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead className="w-12">Compare</TableHead>
-								<TableHead>Ticker</TableHead>
-								<TableHead>Current Price</TableHead>
-								<TableHead>Change</TableHead>
-								<TableHead>Change %</TableHead>
-								<TableHead>Actions</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{tickerPerformanceData.map((item) => (
-								<TableRow key={item.ticker}>
-									<TableCell>
-										<Checkbox
-											checked={item.selected}
-											onCheckedChange={(checked) =>
-												toggleTicker(item.ticker, checked as boolean)
-											}
-										/>
-									</TableCell>
-									<TableCell>
-										<Link
-											to="/ticker/$symbol"
-											params={{ symbol: item.ticker }}
-											className="font-mono font-semibold hover:underline"
-										>
-											{item.ticker}
-										</Link>
-									</TableCell>
-									<TableCell>
-										{item.latestPrice
-											? formatPrice(item.latestPrice.close)
-											: "-"}
-									</TableCell>
-									<TableCell>
-										{item.priceChange ? (
-											<span
-												className={
-													item.priceChange.changePercent >= 0
-														? "text-green-600"
-														: "text-red-600"
-												}
-											>
-												{item.priceChange.changePercent > 0 ? "+" : ""}
-												{formatPrice(item.priceChange.change)}
-											</span>
-										) : (
-											"-"
-										)}
-									</TableCell>
-									<TableCell>
-										{item.priceChange ? (
-											<div className="flex items-center gap-1">
-												{item.priceChange.changePercent >= 0 ? (
-													<TrendingUp className="h-4 w-4 text-green-600" />
-												) : (
-													<TrendingDown className="h-4 w-4 text-red-600" />
-												)}
-												<span
-													className={
-														item.priceChange.changePercent >= 0
-															? "text-green-600"
-															: "text-red-600"
-													}
-												>
-													{item.priceChange.changePercent > 0 ? "+" : ""}
-													{item.priceChange.changePercent.toFixed(2)}%
-												</span>
-											</div>
-										) : (
-											"-"
-										)}
-									</TableCell>
-									<TableCell>
-										<Link to="/ticker/$symbol" params={{ symbol: item.ticker }}>
-											<Button variant="outline" size="sm">
-												<BarChart3 className="h-4 w-4 mr-1" />
-												View
-											</Button>
-										</Link>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
 				</CardContent>
 			</Card>
 		</div>
