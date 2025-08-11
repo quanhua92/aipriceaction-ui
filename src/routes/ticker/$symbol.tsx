@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
+import { VPACard } from "@/components/vpa";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
 import {
 	calculatePriceChange,
@@ -303,6 +304,14 @@ function TickerPage() {
 						)}
 					</CardContent>
 				</Card>
+
+				{/* VPA Analysis */}
+				<VPACard 
+					ticker={symbol}
+					title={`Volume Price Analysis - ${symbol}`}
+					defaultExpanded={false}
+					showViewButton={true}
+				/>
 
 			</div>
 
