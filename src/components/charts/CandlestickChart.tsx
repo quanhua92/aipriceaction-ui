@@ -47,6 +47,19 @@ function formatPrice(value: number): string {
 	}).format(value);
 }
 
+function formatVolume(value: number): string {
+	if (value >= 1000000000) {
+		return `${(value / 1000000000).toFixed(1)}B`;
+	}
+	if (value >= 1000000) {
+		return `${(value / 1000000).toFixed(1)}M`;
+	}
+	if (value >= 1000) {
+		return `${(value / 1000).toFixed(1)}K`;
+	}
+	return value.toString();
+}
+
 function CustomTooltip({ active, payload }: any) {
 	if (active && payload && payload.length) {
 		const data = payload[0].payload as CandlestickData;
@@ -77,6 +90,10 @@ function CustomTooltip({ active, payload }: any) {
 						{formatPrice(Math.abs(data.close - data.open))}(
 						{(((data.close - data.open) / data.open) * 100).toFixed(2)}%)
 					</span>
+				</p>
+				<p className="text-sm">
+					<span className="text-muted-foreground">Volume: </span>
+					{formatVolume(data.volume)}
 				</p>
 			</div>
 		);
@@ -114,14 +131,14 @@ export function CandlestickChart({
 		const maxPrice = Math.max(...allPrices);
 		const range = maxPrice - minPrice;
 		
-		// Use dynamic padding based on price range
+		// Use smaller padding to make price action use ~70% of chart height
 		let padding: number;
 		if (range > 1000) {
-			padding = range * 0.1; // 10% for large ranges
+			padding = range * 0.05; // 5% for large ranges
 		} else if (range > 100) {
-			padding = range * 0.15; // 15% for medium ranges  
+			padding = range * 0.07; // 7% for medium ranges  
 		} else {
-			padding = Math.max(range * 0.2, 5); // 20% for small ranges, minimum 5
+			padding = Math.max(range * 0.1, 3); // 10% for small ranges, minimum 3
 		}
 		
 		return {
@@ -158,10 +175,13 @@ export function CandlestickChart({
 
 	const chartData = data.map((point, index) => {
 		const isGreen = point.close >= point.open;
+		const prevPoint = index > 0 ? data[index - 1] : point;
+		const volumeUp = point.close >= prevPoint.close;
 		return {
 			...point,
 			time: format(point.date, "MMM dd"),
 			isGreen,
+			volumeUp,
 			index,
 		};
 	});
@@ -171,6 +191,10 @@ export function CandlestickChart({
 		customAxis.min ?? autoRange.min,
 		customAxis.max ?? autoRange.max,
 	];
+
+	// Calculate volume domain - make it smaller (20% of chart)
+	const maxVolume = Math.max(...data.map((d) => d.volume));
+	const volumeDomain = [0, maxVolume * 5]; // Scale volume to be much smaller visually
 
 	const handleAxisUpdate = () => {
 		const newMin = tempAxis.min ? parseFloat(tempAxis.min) : undefined;
@@ -198,7 +222,7 @@ export function CandlestickChart({
 		
 		// Use Recharts' positioning - x and width come from the chart
 		const centerX = x + width / 2;
-		const bodyWidth = Math.max(width * 0.6, 3);
+		const bodyWidth = Math.max(width * 0.8, 5); // Increased from 0.6 to 0.8 for wider candles
 		
 		// Calculate Y positions using the domain
 		const [minY, maxY] = yDomain;
@@ -324,14 +348,38 @@ export function CandlestickChart({
 							className="fill-muted-foreground"
 						/>
 						<YAxis
+							yAxisId="price"
 							domain={yDomain}
 							tickFormatter={formatPrice}
 							fontSize={12}
 							className="fill-muted-foreground"
 						/>
+						<YAxis
+							yAxisId="volume"
+							orientation="right"
+							domain={volumeDomain}
+							tickFormatter={formatVolume}
+							fontSize={12}
+							className="fill-muted-foreground"
+						/>
 						<Tooltip content={<CustomTooltip />} />
+						{/* Volume bars at the bottom - much smaller */}
+						<Bar 
+							yAxisId="volume"
+							dataKey="volume"
+							maxBarSize={8}
+						>
+							{chartData.map((entry, index) => (
+								<Cell
+									key={`volume-cell-${index}`}
+									fill={entry.volumeUp ? "#16a34a" : "#dc2626"}
+									fillOpacity={0.5}
+								/>
+							))}
+						</Bar>
 						{/* Use Bar with custom shape to render candlesticks at correct positions */}
 						<Bar 
+							yAxisId="price"
 							dataKey="close" 
 							shape={<CandlestickShape />}
 						/>

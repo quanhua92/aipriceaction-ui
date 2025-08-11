@@ -10,7 +10,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CandlestickChart, VolumeChart } from "@/components/charts";
+import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
 import {
@@ -274,7 +274,7 @@ function TickerPage() {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<ChartCandlestick className="h-5 w-5" />
-							Price Chart
+							Price & Volume Chart
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
@@ -304,10 +304,6 @@ function TickerPage() {
 					</CardContent>
 				</Card>
 
-				{/* Volume Chart */}
-				{tickerData && tickerData.length > 0 && (
-					<VolumeChart data={tickerData} height={200} />
-				)}
 			</div>
 
 			{/* Additional Actions */}
