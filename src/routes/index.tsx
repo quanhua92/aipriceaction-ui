@@ -8,6 +8,7 @@ import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
 import { useTickerData, useTickerGroups, useSectorData } from "@/lib/queries";
 import { useTranslation } from "@/hooks/useTranslation";
+import { VPAButton } from "@/components/vpa";
 import { 
 	calculatePriceChange, 
 	calculateRangeChange, 
@@ -174,46 +175,52 @@ function TopPerformers({
 						const isRangePositive = performer.changePercent >= 0;
 						
 						return (
-							<Link key={performer.ticker} to="/ticker/$symbol" params={{ symbol: performer.ticker }}>
-								<div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border">
-									<div className="flex items-center gap-3">
-										<div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium">
-											{index + 1}
-										</div>
-										<div>
-											<p className="font-medium text-sm">{performer.ticker}</p>
-											<p className="text-xs text-muted-foreground">
-												{new Intl.NumberFormat("vi-VN", {
-													style: "currency",
-													currency: "VND",
-													minimumFractionDigits: 0,
-													maximumFractionDigits: 0,
-												}).format(performer.currentPrice)}
+							<div key={performer.ticker} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors border">
+								<div className="flex items-center gap-3">
+									<div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium">
+										{index + 1}
+									</div>
+									<div>
+										<Link to="/ticker/$symbol" params={{ symbol: performer.ticker }} className="hover:underline">
+											<p className="font-medium text-sm cursor-pointer">{performer.ticker}</p>
+										</Link>
+										<p className="text-xs text-muted-foreground">
+											{new Intl.NumberFormat("vi-VN", {
+												style: "currency",
+												currency: "VND",
+												minimumFractionDigits: 0,
+												maximumFractionDigits: 0,
+											}).format(performer.currentPrice)}
+										</p>
+									</div>
+								</div>
+								<div className="flex items-center gap-3">
+									<div className="grid grid-cols-2 gap-4 items-center">
+										{/* Daily Performance */}
+										{dailyPerf && (
+											<div className="text-center">
+												<p className="text-xs text-muted-foreground mb-1">{t("common.daily")}</p>
+												<p className={`text-sm font-semibold ${isDailyPositive ? "text-green-600" : "text-red-600"}`}>
+													{isDailyPositive ? "+" : ""}{dailyPerf.changePercent.toFixed(2)}%
+												</p>
+											</div>
+										)}
+										{/* Range Performance */}
+										<div className="text-center">
+											<p className="text-xs text-muted-foreground mb-1">{t(`timeRanges.${timeRange}` as any)}</p>
+											<p className={`text-sm font-bold ${isRangePositive ? "text-green-600" : "text-red-600"}`}>
+												{isRangePositive ? "+" : ""}{performer.changePercent.toFixed(2)}%
 											</p>
 										</div>
 									</div>
-									<div className="text-right">
-										<div className="grid grid-cols-2 gap-4 items-center">
-											{/* Daily Performance */}
-											{dailyPerf && (
-												<div className="text-center">
-													<p className="text-xs text-muted-foreground mb-1">{t("common.daily")}</p>
-													<p className={`text-sm font-semibold ${isDailyPositive ? "text-green-600" : "text-red-600"}`}>
-														{isDailyPositive ? "+" : ""}{dailyPerf.changePercent.toFixed(2)}%
-													</p>
-												</div>
-											)}
-											{/* Range Performance */}
-											<div className="text-center">
-												<p className="text-xs text-muted-foreground mb-1">{t(`timeRanges.${timeRange}` as any)}</p>
-												<p className={`text-sm font-bold ${isRangePositive ? "text-green-600" : "text-red-600"}`}>
-													{isRangePositive ? "+" : ""}{performer.changePercent.toFixed(2)}%
-												</p>
-											</div>
-										</div>
-									</div>
+									{/* VPA Button */}
+									<VPAButton 
+										ticker={performer.ticker}
+										variant="badge"
+										mode="popover"
+									/>
 								</div>
-							</Link>
+							</div>
 						);
 					})}
 				</div>

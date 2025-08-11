@@ -75,7 +75,8 @@ const parseVPAContent = (content: string, limit = 5) => {
 		entries.push(currentEntry);
 	}
 	
-	return entries.slice(0, limit);
+	// Reverse to show latest dates first, then limit
+	return entries.reverse().slice(0, limit);
 };
 
 export function VPACard({ 

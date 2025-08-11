@@ -78,11 +78,12 @@ const parseVPAContentSimple = (content: string, limit = 10) => {
 		entries.push(currentEntry);
 	}
 	
-	return entries.slice(0, limit);
+	// Reverse to show latest dates first, then limit
+	return entries.reverse().slice(0, limit);
 };
 
-function VPAContent({ ticker }: { ticker: string }) {
-	const { data: vpaData, isLoading, error } = useVPAData(ticker);
+function VPAContent({ ticker, isOpen }: { ticker: string, isOpen: boolean }) {
+	const { data: vpaData, isLoading, error } = useVPAData(ticker, isOpen);
 	const entries = vpaData ? parseVPAContentSimple(vpaData.content, 10) : [];
 
 	if (isLoading) {
@@ -245,7 +246,7 @@ export function VPAButton({
 							Volume Price Analysis - {ticker}
 						</DialogTitle>
 					</DialogHeader>
-					<VPAContent ticker={ticker} />
+					<VPAContent ticker={ticker} isOpen={isOpen} />
 				</DialogContent>
 			</Dialog>
 		);
@@ -261,7 +262,7 @@ export function VPAButton({
 				align="start"
 				side="bottom"
 			>
-				<VPAContent ticker={ticker} />
+				<VPAContent ticker={ticker} isOpen={isOpen} />
 			</PopoverContent>
 		</Popover>
 	);
