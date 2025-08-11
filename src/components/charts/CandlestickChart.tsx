@@ -1,13 +1,15 @@
 import { useState } from "react";
 import {
 	ResponsiveContainer,
-	LineChart,
+	ComposedChart,
+	Bar,
 	Line,
 	XAxis,
 	YAxis,
 	CartesianGrid,
 	Tooltip,
 	ReferenceLine,
+	Cell,
 } from "recharts";
 import { format } from "date-fns";
 import { Settings, RotateCcw } from "lucide-react";
@@ -118,10 +120,16 @@ export function CandlestickChart({
 	}
 
 	const chartData = data.map((point) => {
+		const isGreen = point.close >= point.open;
+		const bodyBottom = Math.min(point.open, point.close);
+		const bodyHeight = Math.max(point.open, point.close) - bodyBottom;
+		
 		return {
 			...point,
 			time: format(point.date, "MMM dd"),
-			close: point.close, // Use close price for the line chart
+			isGreen,
+			bodyBottom,
+			bodyHeight,
 		};
 	});
 
@@ -146,7 +154,48 @@ export function CandlestickChart({
 		setTempAxis({ min: "", max: "" });
 	};
 
-	// No need for separate shapes anymore
+	// Simple approach: render open/close as thick colored lines
+	const renderCandlesticks = () => {
+		return (
+			<>
+				{/* High-Low wicks as thin gray lines */}
+				<Line 
+					type="monotone"
+					dataKey="high" 
+					stroke="#666"
+					strokeWidth={1}
+					dot={false}
+					connectNulls={false}
+				/>
+				<Line 
+					type="monotone"
+					dataKey="low" 
+					stroke="#666"
+					strokeWidth={1}
+					dot={false}
+					connectNulls={false}
+				/>
+				{/* Open prices as red thick lines */}
+				<Line 
+					type="monotone"
+					dataKey="open" 
+					stroke="#dc2626"
+					strokeWidth={3}
+					dot={false}
+					connectNulls={false}
+				/>
+				{/* Close prices as green thick lines */}
+				<Line 
+					type="monotone"
+					dataKey="close" 
+					stroke="#16a34a"
+					strokeWidth={3}
+					dot={false}
+					connectNulls={false}
+				/>
+			</>
+		);
+	};
 
 	return (
 		<Card>
@@ -207,7 +256,7 @@ export function CandlestickChart({
 			</CardHeader>
 			<CardContent>
 				<ResponsiveContainer width="100%" height={height}>
-					<LineChart
+					<ComposedChart
 						data={chartData}
 						margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
 					>
@@ -224,23 +273,9 @@ export function CandlestickChart({
 							className="fill-muted-foreground"
 						/>
 						<Tooltip content={<CustomTooltip />} />
-						{/* Invisible line to establish coordinate system */}
-						<Line 
-							type="monotone"
-							dataKey="close" 
-							stroke="transparent"
-							strokeWidth={0}
-							dot={false}
-						/>
-						{/* Blue line showing close price - visible for now */}
-						<Line 
-							type="monotone"
-							dataKey="close" 
-							stroke="#3B82F6"
-							strokeWidth={2}
-							dot={false}
-						/>
-					</LineChart>
+						{/* Render candlesticks as multiple colored lines */}
+						{renderCandlesticks()}
+					</ComposedChart>
 				</ResponsiveContainer>
 			</CardContent>
 		</Card>
