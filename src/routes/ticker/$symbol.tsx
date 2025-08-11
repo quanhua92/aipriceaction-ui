@@ -113,22 +113,22 @@ function TickerPage() {
 	return (
 		<div className="container mx-auto p-2 md:p-6 space-y-4 md:space-y-6">
 			{/* Header */}
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-4">
+			<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+				<div className="flex items-center gap-2 md:gap-4">
 					<Link to="/tickers">
 						<Button variant="ghost" size="sm">
 							<ArrowLeft className="h-4 w-4 mr-1" />
-							Back
+							<span className="hidden sm:inline">Back</span>
 						</Button>
 					</Link>
 					<div>
-						<h1 className="text-3xl font-bold font-mono">{symbol}</h1>
-						<div className="flex items-center gap-2">
+						<h1 className="text-2xl md:text-3xl font-bold font-mono">{symbol}</h1>
+						<div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
 							{sector && (
 								<Link to="/sector/$sectorName" params={{ sectorName: sector }}>
 									<Badge
 										variant="secondary"
-										className="cursor-pointer hover:shadow-sm"
+										className="cursor-pointer hover:shadow-sm w-fit"
 									>
 										{sectorLabel}
 									</Badge>
@@ -143,7 +143,7 @@ function TickerPage() {
 					</div>
 				</div>
 
-				<div className="flex items-center gap-4">
+				<div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 w-full md:w-auto">
 					<DateRangeSelector
 						value={dateRangeConfig}
 						onChange={(config) => {
@@ -164,6 +164,7 @@ function TickerPage() {
 						dataRange={tickerData}
 						showNavigationButtons={true}
 						showDataInfo={true}
+						className="w-full md:w-auto"
 					/>
 				</div>
 			</div>
