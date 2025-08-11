@@ -59,7 +59,7 @@ The following ticker symbols are defined in `ticker_group.json` but their corres
 - ✅ Fixed CSV date parsing for correct timezone handling
 - ✅ Updated chart tooltips to use actual data dates
 - ✅ Implemented proper error handling for failed requests
-- ✅ Added backward compatibility for TimeRange system
+- ✅ Removed backward compatibility functions to prevent confusion
 
 ---
 

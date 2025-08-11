@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/table";
 import { ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
-import { useTickerGroups, useMultipleTickerDataWithRange } from "@/lib/queries";
+import { useTickerGroups, useMultipleTickerData } from "@/lib/queries";
 import {
 	getTickersBySector,
 	calculatePriceChange,
@@ -67,9 +67,9 @@ function SectorPage() {
 		return tickerGroups ? getTickersBySector(tickerGroups, sectorName) : [];
 	}, [tickerGroups, sectorName]);
 
-	const { data: tickerData, isLoading: dataLoading } = useMultipleTickerDataWithRange(
+	const { data: tickerData, isLoading: dataLoading } = useMultipleTickerData(
 		sectorTickers,
-		range,
+		dateRangeConfig,
 		300,
 	);
 

@@ -53,7 +53,7 @@ function CustomTooltip({ active, payload }: any) {
 		return (
 			<div className="bg-background border rounded-lg shadow-lg p-3">
 				<p className="font-semibold">
-					{format(data.date, "MMM dd, yyyy")}
+					{format(data.date, "yyyy-MM-dd")}
 				</p>
 				<p className="text-sm">
 					<span className="text-green-600">Open: </span>

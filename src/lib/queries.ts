@@ -36,14 +36,6 @@ export function useTickerData(
 	});
 }
 
-// Backward compatibility function
-export function useTickerDataWithRange(
-	ticker: string,
-	range: TimeRange = "ALL",
-	maxPoints: number = 1000,
-) {
-	return useTickerData(ticker, { range }, maxPoints);
-}
 
 export function useMultipleTickerData(
 	tickers: string[],
@@ -73,14 +65,6 @@ export function useMultipleTickerData(
 	});
 }
 
-// Backward compatibility function
-export function useMultipleTickerDataWithRange(
-	tickers: string[],
-	range: TimeRange = "ALL",
-	maxPoints: number = 500,
-) {
-	return useMultipleTickerData(tickers, { range }, maxPoints);
-}
 
 export function useSectorData(
 	sector: string,
@@ -92,7 +76,3 @@ export function useSectorData(
 	return useMultipleTickerData(sectorTickers, dateRangeConfig);
 }
 
-// Backward compatibility function
-export function useSectorDataWithRange(sector: string, range: TimeRange = "ALL") {
-	return useSectorData(sector, { range });
-}

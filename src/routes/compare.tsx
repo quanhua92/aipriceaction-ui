@@ -14,7 +14,7 @@ import {
 import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
-import { useMultipleTickerDataWithRange } from "@/lib/queries";
+import { useMultipleTickerData } from "@/lib/queries";
 import {
 	createDateRangeConfig,
 	type TimeRange,
@@ -75,9 +75,9 @@ function ComparePage() {
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
 
-	const { data: tickerData, isLoading } = useMultipleTickerDataWithRange(
+	const { data: tickerData, isLoading } = useMultipleTickerData(
 		tickers,
-		range,
+		dateRangeConfig,
 		500,
 	);
 

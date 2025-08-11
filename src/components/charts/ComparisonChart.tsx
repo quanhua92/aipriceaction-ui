@@ -20,9 +20,10 @@ interface ComparisonChartProps {
 
 function CustomTooltip({ active, payload, label }: any) {
 	if (active && payload && payload.length) {
+		const fullDate = payload[0]?.payload?.fullDate || label;
 		return (
 			<div className="bg-background border rounded-lg shadow-lg p-3">
-				<p className="font-semibold mb-2">{label}</p>
+				<p className="font-semibold mb-2">{fullDate}</p>
 				{payload.map((entry: any, index: number) => (
 					<p key={index} className="text-sm" style={{ color: entry.color }}>
 						<span className="font-medium">{entry.dataKey}: </span>
@@ -57,6 +58,7 @@ export function ComparisonChart({
 	const chartData = data.map((point) => ({
 		...point,
 		displayTime: point.date ? format(new Date(point.date), "MMM dd") : point.time,
+		fullDate: point.date ? format(new Date(point.date), "yyyy-MM-dd") : point.time,
 	}));
 
 	return (
