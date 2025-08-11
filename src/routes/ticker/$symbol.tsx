@@ -320,7 +320,7 @@ function TickerPage() {
 						)}
 						<Link
 							to="/compare"
-							search={{ tickers: [symbol, "VNINDEX"], layout: "1x2" }}
+							search={{ tickers: [symbol, "VNINDEX"] }}
 						>
 							<Button variant="outline">Compare with VN-Index</Button>
 						</Link>

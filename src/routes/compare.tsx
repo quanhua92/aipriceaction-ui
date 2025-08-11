@@ -1,16 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Grid3X3, Settings, Plus, X } from "lucide-react";
+import { Grid3X3, Settings, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
@@ -20,11 +13,8 @@ import {
 	type TimeRange,
 } from "@/lib/stock-data";
 
-type GridLayout = "1x1" | "1x2" | "2x1" | "2x2" | "2x3" | "3x2";
-
 interface ComparePageSearch {
 	tickers?: string[];
-	layout?: GridLayout;
 	range?: TimeRange;
 	startDate?: string;
 	endDate?: string;
@@ -36,7 +26,6 @@ export const Route = createFileRoute("/compare")({
 			tickers: Array.isArray(search.tickers)
 				? (search.tickers as string[])
 				: [],
-			layout: (search.layout as GridLayout) || "2x2",
 			range: (search.range as TimeRange) || "3M",
 			startDate: search.startDate as string,
 			endDate: search.endDate as string,
@@ -45,18 +34,10 @@ export const Route = createFileRoute("/compare")({
 	component: ComparePage,
 });
 
-const LAYOUT_OPTIONS = [
-	{ value: "1x1" as GridLayout, label: "1×1", cols: 1, rows: 1, description: "Single chart" },
-	{ value: "1x2" as GridLayout, label: "1×2", cols: 2, rows: 1, description: "2 charts side-by-side (1 column on mobile)" },
-	{ value: "2x1" as GridLayout, label: "2×1", cols: 1, rows: 2, description: "2 charts stacked" },
-	{ value: "2x2" as GridLayout, label: "2×2", cols: 2, rows: 2, description: "4 charts grid (1 column on mobile)" },
-	{ value: "2x3" as GridLayout, label: "2×3", cols: 3, rows: 2, description: "6 charts grid (responsive)" },
-	{ value: "3x2" as GridLayout, label: "3×2", cols: 2, rows: 3, description: "6 charts grid (responsive)" },
-];
 
 function ComparePage() {
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { tickers = [], layout = "2x2", range = "3M", startDate, endDate } = Route.useSearch();
+	const { tickers = [], range = "3M", startDate, endDate } = Route.useSearch();
 	
 	// Track screen size for responsive chart heights
 	const [isMobile, setIsMobile] = useState(false);
@@ -87,65 +68,24 @@ function ComparePage() {
 		});
 	};
 
-	const currentLayout =
-		LAYOUT_OPTIONS.find((opt) => opt.value === layout) || LAYOUT_OPTIONS[3];
-	const maxGridItems = currentLayout.cols * currentLayout.rows;
-
-	// Create grid items - fill with tickers and empty slots
+	// Create grid items - one for each ticker
 	const gridItems = useMemo(() => {
-		const items = [];
-		for (let i = 0; i < maxGridItems; i++) {
-			items.push({
-				id: i,
-				ticker: tickers[i] || null,
-				data: tickers[i] ? tickerData?.[tickers[i]] || [] : [],
-			});
-		}
-		return items;
-	}, [tickers, tickerData, maxGridItems]);
+		return tickers.map((ticker, index) => ({
+			id: index,
+			ticker,
+			data: tickerData?.[ticker] || [],
+		}));
+	}, [tickers, tickerData]);
 
 	const handleTickersChange = (newTickers: string[]) => {
 		updateSearchParams({ tickers: newTickers });
 	};
 
-	const setTickerForGrid = (gridIndex: number, ticker: string | null) => {
-		const newTickers = [...tickers];
-
-		if (ticker) {
-			// Set ticker for specific grid position
-			newTickers[gridIndex] = ticker;
-		} else {
-			// Remove ticker from specific grid position
-			newTickers.splice(gridIndex, 1);
-		}
-
-		// Remove empty slots at the end
-		while (newTickers.length > 0 && !newTickers[newTickers.length - 1]) {
-			newTickers.pop();
-		}
-
+	const removeTicker = (tickerToRemove: string) => {
+		const newTickers = tickers.filter(t => t !== tickerToRemove);
 		updateSearchParams({ tickers: newTickers });
 	};
 
-	const getGridClasses = () => {
-		const baseClasses = "grid gap-4";
-		switch (layout) {
-			case "1x1":
-				return `${baseClasses} grid-cols-1`;
-			case "1x2":
-				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
-			case "2x1":
-				return `${baseClasses} grid-cols-1`;
-			case "2x2":
-				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
-			case "2x3":
-				return `${baseClasses} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`;
-			case "3x2":
-				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
-			default:
-				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
-		}
-	};
 
 	const chartColors = [
 		"#3B82F6", // blue-500
@@ -167,7 +107,7 @@ function ComparePage() {
 					Compare Charts
 				</h1>
 				<p className="text-muted-foreground">
-					Compare multiple stock charts in a flexible grid layout that adapts to mobile screens
+					Compare unlimited stock charts in a responsive 2-column grid (1 column on mobile)
 				</p>
 			</div>
 
@@ -183,156 +123,124 @@ function ComparePage() {
 					{/* Ticker Selection */}
 					<div>
 						<label className="text-sm font-medium mb-2 block">
-							Select Tickers (Max {maxGridItems})
+							Select Tickers
 						</label>
 						<MultiTickerSearch
 							selectedTickers={tickers}
 							onTickersChange={handleTickersChange}
-							maxSelection={maxGridItems}
+							maxSelection={100}
 							placeholder="Add tickers to compare..."
 							className="w-full"
 						/>
 					</div>
 
-					{/* Layout and Range Selection */}
-					<div className="flex flex-col sm:flex-row gap-4">
-						<div className="flex-1">
-							<label className="text-sm font-medium mb-2 block">
-								Grid Layout
-							</label>
-							<Select
-								value={layout}
-								onValueChange={(value: GridLayout) =>
-									updateSearchParams({ layout: value })
+					{/* Date Range Selection */}
+					<div>
+						<label className="text-sm font-medium mb-2 block">
+							Date Range
+						</label>
+						<DateRangeSelector
+							value={dateRangeConfig}
+							onChange={(config) => {
+								if (config.range === "CUSTOM") {
+									updateSearchParams({
+										range: config.range,
+										startDate: config.startDate ? config.startDate.toISOString().split('T')[0] : undefined,
+										endDate: config.endDate ? config.endDate.toISOString().split('T')[0] : undefined,
+									});
+								} else {
+									updateSearchParams({
+										range: config.range,
+										startDate: undefined,
+										endDate: undefined,
+									});
 								}
-							>
-								<SelectTrigger>
-									<SelectValue />
-								</SelectTrigger>
-								<SelectContent>
-									{LAYOUT_OPTIONS.map((option) => (
-										<SelectItem key={option.value} value={option.value}>
-											<div className="flex flex-col items-start">
-												<span>{option.label} Grid</span>
-												<span className="text-xs text-muted-foreground">{option.description}</span>
-											</div>
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-						</div>
-
-						<div className="flex-1">
-							<label className="text-sm font-medium mb-2 block">
-								Date Range
-							</label>
-							<DateRangeSelector
-								value={dateRangeConfig}
-								onChange={(config) => {
-									if (config.range === "CUSTOM") {
-										updateSearchParams({
-											range: config.range,
-											startDate: config.startDate ? config.startDate.toISOString().split('T')[0] : undefined,
-											endDate: config.endDate ? config.endDate.toISOString().split('T')[0] : undefined,
-										});
-									} else {
-										updateSearchParams({
-											range: config.range,
-											startDate: undefined,
-											endDate: undefined,
-										});
-									}
-								}}
-								className="w-full"
-								showNavigationButtons={true}
-							/>
-						</div>
+							}}
+							className="w-full"
+							showNavigationButtons={true}
+						/>
 					</div>
 				</CardContent>
 			</Card>
 
-			{/* Grid Layout */}
-			<div className={getGridClasses()}>
-				{gridItems.map((item, index) => (
-					<Card key={item.id} className="min-h-[300px] sm:min-h-[400px]">
-						<CardHeader className="pb-2">
-							<div className="flex items-center justify-between">
-								<div className="flex items-center gap-2">
-									{item.ticker ? (
-										<>
-											<Badge
-												variant="default"
-												style={{
-													backgroundColor:
-														chartColors[index % chartColors.length],
-												}}
-											>
-												{item.ticker}
-											</Badge>
-											<Button
-												variant="ghost"
-												size="sm"
-												onClick={() => setTickerForGrid(index, null)}
-												className="h-6 w-6 p-0"
-											>
-												<X className="h-4 w-4" />
-											</Button>
-										</>
-									) : (
-										<div className="text-sm text-muted-foreground">
-											Grid {index + 1}
+			{/* Grid Layout - Responsive 2 columns on desktop, 1 on mobile */}
+			{gridItems.length > 0 ? (
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+					{gridItems.map((item, index) => (
+						<Card key={item.id} className="min-h-[300px] sm:min-h-[400px]">
+							<CardHeader className="pb-2">
+								<div className="flex items-center justify-between">
+									<div className="flex items-center gap-2">
+										<Badge
+											variant="default"
+											style={{
+												backgroundColor:
+													chartColors[index % chartColors.length],
+											}}
+										>
+											{item.ticker}
+										</Badge>
+										<Button
+											variant="ghost"
+											size="sm"
+											onClick={() => removeTicker(item.ticker)}
+											className="h-6 w-6 p-0"
+										>
+											<X className="h-4 w-4" />
+										</Button>
+									</div>
+									<div className="text-xs text-muted-foreground">
+										#{index + 1}
+									</div>
+								</div>
+							</CardHeader>
+							<CardContent>
+								{item.data.length > 0 ? (
+									isLoading ? (
+										<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
+											<div className="text-muted-foreground">Loading...</div>
 										</div>
-									)}
-								</div>
-								<div className="text-xs text-muted-foreground">
-									{currentLayout.label}
-								</div>
-							</div>
-						</CardHeader>
-						<CardContent>
-							{item.ticker && item.data.length > 0 ? (
-								isLoading ? (
+									) : (
+										<CandlestickChart
+											data={item.data}
+											height={isMobile ? 250 : 300}
+										/>
+									)
+								) : isLoading ? (
 									<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
-										<div className="text-muted-foreground">Loading...</div>
+										<div className="text-muted-foreground">
+											Loading {item.ticker}...
+										</div>
 									</div>
 								) : (
-									<CandlestickChart
-										data={item.data}
-										height={isMobile ? 250 : 300}
-									/>
-								)
-							) : item.ticker && isLoading ? (
-								<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
-									<div className="text-muted-foreground">
-										Loading {item.ticker}...
-									</div>
-								</div>
-							) : item.ticker ? (
-								<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
-									<div className="text-center space-y-2">
-										<p className="text-muted-foreground">No data available</p>
-										<p className="text-xs text-muted-foreground">
-											for {item.ticker}
-										</p>
-									</div>
-								</div>
-							) : (
-								<div className="h-[250px] sm:h-[300px] flex items-center justify-center border-2 border-dashed border-muted-foreground/20 rounded-lg">
-									<div className="text-center space-y-4">
-										<Plus className="h-12 w-12 text-muted-foreground/40 mx-auto" />
-										<div>
-											<p className="text-muted-foreground">Empty Grid Slot</p>
+									<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
+										<div className="text-center space-y-2">
+											<p className="text-muted-foreground">No data available</p>
 											<p className="text-xs text-muted-foreground">
-												Add a ticker to compare
+												for {item.ticker}
 											</p>
 										</div>
 									</div>
-								</div>
-							)}
-						</CardContent>
-					</Card>
-				))}
-			</div>
+								)}
+							</CardContent>
+						</Card>
+					))}
+				</div>
+			) : (
+				<Card className="min-h-[300px]">
+					<CardContent className="h-[300px] flex items-center justify-center">
+						<div className="text-center space-y-4">
+							<Grid3X3 className="h-16 w-16 text-muted-foreground/40 mx-auto" />
+							<div>
+								<p className="text-xl font-medium text-muted-foreground mb-2">No tickers selected</p>
+								<p className="text-sm text-muted-foreground">
+									Add tickers above to start comparing charts in a responsive grid
+								</p>
+							</div>
+						</div>
+					</CardContent>
+				</Card>
+			)}
 
 			{/* Quick Actions */}
 			{tickers.length > 0 && (
@@ -349,7 +257,7 @@ function ComparePage() {
 										tickers: [
 											"VNINDEX",
 											...tickers.filter((t) => t !== "VNINDEX"),
-										].slice(0, maxGridItems),
+										],
 									})
 								}
 							>
@@ -359,10 +267,7 @@ function ComparePage() {
 								variant="outline"
 								onClick={() =>
 									updateSearchParams({
-										tickers: ["VCB", "BID", "CTG", "ACB"].slice(
-											0,
-											maxGridItems,
-										),
+										tickers: ["VCB", "BID", "CTG", "ACB"],
 									})
 								}
 							>
@@ -372,10 +277,7 @@ function ComparePage() {
 								variant="outline"
 								onClick={() =>
 									updateSearchParams({
-										tickers: ["VHM", "VIC", "VRE", "KDH"].slice(
-											0,
-											maxGridItems,
-										),
+										tickers: ["VHM", "VIC", "VRE", "KDH"],
 									})
 								}
 							>

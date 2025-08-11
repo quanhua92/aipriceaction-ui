@@ -287,7 +287,6 @@ function SectorPage() {
 										to="/compare"
 										search={{
 											tickers: chartTickers,
-											layout: "2x2",
 											range: range,
 											...(range === "CUSTOM" && {
 												startDate: startDate,
