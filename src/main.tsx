@@ -10,6 +10,14 @@ import { routeTree } from "./routeTree.gen";
 import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
 
+// Handle GitHub Pages SPA routing
+if (window.location.search.includes('redirect=')) {
+	const redirectPath = new URLSearchParams(window.location.search).get('redirect');
+	if (redirectPath) {
+		window.history.replaceState({}, '', redirectPath);
+	}
+}
+
 // Create a new router instance
 
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext();

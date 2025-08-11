@@ -17,4 +17,12 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  // SPA fallback for development and preview
+  preview: {
+    port: 4173,
+    open: true,
+  },
+  server: {
+    port: 5173,
+  },
 })
