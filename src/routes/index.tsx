@@ -239,17 +239,24 @@ function Dashboard() {
 	);
 	const { data: tickerGroups } = useTickerGroups();
 
-	// Load data for key sectors
+	// Load top 6 sectors by market cap for better Top Performers accuracy
+	// This covers ~70% of market cap while keeping performance reasonable
 	const { data: securitiesData, isLoading: securitiesLoading } = useSectorData("CHUNG_KHOAN", dateRangeConfig);
 	const { data: bankingData, isLoading: bankingLoading } = useSectorData("NGAN_HANG", dateRangeConfig);
 	const { data: realEstateData, isLoading: realEstateLoading } = useSectorData("BAT_DONG_SAN", dateRangeConfig);
+	const { data: steelData, isLoading: steelLoading } = useSectorData("THEP", dateRangeConfig);
+	const { data: electricityData, isLoading: electricityLoading } = useSectorData("DIEN", dateRangeConfig);
+	const { data: foodData, isLoading: foodLoading } = useSectorData("THUC_PHAM", dateRangeConfig);
 
-	// Calculate top performers across all sectors - both daily and range
+	// Calculate top performers across major sectors - both daily and range
 	const topPerformers = useMemo(() => {
 		const allData: Record<string, any> = {};
 		if (securitiesData) allData.CHUNG_KHOAN = securitiesData;
 		if (bankingData) allData.NGAN_HANG = bankingData;  
 		if (realEstateData) allData.BAT_DONG_SAN = realEstateData;
+		if (steelData) allData.THEP = steelData;
+		if (electricityData) allData.DIEN = electricityData;
+		if (foodData) allData.THUC_PHAM = foodData;
 
 		const dailyPerformances: TickerPerformance[] = [];
 		const rangePerformances: TickerPerformance[] = [];
@@ -297,7 +304,7 @@ function Dashboard() {
 				losers: [...rangePerformances].sort((a, b) => a.changePercent - b.changePercent),
 			}
 		};
-	}, [securitiesData, bankingData, realEstateData]);
+	}, [securitiesData, bankingData, realEstateData, steelData, electricityData, foodData]);
 
 	const dailyChange = vnindexData ? calculatePriceChange(vnindexData) : null;
 	const rangeChange = vnindexData ? calculateRangeChange(vnindexData) : null;
@@ -571,20 +578,25 @@ function Dashboard() {
 
 			{/* Top Performers Section */}
 			<div>
-				<h2 className="text-xl font-semibold mb-4">{t("home.topPerformers")}</h2>
+				<div className="flex items-center justify-between mb-4">
+					<h2 className="text-xl font-semibold">{t("home.topPerformers")}</h2>
+					<p className="text-sm text-muted-foreground">
+						From 6 major sectors
+					</p>
+				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 					{/* Daily Gainers/Losers */}
 					<TopPerformers 
 						performers={topPerformers.daily.gainers} 
 						title={`${t("common.daily")} ${t("home.topGainers")}`} 
-						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading || steelLoading || electricityLoading || foodLoading}
 						dailyPerformers={topPerformers.daily.gainers}
 						timeRange={timeRange}
 					/>
 					<TopPerformers 
 						performers={topPerformers.daily.losers} 
 						title={`${t("common.daily")} ${t("home.topLosers")}`} 
-						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading || steelLoading || electricityLoading || foodLoading}
 						dailyPerformers={topPerformers.daily.losers}
 						timeRange={timeRange}
 					/>
@@ -594,14 +606,14 @@ function Dashboard() {
 					<TopPerformers 
 						performers={topPerformers.range.gainers} 
 						title={`${t(`timeRanges.${timeRange}` as any)} ${t("home.topGainers")}`}
-						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading || steelLoading || electricityLoading || foodLoading}
 						dailyPerformers={topPerformers.daily.gainers}
 						timeRange={timeRange}
 					/>
 					<TopPerformers 
 						performers={topPerformers.range.losers} 
 						title={`${t(`timeRanges.${timeRange}` as any)} ${t("home.topLosers")}`}
-						isLoading={securitiesLoading || bankingLoading || realEstateLoading}
+						isLoading={securitiesLoading || bankingLoading || realEstateLoading || steelLoading || electricityLoading || foodLoading}
 						dailyPerformers={topPerformers.daily.losers}
 						timeRange={timeRange}
 					/>
