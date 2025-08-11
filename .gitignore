@@ -7,3 +7,9 @@ count.txt
 .env
 .nitro
 .tanstack
+
+# Test results and reports
+test-results/
+playwright-report/
+tests/debug-*.png
+debug-*.png

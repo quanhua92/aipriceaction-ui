@@ -24,11 +24,11 @@
 - combobox:
   - img
   - text: Search tickers...
-- link "Browse Tickers 291 stocks":
+- link "Browse Tickers 287 stocks":
   - /url: /tickers
   - img
   - paragraph: Browse Tickers
-  - paragraph: 291 stocks
+  - paragraph: 287 stocks
 - link "Compare Charts Side-by-side":
   - /url: /compare
   - img
@@ -48,6 +48,11 @@
 - button "1Y"
 - button "2Y"
 - button "ALL"
+- button "Custom":
+  - img
+  - text: Custom
+- img
+- text: "Range: 3M"
 - list:
   - listitem:
     - img "Close Price legend icon"
