@@ -549,9 +549,14 @@ function Dashboard() {
 									{t("common.view")} {t("home.vnIndex")} Details
 								</Button>
 							</Link>
-							<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_BANG" }}>
+							<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_HANG" }}>
 								<Button variant="outline" className="w-full justify-start">
 									{t("sectorNames.NGAN_HANG")}
+								</Button>
+							</Link>
+							<Link to="/sector/$sectorName" params={{ sectorName: "CHUNG_KHOAN" }}>
+								<Button variant="outline" className="w-full justify-start">
+									{t("sectorNames.CHUNG_KHOAN")}
 								</Button>
 							</Link>
 							<Link to="/sector/$sectorName" params={{ sectorName: "BAT_DONG_SAN" }}>
