@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('multi-ticker selection should keep dropdown open', async ({ page }) => {
-  await page.goto('http://localhost:5174/compare?tickers=%5B%22VNINDEX%22%5D&layout=2x2&range=3M');
+  await page.goto('/compare?tickers=VNINDEX&range=3M');
   
   // Wait for page to load
   await page.waitForSelector('text=Select Tickers', { timeout: 10000 });

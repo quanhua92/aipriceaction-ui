@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('VNINDEX appears in tickers search', async ({ page }) => {
   // Navigate to tickers page
-  await page.goto('http://localhost:5174/tickers');
+  await page.goto('/tickers');
   
   // Wait for the page to load
   await page.waitForLoadState('networkidle');

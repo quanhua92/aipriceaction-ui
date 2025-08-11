@@ -5,7 +5,7 @@ test.describe('Mobile Navigation - Improved', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     
-    await page.goto('http://localhost:5174');
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -30,7 +30,7 @@ test.describe('Mobile Navigation - Improved', () => {
 
   test('should open mobile menu when hamburger is clicked', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('http://localhost:5174');
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -44,10 +44,10 @@ test.describe('Mobile Navigation - Improved', () => {
     
     // All navigation links should be visible in mobile menu
     const mobileNavLinks = page.locator('div.md\\:hidden nav a');
-    await expect(mobileNavLinks).toHaveCount(4);
+    await expect(mobileNavLinks).toHaveCount(5);
     
     // Check each link
-    const expectedLinks = ['Dashboard', 'Browse Tickers', 'Sectors', 'Compare Charts'];
+    const expectedLinks = ['Dashboard', 'Sectors', 'Tickers', 'Compare Charts', 'Portfolio Analysis'];
     for (let i = 0; i < expectedLinks.length; i++) {
       const link = mobileNavLinks.nth(i);
       await expect(link).toContainText(expectedLinks[i]);
@@ -63,7 +63,7 @@ test.describe('Mobile Navigation - Improved', () => {
 
   test('should close mobile menu when navigation link is clicked', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('http://localhost:5174');
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -93,7 +93,7 @@ test.describe('Mobile Navigation - Improved', () => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1024, height: 768 });
     
-    await page.goto('http://localhost:5174');
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -103,7 +103,7 @@ test.describe('Mobile Navigation - Improved', () => {
     
     // All desktop nav links should be visible
     const desktopNavLinks = desktopNav.locator('a');
-    await expect(desktopNavLinks).toHaveCount(4);
+    await expect(desktopNavLinks).toHaveCount(5);
     
     // Hamburger button should be hidden on desktop
     const hamburgerButton = page.locator('button[aria-label="Toggle mobile menu"]');
@@ -129,7 +129,7 @@ test.describe('Mobile Navigation - Improved', () => {
       console.log(`Testing ${bp.name} (${bp.width}x${bp.height})`);
       
       await page.setViewportSize({ width: bp.width, height: bp.height });
-      await page.goto('http://localhost:5174');
+      await page.goto('/');
       await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(500);
       
