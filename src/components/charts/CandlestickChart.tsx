@@ -10,6 +10,7 @@ import {
 	Tooltip,
 	ReferenceLine,
 	Cell,
+	ReferenceArea,
 } from "recharts";
 import { format } from "date-fns";
 import { Settings, RotateCcw } from "lucide-react";
@@ -119,17 +120,13 @@ export function CandlestickChart({
 		);
 	}
 
-	const chartData = data.map((point) => {
+	const chartData = data.map((point, index) => {
 		const isGreen = point.close >= point.open;
-		const bodyBottom = Math.min(point.open, point.close);
-		const bodyHeight = Math.max(point.open, point.close) - bodyBottom;
-		
 		return {
 			...point,
 			time: format(point.date, "MMM dd"),
 			isGreen,
-			bodyBottom,
-			bodyHeight,
+			index,
 		};
 	});
 
@@ -154,46 +151,70 @@ export function CandlestickChart({
 		setTempAxis({ min: "", max: "" });
 	};
 
-	// Simple approach: render open/close as thick colored lines
-	const renderCandlesticks = () => {
+	// Custom Bar shape that renders rectangular candlesticks
+	const CandlestickShape = (props: any) => {
+		const { payload, x, y, width } = props;
+		if (!payload) return null;
+		
+		const { high, low, open, close, isGreen } = payload;
+		const bodyColor = isGreen ? "#16a34a" : "#dc2626";
+		const wickColor = "#666";
+		
+		// Use Recharts' positioning - x and width come from the chart
+		const centerX = x + width / 2;
+		const bodyWidth = Math.max(width * 0.6, 3);
+		
+		// Calculate Y positions using the domain
+		const [minY, maxY] = yDomain;
+		const chartHeight = height || 340; // Chart area height (400 - margins)
+		const topMargin = 5;
+		
+		// Scale prices to Y coordinates
+		const scale = (chartHeight - topMargin * 2) / (maxY - minY);
+		const baseY = topMargin;
+		
+		const highY = baseY + (maxY - high) * scale;
+		const lowY = baseY + (maxY - low) * scale;
+		const openY = baseY + (maxY - open) * scale;
+		const closeY = baseY + (maxY - close) * scale;
+		
+		const bodyTop = Math.min(openY, closeY);
+		const bodyHeight = Math.abs(closeY - openY);
+		
 		return (
-			<>
-				{/* High-Low wicks as thin gray lines */}
-				<Line 
-					type="monotone"
-					dataKey="high" 
-					stroke="#666"
+			<g>
+				{/* Wick line from high to low */}
+				<line
+					x1={centerX}
+					y1={highY}
+					x2={centerX}
+					y2={lowY}
+					stroke={wickColor}
 					strokeWidth={1}
-					dot={false}
-					connectNulls={false}
 				/>
-				<Line 
-					type="monotone"
-					dataKey="low" 
-					stroke="#666"
-					strokeWidth={1}
-					dot={false}
-					connectNulls={false}
-				/>
-				{/* Open prices as red thick lines */}
-				<Line 
-					type="monotone"
-					dataKey="open" 
-					stroke="#dc2626"
-					strokeWidth={3}
-					dot={false}
-					connectNulls={false}
-				/>
-				{/* Close prices as green thick lines */}
-				<Line 
-					type="monotone"
-					dataKey="close" 
-					stroke="#16a34a"
-					strokeWidth={3}
-					dot={false}
-					connectNulls={false}
-				/>
-			</>
+				{/* Candlestick body */}
+				{bodyHeight > 1 ? (
+					<rect
+						x={centerX - bodyWidth / 2}
+						y={bodyTop}
+						width={bodyWidth}
+						height={bodyHeight}
+						fill={bodyColor}
+						stroke={bodyColor}
+						strokeWidth={0.5}
+					/>
+				) : (
+					// Doji candle - horizontal line when open = close
+					<line
+						x1={centerX - bodyWidth / 2}
+						y1={openY}
+						x2={centerX + bodyWidth / 2}
+						y2={openY}
+						stroke={bodyColor}
+						strokeWidth={2}
+					/>
+				)}
+			</g>
 		);
 	};
 
@@ -273,8 +294,11 @@ export function CandlestickChart({
 							className="fill-muted-foreground"
 						/>
 						<Tooltip content={<CustomTooltip />} />
-						{/* Render candlesticks as multiple colored lines */}
-						{renderCandlesticks()}
+						{/* Use Bar with custom shape to render candlesticks at correct positions */}
+						<Bar 
+							dataKey="close" 
+							shape={<CandlestickShape />}
+						/>
 					</ComposedChart>
 				</ResponsiveContainer>
 			</CardContent>
