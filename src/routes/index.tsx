@@ -192,8 +192,17 @@ function Dashboard() {
 												className={`text-lg font-semibold ${priceChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
 											>
 												{priceChange.changePercent > 0 ? "+" : ""}
-												{priceChange.change.toFixed(2)}(
-												{priceChange.changePercent > 0 ? "+" : ""}
+												{new Intl.NumberFormat("vi-VN", {
+													style: "currency",
+													currency: "VND",
+													minimumFractionDigits: 0,
+													maximumFractionDigits: 2,
+												}).format(priceChange.change)}
+											</p>
+											<p
+												className={`text-sm ${priceChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
+											>
+												({priceChange.changePercent > 0 ? "+" : ""}
 												{priceChange.changePercent.toFixed(2)}%)
 											</p>
 										</div>
