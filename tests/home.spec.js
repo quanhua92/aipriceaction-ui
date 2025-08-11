@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Home Page', () => {
   test('should display market overview', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Check main sections
@@ -15,7 +15,7 @@ test.describe('Home Page', () => {
   });
   
   test('should display sector performance', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Check sectors section
@@ -38,7 +38,7 @@ test.describe('Home Page', () => {
   });
   
   test('should display top performers', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Check top performers section
@@ -51,7 +51,7 @@ test.describe('Home Page', () => {
   });
 
   test('should handle data loading states', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?lang=en');
     
     // Should not show persistent loading states after reasonable time
     await page.waitForLoadState('networkidle');

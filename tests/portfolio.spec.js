@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Portfolio Analysis', () => {
   test('should show empty state when no tickers selected', async ({ page }) => {
-    await page.goto('/portfolio');
+    await page.goto('/portfolio?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should show portfolio page title
@@ -20,7 +20,7 @@ test.describe('Portfolio Analysis', () => {
   
   test('should load portfolio from URL parameters', async ({ page }) => {
     // Load portfolio with some tickers
-    await page.goto('/portfolio?tickers=VCB&tickers=BID&tickers=VNINDEX&range=3M');
+    await page.goto('/portfolio?tickers=VCB&tickers=BID&tickers=VNINDEX&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     

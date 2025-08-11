@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Ticker Performance Table', () => {
   test('should display sortable table in Portfolio page', async ({ page }) => {
     // Navigate to portfolio with some tickers
-    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22BID%22,%22CTG%22%5D&range=3M');
+    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22BID%22,%22CTG%22%5D&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000); // Wait for data to load
     
@@ -28,7 +28,7 @@ test.describe('Ticker Performance Table', () => {
   
   test('should display sortable table in Compare page', async ({ page }) => {
     // Navigate to compare with some tickers
-    await page.goto('/compare?tickers=%5B%22HPG%22,%22HSG%22%5D&range=1M');
+    await page.goto('/compare?tickers=%5B%22HPG%22,%22HSG%22%5D&range=1M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000); // Wait for data to load
     
@@ -48,7 +48,7 @@ test.describe('Ticker Performance Table', () => {
   
   test('should handle sorting functionality', async ({ page }) => {
     // Navigate to portfolio with multiple tickers
-    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22BID%22,%22CTG%22,%22ACB%22%5D&range=3M');
+    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22BID%22,%22CTG%22,%22ACB%22%5D&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     
@@ -75,7 +75,7 @@ test.describe('Ticker Performance Table', () => {
   
   test('should handle empty state gracefully', async ({ page }) => {
     // Navigate to empty portfolio
-    await page.goto('/portfolio');
+    await page.goto('/portfolio?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should not show performance table when no tickers
@@ -83,7 +83,7 @@ test.describe('Ticker Performance Table', () => {
     await expect(tableElement).not.toBeVisible();
     
     // Navigate to empty compare page
-    await page.goto('/compare');
+    await page.goto('/compare?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should not show performance table when no tickers
@@ -93,7 +93,7 @@ test.describe('Ticker Performance Table', () => {
   
   test('should show performance data with colors', async ({ page }) => {
     // Navigate to portfolio with tickers that likely have performance data
-    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22VNINDEX%22%5D&range=3M');
+    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22VNINDEX%22%5D&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(4000); // Wait longer for data
     

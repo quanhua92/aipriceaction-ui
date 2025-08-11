@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { AlertTriangle, Shield, Activity, TrendingDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -30,6 +31,7 @@ export function RiskAnalysis({
 	benchmarkData, 
 	portfolioTickers 
 }: RiskAnalysisProps) {
+	const { t } = useTranslation();
 	const riskMetrics = useMemo(() => {
 		if (Object.keys(portfolioData).length === 0 || benchmarkData.length === 0) {
 			return null;
@@ -83,7 +85,7 @@ export function RiskAnalysis({
 
 		return [
 			{
-				name: "Portfolio Volatility",
+				name: t("portfolio.portfolioVolatility"),
 				value: riskMetrics.avgVolatility * 100,
 				level: riskMetrics.avgVolatility > 0.4 ? "Very High" : 
 				       riskMetrics.avgVolatility > 0.3 ? "High" : 
@@ -91,10 +93,10 @@ export function RiskAnalysis({
 				color: riskMetrics.avgVolatility > 0.4 ? "text-red-600" : 
 				       riskMetrics.avgVolatility > 0.3 ? "text-orange-600" : 
 				       riskMetrics.avgVolatility > 0.2 ? "text-yellow-600" : "text-green-600",
-				description: "Annualized standard deviation of returns"
+				description: t("risk.annualizedStandardDeviation")
 			},
 			{
-				name: "Market Beta",
+				name: t("metrics.beta"),
 				value: riskMetrics.avgBeta,
 				level: riskMetrics.avgBeta > 1.5 ? "Very High" : 
 				       riskMetrics.avgBeta > 1.2 ? "High" : 
@@ -102,10 +104,10 @@ export function RiskAnalysis({
 				color: riskMetrics.avgBeta > 1.5 ? "text-red-600" : 
 				       riskMetrics.avgBeta > 1.2 ? "text-orange-600" : 
 				       riskMetrics.avgBeta > 0.8 ? "text-yellow-600" : "text-green-600",
-				description: "Sensitivity to market movements"
+				description: t("risk.sensitivityToMarketMovements")
 			},
 			{
-				name: "Maximum Drawdown",
+				name: t("metrics.maximumDrawdown"),
 				value: riskMetrics.maxPortfolioDrawdown * 100,
 				level: riskMetrics.maxPortfolioDrawdown > 0.4 ? "Very High" : 
 				       riskMetrics.maxPortfolioDrawdown > 0.3 ? "High" : 
@@ -113,10 +115,10 @@ export function RiskAnalysis({
 				color: riskMetrics.maxPortfolioDrawdown > 0.4 ? "text-red-600" : 
 				       riskMetrics.maxPortfolioDrawdown > 0.3 ? "text-orange-600" : 
 				       riskMetrics.maxPortfolioDrawdown > 0.2 ? "text-yellow-600" : "text-green-600",
-				description: "Largest peak-to-trough decline"
+				description: t("risk.largestPeakToTroughDecline")
 			},
 			{
-				name: "Concentration Risk",
+				name: t("risk.concentrationRisk"),
 				value: riskMetrics.concentration * 100,
 				level: riskMetrics.concentration > 0.5 ? "Very High" : 
 				       riskMetrics.concentration > 0.33 ? "High" : 
@@ -124,7 +126,7 @@ export function RiskAnalysis({
 				color: riskMetrics.concentration > 0.5 ? "text-red-600" : 
 				       riskMetrics.concentration > 0.33 ? "text-orange-600" : 
 				       riskMetrics.concentration > 0.2 ? "text-yellow-600" : "text-green-600",
-				description: "Portfolio diversification level"
+				description: t("risk.portfolioDiversificationLevel")
 			}
 		];
 	}, [riskMetrics]);
@@ -135,12 +137,12 @@ export function RiskAnalysis({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<AlertTriangle className="h-5 w-5" />
-						Risk Analysis
+						{t("guide.riskMetrics")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="text-center p-8">
-						<p className="text-muted-foreground">Calculating risk metrics...</p>
+						<p className="text-muted-foreground">{t("risk.calculatingRiskMetrics")}</p>
 					</div>
 				</CardContent>
 			</Card>
@@ -183,7 +185,7 @@ export function RiskAnalysis({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Activity className="h-5 w-5" />
-						Individual Stock Risk Profile
+						{t("risk.individualStockRiskProfile")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
@@ -204,7 +206,7 @@ export function RiskAnalysis({
 								
 								<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 									<div>
-										<p className="text-sm text-muted-foreground mb-1">Volatility</p>
+										<p className="text-sm text-muted-foreground mb-1">{t("metrics.volatility")}</p>
 										<div className="flex items-center gap-2">
 											<Progress 
 												value={Math.min(stock.volatility * 200, 100)} 
@@ -217,7 +219,7 @@ export function RiskAnalysis({
 									</div>
 									
 									<div>
-										<p className="text-sm text-muted-foreground mb-1">Beta</p>
+										<p className="text-sm text-muted-foreground mb-1">{t("metrics.beta")}</p>
 										<div className="flex items-center gap-2">
 											<Progress 
 												value={Math.min(Math.abs(stock.beta) * 50, 100)} 
@@ -230,7 +232,7 @@ export function RiskAnalysis({
 									</div>
 									
 									<div>
-										<p className="text-sm text-muted-foreground mb-1">Correlation</p>
+										<p className="text-sm text-muted-foreground mb-1">{t("metrics.correlation")}</p>
 										<div className="flex items-center gap-2">
 											<Progress 
 												value={Math.abs(stock.correlation) * 100} 
@@ -243,7 +245,7 @@ export function RiskAnalysis({
 									</div>
 									
 									<div>
-										<p className="text-sm text-muted-foreground mb-1">Sharpe Ratio</p>
+										<p className="text-sm text-muted-foreground mb-1">{t("metrics.sharpeRatio")}</p>
 										<div className="flex items-center gap-2">
 											<span className={`text-sm font-medium ${
 												stock.sharpeRatio > 1 ? "text-green-600" : 
@@ -265,40 +267,40 @@ export function RiskAnalysis({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Shield className="h-5 w-5" />
-						Risk-Return Profile
+						{t("risk.riskReturnProfile")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 						{/* Risk Distribution */}
 						<div>
-							<h4 className="font-medium mb-4">Risk Distribution</h4>
+							<h4 className="font-medium mb-4">{t("risk.riskDistribution")}</h4>
 							<div className="space-y-3">
 								<div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
 									<div className="flex items-center gap-2">
 										<div className="w-3 h-3 bg-green-500 rounded-full"></div>
-										<span className="text-sm">Low Risk</span>
+										<span className="text-sm">{t("risk.lowRisk")}</span>
 									</div>
 									<span className="text-sm font-medium">
-										{riskMetrics.stockMetrics.filter(s => s.volatility < 0.2).length} stocks
+										{riskMetrics.stockMetrics.filter(s => s.volatility < 0.2).length} {t("risk.stocks")}
 									</span>
 								</div>
 								<div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
 									<div className="flex items-center gap-2">
 										<div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-										<span className="text-sm">Medium Risk</span>
+										<span className="text-sm">{t("risk.mediumRisk")}</span>
 									</div>
 									<span className="text-sm font-medium">
-										{riskMetrics.stockMetrics.filter(s => s.volatility >= 0.2 && s.volatility < 0.3).length} stocks
+										{riskMetrics.stockMetrics.filter(s => s.volatility >= 0.2 && s.volatility < 0.3).length} {t("risk.stocks")}
 									</span>
 								</div>
 								<div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
 									<div className="flex items-center gap-2">
 										<div className="w-3 h-3 bg-red-500 rounded-full"></div>
-										<span className="text-sm">High Risk</span>
+										<span className="text-sm">{t("risk.highRisk")}</span>
 									</div>
 									<span className="text-sm font-medium">
-										{riskMetrics.stockMetrics.filter(s => s.volatility >= 0.3).length} stocks
+										{riskMetrics.stockMetrics.filter(s => s.volatility >= 0.3).length} {t("risk.stocks")}
 									</span>
 								</div>
 							</div>
@@ -306,12 +308,12 @@ export function RiskAnalysis({
 
 						{/* Key Risk Insights */}
 						<div>
-							<h4 className="font-medium mb-4">Risk Insights</h4>
+							<h4 className="font-medium mb-4">{t("risk.riskInsights")}</h4>
 							<div className="space-y-3">
 								<div className="p-3 border rounded-lg">
 									<div className="flex items-center gap-2 mb-1">
 										<TrendingDown className="h-4 w-4 text-red-500" />
-										<span className="text-sm font-medium">Highest Risk Stock</span>
+										<span className="text-sm font-medium">{t("risk.highestRiskStock")}</span>
 									</div>
 									<p className="text-sm text-muted-foreground">
 										{riskMetrics.stockMetrics.length > 0 ? 
@@ -328,7 +330,7 @@ export function RiskAnalysis({
 								<div className="p-3 border rounded-lg">
 									<div className="flex items-center gap-2 mb-1">
 										<Shield className="h-4 w-4 text-blue-500" />
-										<span className="text-sm font-medium">Portfolio Beta</span>
+										<span className="text-sm font-medium">{t("risk.portfolioBeta")}</span>
 									</div>
 									<p className="text-sm text-muted-foreground">
 										{riskMetrics.avgBeta > 1 ? 
@@ -341,10 +343,10 @@ export function RiskAnalysis({
 								<div className="p-3 border rounded-lg">
 									<div className="flex items-center gap-2 mb-1">
 										<AlertTriangle className="h-4 w-4 text-orange-500" />
-										<span className="text-sm font-medium">Value at Risk (95%)</span>
+										<span className="text-sm font-medium">{t("metrics.valueAtRisk")}</span>
 									</div>
 									<p className="text-sm text-muted-foreground">
-										Potential daily loss: {(riskMetrics.valueAtRisk * 100).toFixed(1)}%
+										{t("risk.potentialDailyLoss")}: {(riskMetrics.valueAtRisk * 100).toFixed(1)}%
 									</p>
 								</div>
 							</div>

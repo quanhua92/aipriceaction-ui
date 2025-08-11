@@ -9,39 +9,49 @@ import {
 	Target,
 	Menu,
 	X,
+	Languages,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const { language, setLanguage } = useLanguage();
+	const { t } = useTranslation();
 
 	const navigationLinks = [
 		{
 			to: "/",
 			icon: BarChart3,
-			label: "Dashboard",
+			label: t("nav.dashboard"),
 		},
 		{
 			to: "/sectors",
 			icon: Building2,
-			label: "Sectors",
+			label: t("nav.sectors"),
 		},
 		{
 			to: "/tickers",
 			icon: Users,
-			label: "Tickers",
+			label: t("nav.tickers"),
 		},
 		{
 			to: "/compare",
 			icon: Grid3X3,
-			label: "Compare Charts",
+			label: t("nav.compareCharts"),
 		},
 		{
 			to: "/portfolio",
 			icon: Target,
-			label: "Portfolio Analysis",
+			label: t("nav.portfolioAnalysis"),
 		},
 	];
+
+	const toggleLanguage = () => {
+		const newLanguage = language === 'en' ? 'vn' : 'en';
+		setLanguage(newLanguage);
+	};
 
 	const closeMobileMenu = () => setMobileMenuOpen(false);
 
@@ -75,22 +85,48 @@ export default function Header() {
 							</Link>
 						);
 					})}
+					
+					{/* Language Toggle - Desktop */}
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={toggleLanguage}
+						className="flex items-center space-x-1 text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+						title={language === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh'}
+					>
+						<Languages className="h-4 w-4" />
+						<span className="font-semibold">{language.toUpperCase()}</span>
+					</Button>
 				</nav>
 
-				{/* Mobile Hamburger Button - only visible on mobile */}
-				<Button
-					variant="ghost"
-					size="icon"
-					className="md:hidden"
-					onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-					aria-label="Toggle mobile menu"
-				>
-					{mobileMenuOpen ? (
-						<X className="h-6 w-6" />
-					) : (
-						<Menu className="h-6 w-6" />
-					)}
-				</Button>
+				{/* Mobile Controls - only visible on mobile */}
+				<div className="md:hidden flex items-center space-x-2">
+					{/* Language Toggle - Mobile */}
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={toggleLanguage}
+						className="flex items-center space-x-1 text-xs"
+						title={language === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh'}
+					>
+						<Languages className="h-4 w-4" />
+						<span className="font-semibold">{language.toUpperCase()}</span>
+					</Button>
+					
+					{/* Mobile Hamburger Button */}
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+						aria-label="Toggle mobile menu"
+					>
+						{mobileMenuOpen ? (
+							<X className="h-6 w-6" />
+						) : (
+							<Menu className="h-6 w-6" />
+						)}
+					</Button>
+				</div>
 			</div>
 
 			{/* Mobile Navigation Menu - slides down when open */}

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Sectors Page', () => {
   test('should display sector performance overview', async ({ page }) => {
-    await page.goto('/sectors');
+    await page.goto('/sectors?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should show page title
@@ -15,7 +15,7 @@ test.describe('Sectors Page', () => {
   });
   
   test('should show sector performance metrics', async ({ page }) => {
-    await page.goto('/sectors');
+    await page.goto('/sectors?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
@@ -26,7 +26,7 @@ test.describe('Sectors Page', () => {
   });
   
   test('should allow navigation to individual sector pages', async ({ page }) => {
-    await page.goto('/sectors');
+    await page.goto('/sectors?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
     
@@ -46,7 +46,7 @@ test.describe('Sectors Page', () => {
   
   test('should handle individual sector page', async ({ page }) => {
     // Test a known sector page
-    await page.goto('/sector/NGAN_HANG');
+    await page.goto('/sector/NGAN_HANG?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
@@ -60,7 +60,7 @@ test.describe('Sectors Page', () => {
   });
 
   test('should display sector charts and performance data', async ({ page }) => {
-    await page.goto('/sectors');
+    await page.goto('/sectors?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     

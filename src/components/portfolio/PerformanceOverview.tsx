@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { TrendingUp, TrendingDown, Target, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from "@/components/ui/badge";
 import { ComparisonChart } from "@/components/charts";
 import {
@@ -21,6 +22,7 @@ export function PerformanceOverview({
 	benchmarkData, 
 	portfolioTickers 
 }: PerformanceOverviewProps) {
+	const { t } = useTranslation();
 	const portfolioMetrics = useMemo(() => {
 		if (Object.keys(portfolioData).length === 0 || benchmarkData.length === 0) {
 			return null;
@@ -108,12 +110,12 @@ export function PerformanceOverview({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<TrendingUp className="h-5 w-5" />
-						Performance Overview
+						{t("portfolio.performanceOverview")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="text-center p-8">
-						<p className="text-muted-foreground">Calculating portfolio performance...</p>
+						<p className="text-muted-foreground">{t("loading.portfolioData")}</p>
 					</div>
 				</CardContent>
 			</Card>
@@ -132,7 +134,7 @@ export function PerformanceOverview({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Portfolio Return</p>
+								<p className="text-sm text-muted-foreground">{t("metrics.totalReturn")}</p>
 								<p className={`text-xl font-bold ${isPortfolioPositive ? "text-green-600" : "text-red-600"}`}>
 									{isPortfolioPositive ? "+" : ""}{(portfolioMetrics.portfolioReturn * 100).toFixed(2)}%
 								</p>
@@ -151,7 +153,7 @@ export function PerformanceOverview({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">VN-Index Return</p>
+								<p className="text-sm text-muted-foreground">VN-Index {t("metrics.totalReturn")}</p>
 								<p className={`text-xl font-bold ${isBenchmarkPositive ? "text-green-600" : "text-red-600"}`}>
 									{isBenchmarkPositive ? "+" : ""}{(portfolioMetrics.benchmarkReturn * 100).toFixed(2)}%
 								</p>
@@ -167,7 +169,7 @@ export function PerformanceOverview({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Active Return</p>
+								<p className="text-sm text-muted-foreground">{t("metrics.activeReturn")}</p>
 								<p className={`text-xl font-bold ${isActivePositive ? "text-green-600" : "text-red-600"}`}>
 									{isActivePositive ? "+" : ""}{(portfolioMetrics.activeReturn * 100).toFixed(2)}%
 								</p>
@@ -183,7 +185,7 @@ export function PerformanceOverview({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Sharpe Ratio</p>
+								<p className="text-sm text-muted-foreground">{t("metrics.sharpeRatio")}</p>
 								<p className="text-xl font-bold text-blue-600">
 									{portfolioMetrics.sharpeRatio.toFixed(3)}
 								</p>
@@ -201,7 +203,7 @@ export function PerformanceOverview({
 			{/* Performance Chart */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Portfolio vs VN-Index Performance</CardTitle>
+					<CardTitle>{t("portfolio.stocksPerformance")}</CardTitle>
 					<div className="flex gap-2">
 						<Badge variant="default" className="bg-blue-500">Portfolio</Badge>
 						<Badge variant="outline">VN-Index</Badge>
@@ -217,7 +219,7 @@ export function PerformanceOverview({
 						/>
 					) : (
 						<div className="h-[300px] flex items-center justify-center">
-							<p className="text-muted-foreground">Loading performance chart...</p>
+							<p className="text-muted-foreground">{t("loading.chartData")}</p>
 						</div>
 					)}
 				</CardContent>
@@ -226,23 +228,23 @@ export function PerformanceOverview({
 			{/* Detailed Metrics */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Risk-Adjusted Performance</CardTitle>
+					<CardTitle>{t("portfolio.riskAdjustedPerformance")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 						<div className="space-y-2">
-							<h4 className="font-medium">Volatility Analysis</h4>
+							<h4 className="font-medium">{t("portfolio.volatilityAnalysis")}</h4>
 							<div className="space-y-1">
 								<div className="flex justify-between">
-									<span className="text-sm text-muted-foreground">Portfolio Volatility</span>
+									<span className="text-sm text-muted-foreground">{t("portfolio.portfolioVolatility")}</span>
 									<span className="text-sm font-medium">{(portfolioMetrics.volatility * 100).toFixed(2)}%</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-sm text-muted-foreground">Benchmark Volatility</span>
+									<span className="text-sm text-muted-foreground">{t("portfolio.benchmarkVolatility")}</span>
 									<span className="text-sm font-medium">{(portfolioMetrics.benchmarkVolatility * 100).toFixed(2)}%</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-sm text-muted-foreground">Volatility Ratio</span>
+									<span className="text-sm text-muted-foreground">{t("metrics.volatility")} Ratio</span>
 									<span className="text-sm font-medium">
 										{(portfolioMetrics.volatility / portfolioMetrics.benchmarkVolatility).toFixed(2)}x
 									</span>
@@ -251,32 +253,32 @@ export function PerformanceOverview({
 						</div>
 
 						<div className="space-y-2">
-							<h4 className="font-medium">Risk Metrics</h4>
+							<h4 className="font-medium">{t("guide.riskMetrics")}</h4>
 							<div className="space-y-1">
 								<div className="flex justify-between">
-									<span className="text-sm text-muted-foreground">Maximum Drawdown</span>
+									<span className="text-sm text-muted-foreground">{t("metrics.maximumDrawdown")}</span>
 									<span className="text-sm font-medium text-red-600">
 										-{(portfolioMetrics.maxDrawdown * 100).toFixed(2)}%
 									</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-sm text-muted-foreground">Information Ratio</span>
+									<span className="text-sm text-muted-foreground">{t("metrics.informationRatio")}</span>
 									<span className="text-sm font-medium">{portfolioMetrics.informationRatio.toFixed(3)}</span>
 								</div>
 							</div>
 						</div>
 
 						<div className="space-y-2">
-							<h4 className="font-medium">Performance Summary</h4>
+							<h4 className="font-medium">{t("guide.performanceMetrics")}</h4>
 							<div className="space-y-1">
 								<div className="flex justify-between">
-									<span className="text-sm text-muted-foreground">Return per Risk</span>
+									<span className="text-sm text-muted-foreground">{t("metrics.totalReturn")} per Risk</span>
 									<span className="text-sm font-medium">
 										{((portfolioMetrics.portfolioReturn / portfolioMetrics.volatility) * 100).toFixed(2)}%
 									</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-sm text-muted-foreground">Outperformance</span>
+									<span className="text-sm text-muted-foreground">{t("metrics.activeReturn")}</span>
 									<span className={`text-sm font-medium ${isActivePositive ? "text-green-600" : "text-red-600"}`}>
 										{isActivePositive ? "✓" : "✗"} {Math.abs(portfolioMetrics.activeReturn * 100).toFixed(2)}pp
 									</span>

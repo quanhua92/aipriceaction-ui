@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('End-to-End User Workflows', () => {
   test('complete portfolio creation workflow', async ({ page }) => {
     // Start at home page
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Navigate to portfolio
@@ -54,7 +54,7 @@ test.describe('End-to-End User Workflows', () => {
   
   test('ticker discovery and analysis workflow', async ({ page }) => {
     // Start by browsing sectors
-    await page.goto('/sectors');
+    await page.goto('/sectors?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
     
@@ -90,7 +90,7 @@ test.describe('End-to-End User Workflows', () => {
   
   test('comparison workflow from ticker search', async ({ page }) => {
     // Start at tickers page
-    await page.goto('/tickers');
+    await page.goto('/tickers?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Search for a specific ticker
@@ -102,7 +102,7 @@ test.describe('End-to-End User Workflows', () => {
     await expect(page.locator('text=VNINDEX')).toBeVisible();
     
     // Navigate to compare page
-    await page.goto('/compare');
+    await page.goto('/compare?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Add multiple tickers for comparison
@@ -144,7 +144,7 @@ test.describe('End-to-End User Workflows', () => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should show mobile navigation
@@ -183,12 +183,12 @@ test.describe('End-to-End User Workflows', () => {
     page.on('pageerror', error => errors.push(error.message));
     
     // Test invalid URLs
-    await page.goto('/invalid-page-123');
+    await page.goto('/invalid-page-123?lang=en');
     await page.waitForLoadState('networkidle');
     // Should handle gracefully (404 or redirect)
     
     // Test empty portfolio with analysis
-    await page.goto('/portfolio?range=INVALID');
+    await page.goto('/portfolio?range=INVALID&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
@@ -196,7 +196,7 @@ test.describe('End-to-End User Workflows', () => {
     await expect(page.locator('h1')).toContainText('Portfolio Analysis');
     
     // Test invalid ticker comparison
-    await page.goto('/compare?tickers=INVALID123&range=3M');
+    await page.goto('/compare?tickers=INVALID123&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     

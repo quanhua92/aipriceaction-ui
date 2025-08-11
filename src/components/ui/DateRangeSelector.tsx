@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { CalendarDays, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -45,6 +46,7 @@ export function DateRangeSelector({
 	showNavigationButtons = false,
 	showDataInfo = false,
 }: DateRangeSelectorProps) {
+	const { t } = useTranslation();
 	const [customStartDate, setCustomStartDate] = useState<string>(
 		value.range === "CUSTOM" && value.startDate
 			? formatDateForUrl(value.startDate)
@@ -160,15 +162,15 @@ export function DateRangeSelector({
 							className="px-3 py-1 text-sm"
 						>
 							<CalendarDays className="h-4 w-4 mr-1" />
-							Custom
+							{t("dateRange.customDateRange")}
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-80" align="start">
 						<div className="space-y-4">
 							<div className="space-y-2">
-								<h4 className="font-medium leading-none">Custom Date Range</h4>
+								<h4 className="font-medium leading-none">{t("dateRange.customDateRange")}</h4>
 								<p className="text-sm text-muted-foreground">
-									Enter dates in yyyy-mm-dd format (e.g., 2024-01-15)
+									{t("dateRange.dateFormatHint")}
 								</p>
 							</div>
 
@@ -227,7 +229,7 @@ export function DateRangeSelector({
 
 							{dataBounds && dataBounds.startDate && dataBounds.endDate && (
 								<div className="text-xs text-muted-foreground space-y-1">
-									<p>Available data range:</p>
+									<p>{t("dateRange.availableDataRange")}</p>
 									<p>
 										{formatDateForUrl(dataBounds.startDate)} to{" "}
 										{formatDateForUrl(dataBounds.endDate)}
@@ -241,10 +243,10 @@ export function DateRangeSelector({
 									size="sm"
 									onClick={resetCustomDates}
 								>
-									Reset
+									{t("dateRange.reset")}
 								</Button>
 								<Button size="sm" onClick={handleCustomDateChange}>
-									Apply Range
+									{t("dateRange.applyRange")}
 								</Button>
 							</div>
 						</div>

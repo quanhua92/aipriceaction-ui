@@ -5,7 +5,7 @@ test.describe('Mobile Navigation - Improved', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -30,7 +30,7 @@ test.describe('Mobile Navigation - Improved', () => {
 
   test('should open mobile menu when hamburger is clicked', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -63,7 +63,7 @@ test.describe('Mobile Navigation - Improved', () => {
 
   test('should close mobile menu when navigation link is clicked', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -93,7 +93,7 @@ test.describe('Mobile Navigation - Improved', () => {
     // Set desktop viewport
     await page.setViewportSize({ width: 1024, height: 768 });
     
-    await page.goto('/');
+    await page.goto('/?lang=en');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
     
@@ -129,7 +129,7 @@ test.describe('Mobile Navigation - Improved', () => {
       console.log(`Testing ${bp.name} (${bp.width}x${bp.height})`);
       
       await page.setViewportSize({ width: bp.width, height: bp.height });
-      await page.goto('/');
+      await page.goto('/?lang=en');
       await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(500);
       

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Tickers Page', () => {
   test('should display ticker browser with search', async ({ page }) => {
-    await page.goto('/tickers');
+    await page.goto('/tickers?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should show page title
@@ -18,7 +18,7 @@ test.describe('Tickers Page', () => {
   });
   
   test('should support ticker search functionality', async ({ page }) => {
-    await page.goto('/tickers');
+    await page.goto('/tickers?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Find search input
@@ -37,7 +37,7 @@ test.describe('Tickers Page', () => {
   });
   
   test('should allow navigation to individual ticker pages', async ({ page }) => {
-    await page.goto('/tickers');
+    await page.goto('/tickers?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
     
@@ -55,7 +55,7 @@ test.describe('Tickers Page', () => {
   });
   
   test('should show ticker performance data', async ({ page }) => {
-    await page.goto('/tickers');
+    await page.goto('/tickers?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
@@ -66,7 +66,7 @@ test.describe('Tickers Page', () => {
   });
 
   test('should handle loading states appropriately', async ({ page }) => {
-    await page.goto('/tickers');
+    await page.goto('/tickers?lang=en');
     
     // Should not show persistent loading after reasonable time
     await page.waitForLoadState('networkidle');

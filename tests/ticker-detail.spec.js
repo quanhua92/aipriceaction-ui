@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Individual Ticker Pages', () => {
   test('should display ticker detail page', async ({ page }) => {
     // Test a known ticker
-    await page.goto('/ticker/VCB');
+    await page.goto('/ticker/VCB?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
@@ -17,7 +17,7 @@ test.describe('Individual Ticker Pages', () => {
   });
   
   test('should display ticker chart', async ({ page }) => {
-    await page.goto('/ticker/VNINDEX');
+    await page.goto('/ticker/VNINDEX?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     
@@ -27,7 +27,7 @@ test.describe('Individual Ticker Pages', () => {
   });
   
   test('should support date range selection on ticker page', async ({ page }) => {
-    await page.goto('/ticker/VCB');
+    await page.goto('/ticker/VCB?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
     
@@ -47,7 +47,7 @@ test.describe('Individual Ticker Pages', () => {
   
   test('should handle invalid ticker gracefully', async ({ page }) => {
     // Test with non-existent ticker
-    await page.goto('/ticker/INVALID123');
+    await page.goto('/ticker/INVALID123?lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
@@ -60,7 +60,7 @@ test.describe('Individual Ticker Pages', () => {
   });
 
   test('should show ticker technical information', async ({ page }) => {
-    await page.goto('/ticker/VCB?range=3M');
+    await page.goto('/ticker/VCB?range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     

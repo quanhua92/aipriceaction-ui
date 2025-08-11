@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Portfolio-Compare Bidirectional Navigation', () => {
   test('should navigate from Portfolio to Compare and back with same parameters', async ({ page }) => {
     // Start with portfolio page with some tickers and custom range
-    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22BID%22,%22VNINDEX%22%5D&range=3M');
+    await page.goto('/portfolio?tickers=%5B%22VCB%22,%22BID%22,%22VNINDEX%22%5D&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should have the tickers in the portfolio

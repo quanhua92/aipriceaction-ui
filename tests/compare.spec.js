@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Compare Charts', () => {
   test('should show empty state with ticker selection', async ({ page }) => {
-    await page.goto('/compare');
+    await page.goto('/compare?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Should show compare page title
@@ -17,7 +17,7 @@ test.describe('Compare Charts', () => {
   });
   
   test('should allow comparing multiple tickers', async ({ page }) => {
-    await page.goto('/compare');
+    await page.goto('/compare?lang=en');
     await page.waitForLoadState('networkidle');
     
     // Add first ticker
@@ -50,7 +50,7 @@ test.describe('Compare Charts', () => {
   });
   
   test('should load compare page with URL parameters', async ({ page }) => {
-    await page.goto('/compare?tickers=VCB&tickers=BID&tickers=VNINDEX&range=6M');
+    await page.goto('/compare?tickers=VCB&tickers=BID&tickers=VNINDEX&range=6M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     
@@ -70,7 +70,7 @@ test.describe('Compare Charts', () => {
   });
   
   test('should handle date range changes', async ({ page }) => {
-    await page.goto('/compare?tickers=VNINDEX&range=3M');
+    await page.goto('/compare?tickers=VNINDEX&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
@@ -88,7 +88,7 @@ test.describe('Compare Charts', () => {
   });
 
   test('should support removing tickers', async ({ page }) => {
-    await page.goto('/compare?tickers=VCB&tickers=BID&tickers=HPG&range=3M');
+    await page.goto('/compare?tickers=VCB&tickers=BID&tickers=HPG&range=3M&lang=en');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
     
@@ -115,7 +115,7 @@ test.describe('Compare Charts', () => {
     const tickers = ['VCB', 'BID', 'CTG', 'ACB', 'HPG', 'VHM'];
     const tickerParams = tickers.map(t => `tickers=${t}`).join('&');
     
-    await page.goto(`/compare?${tickerParams}&range=3M`);
+    await page.goto(`/compare?${tickerParams}&range=3M&lang=en`);
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(3000);
     

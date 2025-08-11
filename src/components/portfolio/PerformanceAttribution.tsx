@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Target, Trophy, TrendingUp, TrendingDown, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -28,6 +29,7 @@ export function PerformanceAttribution({
 	benchmarkData, 
 	portfolioTickers 
 }: PerformanceAttributionProps) {
+	const { t } = useTranslation();
 	const attributionData = useMemo(() => {
 		if (Object.keys(portfolioData).length === 0 || benchmarkData.length === 0 || portfolioTickers.length === 0) {
 			return null;
@@ -93,13 +95,13 @@ export function PerformanceAttribution({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Target className="h-5 w-5" />
-						Performance Attribution
+						{t("attribution.performanceAttribution")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="text-center p-8">
 						<p className="text-muted-foreground">
-							{!attributionData ? "Calculating performance attribution..." : "No portfolio data available"}
+							{!attributionData ? t("attribution.calculatingPerformanceAttribution") : t("attribution.noPortfolioDataAvailable")}
 						</p>
 					</div>
 				</CardContent>
@@ -125,7 +127,7 @@ export function PerformanceAttribution({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Portfolio Return</p>
+								<p className="text-sm text-muted-foreground">{t("metrics.totalReturn")}</p>
 								<p className={`text-xl font-bold ${getPerformanceColor(attributionData.totalPortfolioReturn)}`}>
 									{attributionData.totalPortfolioReturn >= 0 ? "+" : ""}{(attributionData.totalPortfolioReturn * 100).toFixed(2)}%
 								</p>
@@ -141,7 +143,7 @@ export function PerformanceAttribution({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Best Performer</p>
+								<p className="text-sm text-muted-foreground">{t("attribution.bestPerformer")}</p>
 								<p className="text-sm font-bold text-green-600">
 									{attributionData.bestPerformer.stock.ticker}
 								</p>
@@ -160,7 +162,7 @@ export function PerformanceAttribution({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Worst Performer</p>
+								<p className="text-sm text-muted-foreground">{t("attribution.worstPerformer")}</p>
 								<p className="text-sm font-bold text-red-600">
 									{attributionData.worstPerformer.stock.ticker}
 								</p>
@@ -179,12 +181,12 @@ export function PerformanceAttribution({
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Active Return</p>
+								<p className="text-sm text-muted-foreground">{t("metrics.activeReturn")}</p>
 								<p className={`text-xl font-bold ${getPerformanceColor(attributionData.totalPortfolioReturn - attributionData.benchmarkReturn)}`}>
 									{(attributionData.totalPortfolioReturn - attributionData.benchmarkReturn) >= 0 ? "+" : ""}
 									{((attributionData.totalPortfolioReturn - attributionData.benchmarkReturn) * 100).toFixed(2)}%
 								</p>
-								<p className="text-xs text-muted-foreground">vs VN-Index</p>
+								<p className="text-xs text-muted-foreground">{t("attribution.vsVnIndex")}</p>
 							</div>
 						</div>
 					</CardContent>
@@ -196,7 +198,7 @@ export function PerformanceAttribution({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Trophy className="h-5 w-5" />
-						Individual Stock Attribution
+						{t("attribution.individualStockAttribution")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
@@ -215,20 +217,20 @@ export function PerformanceAttribution({
 												#{attribution.performanceRank}
 											</Badge>
 											<Badge variant="outline">
-												{((1 / portfolioTickers.length) * 100).toFixed(1)}% weight
+												{((1 / portfolioTickers.length) * 100).toFixed(1)}% {t("attribution.weight")}
 											</Badge>
 										</div>
 										<div className="text-right">
 											<p className={`text-lg font-bold ${getPerformanceColor(attribution.stock.totalReturn)}`}>
 												{attribution.stock.totalReturn >= 0 ? "+" : ""}{(attribution.stock.totalReturn * 100).toFixed(2)}%
 											</p>
-											<p className="text-sm text-muted-foreground">Total Return</p>
+											<p className="text-sm text-muted-foreground">{t("metrics.totalReturn")}</p>
 										</div>
 									</div>
 									
 									<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 										<div>
-											<p className="text-sm text-muted-foreground mb-1">Portfolio Contribution</p>
+											<p className="text-sm text-muted-foreground mb-1">{t("attribution.portfolioContribution")}</p>
 											<div className="flex items-center gap-2">
 												<Progress 
 													value={Math.min(Math.abs(attribution.weightedContribution) * 1000, 100)} 
@@ -241,21 +243,21 @@ export function PerformanceAttribution({
 										</div>
 										
 										<div>
-											<p className="text-sm text-muted-foreground mb-1">vs Benchmark</p>
+											<p className="text-sm text-muted-foreground mb-1">{t("attribution.vsBenchmark")}</p>
 											<span className={`text-sm font-medium ${getPerformanceColor(attribution.relativePerformance)}`}>
 												{attribution.relativePerformance >= 0 ? "+" : ""}{(attribution.relativePerformance * 100).toFixed(2)}%
 											</span>
 										</div>
 										
 										<div>
-											<p className="text-sm text-muted-foreground mb-1">Beta</p>
+											<p className="text-sm text-muted-foreground mb-1">{t("metrics.beta")}</p>
 											<span className="text-sm font-medium">
 												{attribution.stock.beta.toFixed(2)}
 											</span>
 										</div>
 										
 										<div>
-											<p className="text-sm text-muted-foreground mb-1">Volatility</p>
+											<p className="text-sm text-muted-foreground mb-1">{t("metrics.volatility")}</p>
 											<span className="text-sm font-medium">
 												{(attribution.stock.volatility * 100).toFixed(1)}%
 											</span>
@@ -271,7 +273,7 @@ export function PerformanceAttribution({
 			{/* Attribution Breakdown */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Performance Breakdown</CardTitle>
+					<CardTitle>{t("attribution.performanceBreakdown")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -279,7 +281,7 @@ export function PerformanceAttribution({
 						<div>
 							<h4 className="font-medium mb-4 flex items-center gap-2">
 								<TrendingUp className="h-4 w-4 text-green-600" />
-								Positive Contributors ({attributionData.positiveContributors.length})
+								{t("attribution.positiveContributors")} ({attributionData.positiveContributors.length})
 							</h4>
 							<div className="space-y-2">
 								{attributionData.positiveContributors.map((contributor) => (
@@ -292,7 +294,7 @@ export function PerformanceAttribution({
 								))}
 								<div className="border-t pt-2 mt-2">
 									<div className="flex items-center justify-between font-semibold">
-										<span>Total Positive</span>
+										<span>{t("attribution.totalPositive")}</span>
 										<span className="text-green-600">+{(attributionData.positiveContribution * 100).toFixed(2)}%</span>
 									</div>
 								</div>
@@ -303,7 +305,7 @@ export function PerformanceAttribution({
 						<div>
 							<h4 className="font-medium mb-4 flex items-center gap-2">
 								<TrendingDown className="h-4 w-4 text-red-600" />
-								Negative Contributors ({attributionData.negativeContributors.length})
+								{t("attribution.negativeContributors")} ({attributionData.negativeContributors.length})
 							</h4>
 							<div className="space-y-2">
 								{attributionData.negativeContributors.map((contributor) => (
@@ -317,14 +319,14 @@ export function PerformanceAttribution({
 								{attributionData.negativeContributors.length > 0 && (
 									<div className="border-t pt-2 mt-2">
 										<div className="flex items-center justify-between font-semibold">
-											<span>Total Negative</span>
+											<span>{t("attribution.totalNegative")}</span>
 											<span className="text-red-600">-{(attributionData.negativeContribution * 100).toFixed(2)}%</span>
 										</div>
 									</div>
 								)}
 								{attributionData.negativeContributors.length === 0 && (
 									<div className="text-center p-4 text-green-600">
-										<p className="text-sm">🎉 All stocks contributed positively!</p>
+										<p className="text-sm">{t("attribution.allStocksPositive")}</p>
 									</div>
 								)}
 							</div>
@@ -333,10 +335,10 @@ export function PerformanceAttribution({
 
 					{/* Key Insights */}
 					<div className="mt-6 p-4 bg-muted/50 rounded-lg">
-						<h4 className="font-medium mb-3">Key Performance Insights</h4>
+						<h4 className="font-medium mb-3">{t("attribution.keyPerformanceInsights")}</h4>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
 							<div>
-								<p className="text-muted-foreground mb-1">Top Contributor Impact:</p>
+								<p className="text-muted-foreground mb-1">{t("attribution.topContributorImpact")}:</p>
 								<p className="font-medium">
 									{attributionData.bestPerformer.stock.ticker} added{" "}
 									<span className="text-green-600">
