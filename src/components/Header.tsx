@@ -33,8 +33,7 @@ export default function Header() {
 						</Link>
 						
 						<Link 
-							to="/tickers" 
-							search={{ sector: "ALL" }}
+							to="/sectors"
 							className="transition-colors hover:text-foreground/80 text-foreground/60 [&.active]:text-foreground"
 						>
 							<div className="flex items-center space-x-2">

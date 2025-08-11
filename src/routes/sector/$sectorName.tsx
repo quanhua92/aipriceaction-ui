@@ -166,8 +166,8 @@ function SectorPage() {
 							<p className="text-red-600 font-semibold">
 								Sector "{sectorLabel}" not found
 							</p>
-							<Link to="/tickers">
-								<Button variant="outline">Back to Tickers</Button>
+							<Link to="/sectors">
+								<Button variant="outline">Back to Sectors</Button>
 							</Link>
 						</div>
 					</CardContent>
@@ -181,7 +181,7 @@ function SectorPage() {
 			{/* Header */}
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
-					<Link to="/tickers">
+					<Link to="/sectors">
 						<Button variant="ghost" size="sm">
 							<ArrowLeft className="h-4 w-4 mr-1" />
 							Back
