@@ -141,7 +141,7 @@ function TopPerformers({
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-2">
-						{[1, 2, 3, 4, 5].map(i => (
+						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
 							<div key={i} className="animate-pulse">
 								<div className="h-4 bg-muted rounded w-full mb-1"></div>
 								<div className="h-3 bg-muted rounded w-3/4"></div>
@@ -169,7 +169,7 @@ function TopPerformers({
 			</CardHeader>
 			<CardContent>
 				<div className="space-y-3">
-					{performers.slice(0, 5).map((performer, index) => {
+					{performers.slice(0, 10).map((performer, index) => {
 						const dailyPerf = dailyPerformanceMap[performer.ticker];
 						const isDailyPositive = dailyPerf?.changePercent >= 0;
 						const isRangePositive = performer.changePercent >= 0;
