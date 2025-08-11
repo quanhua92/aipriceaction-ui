@@ -21,14 +21,14 @@ export default function Header() {
 			label: "Dashboard",
 		},
 		{
-			to: "/tickers",
-			icon: Users,
-			label: "Browse Tickers",
-		},
-		{
 			to: "/sectors",
 			icon: Building2,
 			label: "Sectors",
+		},
+		{
+			to: "/tickers",
+			icon: Users,
+			label: "Tickers",
 		},
 		{
 			to: "/compare",

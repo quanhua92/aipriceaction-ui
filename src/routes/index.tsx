@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { TrendingUp, Search, BarChart3, Grid3X3, Building2, DollarSign, ArrowUp, ArrowDown } from "lucide-react";
+import { TrendingUp, Search, Grid3X3, Building2, DollarSign, ArrowUp, ArrowDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -259,12 +259,26 @@ function Dashboard() {
 
 				{/* Quick Navigation */}
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+					<Link to="/sectors">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow">
+							<CardContent className="flex items-center gap-3 p-4">
+								<Building2 className="h-8 w-8 text-primary" />
+								<div>
+									<p className="font-semibold">Sectors</p>
+									<p className="text-sm text-muted-foreground">
+										{sectorCount} sectors
+									</p>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
+
 					<Link to="/tickers">
 						<Card className="cursor-pointer hover:shadow-md transition-shadow">
 							<CardContent className="flex items-center gap-3 p-4">
 								<Search className="h-8 w-8 text-primary" />
 								<div>
-									<p className="font-semibold">Browse Tickers</p>
+									<p className="font-semibold">Tickers</p>
 									<p className="text-sm text-muted-foreground">
 										{totalTickers} stocks
 									</p>
@@ -280,20 +294,6 @@ function Dashboard() {
 								<div>
 									<p className="font-semibold">Compare Charts</p>
 									<p className="text-sm text-muted-foreground">Side-by-side</p>
-								</div>
-							</CardContent>
-						</Card>
-					</Link>
-
-					<Link to="/sectors">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow">
-							<CardContent className="flex items-center gap-3 p-4">
-								<BarChart3 className="h-8 w-8 text-primary" />
-								<div>
-									<p className="font-semibold">Sectors</p>
-									<p className="text-sm text-muted-foreground">
-										{sectorCount} sectors
-									</p>
 								</div>
 							</CardContent>
 						</Card>
