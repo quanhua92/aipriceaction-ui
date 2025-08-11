@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Grid3X3, Settings, Plus, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,17 +46,31 @@ export const Route = createFileRoute("/compare")({
 });
 
 const LAYOUT_OPTIONS = [
-	{ value: "1x1" as GridLayout, label: "1×1", cols: 1, rows: 1 },
-	{ value: "1x2" as GridLayout, label: "1×2", cols: 2, rows: 1 },
-	{ value: "2x1" as GridLayout, label: "2×1", cols: 1, rows: 2 },
-	{ value: "2x2" as GridLayout, label: "2×2", cols: 2, rows: 2 },
-	{ value: "2x3" as GridLayout, label: "2×3", cols: 3, rows: 2 },
-	{ value: "3x2" as GridLayout, label: "3×2", cols: 2, rows: 3 },
+	{ value: "1x1" as GridLayout, label: "1×1", cols: 1, rows: 1, description: "Single chart" },
+	{ value: "1x2" as GridLayout, label: "1×2", cols: 2, rows: 1, description: "2 charts side-by-side (1 column on mobile)" },
+	{ value: "2x1" as GridLayout, label: "2×1", cols: 1, rows: 2, description: "2 charts stacked" },
+	{ value: "2x2" as GridLayout, label: "2×2", cols: 2, rows: 2, description: "4 charts grid (1 column on mobile)" },
+	{ value: "2x3" as GridLayout, label: "2×3", cols: 3, rows: 2, description: "6 charts grid (responsive)" },
+	{ value: "3x2" as GridLayout, label: "3×2", cols: 2, rows: 3, description: "6 charts grid (responsive)" },
 ];
 
 function ComparePage() {
 	const navigate = useNavigate({ from: Route.fullPath });
 	const { tickers = [], layout = "2x2", range = "3M", startDate, endDate } = Route.useSearch();
+	
+	// Track screen size for responsive chart heights
+	const [isMobile, setIsMobile] = useState(false);
+	
+	useEffect(() => {
+		const checkIsMobile = () => {
+			setIsMobile(window.innerWidth < 640);
+		};
+		
+		checkIsMobile();
+		window.addEventListener('resize', checkIsMobile);
+		
+		return () => window.removeEventListener('resize', checkIsMobile);
+	}, []);
 
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
@@ -119,17 +133,17 @@ function ComparePage() {
 			case "1x1":
 				return `${baseClasses} grid-cols-1`;
 			case "1x2":
-				return `${baseClasses} grid-cols-2`;
+				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
 			case "2x1":
 				return `${baseClasses} grid-cols-1`;
 			case "2x2":
-				return `${baseClasses} grid-cols-2`;
+				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
 			case "2x3":
-				return `${baseClasses} grid-cols-3`;
+				return `${baseClasses} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`;
 			case "3x2":
-				return `${baseClasses} grid-cols-2`;
+				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
 			default:
-				return `${baseClasses} grid-cols-2`;
+				return `${baseClasses} grid-cols-1 sm:grid-cols-2`;
 		}
 	};
 
@@ -153,8 +167,7 @@ function ComparePage() {
 					Compare Charts
 				</h1>
 				<p className="text-muted-foreground">
-					Compare multiple stock charts side-by-side in a customizable grid
-					layout
+					Compare multiple stock charts in a flexible grid layout that adapts to mobile screens
 				</p>
 			</div>
 
@@ -199,7 +212,10 @@ function ComparePage() {
 								<SelectContent>
 									{LAYOUT_OPTIONS.map((option) => (
 										<SelectItem key={option.value} value={option.value}>
-											{option.label} Grid
+											<div className="flex flex-col items-start">
+												<span>{option.label} Grid</span>
+												<span className="text-xs text-muted-foreground">{option.description}</span>
+											</div>
 										</SelectItem>
 									))}
 								</SelectContent>
@@ -238,7 +254,7 @@ function ComparePage() {
 			{/* Grid Layout */}
 			<div className={getGridClasses()}>
 				{gridItems.map((item, index) => (
-					<Card key={item.id} className="min-h-[400px]">
+					<Card key={item.id} className="min-h-[300px] sm:min-h-[400px]">
 						<CardHeader className="pb-2">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-2">
@@ -276,23 +292,23 @@ function ComparePage() {
 						<CardContent>
 							{item.ticker && item.data.length > 0 ? (
 								isLoading ? (
-									<div className="h-[300px] flex items-center justify-center">
+									<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
 										<div className="text-muted-foreground">Loading...</div>
 									</div>
 								) : (
 									<CandlestickChart
 										data={item.data}
-										height={300}
+										height={isMobile ? 250 : 300}
 									/>
 								)
 							) : item.ticker && isLoading ? (
-								<div className="h-[300px] flex items-center justify-center">
+								<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
 									<div className="text-muted-foreground">
 										Loading {item.ticker}...
 									</div>
 								</div>
 							) : item.ticker ? (
-								<div className="h-[300px] flex items-center justify-center">
+								<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
 									<div className="text-center space-y-2">
 										<p className="text-muted-foreground">No data available</p>
 										<p className="text-xs text-muted-foreground">
@@ -301,7 +317,7 @@ function ComparePage() {
 									</div>
 								</div>
 							) : (
-								<div className="h-[300px] flex items-center justify-center border-2 border-dashed border-muted-foreground/20 rounded-lg">
+								<div className="h-[250px] sm:h-[300px] flex items-center justify-center border-2 border-dashed border-muted-foreground/20 rounded-lg">
 									<div className="text-center space-y-4">
 										<Plus className="h-12 w-12 text-muted-foreground/40 mx-auto" />
 										<div>

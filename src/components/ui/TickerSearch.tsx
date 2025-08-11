@@ -24,6 +24,7 @@ interface TickerSearchProps {
 	onSelect: (ticker: string) => void;
 	placeholder?: string;
 	className?: string;
+	keepOpenAfterSelect?: boolean;
 }
 
 export function TickerSearch({
@@ -31,6 +32,7 @@ export function TickerSearch({
 	onSelect,
 	placeholder = "Search tickers...",
 	className,
+	keepOpenAfterSelect = false,
 }: TickerSearchProps) {
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState("");
@@ -102,7 +104,9 @@ export function TickerSearch({
 									value={ticker}
 									onSelect={(currentValue) => {
 										onSelect(currentValue.toUpperCase());
-										setOpen(false);
+										if (!keepOpenAfterSelect) {
+											setOpen(false);
+										}
 										setSearch("");
 									}}
 									className="flex items-center justify-between"
@@ -172,6 +176,7 @@ export function MultiTickerSearch({
 						: placeholder
 				}
 				className="w-full"
+				keepOpenAfterSelect={true}
 			/>
 		</div>
 	);
