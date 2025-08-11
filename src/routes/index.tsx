@@ -4,10 +4,10 @@ import { TrendingUp, Search, BarChart3, Grid3X3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StockChart } from "@/components/charts";
-import { TimeRangeSelector } from "@/components/ui/TimeRangeSelector";
+import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
-import { calculatePriceChange, type TimeRange } from "@/lib/stock-data";
+import { calculatePriceChange, createDateRangeConfig, type TimeRange } from "@/lib/stock-data";
 
 export const Route = createFileRoute("/")({
 	component: Dashboard,
@@ -15,9 +15,10 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
 	const [timeRange, setTimeRange] = useState<TimeRange>("3M");
+	const dateRangeConfig = createDateRangeConfig(timeRange);
 	const { data: vnindexData, isLoading: vnindexLoading } = useTickerData(
 		"VNINDEX",
-		timeRange,
+		dateRangeConfig,
 	);
 	const { data: tickerGroups } = useTickerGroups();
 
@@ -131,7 +132,15 @@ function Dashboard() {
 								<TrendingUp className="h-5 w-5" />
 								VN-Index Overview
 							</CardTitle>
-							<TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+							<DateRangeSelector 
+								value={dateRangeConfig} 
+								onChange={(config) => {
+									if (config.range !== "CUSTOM") {
+										setTimeRange(config.range);
+									}
+								}}
+								dataRange={vnindexData}
+							/>
 						</CardHeader>
 						<CardContent>
 							{vnindexLoading ? (

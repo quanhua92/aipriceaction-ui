@@ -48,3 +48,4 @@ TanStack Query integration is centralized in `src/integrations/tanstack-query/` 
 - `layout.tsx` - Query devtools integration
 
 Demo files (prefixed with `demo`) can be safely deleted.
+- always run test with timeout like timeout 30s timeout 60s to avoid blocking bash

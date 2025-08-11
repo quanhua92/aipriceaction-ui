@@ -13,13 +13,26 @@ export interface TickerGroup {
 	[sector: string]: string[];
 }
 
-export type TimeRange = "1M" | "3M" | "6M" | "1Y" | "2Y" | "ALL";
+export type TimeRange = "1M" | "3M" | "6M" | "1Y" | "2Y" | "ALL" | "CUSTOM";
+
+export interface DateRange {
+	startDate?: Date;
+	endDate?: Date;
+}
+
+export interface CustomDateRange extends DateRange {
+	range: "CUSTOM";
+}
+
+export type DateRangeConfig = 
+	| { range: Exclude<TimeRange, "CUSTOM"> }
+	| CustomDateRange;
 
 const GITHUB_RAW_BASE_URL =
-	"https://raw.githubusercontent.com/quanhua92/aipriceaction-ui/main/market_data_2017_2025";
+	"https://raw.githubusercontent.com/quanhua92/aipriceaction-ui/refs/heads/main/market_data";
 
 export function getTickerCsvUrl(ticker: string): string {
-	return `${GITHUB_RAW_BASE_URL}/${ticker}_2017-01-03_to_2025-08-11.csv`;
+	return `${GITHUB_RAW_BASE_URL}/${ticker}.csv`;
 }
 
 export async function fetchTickerData(
@@ -52,11 +65,15 @@ export function parseCsvData(csvText: string): StockDataPoint[] {
 
 	return lines.slice(1).map((line) => {
 		const [ticker, time, open, high, low, close, volume] = line.split(",");
+		
+		// Parse date in YYYY-MM-DD format and treat it as local time
+		const [year, month, day] = time.split("-").map(Number);
+		const date = new Date(year, month - 1, day); // month is 0-indexed
 
 		return {
 			ticker,
 			time,
-			date: new Date(time),
+			date,
 			open: parseFloat(open),
 			high: parseFloat(high),
 			low: parseFloat(low),
@@ -71,6 +88,7 @@ export function filterDataByTimeRange(
 	range: TimeRange,
 ): StockDataPoint[] {
 	if (range === "ALL") return data;
+	if (range === "CUSTOM") return data; // Custom filtering handled separately
 
 	const now = new Date();
 	const cutoffDate = new Date();
@@ -94,6 +112,64 @@ export function filterDataByTimeRange(
 	}
 
 	return data.filter((point) => point.date >= cutoffDate);
+}
+
+export function filterDataByDateRange(
+	data: StockDataPoint[],
+	config: DateRangeConfig,
+): StockDataPoint[] {
+	if (config.range !== "CUSTOM") {
+		return filterDataByTimeRange(data, config.range);
+	}
+
+	const { startDate, endDate } = config;
+	
+	return data.filter((point) => {
+		if (startDate && point.date < startDate) return false;
+		if (endDate && point.date > endDate) return false;
+		return true;
+	});
+}
+
+export function parseDateString(dateStr: string): Date | null {
+	try {
+		const date = new Date(dateStr);
+		return isNaN(date.getTime()) ? null : date;
+	} catch {
+		return null;
+	}
+}
+
+export function formatDateForUrl(date: Date): string {
+	return date.toISOString().split('T')[0]; // YYYY-MM-DD format
+}
+
+export function getDataDateBounds(data: StockDataPoint[]): DateRange {
+	if (data.length === 0) return {};
+	
+	const dates = data.map(point => point.date);
+	return {
+		startDate: new Date(Math.min(...dates.map(d => d.getTime()))),
+		endDate: new Date(Math.max(...dates.map(d => d.getTime()))),
+	};
+}
+
+export function createDateRangeConfig(
+	range?: TimeRange,
+	startDate?: string,
+	endDate?: string,
+): DateRangeConfig {
+	// If custom dates are provided, use custom range
+	if (startDate || endDate) {
+		return {
+			range: "CUSTOM",
+			startDate: startDate ? parseDateString(startDate) || undefined : undefined,
+			endDate: endDate ? parseDateString(endDate) || undefined : undefined,
+		};
+	}
+	
+	// Otherwise use the provided range or default
+	return { range: range || "ALL" };
 }
 
 export function sampleData(

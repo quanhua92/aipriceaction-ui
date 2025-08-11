@@ -31,13 +31,13 @@ function formatVolume(value: number): string {
 	return value.toString();
 }
 
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload }: any) {
 	if (active && payload && payload.length) {
 		const data = payload[0].payload as StockDataPoint;
 		return (
 			<div className="bg-background border rounded-lg shadow-lg p-3">
 				<p className="font-semibold">
-					{format(new Date(label), "MMM dd, yyyy")}
+					{format(data.date, "MMM dd, yyyy")}
 				</p>
 				<p className="text-sm">
 					<span className="text-muted-foreground">Volume: </span>

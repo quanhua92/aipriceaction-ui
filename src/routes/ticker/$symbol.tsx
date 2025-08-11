@@ -13,18 +13,21 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StockChart, CandlestickChart, VolumeChart } from "@/components/charts";
-import { TimeRangeSelector } from "@/components/ui/TimeRangeSelector";
+import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTickerData, useTickerGroups } from "@/lib/queries";
 import {
 	calculatePriceChange,
 	getLatestPrice,
 	findTickerSector,
+	createDateRangeConfig,
 	type TimeRange,
 } from "@/lib/stock-data";
 import { format } from "date-fns";
 
 interface TickerPageSearch {
 	range?: TimeRange;
+	startDate?: string;
+	endDate?: string;
 	type?: "line" | "candlestick";
 }
 
@@ -32,6 +35,8 @@ export const Route = createFileRoute("/ticker/$symbol")({
 	validateSearch: (search: Record<string, unknown>): TickerPageSearch => {
 		return {
 			range: (search.range as TimeRange) || "ALL",
+			startDate: search.startDate as string,
+			endDate: search.endDate as string,
 			type: (search.type as "line" | "candlestick") || "line",
 		};
 	},
@@ -41,9 +46,12 @@ export const Route = createFileRoute("/ticker/$symbol")({
 function TickerPage() {
 	const { symbol } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { range = "ALL", type = "line" } = Route.useSearch();
+	const { range = "ALL", startDate, endDate, type = "line" } = Route.useSearch();
 
-	const { data: tickerData, isLoading, error } = useTickerData(symbol, range);
+	// Create date range configuration
+	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
+
+	const { data: tickerData, isLoading, error } = useTickerData(symbol, dateRangeConfig);
 	const { data: tickerGroups } = useTickerGroups();
 
 	const updateSearchParams = (updates: Partial<TickerPageSearch>) => {
@@ -137,9 +145,26 @@ function TickerPage() {
 				</div>
 
 				<div className="flex items-center gap-4">
-					<TimeRangeSelector
-						value={range}
-						onChange={(newRange) => updateSearchParams({ range: newRange })}
+					<DateRangeSelector
+						value={dateRangeConfig}
+						onChange={(config) => {
+							if (config.range === "CUSTOM") {
+								updateSearchParams({
+									range: config.range,
+									startDate: config.startDate ? config.startDate.toISOString().split('T')[0] : undefined,
+									endDate: config.endDate ? config.endDate.toISOString().split('T')[0] : undefined,
+								});
+							} else {
+								updateSearchParams({
+									range: config.range,
+									startDate: undefined,
+									endDate: undefined,
+								});
+							}
+						}}
+						dataRange={tickerData}
+						showNavigationButtons={true}
+						showDataInfo={true}
 					/>
 				</div>
 			</div>
@@ -221,7 +246,11 @@ function TickerPage() {
 								<p className="text-sm font-medium text-muted-foreground">
 									Data Range
 								</p>
-								<p className="text-lg font-semibold">{range}</p>
+								<p className="text-lg font-semibold">
+									{dateRangeConfig.range === "CUSTOM"
+										? "Custom"
+										: dateRangeConfig.range}
+								</p>
 								{tickerData && (
 									<p className="text-xs text-muted-foreground">
 										{tickerData.length} data points

@@ -20,17 +20,20 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { StockChart } from "@/components/charts";
-import { TimeRangeSelector } from "@/components/ui/TimeRangeSelector";
-import { useTickerGroups, useMultipleTickerData } from "@/lib/queries";
+import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
+import { useTickerGroups, useMultipleTickerDataWithRange } from "@/lib/queries";
 import {
 	getTickersBySector,
 	calculatePriceChange,
 	getLatestPrice,
+	createDateRangeConfig,
 	type TimeRange,
 } from "@/lib/stock-data";
 
 interface SectorPageSearch {
 	range?: TimeRange;
+	startDate?: string;
+	endDate?: string;
 	compare?: string[];
 }
 
@@ -38,6 +41,8 @@ export const Route = createFileRoute("/sector/$sectorName")({
 	validateSearch: (search: Record<string, unknown>): SectorPageSearch => {
 		return {
 			range: (search.range as TimeRange) || "1Y",
+			startDate: search.startDate as string,
+			endDate: search.endDate as string,
 			compare: Array.isArray(search.compare)
 				? (search.compare as string[])
 				: [],
@@ -49,14 +54,17 @@ export const Route = createFileRoute("/sector/$sectorName")({
 function SectorPage() {
 	const { sectorName } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { range = "1Y", compare = [] } = Route.useSearch();
+	const { range = "1Y", startDate, endDate, compare = [] } = Route.useSearch();
+
+	// Create date range configuration
+	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
 
 	const { data: tickerGroups, isLoading: groupsLoading } = useTickerGroups();
 	const sectorTickers = useMemo(() => {
 		return tickerGroups ? getTickersBySector(tickerGroups, sectorName) : [];
 	}, [tickerGroups, sectorName]);
 
-	const { data: tickerData, isLoading: dataLoading } = useMultipleTickerData(
+	const { data: tickerData, isLoading: dataLoading } = useMultipleTickerDataWithRange(
 		sectorTickers,
 		range,
 		300,
@@ -176,9 +184,24 @@ function SectorPage() {
 				</div>
 
 				<div className="flex items-center gap-4">
-					<TimeRangeSelector
-						value={range}
-						onChange={(newRange) => updateSearchParams({ range: newRange })}
+					<DateRangeSelector
+						value={dateRangeConfig}
+						onChange={(config) => {
+							if (config.range === "CUSTOM") {
+								updateSearchParams({
+									range: config.range,
+									startDate: config.startDate ? config.startDate.toISOString().split('T')[0] : undefined,
+									endDate: config.endDate ? config.endDate.toISOString().split('T')[0] : undefined,
+								});
+							} else {
+								updateSearchParams({
+									range: config.range,
+									startDate: undefined,
+									endDate: undefined,
+								});
+							}
+						}}
+						showNavigationButtons={true}
 					/>
 				</div>
 			</div>

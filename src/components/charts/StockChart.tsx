@@ -38,13 +38,13 @@ function formatVolume(value: number): string {
 	return value.toString();
 }
 
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload }: any) {
 	if (active && payload && payload.length) {
-		const data = payload[0].payload as StockDataPoint;
+		const data = payload[0].payload as StockDataPoint & { fullDate: string };
 		return (
 			<div className="bg-background border rounded-lg shadow-lg p-3">
 				<p className="font-semibold">
-					{format(new Date(label), "MMM dd, yyyy")}
+					{format(data.date, "MMM dd, yyyy")}
 				</p>
 				<p className="text-sm">
 					<span className="text-green-600">Open: </span>
@@ -94,6 +94,7 @@ export function StockChart({
 	const chartData = data.map((point) => ({
 		...point,
 		time: format(point.date, "MMM dd"),
+		fullDate: format(point.date, "yyyy-MM-dd"),
 		timestamp: point.date.getTime(),
 	}));
 

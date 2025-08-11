@@ -177,6 +177,9 @@ importers:
       jsdom:
         specifier: ^26.0.0
         version: 26.1.0
+      playwright:
+        specifier: ^1.54.2
+        version: 1.54.2
       typescript:
         specifier: ^5.7.2
         version: 5.9.2

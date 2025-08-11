@@ -12,10 +12,13 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { StockChart } from "@/components/charts";
-import { TimeRangeSelector } from "@/components/ui/TimeRangeSelector";
+import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
-import { useMultipleTickerData } from "@/lib/queries";
-import type { TimeRange } from "@/lib/stock-data";
+import { useMultipleTickerDataWithRange } from "@/lib/queries";
+import {
+	createDateRangeConfig,
+	type TimeRange,
+} from "@/lib/stock-data";
 
 type GridLayout = "1x1" | "1x2" | "2x1" | "2x2" | "2x3" | "3x2";
 
@@ -23,6 +26,8 @@ interface ComparePageSearch {
 	tickers?: string[];
 	layout?: GridLayout;
 	range?: TimeRange;
+	startDate?: string;
+	endDate?: string;
 }
 
 export const Route = createFileRoute("/compare")({
@@ -33,6 +38,8 @@ export const Route = createFileRoute("/compare")({
 				: [],
 			layout: (search.layout as GridLayout) || "2x2",
 			range: (search.range as TimeRange) || "1Y",
+			startDate: search.startDate as string,
+			endDate: search.endDate as string,
 		};
 	},
 	component: ComparePage,
@@ -49,9 +56,12 @@ const LAYOUT_OPTIONS = [
 
 function ComparePage() {
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { tickers = [], layout = "2x2", range = "1Y" } = Route.useSearch();
+	const { tickers = [], layout = "2x2", range = "1Y", startDate, endDate } = Route.useSearch();
 
-	const { data: tickerData, isLoading } = useMultipleTickerData(
+	// Create date range configuration
+	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
+
+	const { data: tickerData, isLoading } = useMultipleTickerDataWithRange(
 		tickers,
 		range,
 		500,
@@ -198,12 +208,27 @@ function ComparePage() {
 
 						<div className="flex-1">
 							<label className="text-sm font-medium mb-2 block">
-								Time Range
+								Date Range
 							</label>
-							<TimeRangeSelector
-								value={range}
-								onChange={(newRange) => updateSearchParams({ range: newRange })}
+							<DateRangeSelector
+								value={dateRangeConfig}
+								onChange={(config) => {
+									if (config.range === "CUSTOM") {
+										updateSearchParams({
+											range: config.range,
+											startDate: config.startDate ? config.startDate.toISOString().split('T')[0] : undefined,
+											endDate: config.endDate ? config.endDate.toISOString().split('T')[0] : undefined,
+										});
+									} else {
+										updateSearchParams({
+											range: config.range,
+											startDate: undefined,
+											endDate: undefined,
+										});
+									}
+								}}
 								className="w-full"
+								showNavigationButtons={true}
 							/>
 						</div>
 					</div>

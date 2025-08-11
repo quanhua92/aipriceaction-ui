@@ -9,12 +9,36 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TickersRouteImport } from './routes/tickers'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TickerSymbolRouteImport } from './routes/ticker/$symbol'
+import { Route as SectorSectorNameRouteImport } from './routes/sector/$sectorName'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
 
+const TickersRoute = TickersRouteImport.update({
+  id: '/tickers',
+  path: '/tickers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TickerSymbolRoute = TickerSymbolRouteImport.update({
+  id: '/ticker/$symbol',
+  path: '/ticker/$symbol',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SectorSectorNameRoute = SectorSectorNameRouteImport.update({
+  id: '/sector/$sectorName',
+  path: '/sector/$sectorName',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -25,37 +49,100 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/compare': typeof CompareRoute
+  '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/sector/$sectorName': typeof SectorSectorNameRoute
+  '/ticker/$symbol': typeof TickerSymbolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/compare': typeof CompareRoute
+  '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/sector/$sectorName': typeof SectorSectorNameRoute
+  '/ticker/$symbol': typeof TickerSymbolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/compare': typeof CompareRoute
+  '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/sector/$sectorName': typeof SectorSectorNameRoute
+  '/ticker/$symbol': typeof TickerSymbolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/tanstack-query'
+  fullPaths:
+    | '/'
+    | '/compare'
+    | '/tickers'
+    | '/demo/tanstack-query'
+    | '/sector/$sectorName'
+    | '/ticker/$symbol'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/demo/tanstack-query'
+  to:
+    | '/'
+    | '/compare'
+    | '/tickers'
+    | '/demo/tanstack-query'
+    | '/sector/$sectorName'
+    | '/ticker/$symbol'
+  id:
+    | '__root__'
+    | '/'
+    | '/compare'
+    | '/tickers'
+    | '/demo/tanstack-query'
+    | '/sector/$sectorName'
+    | '/ticker/$symbol'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CompareRoute: typeof CompareRoute
+  TickersRoute: typeof TickersRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  SectorSectorNameRoute: typeof SectorSectorNameRoute
+  TickerSymbolRoute: typeof TickerSymbolRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tickers': {
+      id: '/tickers'
+      path: '/tickers'
+      fullPath: '/tickers'
+      preLoaderRoute: typeof TickersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ticker/$symbol': {
+      id: '/ticker/$symbol'
+      path: '/ticker/$symbol'
+      fullPath: '/ticker/$symbol'
+      preLoaderRoute: typeof TickerSymbolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sector/$sectorName': {
+      id: '/sector/$sectorName'
+      path: '/sector/$sectorName'
+      fullPath: '/sector/$sectorName'
+      preLoaderRoute: typeof SectorSectorNameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -70,7 +157,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CompareRoute: CompareRoute,
+  TickersRoute: TickersRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  SectorSectorNameRoute: SectorSectorNameRoute,
+  TickerSymbolRoute: TickerSymbolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
