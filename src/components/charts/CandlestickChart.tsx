@@ -26,6 +26,7 @@ interface CandlestickChartProps {
 	data: StockDataPoint[];
 	title?: string;
 	height?: number;
+	showCard?: boolean; // Allow disabling Card wrapper
 }
 
 interface CandlestickData extends StockDataPoint {
@@ -104,6 +105,7 @@ export function CandlestickChart({
 	data,
 	title,
 	height = 400,
+	showCard = true,
 }: CandlestickChartProps) {
 	// Axis control state
 	const [customAxis, setCustomAxis] = useState<{min?: number, max?: number}>({});
@@ -275,6 +277,121 @@ export function CandlestickChart({
 		);
 	};
 
+	const chartContent = (
+		<>
+			{(title || showCard) && (
+				<div className="flex flex-row items-center justify-between mb-4">
+					{title && <h3 className="font-semibold">{title}</h3>}
+					<Popover>
+						<PopoverTrigger asChild>
+							<Button variant="outline" size="sm">
+								<Settings className="h-4 w-4" />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="w-80">
+							<div className="grid gap-4">
+								<div className="space-y-2">
+									<h4 className="font-medium leading-none">Y-Axis Controls</h4>
+									<p className="text-sm text-muted-foreground">
+										Adjust the chart's vertical scale
+									</p>
+								</div>
+								<div className="grid gap-2">
+									<div className="grid grid-cols-2 items-center gap-2">
+										<Label htmlFor="min-price" className="text-xs">Min Price</Label>
+										<Input
+											id="min-price"
+											type="number"
+											placeholder={Math.round(autoRange.min).toLocaleString()}
+											value={tempAxis.min}
+											onChange={(e) => setTempAxis(prev => ({...prev, min: e.target.value}))}
+											className="h-8 text-xs"
+										/>
+									</div>
+									<div className="grid grid-cols-2 items-center gap-2">
+										<Label htmlFor="max-price" className="text-xs">Max Price</Label>
+										<Input
+											id="max-price"
+											type="number"
+											placeholder={Math.round(autoRange.max).toLocaleString()}
+											value={tempAxis.max}
+											onChange={(e) => setTempAxis(prev => ({...prev, max: e.target.value}))}
+											className="h-8 text-xs"
+										/>
+									</div>
+									<div className="flex gap-2 pt-2">
+										<Button size="sm" onClick={handleAxisUpdate} className="flex-1">
+											Apply
+										</Button>
+										<Button size="sm" variant="outline" onClick={handleAxisReset}>
+											<RotateCcw className="h-3 w-3" />
+										</Button>
+									</div>
+									<div className="text-xs text-muted-foreground">
+										Current: {Math.round(yDomain[0]).toLocaleString()} - {Math.round(yDomain[1]).toLocaleString()}
+									</div>
+								</div>
+							</div>
+						</PopoverContent>
+					</Popover>
+				</div>
+			)}
+			<ResponsiveContainer width="100%" height={height || "100%"}>
+				<ComposedChart
+					data={chartData}
+					margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
+				>
+					<CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+					<XAxis
+						dataKey="time"
+						fontSize={12}
+						className="fill-muted-foreground"
+					/>
+					<YAxis
+						yAxisId="price"
+						domain={yDomain}
+						tickFormatter={formatPrice}
+						fontSize={12}
+						className="fill-muted-foreground"
+					/>
+					<YAxis
+						yAxisId="volume"
+						orientation="right"
+						domain={volumeDomain}
+						tickFormatter={formatVolume}
+						fontSize={12}
+						className="fill-muted-foreground"
+					/>
+					<Tooltip content={<CustomTooltip />} />
+					{/* Volume bars at the bottom - much smaller */}
+					<Bar 
+						yAxisId="volume"
+						dataKey="volume"
+						maxBarSize={8}
+					>
+						{chartData.map((entry, index) => (
+							<Cell
+								key={`volume-cell-${index}`}
+								fill={entry.volumeUp ? "#16a34a" : "#dc2626"}
+								fillOpacity={0.5}
+							/>
+						))}
+					</Bar>
+					{/* Use Bar with custom shape to render candlesticks at correct positions */}
+					<Bar 
+						yAxisId="price"
+						dataKey="close" 
+						shape={<CandlestickShape />}
+					/>
+				</ComposedChart>
+			</ResponsiveContainer>
+		</>
+	);
+
+	if (!showCard) {
+		return chartContent;
+	}
+
 	return (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between">
@@ -333,10 +450,10 @@ export function CandlestickChart({
 				</Popover>
 			</CardHeader>
 			<CardContent>
-				<ResponsiveContainer width="100%" height={height}>
+				<ResponsiveContainer width="100%" height={height || "100%"}>
 					<ComposedChart
 						data={chartData}
-						margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+						margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
 					>
 						<CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
 						<XAxis

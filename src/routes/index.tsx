@@ -317,7 +317,7 @@ function Dashboard() {
 	};
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-2 md:p-6 space-y-4 md:space-y-6">
 			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between">
 					<div>
@@ -424,30 +424,33 @@ function Dashboard() {
 			</div>
 
 			{/* Main Content */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-6">
 				{/* VN-Index Chart */}
 				<div className="lg:col-span-2">
 					<Card>
-						<CardHeader>
-							<CardTitle className="flex items-center gap-2">
-								<TrendingUp className="h-5 w-5" />
+						<CardHeader className="p-3 md:p-6">
+							<CardTitle className="flex items-center gap-2 text-sm md:text-base">
+								<TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
 								{t("home.vnIndex")} {t("home.marketOverview")}
 							</CardTitle>
 						</CardHeader>
-						<CardContent>
+						<CardContent className="p-2 md:p-6">
 							{vnindexLoading ? (
-								<div className="h-[400px] flex items-center justify-center">
+								<div className="h-[300px] md:h-[400px] flex items-center justify-center">
 									<div className="text-muted-foreground">
 										{t("loading.tickerData")}
 									</div>
 								</div>
 							) : vnindexData ? (
-								<CandlestickChart
-									data={vnindexData}
-									height={400}
-								/>
+								<div className="h-[280px] md:h-[400px] w-full">
+									<CandlestickChart
+										data={vnindexData}
+										height={0} // Will use container height
+										showCard={false}
+									/>
+								</div>
 							) : (
-								<div className="h-[400px] flex items-center justify-center">
+								<div className="h-[300px] md:h-[400px] flex items-center justify-center">
 									<div className="text-muted-foreground">
 										{t("errors.failedToLoad")}
 									</div>
