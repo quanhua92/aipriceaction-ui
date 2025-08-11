@@ -44,7 +44,7 @@ function Dashboard() {
 			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between">
 					<div>
-						<h1 className="text-3xl font-bold">Vietnamese Stock Market</h1>
+						<h1 className="text-3xl font-bold">AIPriceAction: Vietnamese Stock Market</h1>
 						<p className="text-muted-foreground">
 							Comprehensive analysis of VN-Index and individual stocks
 						</p>
@@ -82,17 +82,19 @@ function Dashboard() {
 						</Card>
 					</Link>
 
-					<Card>
-						<CardContent className="flex items-center gap-3 p-4">
-							<BarChart3 className="h-8 w-8 text-primary" />
-							<div>
-								<p className="font-semibold">Sectors</p>
-								<p className="text-sm text-muted-foreground">
-									{sectorCount} sectors
-								</p>
-							</div>
-						</CardContent>
-					</Card>
+					<Link to="/sectors">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow">
+							<CardContent className="flex items-center gap-3 p-4">
+								<BarChart3 className="h-8 w-8 text-primary" />
+								<div>
+									<p className="font-semibold">Sectors</p>
+									<p className="text-sm text-muted-foreground">
+										{sectorCount} sectors
+									</p>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
 
 					<Card>
 						<CardContent className="flex items-center gap-3 p-4">

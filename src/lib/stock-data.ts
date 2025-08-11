@@ -70,14 +70,17 @@ export function parseCsvData(csvText: string): StockDataPoint[] {
 		const [year, month, day] = time.split("-").map(Number);
 		const date = new Date(year, month - 1, day); // month is 0-indexed
 
+		// Scale prices by 1000 for stock tickers (VND), but not for VNINDEX (points)
+		const priceScale = ticker === "VNINDEX" ? 1 : 1000;
+
 		return {
 			ticker,
 			time,
 			date,
-			open: parseFloat(open),
-			high: parseFloat(high),
-			low: parseFloat(low),
-			close: parseFloat(close),
+			open: parseFloat(open) * priceScale,
+			high: parseFloat(high) * priceScale,
+			low: parseFloat(low) * priceScale,
+			close: parseFloat(close) * priceScale,
 			volume: parseInt(volume, 10),
 		};
 	});
