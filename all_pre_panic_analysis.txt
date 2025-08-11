@@ -1,0 +1,1171 @@
+🚨 COMPREHENSIVE PRE-PANIC ANALYSIS
+Analyzing warning patterns for all 41 verified panic days
+====================================================================================================
+
+[1/41] Analyzing 2018-02-05...
+🚨 PRE-PANIC ANALYSIS for 2018-02-05
+================================================================================
+
+📅 T-1 (2018-02-02): VNINDEX +0.49%
+   🏦 Banking: +1.28% | 📊 Securities: +0.78% | 🏠 Real Estate: +0.57%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2018-01-25): VNINDEX +1.58%
+   🏦 Banking: +6.30% | 📊 Securities: +2.88% | 🏠 Real Estate: -0.21%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2018-01-12): VNINDEX +0.19%
+   🏦 Banking: -1.24% | 📊 Securities: +0.40% | 🏠 Real Estate: +4.77%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[2/41] Analyzing 2018-02-06...
+🚨 PRE-PANIC ANALYSIS for 2018-02-06
+================================================================================
+
+📅 T-1 (2018-02-05): VNINDEX -5.10%
+   🏦 Banking: -6.85% | 📊 Securities: -7.22% | 🏠 Real Estate: -6.30%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2018-01-26): VNINDEX +1.00%
+   🏦 Banking: +3.41% | 📊 Securities: +1.02% | 🏠 Real Estate: +0.04%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2018-01-15): VNINDEX +1.27%
+   🏦 Banking: +2.04% | 📊 Securities: +2.53% | 🏠 Real Estate: +1.59%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[3/41] Analyzing 2018-02-09...
+🚨 PRE-PANIC ANALYSIS for 2018-02-09
+================================================================================
+
+📅 T-1 (2018-02-08): VNINDEX -1.66%
+   🏦 Banking: -0.38% | 📊 Securities: -2.16% | 🏠 Real Estate: -2.38%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2018-01-31): VNINDEX -0.02%
+   🏦 Banking: -2.34% | 📊 Securities: -3.63% | 🏠 Real Estate: +0.90%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2018-01-18): VNINDEX +1.50%
+   🏦 Banking: +2.25% | 📊 Securities: +1.84% | 🏠 Real Estate: +1.25%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[4/41] Analyzing 2018-04-19...
+🚨 PRE-PANIC ANALYSIS for 2018-04-19
+================================================================================
+
+📅 T-1 (2018-04-18): VNINDEX -1.28%
+   🏦 Banking: -3.51% | 📊 Securities: -0.92% | 🏠 Real Estate: -0.86%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-7 (2018-04-10): VNINDEX -0.52%
+   🏦 Banking: +0.91% | 📊 Securities: -1.79% | 🏠 Real Estate: -2.17%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2018-03-30): VNINDEX +0.64%
+   🏦 Banking: -1.00% | 📊 Securities: +0.74% | 🏠 Real Estate: +1.71%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[5/41] Analyzing 2018-05-22...
+🚨 PRE-PANIC ANALYSIS for 2018-05-22
+================================================================================
+
+📅 T-1 (2018-05-21): VNINDEX -2.46%
+   🏦 Banking: -2.34% | 📊 Securities: -2.03% | 🏠 Real Estate: -3.70%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2018-05-11): VNINDEX +1.55%
+   🏦 Banking: +3.48% | 📊 Securities: +0.74% | 🏠 Real Estate: +2.14%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2018-05-02): VNINDEX -2.02%
+   🏦 Banking: -5.05% | 📊 Securities: -3.11% | 🏠 Real Estate: -1.38%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[6/41] Analyzing 2018-05-28...
+🚨 PRE-PANIC ANALYSIS for 2018-05-28
+================================================================================
+
+📅 T-1 (2018-05-25): VNINDEX -2.23%
+   🏦 Banking: -5.94% | 📊 Securities: -2.95% | 🏠 Real Estate: +1.69%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-7 (2018-05-17): VNINDEX -2.27%
+   🏦 Banking: -0.59% | 📊 Securities: -1.46% | 🏠 Real Estate: +91.49%
+   🚨 Pre-Panic Signal: DEVELOPING_WEAKNESS
+
+📅 T-14 (2018-05-08): VNINDEX -0.17%
+   🏦 Banking: -0.29% | 📊 Securities: -0.28% | 🏠 Real Estate: -0.42%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[7/41] Analyzing 2018-10-11...
+🚨 PRE-PANIC ANALYSIS for 2018-10-11
+================================================================================
+
+📅 T-1 (2018-10-10): VNINDEX -0.22%
+   🏦 Banking: -0.74% | 📊 Securities: -0.71% | 🏠 Real Estate: +0.09%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2018-10-02): VNINDEX +0.58%
+   🏦 Banking: +1.62% | 📊 Securities: +0.30% | 🏠 Real Estate: +1.75%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2018-09-21): VNINDEX -0.18%
+   🏦 Banking: +0.63% | 📊 Securities: +0.77% | 🏠 Real Estate: -1.27%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[8/41] Analyzing 2020-01-30...
+🚨 PRE-PANIC ANALYSIS for 2020-01-30
+================================================================================
+
+📅 T-1 (2020-01-22): VNINDEX +0.52%
+   🏦 Banking: +0.78% | 📊 Securities: +0.28% | 🏠 Real Estate: +0.77%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2020-01-14): VNINDEX +0.12%
+   🏦 Banking: +0.27% | 📊 Securities: -0.09% | 🏠 Real Estate: +0.08%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-01-03): VNINDEX -0.16%
+   🏦 Banking: -0.76% | 📊 Securities: -0.58% | 🏠 Real Estate: +0.17%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[9/41] Analyzing 2020-02-24...
+🚨 PRE-PANIC ANALYSIS for 2020-02-24
+================================================================================
+
+📅 T-1 (2020-02-21): VNINDEX -0.54%
+   🏦 Banking: -1.97% | 📊 Securities: -0.39% | 🏠 Real Estate: -0.47%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2020-02-13): VNINDEX +0.06%
+   🏦 Banking: -0.10% | 📊 Securities: -0.78% | 🏠 Real Estate: -0.05%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-02-04): VNINDEX +0.10%
+   🏦 Banking: +2.38% | 📊 Securities: -1.02% | 🏠 Real Estate: -0.20%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[10/41] Analyzing 2020-03-09...
+🚨 PRE-PANIC ANALYSIS for 2020-03-09
+================================================================================
+
+📅 T-1 (2020-03-06): VNINDEX -0.21%
+   🏦 Banking: +0.22% | 📊 Securities: -0.25% | 🏠 Real Estate: -0.39%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2020-02-27): VNINDEX +0.28%
+   🏦 Banking: +0.22% | 📊 Securities: +2.12% | 🏠 Real Estate: -0.09%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-02-18): VNINDEX -0.73%
+   🏦 Banking: +0.30% | 📊 Securities: +0.14% | 🏠 Real Estate: -2.04%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[11/41] Analyzing 2020-03-12...
+🚨 PRE-PANIC ANALYSIS for 2020-03-12
+================================================================================
+
+📅 T-1 (2020-03-11): VNINDEX -3.12%
+   🏦 Banking: -5.50% | 📊 Securities: -5.43% | 🏠 Real Estate: -0.58%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-7 (2020-03-03): VNINDEX +0.70%
+   🏦 Banking: +1.75% | 📊 Securities: +0.78% | 🏠 Real Estate: +0.02%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-02-21): VNINDEX -0.54%
+   🏦 Banking: -1.97% | 📊 Securities: -0.39% | 🏠 Real Estate: -0.47%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[12/41] Analyzing 2020-03-13...
+🚨 PRE-PANIC ANALYSIS for 2020-03-13
+================================================================================
+
+📅 T-1 (2020-03-12): VNINDEX -5.19%
+   🏦 Banking: -6.81% | 📊 Securities: -6.36% | 🏠 Real Estate: -5.48%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2020-03-04): VNINDEX -0.14%
+   🏦 Banking: -0.58% | 📊 Securities: +0.85% | 🏠 Real Estate: +0.05%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-02-24): VNINDEX -3.19%
+   🏦 Banking: -4.88% | 📊 Securities: -5.41% | 🏠 Real Estate: -2.43%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[13/41] Analyzing 2020-03-19...
+🚨 PRE-PANIC ANALYSIS for 2020-03-19
+================================================================================
+
+📅 T-1 (2020-03-18): VNINDEX +0.25%
+   🏦 Banking: +1.46% | 📊 Securities: -3.38% | 🏠 Real Estate: +0.00%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2020-03-10): VNINDEX +0.24%
+   🏦 Banking: +0.46% | 📊 Securities: -1.48% | 🏠 Real Estate: +0.60%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-02-28): VNINDEX -1.81%
+   🏦 Banking: -2.40% | 📊 Securities: -0.88% | 🏠 Real Estate: -0.52%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[14/41] Analyzing 2020-03-23...
+🚨 PRE-PANIC ANALYSIS for 2020-03-23
+================================================================================
+
+📅 T-1 (2020-03-20): VNINDEX -2.23%
+   🏦 Banking: -2.65% | 📊 Securities: +0.08% | 🏠 Real Estate: -6.48%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2020-03-12): VNINDEX -5.19%
+   🏦 Banking: -6.81% | 📊 Securities: -6.36% | 🏠 Real Estate: -5.48%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-14 (2020-03-03): VNINDEX +0.70%
+   🏦 Banking: +1.75% | 📊 Securities: +0.78% | 🏠 Real Estate: +0.02%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[15/41] Analyzing 2020-03-30...
+🚨 PRE-PANIC ANALYSIS for 2020-03-30
+================================================================================
+
+📅 T-1 (2020-03-27): VNINDEX +0.27%
+   🏦 Banking: +0.28% | 📊 Securities: -2.57% | 🏠 Real Estate: +2.42%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2020-03-19): VNINDEX -2.91%
+   🏦 Banking: -4.07% | 📊 Securities: +0.54% | 🏠 Real Estate: -0.74%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-14 (2020-03-10): VNINDEX +0.24%
+   🏦 Banking: +0.46% | 📊 Securities: -1.48% | 🏠 Real Estate: +0.60%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[16/41] Analyzing 2020-04-21...
+🚨 PRE-PANIC ANALYSIS for 2020-04-21
+================================================================================
+
+📅 T-1 (2020-04-20): VNINDEX +0.68%
+   🏦 Banking: -0.33% | 📊 Securities: -0.59% | 🏠 Real Estate: -0.07%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2020-04-10): VNINDEX -0.31%
+   🏦 Banking: -1.20% | 📊 Securities: +2.70% | 🏠 Real Estate: -1.41%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-03-31): VNINDEX +0.04%
+   🏦 Banking: -0.12% | 📊 Securities: -0.73% | 🏠 Real Estate: +0.60%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[17/41] Analyzing 2021-01-19...
+🚨 PRE-PANIC ANALYSIS for 2021-01-19
+================================================================================
+
+📅 T-1 (2021-01-18): VNINDEX -0.19%
+   🏦 Banking: -0.87% | 📊 Securities: -0.80% | 🏠 Real Estate: -0.50%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2021-01-08): VNINDEX +0.97%
+   🏦 Banking: -0.26% | 📊 Securities: -0.40% | 🏠 Real Estate: +2.10%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2020-12-29): VNINDEX +0.75%
+   🏦 Banking: +0.80% | 📊 Securities: +0.41% | 🏠 Real Estate: +1.82%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[18/41] Analyzing 2021-01-26...
+🚨 PRE-PANIC ANALYSIS for 2021-01-26
+================================================================================
+
+📅 T-1 (2021-01-25): VNINDEX -0.06%
+   🏦 Banking: -1.20% | 📊 Securities: -0.82% | 🏠 Real Estate: +0.53%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2021-01-15): VNINDEX +0.57%
+   🏦 Banking: +0.57% | 📊 Securities: +4.04% | 🏠 Real Estate: +1.04%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2021-01-06): VNINDEX +0.94%
+   🏦 Banking: +3.61% | 📊 Securities: +1.22% | 🏠 Real Estate: +0.12%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[19/41] Analyzing 2021-01-28...
+🚨 PRE-PANIC ANALYSIS for 2021-01-28
+================================================================================
+
+📅 T-1 (2021-01-27): VNINDEX -3.43%
+   🏦 Banking: -3.93% | 📊 Securities: -7.62% | 🏠 Real Estate: -2.88%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2021-01-19): VNINDEX -5.11%
+   🏦 Banking: -5.87% | 📊 Securities: -6.42% | 🏠 Real Estate: -4.95%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-14 (2021-01-08): VNINDEX +0.97%
+   🏦 Banking: -0.26% | 📊 Securities: -0.40% | 🏠 Real Estate: +2.10%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[20/41] Analyzing 2021-02-08...
+🚨 PRE-PANIC ANALYSIS for 2021-02-08
+================================================================================
+
+📅 T-1 (2021-02-05): VNINDEX +1.32%
+   🏦 Banking: +1.84% | 📊 Securities: +3.95% | 🏠 Real Estate: +1.35%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2021-01-28): VNINDEX -6.67%
+   🏦 Banking: -6.91% | 📊 Securities: -7.58% | 🏠 Real Estate: -6.94%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-14 (2021-01-19): VNINDEX -5.11%
+   🏦 Banking: -5.87% | 📊 Securities: -6.42% | 🏠 Real Estate: -4.95%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: PERSISTENT_WEAKNESS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[21/41] Analyzing 2021-07-12...
+🚨 PRE-PANIC ANALYSIS for 2021-07-12
+================================================================================
+
+📅 T-1 (2021-07-09): VNINDEX -2.00%
+   🏦 Banking: -1.30% | 📊 Securities: -3.11% | 🏠 Real Estate: -2.72%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2021-07-01): VNINDEX +0.61%
+   🏦 Banking: +0.37% | 📊 Securities: +5.65% | 🏠 Real Estate: -0.40%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2021-06-22): VNINDEX +0.53%
+   🏦 Banking: +0.97% | 📊 Securities: +0.53% | 🏠 Real Estate: -0.01%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[22/41] Analyzing 2021-07-19...
+🚨 PRE-PANIC ANALYSIS for 2021-07-19
+================================================================================
+
+📅 T-1 (2021-07-16): VNINDEX +0.42%
+   🏦 Banking: -0.41% | 📊 Securities: -1.52% | 🏠 Real Estate: +1.27%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2021-07-08): VNINDEX -1.00%
+   🏦 Banking: -0.85% | 📊 Securities: -0.36% | 🏠 Real Estate: -2.40%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2021-06-29): VNINDEX +0.30%
+   🏦 Banking: +0.18% | 📊 Securities: +0.89% | 🏠 Real Estate: +1.50%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[23/41] Analyzing 2022-04-25...
+🚨 PRE-PANIC ANALYSIS for 2022-04-25
+================================================================================
+
+📅 T-1 (2022-04-22): VNINDEX +0.66%
+   🏦 Banking: +2.31% | 📊 Securities: -0.41% | 🏠 Real Estate: +0.79%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2022-04-14): VNINDEX -0.34%
+   🏦 Banking: -1.21% | 📊 Securities: -0.97% | 🏠 Real Estate: -0.79%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-04-04): VNINDEX +0.54%
+   🏦 Banking: -0.43% | 📊 Securities: +4.78% | 🏠 Real Estate: +0.53%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[24/41] Analyzing 2022-05-09...
+🚨 PRE-PANIC ANALYSIS for 2022-05-09
+================================================================================
+
+📅 T-1 (2022-05-06): VNINDEX -2.31%
+   🏦 Banking: -2.68% | 📊 Securities: -7.51% | 🏠 Real Estate: -0.42%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-7 (2022-04-26): VNINDEX +2.32%
+   🏦 Banking: +0.86% | 📊 Securities: +3.40% | 🏠 Real Estate: +3.02%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-04-15): VNINDEX -0.92%
+   🏦 Banking: -2.03% | 📊 Securities: -4.83% | 🏠 Real Estate: -1.36%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[25/41] Analyzing 2022-05-12...
+🚨 PRE-PANIC ANALYSIS for 2022-05-12
+================================================================================
+
+📅 T-1 (2022-05-11): VNINDEX +0.62%
+   🏦 Banking: +1.27% | 📊 Securities: -0.43% | 🏠 Real Estate: +0.65%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2022-04-29): VNINDEX +1.17%
+   🏦 Banking: +0.72% | 📊 Securities: +1.13% | 🏠 Real Estate: +1.95%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-04-20): VNINDEX -1.55%
+   🏦 Banking: -0.10% | 📊 Securities: -0.29% | 🏠 Real Estate: -0.90%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[26/41] Analyzing 2022-05-13...
+🚨 PRE-PANIC ANALYSIS for 2022-05-13
+================================================================================
+
+📅 T-1 (2022-05-12): VNINDEX -4.82%
+   🏦 Banking: -5.73% | 📊 Securities: -7.34% | 🏠 Real Estate: -2.70%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2022-05-04): VNINDEX -1.33%
+   🏦 Banking: -1.87% | 📊 Securities: -3.64% | 🏠 Real Estate: -0.98%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-14 (2022-04-21): VNINDEX -1.05%
+   🏦 Banking: +0.82% | 📊 Securities: +2.80% | 🏠 Real Estate: -2.81%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[27/41] Analyzing 2022-06-13...
+🚨 PRE-PANIC ANALYSIS for 2022-06-13
+================================================================================
+
+📅 T-1 (2022-06-10): VNINDEX -1.81%
+   🏦 Banking: -0.68% | 📊 Securities: -4.41% | 🏠 Real Estate: -0.17%
+   🚨 Pre-Panic Signal: MODERATE_WARNING
+
+📅 T-7 (2022-06-02): VNINDEX -0.84%
+   🏦 Banking: -1.32% | 📊 Securities: -1.50% | 🏠 Real Estate: -0.72%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-05-24): VNINDEX +1.20%
+   🏦 Banking: +1.81% | 📊 Securities: +5.41% | 🏠 Real Estate: +0.45%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: MODERATE_WARNING
+📈 PATTERN DEVELOPMENT: PERSISTENT_WEAKNESS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce portfolio by 40%, prepare defensive positions
+   ⚠️  Risk Level: HIGH - Monitor daily for escalation
+   📊 Position Size: Maximum 60% equity exposure
+   🛡️  Defensive Stocks: VCB, VIC core holdings only
+
+[28/41] Analyzing 2022-09-26...
+🚨 PRE-PANIC ANALYSIS for 2022-09-26
+================================================================================
+
+📅 T-1 (2022-09-23): VNINDEX -0.94%
+   🏦 Banking: -1.77% | 📊 Securities: -2.49% | 🏠 Real Estate: -0.88%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2022-09-15): VNINDEX +0.39%
+   🏦 Banking: -0.27% | 📊 Securities: -1.39% | 🏠 Real Estate: +0.85%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-09-06): VNINDEX +0.00%
+   🏦 Banking: +0.59% | 📊 Securities: +0.38% | 🏠 Real Estate: -0.30%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[29/41] Analyzing 2022-10-07...
+🚨 PRE-PANIC ANALYSIS for 2022-10-07
+================================================================================
+
+📅 T-1 (2022-10-06): VNINDEX -2.69%
+   🏦 Banking: -2.66% | 📊 Securities: -6.64% | 🏠 Real Estate: -0.58%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-7 (2022-09-28): VNINDEX -1.96%
+   🏦 Banking: +0.01% | 📊 Securities: +0.95% | 🏠 Real Estate: -4.40%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+📅 T-14 (2022-09-19): VNINDEX -2.32%
+   🏦 Banking: -2.48% | 📊 Securities: -6.15% | 🏠 Real Estate: -0.79%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: SUSTAINED_DETERIORATION
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[30/41] Analyzing 2022-10-21...
+🚨 PRE-PANIC ANALYSIS for 2022-10-21
+================================================================================
+
+📅 T-1 (2022-10-20): VNINDEX -0.15%
+   🏦 Banking: +0.34% | 📊 Securities: -1.88% | 🏠 Real Estate: -0.02%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2022-10-12): VNINDEX +2.84%
+   🏦 Banking: +4.76% | 📊 Securities: +5.67% | 🏠 Real Estate: +1.12%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-10-03): VNINDEX -4.03%
+   🏦 Banking: -5.67% | 📊 Securities: -7.56% | 🏠 Real Estate: -1.00%
+   🚨 Pre-Panic Signal: EARLY_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: EARLY_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce riskiest positions, raise cash to 30%
+   ⚠️  Risk Level: MEDIUM - Watch for pattern development
+   📊 Position Size: Maximum 70% equity exposure
+   🛡️  Defensive Stocks: Emphasize VCB, VIC, TCB quality
+
+[31/41] Analyzing 2022-10-24...
+🚨 PRE-PANIC ANALYSIS for 2022-10-24
+================================================================================
+
+📅 T-1 (2022-10-21): VNINDEX -3.65%
+   🏦 Banking: -3.57% | 📊 Securities: -7.56% | 🏠 Real Estate: -3.59%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2022-10-13): VNINDEX +1.56%
+   🏦 Banking: +4.29% | 📊 Securities: +0.98% | 🏠 Real Estate: +1.12%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-10-04): VNINDEX -0.76%
+   🏦 Banking: -0.72% | 📊 Securities: -4.11% | 🏠 Real Estate: +1.60%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[32/41] Analyzing 2022-11-04...
+🚨 PRE-PANIC ANALYSIS for 2022-11-04
+================================================================================
+
+📅 T-1 (2022-11-03): VNINDEX -0.33%
+   🏦 Banking: -0.55% | 📊 Securities: +0.53% | 🏠 Real Estate: -0.42%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2022-10-26): VNINDEX -0.44%
+   🏦 Banking: +0.48% | 📊 Securities: -2.07% | 🏠 Real Estate: -2.12%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-10-17): VNINDEX -0.97%
+   🏦 Banking: -1.78% | 📊 Securities: +0.91% | 🏠 Real Estate: -4.76%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[33/41] Analyzing 2022-11-10...
+🚨 PRE-PANIC ANALYSIS for 2022-11-10
+================================================================================
+
+📅 T-1 (2022-11-09): VNINDEX +0.40%
+   🏦 Banking: +2.21% | 📊 Securities: -0.70% | 🏠 Real Estate: +0.65%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2022-11-01): VNINDEX +0.57%
+   🏦 Banking: +1.37% | 📊 Securities: +3.00% | 🏠 Real Estate: +0.69%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-10-21): VNINDEX -3.65%
+   🏦 Banking: -3.57% | 📊 Securities: -7.56% | 🏠 Real Estate: -3.59%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: PERSISTENT_WEAKNESS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[34/41] Analyzing 2022-12-06...
+🚨 PRE-PANIC ANALYSIS for 2022-12-06
+================================================================================
+
+📅 T-1 (2022-12-05): VNINDEX +1.26%
+   🏦 Banking: +0.76% | 📊 Securities: +6.09% | 🏠 Real Estate: +0.21%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2022-11-25): VNINDEX +2.51%
+   🏦 Banking: +3.00% | 📊 Securities: +7.60% | 🏠 Real Estate: +4.62%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2022-11-16): VNINDEX +3.40%
+   🏦 Banking: +4.31% | 📊 Securities: +7.52% | 🏠 Real Estate: +4.41%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[35/41] Analyzing 2023-08-18...
+🚨 PRE-PANIC ANALYSIS for 2023-08-18
+================================================================================
+
+📅 T-1 (2023-08-17): VNINDEX -0.79%
+   🏦 Banking: -0.41% | 📊 Securities: +1.79% | 🏠 Real Estate: -3.55%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2023-08-09): VNINDEX -0.66%
+   🏦 Banking: -0.51% | 📊 Securities: -1.73% | 🏠 Real Estate: -2.14%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2023-07-31): VNINDEX +1.26%
+   🏦 Banking: +0.30% | 📊 Securities: +0.06% | 🏠 Real Estate: +6.12%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[36/41] Analyzing 2023-10-26...
+🚨 PRE-PANIC ANALYSIS for 2023-10-26
+================================================================================
+
+📅 T-1 (2023-10-25): VNINDEX -0.38%
+   🏦 Banking: -0.78% | 📊 Securities: -1.48% | 🏠 Real Estate: +1.49%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2023-10-17): VNINDEX -1.73%
+   🏦 Banking: -0.37% | 📊 Securities: -5.19% | 🏠 Real Estate: -2.30%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-14 (2023-10-06): VNINDEX +1.32%
+   🏦 Banking: +1.24% | 📊 Securities: +3.87% | 🏠 Real Estate: +2.00%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: PERSISTENT_WEAKNESS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[37/41] Analyzing 2024-04-15...
+🚨 PRE-PANIC ANALYSIS for 2024-04-15
+================================================================================
+
+📅 T-1 (2024-04-12): VNINDEX +1.46%
+   🏦 Banking: +2.49% | 📊 Securities: +1.91% | 🏠 Real Estate: +0.53%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2024-04-04): VNINDEX -0.25%
+   🏦 Banking: +0.25% | 📊 Securities: -0.79% | 🏠 Real Estate: -0.03%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2024-03-26): VNINDEX +1.13%
+   🏦 Banking: +1.14% | 📊 Securities: +1.41% | 🏠 Real Estate: +0.76%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[38/41] Analyzing 2025-04-03...
+🚨 PRE-PANIC ANALYSIS for 2025-04-03
+================================================================================
+
+📅 T-1 (2025-04-02): VNINDEX +0.04%
+   🏦 Banking: -0.03% | 📊 Securities: +0.57% | 🏠 Real Estate: +0.48%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2025-03-25): VNINDEX +0.12%
+   🏦 Banking: +0.31% | 📊 Securities: -1.04% | 🏠 Real Estate: +0.68%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2025-03-14): VNINDEX -0.01%
+   🏦 Banking: +0.48% | 📊 Securities: +0.11% | 🏠 Real Estate: +1.05%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+[39/41] Analyzing 2025-04-08...
+🚨 PRE-PANIC ANALYSIS for 2025-04-08
+================================================================================
+
+📅 T-1 (2025-04-04): VNINDEX -1.56%
+   🏦 Banking: -0.61% | 📊 Securities: -1.88% | 🏠 Real Estate: +1.87%
+   🚨 Pre-Panic Signal: MODERATE_WARNING
+
+📅 T-7 (2025-03-27): VNINDEX -0.17%
+   🏦 Banking: -0.70% | 📊 Securities: -0.77% | 🏠 Real Estate: -0.20%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2025-03-18): VNINDEX -0.40%
+   🏦 Banking: -0.82% | 📊 Securities: -0.94% | 🏠 Real Estate: -1.37%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: MODERATE_WARNING
+📈 PATTERN DEVELOPMENT: PERSISTENT_WEAKNESS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Reduce portfolio by 40%, prepare defensive positions
+   ⚠️  Risk Level: HIGH - Monitor daily for escalation
+   📊 Position Size: Maximum 60% equity exposure
+   🛡️  Defensive Stocks: VCB, VIC core holdings only
+
+[40/41] Analyzing 2025-04-09...
+🚨 PRE-PANIC ANALYSIS for 2025-04-09
+================================================================================
+
+📅 T-1 (2025-04-08): VNINDEX -6.43%
+   🏦 Banking: -6.94% | 📊 Securities: -7.68% | 🏠 Real Estate: -6.15%
+   🚨 Pre-Panic Signal: STRONG_WARNING
+
+📅 T-7 (2025-03-28): VNINDEX -0.48%
+   🏦 Banking: -0.61% | 📊 Securities: +0.12% | 🏠 Real Estate: +0.65%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2025-03-19): VNINDEX -0.48%
+   🏦 Banking: -0.64% | 📊 Securities: -0.49% | 🏠 Real Estate: +0.49%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: STRONG_WARNING
+📈 PATTERN DEVELOPMENT: ESCALATING_TO_CRISIS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: REDUCE positions immediately, increase cash to 70%+
+   ⚠️  Risk Level: EXTREME - Panic likely within 1-3 days
+   📊 Position Size: Maximum 30% equity exposure
+   🛡️  Defensive Stocks: VCB only, exit all others
+
+[41/41] Analyzing 2025-07-29...
+🚨 PRE-PANIC ANALYSIS for 2025-07-29
+================================================================================
+
+📅 T-1 (2025-07-28): VNINDEX +1.72%
+   🏦 Banking: +1.25% | 📊 Securities: +6.28% | 🏠 Real Estate: +1.47%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-7 (2025-07-18): VNINDEX +0.49%
+   🏦 Banking: +0.61% | 📊 Securities: +0.74% | 🏠 Real Estate: -0.32%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+📅 T-14 (2025-07-09): VNINDEX +1.12%
+   🏦 Banking: +2.04% | 📊 Securities: +3.36% | 🏠 Real Estate: +2.39%
+   🚨 Pre-Panic Signal: NO_WARNING
+
+================================================================================
+📊 PRE-PANIC PATTERN SUMMARY
+================================================================================
+🎯 STRONGEST WARNING: NO_WARNING
+📈 PATTERN DEVELOPMENT: ISOLATED_SIGNALS
+
+💡 TRADING RECOMMENDATIONS:
+   🎯 Action: Normal trading strategies
+   ⚠️  Risk Level: LOW - No immediate panic signals
+   📊 Position Size: Normal allocation
+   🛡️  Defensive Stocks: Standard diversification
+
+====================================================================================================
+📊 COMPREHENSIVE PRE-PANIC WARNING SYSTEM ANALYSIS
+====================================================================================================
+
+🎯 WARNING SIGNAL DISTRIBUTION:
+   STRONG_WARNING: 13 occurrences (31.7%)
+   MODERATE_WARNING: 2 occurrences (4.9%)
+   EARLY_WARNING: 8 occurrences (19.5%)
+   DEVELOPING_WEAKNESS: 0 occurrences (0.0%)
+   NO_WARNING: 18 occurrences (43.9%)
+   INSUFFICIENT_DATA: 0 occurrences (0.0%)
+
+📈 PRE-PANIC WARNING SYSTEM EFFECTIVENESS:
+   Total Panic Days Analyzed: 41
+   Days with Predictive Warnings: 23
+   Warning System Effectiveness: 56.1%
+
+💡 PRE-PANIC TRADING SYSTEM INSIGHTS:
+   🟡 GOOD: 56.1% effectiveness - Reliable with careful monitoring
