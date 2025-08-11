@@ -5,7 +5,6 @@ import {
 	filterDataByDateRange,
 	sampleData,
 	type StockDataPoint,
-	type TimeRange,
 	type DateRangeConfig,
 } from "./stock-data";
 

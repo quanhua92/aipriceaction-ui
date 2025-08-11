@@ -3,14 +3,11 @@ import {
 	ResponsiveContainer,
 	ComposedChart,
 	Bar,
-	Line,
 	XAxis,
 	YAxis,
 	CartesianGrid,
 	Tooltip,
-	ReferenceLine,
 	Cell,
-	ReferenceArea,
 } from "recharts";
 import { format } from "date-fns";
 import { Settings, RotateCcw } from "lucide-react";
@@ -213,7 +210,7 @@ export function CandlestickChart({
 
 	// Custom Bar shape that renders rectangular candlesticks
 	const CandlestickShape = (props: any) => {
-		const { payload, x, y, width } = props;
+		const { payload, x, width } = props;
 		if (!payload) return null;
 		
 		const { high, low, open, close, isGreen } = payload;
