@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
+import { TickerPerformanceTable } from "@/components/ui/TickerPerformanceTable";
 import { useMultipleTickerData } from "@/lib/queries";
 import {
 	createDateRangeConfig,
@@ -231,6 +232,17 @@ function ComparePage() {
 						</div>
 					</CardContent>
 				</Card>
+			)}
+
+			{/* Ticker Performance Table */}
+			{tickers.length > 0 && (
+				<TickerPerformanceTable
+					tickerData={tickerData || {}}
+					tickers={tickers}
+					timeRange={dateRangeConfig.range}
+					isLoading={isLoading}
+					title="Selected Stocks Performance"
+				/>
 			)}
 
 			{/* Grid Layout - Responsive 2 columns on desktop, 1 on mobile */}

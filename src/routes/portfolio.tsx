@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
+import { TickerPerformanceTable } from "@/components/ui/TickerPerformanceTable";
 import { useMultipleTickerData } from "@/lib/queries";
 import {
 	PerformanceOverview,
@@ -82,7 +83,12 @@ function PortfolioPage() {
 	// Handle adding/removing tickers
 	const handleAddTicker = (ticker: string) => {
 		if (!tickers.includes(ticker)) {
-			updateSearchParams({ tickers: [...tickers, ticker] });
+			const newTickers = [...tickers, ticker];
+			// Always ensure VNINDEX is included when we have any portfolio tickers
+			if (!newTickers.includes("VNINDEX") && newTickers.some(t => t !== "VNINDEX")) {
+				newTickers.push("VNINDEX");
+			}
+			updateSearchParams({ tickers: newTickers });
 		}
 	};
 
@@ -214,8 +220,13 @@ function PortfolioPage() {
 								</Badge>
 							))}
 							{hasVnIndex && (
-								<Badge variant="outline" className="text-sm">
-									VNINDEX (Benchmark)
+								<Badge 
+									variant="outline" 
+									className="text-sm cursor-pointer hover:bg-destructive hover:text-destructive-foreground transition-colors"
+									onClick={() => handleRemoveTicker("VNINDEX")}
+									title="Click to remove VNINDEX benchmark"
+								>
+									VNINDEX (Benchmark) ×
 								</Badge>
 							)}
 						</div>
@@ -223,16 +234,6 @@ function PortfolioPage() {
 							<p className="text-xs text-muted-foreground">
 								Click on a stock badge to remove it from your portfolio
 							</p>
-						)}
-						{portfolioTickers.length > 0 && !hasVnIndex && (
-							<Button 
-								variant="outline" 
-								size="sm" 
-								onClick={() => handleAddTicker("VNINDEX")}
-								className="mt-2"
-							>
-								Add VN-Index Benchmark
-							</Button>
 						)}
 					</div>
 
@@ -298,6 +299,15 @@ function PortfolioPage() {
 						portfolioData={tickerData || {}}
 						benchmarkData={vnindexData}
 						portfolioTickers={portfolioTickers}
+					/>
+
+					{/* Ticker Performance Table */}
+					<TickerPerformanceTable
+						tickerData={tickerData || {}}
+						tickers={portfolioTickers}
+						timeRange={dateRangeConfig.range}
+						isLoading={isLoading}
+						title="Portfolio Stocks Performance"
 					/>
 
 					{/* Risk Analysis */}
