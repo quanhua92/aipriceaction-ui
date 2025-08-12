@@ -285,6 +285,29 @@ export class VietnamesePanicAnalyzer {
 	}
 
 	/**
+	 * Get the most recent available date from VNINDEX data
+	 */
+	public async getMostRecentDate(): Promise<string | null> {
+		try {
+			const vnindexData = await fetchTickerData('VNINDEX');
+			if (vnindexData.length === 0) {
+				console.error('❌ No VNINDEX data available');
+				return null;
+			}
+
+			// Sort by date and get the most recent entry
+			const sortedData = [...vnindexData].sort((a, b) => a.date.getTime() - b.date.getTime());
+			const mostRecentDate = sortedData[sortedData.length - 1].time;
+			
+			console.log(`📅 Most recent available date: ${mostRecentDate}`);
+			return mostRecentDate;
+		} catch (error) {
+			console.error('❌ Error getting most recent date:', error);
+			return null;
+		}
+	}
+
+	/**
 	 * Get market data for a single date without printing
 	 */
 	public async getDateData(targetDate: string): Promise<DateAnalysisData | null> {

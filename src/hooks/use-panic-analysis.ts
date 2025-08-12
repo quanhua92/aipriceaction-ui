@@ -163,12 +163,16 @@ export function usePrePanicAnalysis(targetDate: string): UseQueryResult<PrePanic
  * Hook for current market sector indicators (for daily monitoring)
  */
 export function useCurrentSectorIndicators(): UseQueryResult<SectorIndicators, Error> {
-	const today = new Date().toISOString().split('T')[0];
-	
 	return useQuery({
-		queryKey: ['sector-indicators', today],
+		queryKey: ['sector-indicators'],
 		queryFn: async (): Promise<SectorIndicators> => {
-			const analysisData = await panicAnalyzer.getDateData(today);
+			// Get the most recent available date
+			const mostRecentDate = await panicAnalyzer.getMostRecentDate();
+			if (!mostRecentDate) {
+				throw new Error('No recent date available for sector indicators');
+			}
+
+			const analysisData = await panicAnalyzer.getDateData(mostRecentDate);
 			if (!analysisData) {
 				throw new Error('No current market data available');
 			}
@@ -177,7 +181,7 @@ export function useCurrentSectorIndicators(): UseQueryResult<SectorIndicators, E
 				bsi: analysisData.bsi,
 				ssi: analysisData.ssi,
 				rsi: analysisData.rsi,
-				date: today
+				date: mostRecentDate
 			};
 		},
 		staleTime: 1000 * 60 * 5, // 5 minutes - current data refreshes frequently
@@ -242,64 +246,86 @@ export function useCurrentWarningLevel(): UseQueryResult<{
 	tradingAdvice: ReturnType<typeof panicAnalyzer.getPrePanicTradingAdvice>;
 	sectorIndicators: SectorIndicators;
 }, Error> {
-	const yesterday = new Date();
-	yesterday.setDate(yesterday.getDate() - 1);
-	const yesterdayStr = yesterday.toISOString().split('T')[0];
-
 	return useQuery<{
 		currentWarning: WarningLevel;
 		tradingAdvice: ReturnType<typeof panicAnalyzer.getPrePanicTradingAdvice>;
 		sectorIndicators: SectorIndicators;
 	}, Error>({
-		queryKey: ['current-warning-level', yesterdayStr],
+		queryKey: ['current-warning-level'],
 		queryFn: async () => {
-			console.log('🔍 useCurrentWarningLevel: Attempting to get data for', yesterdayStr);
+			console.log('🔍 useCurrentWarningLevel: Getting most recent available date...');
 			
-			// Try to get yesterday's data first
-			let analysisData = await panicAnalyzer.getDateData(yesterdayStr);
-			let dateUsed = yesterdayStr;
-			let sectorData: { bsi: number | null; ssi: number | null; rsi: number | null; vnindexChange: number };
-			
-			// If yesterday's data not available, fall back to most recent panic day
-			if (!analysisData) {
-				console.log('⚠️ No data for yesterday, falling back to most recent panic day');
+			// Get the most recent available date first
+			const mostRecentDate = await panicAnalyzer.getMostRecentDate();
+			if (!mostRecentDate) {
+				console.log('⚠️ No recent date available, falling back to most recent panic day');
 				const mostRecent = PANIC_DAYS_DATABASE[PANIC_DAYS_DATABASE.length - 1];
-				dateUsed = mostRecent.date;
 				
-				// Use the most recent panic day data as fallback
-				sectorData = {
-					bsi: mostRecent.bsi,
-					ssi: mostRecent.ssi,
-					rsi: mostRecent.rsi,
-					vnindexChange: mostRecent.vnindexChange
-				};
-				
-				console.log('✅ Using most recent panic day data:', dateUsed);
-			} else {
-				console.log('✅ Found data for', dateUsed);
-				sectorData = {
-					bsi: analysisData.bsi,
-					ssi: analysisData.ssi,
-					rsi: analysisData.rsi,
-					vnindexChange: analysisData.vnindexChange
+				const currentWarning = panicAnalyzer['classifyPrePanicSignal'](
+					mostRecent.bsi,
+					mostRecent.ssi,
+					mostRecent.rsi,
+					mostRecent.vnindexChange
+				);
+
+				const tradingAdvice = panicAnalyzer.getPrePanicTradingAdvice(currentWarning);
+
+				return {
+					currentWarning,
+					tradingAdvice,
+					sectorIndicators: {
+						bsi: mostRecent.bsi,
+						ssi: mostRecent.ssi,
+						rsi: mostRecent.rsi,
+						date: mostRecent.date
+					}
 				};
 			}
 
+			// Try to get data for the most recent date
+			const analysisData = await panicAnalyzer.getDateData(mostRecentDate);
+			if (!analysisData) {
+				console.log('⚠️ No analysis data for most recent date, falling back to most recent panic day');
+				const mostRecent = PANIC_DAYS_DATABASE[PANIC_DAYS_DATABASE.length - 1];
+				
+				const currentWarning = panicAnalyzer['classifyPrePanicSignal'](
+					mostRecent.bsi,
+					mostRecent.ssi,
+					mostRecent.rsi,
+					mostRecent.vnindexChange
+				);
+
+				const tradingAdvice = panicAnalyzer.getPrePanicTradingAdvice(currentWarning);
+
+				return {
+					currentWarning,
+					tradingAdvice,
+					sectorIndicators: {
+						bsi: mostRecent.bsi,
+						ssi: mostRecent.ssi,
+						rsi: mostRecent.rsi,
+						date: mostRecent.date
+					}
+				};
+			}
+
+			console.log('✅ Found analysis data for', mostRecentDate);
+
 			// Classify pre-panic warning based on available data
 			const currentWarning = panicAnalyzer['classifyPrePanicSignal'](
-				sectorData.bsi,
-				sectorData.ssi,
-				sectorData.rsi,
-				sectorData.vnindexChange
+				analysisData.bsi,
+				analysisData.ssi,
+				analysisData.rsi,
+				analysisData.vnindexChange
 			);
 
 			const tradingAdvice = panicAnalyzer.getPrePanicTradingAdvice(currentWarning);
 
 			const sectorIndicators = {
-				bsi: sectorData.bsi,
-				ssi: sectorData.ssi,
-				rsi: sectorData.rsi,
-				date: dateUsed
+				bsi: analysisData.bsi,
+				ssi: analysisData.ssi,
+				rsi: analysisData.rsi,
+				date: mostRecentDate
 			};
 
 			return {
