@@ -1745,26 +1745,26 @@ function PanicAnalyzeDetail() {
 					{/* Chart Analysis Summary */}
 					<Card>
 						<CardHeader>
-							<CardTitle>Chart Analysis Summary</CardTitle>
+							<CardTitle>{t("panic.chartAnalysisSummary")}</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
-									<div className="text-sm font-medium text-gray-700 mb-2">Key Insights</div>
+									<div className="text-sm font-medium text-gray-700 mb-2">{t("panic.keyInsights")}</div>
 									<ul className="text-sm text-gray-600 space-y-1">
-										<li>&bull; 6-month view shows panic day in market context</li>
-										<li>&bull; Volume spikes often precede major price movements</li>
-										<li>&bull; Recovery patterns visible in post-panic price action</li>
-										<li>&bull; Support/resistance levels help identify entry/exit points</li>
+										<li>&bull; {t("panic.sixMonthViewInsight")}</li>
+										<li>&bull; {t("panic.volumeSpikesInsight")}</li>
+										<li>&bull; {t("panic.recoveryPatternsInsight")}</li>
+										<li>&bull; {t("panic.supportResistanceInsight")}</li>
 									</ul>
 								</div>
 								<div>
-									<div className="text-sm font-medium text-gray-700 mb-2">Trading Considerations</div>
+									<div className="text-sm font-medium text-gray-700 mb-2">{t("panic.tradingConsiderations")}</div>
 									<ul className="text-sm text-gray-600 space-y-1">
-										<li>&bull; High volume during panic indicates forced selling</li>
-										<li>&bull; Post-panic recovery patterns vary by market conditions</li>
-										<li>&bull; Use chart analysis alongside sector indicators</li>
-										<li>&bull; Consider market cap-weighted sector performance</li>
+										<li>&bull; {t("panic.highVolumePanicInsight")}</li>
+										<li>&bull; {t("panic.recoveryPatternsVaryInsight")}</li>
+										<li>&bull; {t("panic.chartAnalysisInsight")}</li>
+										<li>&bull; {t("panic.marketCapWeightedInsight")}</li>
 									</ul>
 								</div>
 							</div>
