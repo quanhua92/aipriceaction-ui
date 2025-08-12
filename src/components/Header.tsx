@@ -28,6 +28,11 @@ export default function Header() {
 			label: t("nav.dashboard"),
 		},
 		{
+			to: "/portfolio",
+			icon: Target,
+			label: t("nav.portfolioAnalysis"),
+		},
+		{
 			to: "/panic",
 			icon: AlertTriangle,
 			label: "Panic Analysis",
@@ -46,11 +51,6 @@ export default function Header() {
 			to: "/compare",
 			icon: Grid3X3,
 			label: t("nav.compareCharts"),
-		},
-		{
-			to: "/portfolio",
-			icon: Target,
-			label: t("nav.portfolioAnalysis"),
 		},
 	];
 

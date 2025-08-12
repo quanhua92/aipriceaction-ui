@@ -63,9 +63,12 @@ export function usePanicAnalysis(date: string): UseQueryResult<PanicAnalysisResu
 	return useQuery<PanicAnalysisResult, Error>({
 		queryKey: ['panic-analysis', date],
 		queryFn: async (): Promise<PanicAnalysisResult> => {
+			console.log('🔍 usePanicAnalysis: Analyzing date', date);
+			
 			// First check pre-calculated database for faster response
 			const precalculated = getPanicDayByDate(date);
 			if (precalculated) {
+				console.log('✅ Found precalculated data for', date);
 				return {
 					date: precalculated.date,
 					vnindexChange: precalculated.vnindexChange,
@@ -81,10 +84,14 @@ export function usePanicAnalysis(date: string): UseQueryResult<PanicAnalysisResu
 			}
 
 			// Fall back to real-time calculation for new dates
+			console.log('⏳ No precalculated data, attempting real-time analysis for', date);
 			const analysisData = await panicAnalyzer.analyzeDate(date);
 			if (!analysisData) {
-				throw new Error(`No data available for date: ${date}`);
+				console.error('❌ No analysis data available for', date);
+				throw new Error(`No data available for date: ${date}. The date may be invalid or market data may not be available.`);
 			}
+			
+			console.log('✅ Real-time analysis successful for', date);
 
 			const tradingSignals = panicAnalyzer.generateTradingSignals(
 				analysisData.panicType,
@@ -246,26 +253,53 @@ export function useCurrentWarningLevel(): UseQueryResult<{
 	}, Error>({
 		queryKey: ['current-warning-level', yesterdayStr],
 		queryFn: async () => {
-			const analysisData = await panicAnalyzer.getDateData(yesterdayStr);
+			console.log('🔍 useCurrentWarningLevel: Attempting to get data for', yesterdayStr);
+			
+			// Try to get yesterday's data first
+			let analysisData = await panicAnalyzer.getDateData(yesterdayStr);
+			let dateUsed = yesterdayStr;
+			let sectorData: { bsi: number | null; ssi: number | null; rsi: number | null; vnindexChange: number };
+			
+			// If yesterday's data not available, fall back to most recent panic day
 			if (!analysisData) {
-				throw new Error('No recent market data available for warning analysis');
+				console.log('⚠️ No data for yesterday, falling back to most recent panic day');
+				const mostRecent = PANIC_DAYS_DATABASE[PANIC_DAYS_DATABASE.length - 1];
+				dateUsed = mostRecent.date;
+				
+				// Use the most recent panic day data as fallback
+				sectorData = {
+					bsi: mostRecent.bsi,
+					ssi: mostRecent.ssi,
+					rsi: mostRecent.rsi,
+					vnindexChange: mostRecent.vnindexChange
+				};
+				
+				console.log('✅ Using most recent panic day data:', dateUsed);
+			} else {
+				console.log('✅ Found data for', dateUsed);
+				sectorData = {
+					bsi: analysisData.bsi,
+					ssi: analysisData.ssi,
+					rsi: analysisData.rsi,
+					vnindexChange: analysisData.vnindexChange
+				};
 			}
 
-			// Classify pre-panic warning based on yesterday's data
+			// Classify pre-panic warning based on available data
 			const currentWarning = panicAnalyzer['classifyPrePanicSignal'](
-				analysisData.bsi,
-				analysisData.ssi,
-				analysisData.rsi,
-				analysisData.vnindexChange
+				sectorData.bsi,
+				sectorData.ssi,
+				sectorData.rsi,
+				sectorData.vnindexChange
 			);
 
 			const tradingAdvice = panicAnalyzer.getPrePanicTradingAdvice(currentWarning);
 
 			const sectorIndicators = {
-				bsi: analysisData.bsi,
-				ssi: analysisData.ssi,
-				rsi: analysisData.rsi,
-				date: yesterdayStr
+				bsi: sectorData.bsi,
+				ssi: sectorData.ssi,
+				rsi: sectorData.rsi,
+				date: dateUsed
 			};
 
 			return {

@@ -31,26 +31,95 @@ export type DateRangeConfig =
 const GITHUB_RAW_BASE_URL =
 	"https://raw.githubusercontent.com/quanhua92/aipriceaction-data/refs/heads/main/market_data";
 
+// In-memory cache to prevent GitHub API rate limiting
+interface CacheEntry {
+	data: StockDataPoint[];
+	timestamp: number;
+	ticker: string;
+}
+
+class TickerDataCache {
+	private cache = new Map<string, CacheEntry>();
+	private readonly CACHE_DURATION = 1000 * 60 * 15; // 15 minutes cache
+
+	get(ticker: string): StockDataPoint[] | null {
+		const entry = this.cache.get(ticker);
+		if (!entry) {
+			return null;
+		}
+
+		// Check if cache is still valid
+		if (Date.now() - entry.timestamp > this.CACHE_DURATION) {
+			this.cache.delete(ticker);
+			return null;
+		}
+
+		console.log(`✅ Cache hit for ${ticker} (cached ${Math.round((Date.now() - entry.timestamp) / 1000 / 60)} minutes ago)`);
+		return entry.data;
+	}
+
+	set(ticker: string, data: StockDataPoint[]): void {
+		this.cache.set(ticker, {
+			data,
+			timestamp: Date.now(),
+			ticker
+		});
+		console.log(`💾 Cached data for ${ticker} (${data.length} data points)`);
+	}
+
+	clear(): void {
+		this.cache.clear();
+		console.log('🗑️ Cache cleared');
+	}
+
+	getStats(): { totalCached: number; cacheKeys: string[] } {
+		return {
+			totalCached: this.cache.size,
+			cacheKeys: Array.from(this.cache.keys())
+		};
+	}
+}
+
+// Global cache instance
+const tickerCache = new TickerDataCache();
+
 export function getTickerCsvUrl(ticker: string): string {
 	return `${GITHUB_RAW_BASE_URL}/${ticker}.csv`;
 }
 
+// Export cache for debugging
+export { tickerCache };
+
 export async function fetchTickerData(
 	ticker: string,
 ): Promise<StockDataPoint[]> {
+	// Check cache first
+	const cachedData = tickerCache.get(ticker);
+	if (cachedData) {
+		return cachedData;
+	}
+
+	console.log(`🌐 Cache miss - fetching ${ticker} from GitHub...`);
 	const url = getTickerCsvUrl(ticker);
 
 	try {
 		const response = await fetch(url);
 
 		if (!response.ok) {
+			console.error(`❌ GitHub fetch failed for ${ticker}: ${response.status}`);
 			throw new Error(`Failed to fetch data for ${ticker}: ${response.status}`);
 		}
 
 		const csvText = await response.text();
-		return parseCsvData(csvText);
+		const parsedData = parseCsvData(csvText);
+		
+		// Cache the parsed data
+		tickerCache.set(ticker, parsedData);
+		
+		console.log(`✅ Successfully fetched and cached ${ticker} (${parsedData.length} data points)`);
+		return parsedData;
 	} catch (error) {
-		console.error(`Error fetching data for ${ticker}:`, error);
+		console.error(`❌ Error fetching data for ${ticker}:`, error);
 		throw error;
 	}
 }
