@@ -166,6 +166,15 @@ export const vn = {
     investments: "Đầu tư",
     invested: "Đã đầu tư",
     screenshotHint: "Card này được tối ưu cho chụp màn hình và chia sẻ",
+    screenshotOptimized: "Tối ưu cho chụp màn hình & chia sẻ",
+    optimizedForSharing: "Hoàn hảo cho mạng xã hội và thuyết trình",
+    addFirstStock: "Sử dụng ô tìm kiếm ở trên để thêm cổ phiếu đầu tiên",
+    realInvestments: "Đầu tư thực tế",
+    scalingFactor: "Hệ số chia tỷ lệ",
+    keyboardNavigation: "Điều hướng bàn phím",
+    tabToNext: "Chuyển đến ô tiếp theo",
+    shiftTabToPrev: "Chuyển đến ô trước đó",
+    enterToNextRow: "Chuyển đến hàng tiếp theo",
   },
 
   // Portfolio Metrics

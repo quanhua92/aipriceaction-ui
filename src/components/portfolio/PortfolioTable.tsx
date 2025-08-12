@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import { ChevronUp, ChevronDown, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,7 @@ export function PortfolioTable({
 	const { t } = useTranslation();
 	const [sortField, setSortField] = useState<SortField>("ticker");
 	const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-	const [editingTicker, setEditingTicker] = useState<string | null>(null);
+	const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
 	const sortedItems = useMemo(() => {
 		return [...items].sort((a, b) => {
@@ -90,20 +90,74 @@ export function PortfolioTable({
 		}
 	};
 
-	const handleEdit = (item: PortfolioItem) => {
-		setEditingTicker(item.ticker);
-	};
+	// Handle Tab navigation like Google Sheets
+	const handleKeyDown = useCallback((
+		e: React.KeyboardEvent<HTMLInputElement>, 
+		ticker: string, 
+		field: 'price' | 'quantity'
+	) => {
+		if (e.key === 'Tab') {
+			e.preventDefault();
+			const currentIndex = sortedItems.findIndex(item => item.ticker === ticker);
+			
+			if (e.shiftKey) {
+				// Shift+Tab: Move to previous cell
+				if (field === 'quantity') {
+					// Move to price of same row
+					const priceKey = `${ticker}-price`;
+					inputRefs.current[priceKey]?.focus();
+				} else if (field === 'price') {
+					// Move to quantity of previous row
+					if (currentIndex > 0) {
+						const prevTicker = sortedItems[currentIndex - 1].ticker;
+						const quantityKey = `${prevTicker}-quantity`;
+						inputRefs.current[quantityKey]?.focus();
+					}
+				}
+			} else {
+				// Tab: Move to next cell
+				if (field === 'price') {
+					// Move to quantity of same row
+					const quantityKey = `${ticker}-quantity`;
+					inputRefs.current[quantityKey]?.focus();
+				} else if (field === 'quantity') {
+					// Move to price of next row
+					if (currentIndex < sortedItems.length - 1) {
+						const nextTicker = sortedItems[currentIndex + 1].ticker;
+						const priceKey = `${nextTicker}-price`;
+						inputRefs.current[priceKey]?.focus();
+					}
+				}
+			}
+		} else if (e.key === 'Enter') {
+			e.preventDefault();
+			// Move to next row same field
+			const currentIndex = sortedItems.findIndex(item => item.ticker === ticker);
+			if (currentIndex < sortedItems.length - 1) {
+				const nextTicker = sortedItems[currentIndex + 1].ticker;
+				const nextKey = `${nextTicker}-${field}`;
+				inputRefs.current[nextKey]?.focus();
+			}
+		}
+	}, [sortedItems]);
 
-	const handleSave = (ticker: string, quantity: string, price: string) => {
-		const numQuantity = parseFloat(quantity) || 0;
-		const numPrice = parseFloat(price) || 0;
-		onUpdateItem(ticker, numQuantity, numPrice);
-		setEditingTicker(null);
-	};
+	// Handle input changes
+	const handleInputChange = useCallback((
+		ticker: string, 
+		field: 'price' | 'quantity', 
+		value: string
+	) => {
+		const item = items.find(item => item.ticker === ticker);
+		if (!item) return;
 
-	const handleCancel = () => {
-		setEditingTicker(null);
-	};
+		const numValue = parseFloat(value) || 0;
+		
+		if (field === 'price') {
+			onUpdateItem(ticker, item.quantity, numValue);
+		} else {
+			onUpdateItem(ticker, numValue, item.price);
+		}
+	}, [items, onUpdateItem]);
 
 	const SortButton = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
 		<Button
@@ -123,110 +177,94 @@ export function PortfolioTable({
 		</Button>
 	);
 
-	const EditableRow = ({ item }: { item: PortfolioItem }) => {
-		const [quantity, setQuantity] = useState(item.quantity.toString());
-		const [price, setPrice] = useState(item.price.toString());
-
-		return (
-			<TableRow key={item.ticker} className="border-blue-200 bg-blue-50/30">
-				<TableCell className="font-medium">{item.ticker}</TableCell>
-				<TableCell>
-					<Input
-						type="number"
-						value={price}
-						onChange={(e) => setPrice(e.target.value)}
-						placeholder="0"
-						className="w-24"
-						min="0"
-						step="1000"
-					/>
-				</TableCell>
-				<TableCell>
-					<Input
-						type="number"
-						value={quantity}
-						onChange={(e) => setQuantity(e.target.value)}
-						placeholder="0"
-						className="w-20"
-						min="0"
-					/>
-				</TableCell>
-				<TableCell>
-					{formatVND(parseFloat(quantity) * parseFloat(price) || 0)}
-				</TableCell>
-				<TableCell>
-					<div className="flex items-center gap-2">
-						<Button
-							size="sm"
-							onClick={() => handleSave(item.ticker, quantity, price)}
-						>
-							{t("common.save")}
-						</Button>
-						<Button
-							size="sm"
-							variant="outline"
-							onClick={handleCancel}
-						>
-							{t("common.cancel")}
-						</Button>
-					</div>
-				</TableCell>
-			</TableRow>
-		);
-	};
-
-	const DisplayRow = ({ item }: { item: PortfolioItem }) => {
+	const PortfolioRow = ({ item }: { item: PortfolioItem }) => {
 		const isWatchList = isWatchListItem(item);
 		const value = calculateInvestmentValue(item);
 
 		return (
-			<TableRow key={item.ticker} className={isWatchList ? "opacity-60" : ""}>
-				<TableCell className="font-medium">
-					<div className="flex items-center gap-2">
-						{item.ticker}
-						{isWatchList && (
-							<Badge variant="secondary" className="text-xs">
-								{t("portfolio.watchList")}
-							</Badge>
-						)}
+			<TableRow 
+				key={item.ticker} 
+				className="hover:bg-muted/30 transition-colors border-b border-muted/50"
+			>
+				<TableCell className="px-4 py-3">
+					<div className="flex items-center gap-3">
+						<div className={`w-8 h-8 rounded flex items-center justify-center text-sm font-bold ${
+							isWatchList 
+								? "bg-gray-100 text-gray-600" 
+								: "bg-green-500 text-white"
+						}`}>
+							{item.ticker.charAt(0)}
+						</div>
+						<div className="flex flex-col">
+							<span className="font-semibold">{item.ticker}</span>
+							{isWatchList && (
+								<Badge variant="secondary" className="text-xs w-fit mt-1">
+									{t("portfolio.watchList")}
+								</Badge>
+							)}
+						</div>
 					</div>
 				</TableCell>
-				<TableCell>
-					{isWatchList ? "—" : formatVND(item.price)}
+				<TableCell className="px-2 py-3">
+					<Input
+						ref={(el) => {
+							inputRefs.current[`${item.ticker}-price`] = el;
+						}}
+						type="number"
+						value={item.price || ''}
+						onChange={(e) => handleInputChange(item.ticker, 'price', e.target.value)}
+						onKeyDown={(e) => handleKeyDown(e, item.ticker, 'price')}
+						placeholder="0"
+						className="w-full text-right border-transparent hover:border-muted focus:border-blue-500 bg-transparent"
+						min="0"
+						step="1000"
+					/>
 				</TableCell>
-				<TableCell>
-					{isWatchList ? "—" : item.quantity.toLocaleString()}
+				<TableCell className="px-2 py-3">
+					<Input
+						ref={(el) => {
+							inputRefs.current[`${item.ticker}-quantity`] = el;
+						}}
+						type="number"
+						value={item.quantity || ''}
+						onChange={(e) => handleInputChange(item.ticker, 'quantity', e.target.value)}
+						onKeyDown={(e) => handleKeyDown(e, item.ticker, 'quantity')}
+						placeholder="0"
+						className="w-full text-right border-transparent hover:border-muted focus:border-blue-500 bg-transparent"
+						min="0"
+					/>
 				</TableCell>
-				<TableCell>
-					{isWatchList ? "—" : formatVND(value)}
+				<TableCell className="px-4 py-3 text-right">
+					<span className={`font-semibold ${value > 0 ? 'text-green-600' : 'text-muted-foreground'}`}>
+						{value > 0 ? formatVND(value) : '—'}
+					</span>
 				</TableCell>
-				<TableCell>
-					<div className="flex items-center gap-2">
-						<Button
-							size="sm"
-							variant="outline"
-							onClick={() => handleEdit(item)}
-						>
-							{isWatchList ? t("portfolio.addToPortfolio") : t("common.edit")}
-						</Button>
-						<Button
-							size="sm"
-							variant="outline"
-							onClick={() => onRemoveItem(item.ticker)}
-						>
-							<Trash2 className="h-4 w-4" />
-						</Button>
-					</div>
+				<TableCell className="px-4 py-3">
+					<Button
+						size="sm"
+						variant="ghost"
+						onClick={() => onRemoveItem(item.ticker)}
+						className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+					>
+						<Trash2 className="h-4 w-4" />
+					</Button>
 				</TableCell>
 			</TableRow>
 		);
 	};
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle className="flex items-center justify-between">
-					<span>{t("portfolio.configuration")}</span>
+		<Card className="w-full">
+			<CardHeader className="pb-3">
+				<CardTitle className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+					<div className="flex items-center gap-2">
+						<div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
+							<svg className="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+								<path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+							</svg>
+						</div>
+						<span className="text-lg font-semibold">{t("portfolio.configuration")}</span>
+					</div>
 					<div className="flex items-center gap-2">
 						<TickerSearch
 							onSelect={onAddItem}
@@ -236,40 +274,46 @@ export function PortfolioTable({
 					</div>
 				</CardTitle>
 			</CardHeader>
-			<CardContent>
-				<div className="rounded-md border">
+			<CardContent className="px-0">
+				<div className="overflow-x-auto">
 					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead>
+						<TableHeader className="bg-muted/30">
+							<TableRow className="border-b">
+								<TableHead className="px-4 py-3 text-left font-semibold">
 									<SortButton field="ticker">{t("portfolio.ticker")}</SortButton>
 								</TableHead>
-								<TableHead>
+								<TableHead className="px-4 py-3 text-right font-semibold">
 									<SortButton field="price">{t("portfolio.price")}</SortButton>
 								</TableHead>
-								<TableHead>
+								<TableHead className="px-4 py-3 text-right font-semibold">
 									<SortButton field="quantity">{t("portfolio.quantity")}</SortButton>
 								</TableHead>
-								<TableHead>
+								<TableHead className="px-4 py-3 text-right font-semibold">
 									<SortButton field="value">{t("portfolio.value")}</SortButton>
 								</TableHead>
-								<TableHead>{t("portfolio.actions")}</TableHead>
+								<TableHead className="px-4 py-3 text-center font-semibold w-[120px]">{t("portfolio.actions")}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{sortedItems.length === 0 ? (
 								<TableRow>
-									<TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-										{t("portfolio.noStocksInPortfolio")}
+									<TableCell colSpan={5} className="text-center py-12">
+										<div className="flex flex-col items-center gap-4">
+											<div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center">
+												<svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+												</svg>
+											</div>
+											<div className="text-center">
+												<p className="text-lg font-medium text-muted-foreground mb-1">{t("portfolio.noStocksInPortfolio")}</p>
+												<p className="text-sm text-muted-foreground">{t("portfolio.addFirstStock")}</p>
+											</div>
+										</div>
 									</TableCell>
 								</TableRow>
 							) : (
 								sortedItems.map((item) => (
-									editingTicker === item.ticker ? (
-										<EditableRow key={item.ticker} item={item} />
-									) : (
-										<DisplayRow key={item.ticker} item={item} />
-									)
+									<PortfolioRow key={item.ticker} item={item} />
 								))
 							)}
 						</TableBody>
@@ -277,8 +321,42 @@ export function PortfolioTable({
 				</div>
 				
 				{items.length > 0 && (
-					<div className="mt-4 text-sm text-muted-foreground">
-						<p>{t("portfolio.tableHint")}</p>
+					<div className="px-4 pb-2 space-y-3">
+						<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm text-muted-foreground bg-muted/20 rounded-lg p-3">
+							<div className="flex items-center gap-2">
+								<div className="w-4 h-4 rounded bg-green-500"></div>
+								<span>{t("portfolio.realInvestments")}: {items.filter(item => !isWatchListItem(item)).length}</span>
+							</div>
+							<div className="flex items-center gap-2">
+								<div className="w-4 h-4 rounded bg-gray-400"></div>
+								<span>{t("portfolio.watchListItems")}: {items.filter(item => isWatchListItem(item)).length}</span>
+							</div>
+						</div>
+						
+						<div className="bg-blue-50/50 rounded-lg p-3 border border-blue-200/50">
+							<div className="flex items-center gap-2 mb-2">
+								<div className="w-5 h-5 rounded bg-blue-100 flex items-center justify-center">
+									<svg className="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+										<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+									</svg>
+								</div>
+								<span className="text-sm font-medium text-blue-800">{t("portfolio.keyboardNavigation")}</span>
+							</div>
+							<div className="text-xs text-blue-700 space-y-1">
+								<div className="flex items-center gap-4">
+									<kbd className="px-2 py-1 bg-white/50 rounded text-xs font-mono">Tab</kbd>
+									<span>{t("portfolio.tabToNext")}</span>
+								</div>
+								<div className="flex items-center gap-4">
+									<kbd className="px-2 py-1 bg-white/50 rounded text-xs font-mono">Shift+Tab</kbd>
+									<span>{t("portfolio.shiftTabToPrev")}</span>
+								</div>
+								<div className="flex items-center gap-4">
+									<kbd className="px-2 py-1 bg-white/50 rounded text-xs font-mono">Enter</kbd>
+									<span>{t("portfolio.enterToNextRow")}</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				)}
 			</CardContent>

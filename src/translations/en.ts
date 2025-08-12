@@ -166,6 +166,15 @@ export const en = {
     investments: "Investments",
     invested: "Invested",
     screenshotHint: "This card is optimized for screenshots and sharing",
+    screenshotOptimized: "Screenshot & share optimized",
+    optimizedForSharing: "Perfect for social media and presentations",
+    addFirstStock: "Use the search box above to add your first stock",
+    realInvestments: "Real Investments",
+    scalingFactor: "Scaling Factor",
+    keyboardNavigation: "Keyboard Navigation",
+    tabToNext: "Move to next cell",
+    shiftTabToPrev: "Move to previous cell", 
+    enterToNextRow: "Move to next row",
   },
 
   // Portfolio Metrics

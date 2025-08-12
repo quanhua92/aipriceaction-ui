@@ -353,21 +353,47 @@ function PortfolioPage() {
 
 			{/* Portfolio Analysis Content */}
 			{isLoading ? (
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-					{[1, 2, 3, 4].map((i) => (
-						<Card key={i}>
-							<CardContent className="p-6">
-								<div className="animate-pulse space-y-4">
-									<div className="h-4 bg-muted rounded w-1/2"></div>
-									<div className="h-32 bg-muted rounded"></div>
-									<div className="space-y-2">
-										<div className="h-4 bg-muted rounded w-3/4"></div>
-										<div className="h-4 bg-muted rounded w-1/2"></div>
-									</div>
+				<div className="space-y-6">
+					{/* Loading Portfolio Summary */}
+					<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20">
+						<CardHeader>
+							<div className="animate-pulse space-y-3">
+								<div className="h-6 bg-muted rounded w-1/3"></div>
+								<div className="h-4 bg-muted rounded w-2/3"></div>
+							</div>
+						</CardHeader>
+						<CardContent>
+							<div className="animate-pulse space-y-6">
+								<div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+									{[1, 2, 3, 4].map((i) => (
+										<div key={i} className="bg-muted/50 rounded-xl p-4">
+											<div className="h-8 bg-muted rounded mb-2"></div>
+											<div className="h-4 bg-muted rounded w-2/3"></div>
+										</div>
+									))}
 								</div>
-							</CardContent>
-						</Card>
-					))}
+								<div className="h-64 bg-muted/50 rounded-xl"></div>
+							</div>
+						</CardContent>
+					</Card>
+					
+					{/* Loading Analysis Cards */}
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+						{[1, 2, 3, 4].map((i) => (
+							<Card key={i}>
+								<CardContent className="p-6">
+									<div className="animate-pulse space-y-4">
+										<div className="h-4 bg-muted rounded w-1/2"></div>
+										<div className="h-32 bg-muted rounded"></div>
+										<div className="space-y-2">
+											<div className="h-4 bg-muted rounded w-3/4"></div>
+											<div className="h-4 bg-muted rounded w-1/2"></div>
+										</div>
+									</div>
+								</CardContent>
+							</Card>
+						))}
+					</div>
 				</div>
 			) : (
 				<div className="space-y-8">
