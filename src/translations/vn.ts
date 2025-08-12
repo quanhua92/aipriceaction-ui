@@ -179,6 +179,19 @@ export const vn = {
     unsavedChanges: "Bạn có thay đổi chưa lưu",
     save: "Lưu",
     cancel: "Hủy",
+    
+    // Portfolio Summary Card
+    marketPrice: "Giá thị trường",
+    buyPrice: "Giá mua", 
+    profitPercent: "Lãi %",
+    profitPrice: "Lãi (VND)",
+    costBasis: "Giá vốn",
+    totalDeposit: "Tổng vốn",
+    totalAssets: "Tổng tài sản",
+    totalCapital: "Tổng vốn",
+    overview: "Tổng quan",
+    allocation: "Phân bổ",
+    marketValue: "Giá trị thị trường",
   },
 
   // Portfolio Metrics

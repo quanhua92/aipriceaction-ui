@@ -141,7 +141,7 @@ export function PortfolioSummaryCard({
 				<div className="bg-background border rounded-lg p-3 shadow-lg">
 					<p className="font-medium">{data.name}</p>
 					<p className="text-sm text-muted-foreground">
-						{displayValue(data.value)} ({showPrivacy ? "●●●" : `${data.percentage}%`})
+						{displayValue(data.value)} ({data.percentage}%)
 					</p>
 				</div>
 			);
@@ -222,7 +222,7 @@ export function PortfolioSummaryCard({
 							{profitLoss >= 0 ? '+' : ''}{displayValue(Math.abs(profitLoss))}
 						</span>
 						<span className={`ml-4 text-xl ${profitLossPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-							{showPrivacy ? "●●●" : `${profitLossPercentage >= 0 ? '+' : ''}${profitLossPercentage.toFixed(2)}%`}
+							{profitLossPercentage >= 0 ? '+' : ''}{profitLossPercentage.toFixed(2)}%
 						</span>
 					</div>
 				</div>
@@ -497,7 +497,7 @@ export function PortfolioSummaryCard({
 												<div className="text-right">
 													<span className="font-medium text-gray-900">{displayValue(item.value)}</span>
 													<span className="ml-2 text-gray-600">
-														{showPrivacy ? "●●●" : `${item.percentage}%`}
+														{item.percentage}%
 													</span>
 												</div>
 											</div>
@@ -699,7 +699,7 @@ export function PortfolioSummaryCard({
 												<span className="font-medium text-gray-900">{item.name}</span>
 											</div>
 											<span className="text-gray-600">
-												{showPrivacy ? "●●●" : `${item.percentage}%`}
+												{item.percentage}%
 											</span>
 										</div>
 									))}
