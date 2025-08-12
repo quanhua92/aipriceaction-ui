@@ -504,6 +504,20 @@ export const en = {
     chartAnalysisInsight: "Use chart analysis alongside sector indicators",
     marketCapWeightedInsight: "Consider market cap-weighted sector performance",
     
+    // Sector Chart Analysis
+    bankingSectorPerformance: "Banking Sector Performance",
+    securitiesSectorPerformance: "Securities Sector Performance",
+    realEstateSectorPerformance: "Real Estate Sector Performance",
+    vnindexVsBankingStocks: "VNINDEX vs top banking stocks",
+    vnindexVsSecuritiesStocks: "VNINDEX vs top securities stocks",
+    vnindexVsRealEstateStocks: "VNINDEX vs top real estate stocks",
+    loadingBankingSector: "Loading banking sector...",
+    loadingSecuritiesSector: "Loading securities sector...",
+    loadingRealEstateSector: "Loading real estate sector...",
+    noBankingSectorData: "No banking sector data available",
+    noSecuritiesSectorData: "No securities sector data available",
+    noRealEstateSectorData: "No real estate sector data available",
+    
     // Action Buttons
     backToPanicOverview: "Back to Panic Overview",
     nextPanicEvent: "Next Panic Event",

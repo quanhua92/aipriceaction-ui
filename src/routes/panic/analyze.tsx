@@ -1079,11 +1079,11 @@ function PanicAnalyzeDetail() {
 													);
 												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
-														<div className="text-muted-foreground">Loading banking sector...</div>
+														<div className="text-muted-foreground">{t("panic.loadingBankingSector")}</div>
 													</div>
 												) : (
 													<div className="h-[300px] flex items-center justify-center">
-														<div className="text-muted-foreground">No banking sector data available</div>
+														<div className="text-muted-foreground">{t("panic.noBankingSectorData")}</div>
 													</div>
 												)}
 											</div>
@@ -1167,11 +1167,11 @@ function PanicAnalyzeDetail() {
 													);
 												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
-														<div className="text-muted-foreground">Loading securities sector...</div>
+														<div className="text-muted-foreground">{t("panic.loadingSecuritiesSector")}</div>
 													</div>
 												) : (
 													<div className="h-[300px] flex items-center justify-center">
-														<div className="text-muted-foreground">No securities sector data available</div>
+														<div className="text-muted-foreground">{t("panic.noSecuritiesSectorData")}</div>
 													</div>
 												)}
 											</div>
@@ -1255,11 +1255,11 @@ function PanicAnalyzeDetail() {
 													);
 												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
-														<div className="text-muted-foreground">Loading real estate sector...</div>
+														<div className="text-muted-foreground">{t("panic.loadingRealEstateSector")}</div>
 													</div>
 												) : (
 													<div className="h-[300px] flex items-center justify-center">
-														<div className="text-muted-foreground">No real estate sector data available</div>
+														<div className="text-muted-foreground">{t("panic.noRealEstateSectorData")}</div>
 													</div>
 												)}
 											</div>
@@ -1452,9 +1452,9 @@ function PanicAnalyzeDetail() {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div className="w-4 h-4 bg-blue-500 rounded"></div>
-									Banking Sector Performance
+									{t("panic.bankingSectorPerformance")}
 								</CardTitle>
-								<CardDescription>VNINDEX vs top banking stocks</CardDescription>
+								<CardDescription>{t("panic.vnindexVsBankingStocks")}</CardDescription>
 							</CardHeader>
 							<CardContent>
 								<div className="h-[300px]">
@@ -1550,9 +1550,9 @@ function PanicAnalyzeDetail() {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div className="w-4 h-4 bg-green-500 rounded"></div>
-									Securities Sector Performance
+									{t("panic.securitiesSectorPerformance")}
 								</CardTitle>
-								<CardDescription>VNINDEX vs top securities stocks</CardDescription>
+								<CardDescription>{t("panic.vnindexVsSecuritiesStocks")}</CardDescription>
 							</CardHeader>
 							<CardContent>
 								<div className="h-[300px]">
@@ -1648,9 +1648,9 @@ function PanicAnalyzeDetail() {
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<div className="w-4 h-4 bg-purple-500 rounded"></div>
-									Real Estate Sector Performance
+									{t("panic.realEstateSectorPerformance")}
 								</CardTitle>
-								<CardDescription>VNINDEX vs top real estate stocks</CardDescription>
+								<CardDescription>{t("panic.vnindexVsRealEstateStocks")}</CardDescription>
 							</CardHeader>
 							<CardContent>
 								<div className="h-[300px]">

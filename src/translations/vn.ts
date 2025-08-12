@@ -504,6 +504,20 @@ export const vn = {
     chartAnalysisInsight: "Sử dụng phân tích biểu đồ cùng với chỉ số ngành",
     marketCapWeightedInsight: "Xem xét hiệu suất ngành trọng số vốn hóa thị trường",
     
+    // Phân tích biểu đồ ngành
+    bankingSectorPerformance: "Hiệu suất Ngành Ngân hàng",
+    securitiesSectorPerformance: "Hiệu suất Ngành Chứng khoán",
+    realEstateSectorPerformance: "Hiệu suất Ngành Bất động sản",
+    vnindexVsBankingStocks: "VNINDEX so với các cổ phiếu ngân hàng hàng đầu",
+    vnindexVsSecuritiesStocks: "VNINDEX so với các cổ phiếu chứng khoán hàng đầu",
+    vnindexVsRealEstateStocks: "VNINDEX so với các cổ phiếu bất động sản hàng đầu",
+    loadingBankingSector: "Đang tải ngành ngân hàng...",
+    loadingSecuritiesSector: "Đang tải ngành chứng khoán...",
+    loadingRealEstateSector: "Đang tải ngành bất động sản...",
+    noBankingSectorData: "Không có dữ liệu ngành ngân hàng",
+    noSecuritiesSectorData: "Không có dữ liệu ngành chứng khoán",
+    noRealEstateSectorData: "Không có dữ liệu ngành bất động sản",
+    
     // Action Buttons
     backToPanicOverview: "Quay lại Tổng quan Hoảng loạn",
     nextPanicEvent: "Sự kiện Hoảng loạn Tiếp theo",
