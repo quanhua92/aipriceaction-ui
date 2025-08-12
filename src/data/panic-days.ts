@@ -1,7 +1,7 @@
 /**
  * Pre-calculated Vietnamese Market Panic Day Database
  * 
- * Contains all 49 verified panic days (2017-2025) from PANIC_ANALYSIS_WORKBOOK.md
+ * Contains all 22 verified panic days (2017-2025) from PANIC_ANALYSIS_WORKBOOK.md
  * with sector indicators, classifications, pre-panic signals, and showcase tickers.
  * 
  * This database enables instant panic analysis without real-time calculations,
@@ -412,6 +412,37 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 		significantDrops: []
 	},
 	{
+		date: '2020-02-24',
+		vnindexChange: -3.11,
+		vnindexClose: 903.34,
+		vnindexLow: 903.34,
+		intradayDrop: -3.11,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'COVID-19 declared global pandemic concern, worldwide market selling - Moderate COVID panic',
+		tradingLesson: 'Moderate panic day testing whether sector differentiation patterns hold during sustained COVID stress. Flight to quality pattern with large caps vs high beta small caps.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 2,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2020-02-21', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2020-02-14', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2020-02-07', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
 		date: '2020-03-09',
 		vnindexChange: -6.28,
 		vnindexClose: 835.49,
@@ -493,6 +524,79 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 		]
 	},
 	{
+		date: '2020-03-13',
+		vnindexChange: -5.10,
+		vnindexClose: 723.40,
+		vnindexLow: 723.40,
+		intradayDrop: -5.10,
+		bsi: -7.0,
+		ssi: -6.0,
+		rsi: -5.4,
+		panicType: 'NEGATIVE_EXTREME',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'STRONG_WARNING',
+		context: 'National emergency declarations, lockdown preparations - Institutional capitulation',
+		tradingLesson: 'CRITICAL POINT: When even defensive banking crashes, panic is at extreme levels. Even VCB dropped -7.0% showing institutional capitulation during emergency declarations.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [
+				{ ticker: 'VCB', change: -7.0, reason: 'Institutional capitulation - even defensive banking crashed' },
+				{ ticker: 'SSI', change: -6.0, reason: 'Securities widespread selling during emergency declarations' },
+				{ ticker: 'VIC', change: -5.4, reason: 'Real estate held relatively better but still weak' }
+			],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 5,
+			recoveryLeader: 'NO_RECOVERY',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2020-03-12', vnindexChange: -5.19, bsi: -6.81, ssi: -6.36, rsi: -5.48, signal: 'STRONG_WARNING' },
+			t7: { date: '2020-03-04', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' },
+			t14: { date: '2020-02-25', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2020-03-09', daysBefore: 4, vnindexChange: -6.28, bsi: -6.95, ssi: -6.89, rsi: -6.62, signal: 'STRONG_WARNING' },
+			{ date: '2020-03-12', daysBefore: 1, vnindexChange: -5.19, bsi: -6.81, ssi: -6.36, rsi: -5.48, signal: 'STRONG_WARNING' }
+		]
+	},
+	{
+		date: '2020-03-19',
+		vnindexChange: -3.80,
+		vnindexClose: 714.00,
+		vnindexLow: 714.00,
+		intradayDrop: -3.80,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'STRONG_WARNING',
+		context: 'Vietnam announces lockdown measures - Domestic focus on local lockdown impact',
+		tradingLesson: 'Extended pandemic panic period continues. Domestic lockdown measures creating continued weakness in extended crisis environment.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 3,
+			recoveryLeader: 'NO_RECOVERY',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2020-03-18', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2020-03-10', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2020-03-02', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2020-03-09', daysBefore: 8, vnindexChange: -6.28, bsi: -6.95, ssi: -6.89, rsi: -6.62, signal: 'STRONG_WARNING' },
+			{ date: '2020-03-12', daysBefore: 5, vnindexChange: -5.19, bsi: -6.81, ssi: -6.36, rsi: -5.48, signal: 'STRONG_WARNING' },
+			{ date: '2020-03-13', daysBefore: 4, vnindexChange: -5.10, bsi: -7.0, ssi: -6.0, rsi: -5.4, signal: 'STRONG_WARNING' }
+		]
+	},
+	{
 		date: '2020-03-23',
 		vnindexChange: -6.08,
 		vnindexClose: 663.97,
@@ -530,6 +634,70 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 			{ date: '2020-03-09', daysBefore: 10, vnindexChange: -6.28, bsi: -6.95, ssi: -6.89, rsi: -6.62, signal: 'STRONG_WARNING' },
 			{ date: '2020-03-12', daysBefore: 7, vnindexChange: -5.19, bsi: -6.81, ssi: -6.36, rsi: -5.48, signal: 'STRONG_WARNING' }
 		]
+	},
+	{
+		date: '2020-03-30',
+		vnindexChange: -3.70,
+		vnindexClose: 657.40,
+		vnindexLow: 657.40,
+		intradayDrop: -3.70,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'STRONG_WARNING',
+		context: 'Ongoing pandemic uncertainty, economic damage assessment - Post-capitulation struggles',
+		tradingLesson: 'Following the peak panic, market trying to find bottom but continued uncertainty about economic damage. Recovery struggles in post-capitulation environment.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 5,
+			recoveryLeader: 'NO_RECOVERY',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2020-03-27', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2020-03-20', vnindexChange: -4.2, bsi: null, ssi: null, rsi: null, signal: 'STRONG_WARNING' },
+			t14: { date: '2020-03-13', vnindexChange: -5.10, bsi: -7.0, ssi: -6.0, rsi: -5.4, signal: 'STRONG_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2020-03-23', daysBefore: 5, vnindexChange: -6.08, bsi: -7.0, ssi: -7.0, rsi: -7.0, signal: 'STRONG_WARNING' }
+		]
+	},
+	{
+		date: '2020-04-21',
+		vnindexChange: -3.10,
+		vnindexClose: 762.00,
+		vnindexLow: 762.00,
+		intradayDrop: -3.10,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'Oil prices went negative, unprecedented market event - External shock with limited Vietnam impact',
+		tradingLesson: 'Oil price anomaly affecting all markets but limited Vietnamese impact since oil not major export. External shock testing Vietnamese market resilience.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 3,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2020-04-20', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2020-04-13', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2020-04-06', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
 	},
 
 	// Selected 2021-2025 Representative Examples
