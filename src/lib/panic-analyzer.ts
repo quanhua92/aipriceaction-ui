@@ -143,7 +143,14 @@ export class VietnamesePanicAnalyzer {
 		const targetDateTime = new Date(targetDate).getTime();
 		const targetIndex = sortedData.findIndex(d => d.date.getTime() === targetDateTime);
 		
-		if (targetIndex === -1 || targetIndex === 0) return null;
+		if (targetIndex === -1) {
+			console.log(`🔍 getPriceChange: ${targetDate} not found in data. Available dates: ${sortedData.map(d => d.time).slice(-5).join(', ')} (showing last 5)`);
+			return null;
+		}
+		if (targetIndex === 0) {
+			console.log(`🔍 getPriceChange: ${targetDate} is the first data point, no previous data for comparison`);
+			return null;
+		}
 
 		const targetRow = sortedData[targetIndex];
 		const prevRow = sortedData[targetIndex - 1];
@@ -312,22 +319,30 @@ export class VietnamesePanicAnalyzer {
 	 * Get market data for a single date without printing
 	 */
 	public async getDateData(targetDate: string): Promise<DateAnalysisData | null> {
+		console.log(`🎯 getDateData called with targetDate: ${targetDate}`);
 		const allData: Record<string, PriceChangeData> = {};
 
 		// Load data for all tickers
 		for (const ticker of this.allTickers) {
 			try {
 				const tickerData = await fetchTickerData(ticker);
+				console.log(`📊 ${ticker}: ${tickerData.length} data points, last date: ${tickerData[tickerData.length - 1]?.time}`);
 				const change = await this.getPriceChange(tickerData, targetDate);
 				if (change) {
 					allData[ticker] = change;
+					console.log(`✅ ${ticker}: ${change.change.toFixed(2)}% change`);
+				} else {
+					console.log(`❌ ${ticker}: No price change data for ${targetDate}`);
 				}
 			} catch (error) {
-				console.warn(`Warning: ${ticker} data not found for ${targetDate}`);
+				console.warn(`Warning: ${ticker} data not found for ${targetDate}`, error);
 			}
 		}
 
+		console.log(`📈 Total tickers with data: ${Object.keys(allData).length}/${this.allTickers.length}`);
+		
 		if (!allData.VNINDEX) {
+			console.log(`❌ No VNINDEX data found for ${targetDate}`);
 			return null;
 		}
 
