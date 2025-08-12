@@ -1,7 +1,7 @@
 /**
  * Pre-calculated Vietnamese Market Panic Day Database
  * 
- * Contains all 22 verified panic days (2017-2025) from PANIC_ANALYSIS_WORKBOOK.md
+ * Contains all 41 verified panic days (2018-2025) from PANIC_ANALYSIS_WORKBOOK.md
  * with sector indicators, classifications, pre-panic signals, and showcase tickers.
  * 
  * This database enables instant panic analysis without real-time calculations,
@@ -700,7 +700,322 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 		significantDrops: []
 	},
 
-	// Selected 2021-2025 Representative Examples
+	// 2021 Bull Market Correction Panic Days
+	{
+		date: '2021-01-19',
+		vnindexChange: -6.10,
+		vnindexClose: 1117.20,
+		vnindexLow: 1117.20,
+		intradayDrop: -6.10,
+		bsi: -6.70,
+		ssi: -7.60,
+		rsi: -6.00,
+		panicType: 'NEGATIVE_MEDIUM',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'Post-COVID bull market correction, profit-taking after major rally - Bull market pattern development',
+		tradingLesson: 'Bull market corrections show clear sector patterns - banking stabilizes, securities recover strongly. VCB -6.9%, SSI -7.6% standard crash pattern.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [
+				{ ticker: 'SSI', change: -7.6, reason: 'Securities heavy selling during bull market correction' },
+				{ ticker: 'VCB', change: -6.9, reason: 'Even quality banking crashed during profit-taking' },
+				{ ticker: 'CTG', change: -6.5, reason: 'Banking standard crash pattern' }
+			],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 2,
+			recoveryLeader: 'BANKING',
+			nextDayVnindexChange: null,
+			averageSecuritiesReturn: 7.7
+		},
+		prePanicSignals: {
+			t1: { date: '2021-01-18', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2021-01-08', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2020-12-31', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2021-01-26',
+		vnindexChange: -3.60,
+		vnindexClose: 1121.00,
+		vnindexLow: 1121.00,
+		intradayDrop: -3.60,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'STRONG_WARNING',
+		context: 'Follow-through correction in bull market sequence - Continued bull market correction',
+		tradingLesson: 'Moderate correction following major panic. Bull market corrections tend to come in sequences with reducing severity.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2021-01-25', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2021-01-15', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2021-01-08', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2021-01-19', daysBefore: 7, vnindexChange: -6.10, bsi: -6.70, ssi: -7.60, rsi: -6.00, signal: 'STRONG_WARNING' }
+		]
+	},
+	{
+		date: '2021-01-28',
+		vnindexChange: -6.10,
+		vnindexClose: 1022.80,
+		vnindexLow: 1022.80,
+		intradayDrop: -6.10,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'NEGATIVE_MEDIUM',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'STRONG_WARNING',
+		context: 'Third panic in bull market correction sequence - Extended correction in bull market pattern',
+		tradingLesson: 'Extended correction with multiple panic days in sequence. Different from bear market panics - still within bull market framework.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 3,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2021-01-27', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2021-01-19', vnindexChange: -6.10, bsi: null, ssi: null, rsi: null, signal: 'STRONG_WARNING' },
+			t14: { date: '2021-01-12', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2021-01-19', daysBefore: 9, vnindexChange: -6.10, bsi: -6.70, ssi: -7.60, rsi: -6.00, signal: 'STRONG_WARNING' },
+			{ date: '2021-01-26', daysBefore: 2, vnindexChange: -3.60, bsi: null, ssi: null, rsi: null, signal: 'EARLY_WARNING' }
+		]
+	},
+	{
+		date: '2021-02-08',
+		vnindexChange: -3.30,
+		vnindexClose: 1075.10,
+		vnindexLow: 1075.10,
+		intradayDrop: -3.30,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'MULTIPLE_WEAKNESS_EVENTS',
+		strongestWarning: 'EARLY_WARNING',
+		context: 'Final wave of bull market correction - Correction ending, market finding support',
+		tradingLesson: 'Final correction wave marking end of bull market correction sequence. Recovery beginning after this final selling wave.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 2,
+			recoveryLeader: 'BANKING',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2021-02-05', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2021-01-28', vnindexChange: -6.10, bsi: null, ssi: null, rsi: null, signal: 'EARLY_WARNING' },
+			t14: { date: '2021-01-21', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2021-01-28', daysBefore: 11, vnindexChange: -6.10, bsi: null, ssi: null, rsi: null, signal: 'EARLY_WARNING' }
+		]
+	},
+	{
+		date: '2021-07-12',
+		vnindexChange: -4.90,
+		vnindexClose: 1270.10,
+		vnindexLow: 1270.10,
+		intradayDrop: -4.90,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'Mid-year profit-taking, delta variant concerns - Correction from near all-time highs',
+		tradingLesson: 'Bull market high correction with delta variant concerns. Banking showing stabilization characteristics during mid-year profit-taking.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 2,
+			recoveryLeader: 'BANKING',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2021-07-09', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2021-07-01', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2021-06-24', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2021-07-19',
+		vnindexChange: -4.50,
+		vnindexClose: 1237.80,
+		vnindexLow: 1237.80,
+		intradayDrop: -4.50,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'EARLY_WARNING',
+		context: 'Continued correction from bull market highs - Extended correction, second panic in sequence',
+		tradingLesson: 'Extended correction following previous panic. Sector rotation patterns maturing with continued weakness from bull market highs.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 3,
+			recoveryLeader: 'BANKING',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2021-07-16', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2021-07-08', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2021-07-01', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2021-07-12', daysBefore: 7, vnindexChange: -4.90, bsi: null, ssi: null, rsi: null, signal: 'EARLY_WARNING' }
+		]
+	},
+
+	// 2022 Bear Market and Inflation Panic Days
+	{
+		date: '2022-04-25',
+		vnindexChange: -4.00,
+		vnindexClose: 1310.92,
+		vnindexLow: 1310.92,
+		intradayDrop: -4.00,
+		bsi: -4.20,
+		ssi: -4.80,
+		rsi: -4.00,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'Early bear market panic - Inflation concerns, Fed tightening, bear market beginning',
+		tradingLesson: 'Bear market explosive recovery pattern. Securities led recovery (+3.40%, MBS +5.59%) stronger than banking (+0.86%). Classic patterns persist in bear markets.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'MBS', change: 5.59, reason: 'High-beta recovery champion on Day +1' },
+				{ ticker: 'HCM', change: 5.06, reason: 'Securities broad strength in bear market recovery' },
+				{ ticker: 'VPB', change: 6.26, reason: 'Exceptional banking recovery despite bear conditions' }
+			],
+			worstPerformers: [
+				{ ticker: 'VCB', change: -1.60, reason: 'Even VCB weak during bear market conditions on Day +1' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VRE', change: 6.88, reason: 'Exceptional real estate bounce on Day +1' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'SECURITIES',
+			nextDayVnindexChange: 2.32,
+			averageSecuritiesReturn: 3.40
+		},
+		prePanicSignals: {
+			t1: { date: '2022-04-22', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-04-15', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-04-08', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2022-05-09',
+		vnindexChange: -4.70,
+		vnindexClose: 1265.50,
+		vnindexLow: 1265.50,
+		intradayDrop: -4.70,
+		bsi: -5.20,
+		ssi: -5.80,
+		rsi: -4.20,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'EARLY_WARNING',
+		context: 'Inflation shock - High inflation data, aggressive Fed policy expected, setting up for larger panic',
+		tradingLesson: 'Classic 2022 recovery pattern. Securities led explosive recovery (+3.25%, SHS +6.60%) confirming consistency of Vietnamese patterns during inflation crisis.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'SHS', change: 6.60, reason: 'Recovery champion confirmed on Day +1' },
+				{ ticker: 'HCM', change: 5.04, reason: 'Securities broad strength during inflation recovery' },
+				{ ticker: 'VPB', change: 4.71, reason: 'Banking high-beta recovery participation' }
+			],
+			worstPerformers: [],
+			defensiveLeaders: [
+				{ ticker: 'VCB', change: 2.70, reason: 'VCB defensive premium maintained during recovery' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'SECURITIES',
+			nextDayVnindexChange: 1.89,
+			averageSecuritiesReturn: 3.25
+		},
+		prePanicSignals: {
+			t1: { date: '2022-05-06', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-04-29', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-04-22', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2022-04-25', daysBefore: 14, vnindexChange: -4.00, bsi: -4.20, ssi: -4.80, rsi: -4.00, signal: 'EARLY_WARNING' }
+		]
+	},
+	{
+		date: '2022-05-12',
+		vnindexChange: -3.10,
+		vnindexClose: 1238.00,
+		vnindexLow: 1238.00,
+		intradayDrop: -3.10,
+		bsi: -3.50,
+		ssi: -4.10,
+		rsi: -3.20,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'STRONG_WARNING',
+		context: 'Pre-panic weakness - Continued selling pressure, building pressure leading to major May 13 panic',
+		tradingLesson: 'Pre-panic setup day showing building weakness before major panic. Classic escalation pattern building.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2022-05-11', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-05-03', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-04-26', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2022-05-09', daysBefore: 3, vnindexChange: -4.70, bsi: -5.20, ssi: -5.80, rsi: -4.20, signal: 'EARLY_WARNING' }
+		]
+	},
 	{
 		date: '2022-05-13',
 		vnindexChange: -4.53,
@@ -744,6 +1059,403 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 			{ date: '2022-05-12', daysBefore: 1, vnindexChange: -2.8, bsi: -3.2, ssi: -4.1, rsi: -3.5, signal: 'STRONG_WARNING' }
 		]
 	},
+	{
+		date: '2022-06-13',
+		vnindexChange: -4.50,
+		vnindexClose: 1226.00,
+		vnindexLow: 1226.00,
+		intradayDrop: -4.50,
+		bsi: -4.80,
+		ssi: -5.20,
+		rsi: -4.20,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'EARLY_WARNING',
+		context: 'Bear market continuation - Extended crisis pattern, different from bull market corrections',
+		tradingLesson: 'Bear market extended crisis disrupted normal Vietnamese recovery patterns. Traditional recovery patterns failed - securities continued crashing even after banking stabilization attempt.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VIC', change: 0.26, reason: 'Only bright spot showing quality defense during extended crisis' }
+			],
+			worstPerformers: [
+				{ ticker: 'SSI', change: -6.19, reason: 'Securities continued crashing on Day +1 during bear market' },
+				{ ticker: 'VCI', change: -5.75, reason: 'Securities crash continued despite banking stabilization attempt' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VIC', change: 0.26, reason: 'Quality defense provided only stability during extended crisis' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 10,
+			recoveryLeader: 'NO_RECOVERY',
+			nextDayVnindexChange: 0.27
+		},
+		prePanicSignals: {
+			t1: { date: '2022-06-10', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-06-03', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-05-27', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2022-05-13', daysBefore: 31, vnindexChange: -4.53, bsi: -6.8, ssi: -7.2, rsi: -5.1, signal: 'EARLY_WARNING' }
+		]
+	},
+	{
+		date: '2022-09-26',
+		vnindexChange: -3.50,
+		vnindexClose: 1159.10,
+		vnindexLow: 1159.10,
+		intradayDrop: -3.50,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'Late-stage bear market panic - Extended recovery periods characteristic of bear market',
+		tradingLesson: 'Late bear market panic showing extended recovery periods and different characteristics from bull market corrections.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 5,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2022-09-23', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-09-16', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-09-09', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2022-10-07',
+		vnindexChange: -4.70,
+		vnindexClose: 1022.40,
+		vnindexLow: 1022.40,
+		intradayDrop: -4.70,
+		bsi: -6.40,
+		ssi: -6.80,
+		rsi: -4.10,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'October crash - Global October crash, widespread selling, VIC showing incredible resilience',
+		tradingLesson: 'Securities-only recovery pattern. VCI +6.94% demonstrated alternative recovery leadership when traditional banking leadership failed during bear market conditions.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VCI', change: 6.94, reason: 'Ultimate recovery champion on Day +1' },
+				{ ticker: 'MBS', change: 6.03, reason: 'High-beta explosive bounce during securities recovery' },
+				{ ticker: 'VIC', change: 0.3, reason: 'Incredible resilience during global crash' }
+			],
+			worstPerformers: [
+				{ ticker: 'VCB', change: -6.6, reason: 'Heavy institutional selling during global crash' },
+				{ ticker: 'SSI', change: -6.9, reason: 'Standard securities crash pattern' },
+				{ ticker: 'SHS', change: -7.0, reason: 'Securities widespread weakness' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VIC', change: 0.3, reason: 'Defensive excellence during global October crash' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'SECURITIES',
+			nextDayVnindexChange: 0.63,
+			averageSecuritiesReturn: 4.54
+		},
+		prePanicSignals: {
+			t1: { date: '2022-10-06', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-09-29', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-09-22', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2022-10-21',
+		vnindexChange: -3.30,
+		vnindexClose: 1013.70,
+		vnindexLow: 1013.70,
+		intradayDrop: -3.30,
+		bsi: null,
+		ssi: null,
+		rsi: null,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'EARLY_WARNING',
+		context: 'Continued October weakness - Continuation of October selling pressure, extended weakness',
+		tradingLesson: 'Extended October crisis with multiple panic periods testing market resilience. Precursor to final crisis resolution.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 3,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: null
+		},
+		prePanicSignals: {
+			t1: { date: '2022-10-20', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-10-13', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-10-06', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2022-10-07', daysBefore: 14, vnindexChange: -4.70, bsi: -6.40, ssi: -6.80, rsi: -4.10, signal: 'EARLY_WARNING' }
+		]
+	},
+	{
+		date: '2022-10-24',
+		vnindexChange: -3.60,
+		vnindexClose: 986.15,
+		vnindexLow: 986.15,
+		intradayDrop: -3.60,
+		bsi: -3.80,
+		ssi: -4.20,
+		rsi: -3.40,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'MULTIPLE_WEAKNESS_EVENTS',
+		strongestWarning: 'EARLY_WARNING',
+		context: 'Third October panic - Crisis resolution, ending extended crisis period with VIC defensive excellence',
+		tradingLesson: 'Crisis resolution recovery pattern. Classic Vietnamese patterns returned after extended October crisis - Banking → Securities → Real Estate sequence restored.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'CTG', change: 6.92, reason: 'Banking recovery champion on Day +1 after extended crisis' },
+				{ ticker: 'HCM', change: 3.75, reason: 'Securities recovery strength following banking leadership' },
+				{ ticker: 'VRE', change: 2.91, reason: 'Some F0 real estate recovery participation' }
+			],
+			worstPerformers: [
+				{ ticker: 'VIC', change: -0.53, reason: 'VIC showed 2.77% defensive outperformance vs market -3.30%' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VIC', change: -0.53, reason: 'Ultimate defensive excellence - 2.77% outperformance during crisis' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'BANKING',
+			nextDayVnindexChange: 1.17,
+			averageSecuritiesReturn: 0.97
+		},
+		prePanicSignals: {
+			t1: { date: '2022-10-21', vnindexChange: -3.30, bsi: null, ssi: null, rsi: null, signal: 'EARLY_WARNING' },
+			t7: { date: '2022-10-14', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-10-07', vnindexChange: -4.70, bsi: -6.40, ssi: -6.80, rsi: -4.10, signal: 'EARLY_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2022-10-07', daysBefore: 17, vnindexChange: -4.70, bsi: -6.40, ssi: -6.80, rsi: -4.10, signal: 'EARLY_WARNING' }
+		]
+	},
+	{
+		date: '2022-11-04',
+		vnindexChange: -3.60,
+		vnindexClose: 974.60,
+		vnindexLow: 974.60,
+		intradayDrop: -3.60,
+		bsi: -3.80,
+		ssi: -4.20,
+		rsi: -3.40,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'November selling - Continued bear market pressure, extended weakness period',
+		tradingLesson: 'Extended bear market pattern. Only VCB/BID provided stability (±0.0%) while securities continued crashing (-7.51%). Recovery patterns require market recovery conditions.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VCB', change: 0.0, reason: 'Ultimate defensive anchor held during extended bear market' },
+				{ ticker: 'BID', change: 0.0, reason: 'Defensive banking stability during continued weakness' }
+			],
+			worstPerformers: [
+				{ ticker: 'SHS', change: -8.83, reason: 'Extreme securities selling during bear market' },
+				{ ticker: 'MBS', change: -9.78, reason: 'High-beta securities severe weakness' },
+				{ ticker: 'TCB', change: -6.80, reason: 'Secondary banking crashed during extended bear' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VCB', change: 0.0, reason: 'Only stock providing true defensive stability' },
+				{ ticker: 'BID', change: 0.0, reason: 'Banking defensive excellence during bear market grind' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 7,
+			recoveryLeader: 'NO_RECOVERY',
+			nextDayVnindexChange: -2.20
+		},
+		prePanicSignals: {
+			t1: { date: '2022-11-03', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-10-27', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-10-20', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2022-11-10',
+		vnindexChange: -4.30,
+		vnindexClose: 935.80,
+		vnindexLow: 935.80,
+		intradayDrop: -4.30,
+		bsi: -4.60,
+		ssi: -5.20,
+		rsi: -3.80,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		strongestWarning: 'EARLY_WARNING',
+		context: 'Late year panic - Tax loss harvesting, VCB and VIC showing consistent defensive characteristics',
+		tradingLesson: 'Banking recovery leadership validated. VCB/BID/CTG trinity delivered +3.7% synchronized recovery on Day +1, proving banking stabilization signal.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VCB', change: 3.71, reason: 'Classic big-3 banking recovery leader on Day +1' },
+				{ ticker: 'BID', change: 3.73, reason: 'Banking trinity synchronized recovery' },
+				{ ticker: 'CTG', change: 3.73, reason: 'Banking recovery leadership confirmed' },
+				{ ticker: 'VIC', change: 2.45, reason: 'Real estate recovery leadership on Day +1' }
+			],
+			worstPerformers: [
+				{ ticker: 'VCB', change: -1.4, reason: 'VCB showing extreme defensive strength during panic' },
+				{ ticker: 'VIC', change: -0.4, reason: 'VIC defensive excellence during late year panic' },
+				{ ticker: 'SSI', change: -6.7, reason: 'Securities standard crash pattern' },
+				{ ticker: 'SHS', change: -8.1, reason: 'High-beta securities severe weakness' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VCB', change: -1.4, reason: 'Ultimate defensive strength vs -4.30% market' },
+				{ ticker: 'VIC', change: -0.4, reason: 'Real estate defensive excellence' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'BANKING',
+			nextDayVnindexChange: 0.77,
+			averageSecuritiesReturn: -2.83
+		},
+		prePanicSignals: {
+			t1: { date: '2022-11-09', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-11-02', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-10-26', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2022-11-04', daysBefore: 6, vnindexChange: -3.60, bsi: -3.80, ssi: -4.20, rsi: -3.40, signal: 'EARLY_WARNING' }
+		]
+	},
+	{
+		date: '2022-12-06',
+		vnindexChange: -3.10,
+		vnindexClose: 1048.70,
+		vnindexLow: 1048.70,
+		intradayDrop: -3.10,
+		bsi: -3.30,
+		ssi: -3.80,
+		rsi: -2.90,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'Year-end correction - Final bear market panic, year-end rebalancing with final selling pressure',
+		tradingLesson: 'Sector rotation pattern during bear market ending. Market showed sector rotation signals rather than classic recovery patterns.',
+		showcaseTickers: {
+			bestPerformers: [],
+			worstPerformers: [],
+			defensiveLeaders: []
+		},
+		recoveryPattern: {
+			stabilizationDays: 3,
+			recoveryLeader: 'MIXED',
+			nextDayVnindexChange: -0.73
+		},
+		prePanicSignals: {
+			t1: { date: '2022-12-05', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2022-11-28', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2022-11-21', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+
+	// 2023 Panic Days
+	{
+		date: '2023-08-18',
+		vnindexChange: -4.50,
+		vnindexClose: 1177.99,
+		vnindexLow: 1177.74,
+		intradayDrop: -4.52,
+		bsi: -4.00,
+		ssi: -7.09,
+		rsi: -6.70,
+		panicType: 'NEGATIVE_MEDIUM',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'Economic growth concerns, global uncertainty - VCB ultimate safe haven masterclass',
+		tradingLesson: 'VCB GAINED (+0.12%) during -4.50% panic = ultimate safe haven validation. Perfect recovery sequence: Banking → Securities → Real Estate with SHS +3.29% recovery leadership.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VCB', change: 0.12, reason: 'ULTIMATE SAFE HAVEN - gained during market panic' },
+				{ ticker: 'SHS', change: 3.29, reason: 'Recovery champion on Day +1' },
+				{ ticker: 'CTG', change: 4.26, reason: 'Banking recovery leader on Day +1' }
+			],
+			worstPerformers: [
+				{ ticker: 'MBS', change: -10.0, reason: 'High-beta securities deep crash during panic' },
+				{ ticker: 'SHS', change: -9.6, reason: 'Even recovery leaders crashed hard initially' },
+				{ ticker: 'VIC', change: -7.0, reason: 'Real estate standard crash, no defensive premium' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VCB', change: 0.12, reason: '+4.62% outperformance - unprecedented defensive excellence' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'SECURITIES',
+			nextDayVnindexChange: 0.15,
+			averageSecuritiesReturn: 1.53
+		},
+		prePanicSignals: {
+			t1: { date: '2023-08-17', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2023-08-10', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2023-08-03', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2023-10-26',
+		vnindexChange: -4.19,
+		vnindexClose: 1055.45,
+		vnindexLow: 1049.71,
+		intradayDrop: -4.72,
+		bsi: -2.07,
+		ssi: -7.35,
+		rsi: -6.65,
+		panicType: 'UNCLEAR_PATTERN',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		strongestWarning: 'NO_WARNING',
+		context: 'October selling pressure, seasonal patterns - BID ultimate defensive masterclass',
+		tradingLesson: 'BID showed unprecedented stability (-0.47% during -4.19% panic). Perfect setup for securities recovery with VCI +4.70% leading instead of usual SHS pattern.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'BID', change: 3.56, reason: 'Ultimate recovery leader on Day +1' },
+				{ ticker: 'VCI', change: 4.70, reason: 'Securities recovery champion (different leader than usual)' },
+				{ ticker: 'SHS', change: 2.74, reason: 'Strong recovery but not leading this time' }
+			],
+			worstPerformers: [
+				{ ticker: 'BID', change: -0.47, reason: 'Incredible stability during -4.19% panic' },
+				{ ticker: 'VCB', change: -1.52, reason: 'Quality banking defensive outperformance' },
+				{ ticker: 'SHS', change: -9.27, reason: 'Most oversold, setup for recovery leadership' },
+				{ ticker: 'VHM', change: -6.22, reason: 'F0 panic selling continued on Day +1' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'BID', change: -0.47, reason: 'Ultimate defensive haven during seasonal panic' },
+				{ ticker: 'VCB', change: -1.52, reason: '2.67% defensive outperformance vs market' }
+			]
+		},
+		recoveryPattern: {
+			stabilizationDays: 1,
+			recoveryLeader: 'SECURITIES',
+			nextDayVnindexChange: 0.49,
+			averageSecuritiesReturn: 2.97
+		},
+		prePanicSignals: {
+			t1: { date: '2023-10-25', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t7: { date: '2023-10-18', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
+			t14: { date: '2023-10-11', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+
+	// 2024-2025 Panic Days
 	{
 		date: '2024-04-15',
 		vnindexChange: -4.70,
@@ -998,15 +1710,15 @@ export function getShowcaseTickers(): {
  * Summary statistics for dashboard displays
  */
 export const PANIC_STATISTICS = {
-	totalPanicDays: 49,
+	totalPanicDays: 41,
 	byYear: {
-		2018: 6,
-		2020: 10, 
-		2021: 4,
-		2022: 8,
+		2018: 7,
+		2020: 9, 
+		2021: 6,
+		2022: 12,
 		2023: 2,
 		2024: 1,
-		2025: 7
+		2025: 4
 	},
 	predictionAccuracy: 0.561, // 56.1%
 	patternDistribution: {
