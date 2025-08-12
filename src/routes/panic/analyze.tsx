@@ -9,7 +9,7 @@
  */
 
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -42,13 +42,14 @@ import {
 import { useTickerData } from '@/lib/queries';
 import { createDateRangeConfig, type DateRangeConfig } from '@/lib/stock-data';
 import { getPanicDayByDate } from '@/data/panic-days';
+import { panicAnalyzer } from '@/lib/panic-analyzer';
 import type { WarningLevel } from '@/lib/panic-analyzer';
 
 // Route schema with search params validation
 export const Route = createFileRoute('/panic/analyze')({
 	validateSearch: (search: Record<string, unknown>) => {
 		return {
-			date: (search.date as string) || new Date().toISOString().split('T')[0]
+			date: search.date as string || undefined
 		};
 	},
 	component: PanicAnalyzeDetail,
@@ -161,6 +162,33 @@ function PrePanicTimelineItem({
 function PanicAnalyzeDetail() {
 	const { date } = Route.useSearch();
 	const [selectedTab, setSelectedTab] = useState('analysis');
+	
+	// Redirect to most recent date if no date provided
+	useEffect(() => {
+		if (!date) {
+			panicAnalyzer.getMostRecentDate().then(mostRecentDate => {
+				if (mostRecentDate) {
+					window.location.replace(`/panic/analyze?date=${mostRecentDate}`);
+				} else {
+					console.error('No recent date available - system should wait for GitHub data');
+				}
+			});
+		}
+	}, [date]);
+	
+	// Don't proceed if no date - will redirect
+	if (!date) {
+		return (
+			<div className="container mx-auto p-6">
+				<div className="flex items-center justify-center h-64">
+					<div className="text-center">
+						<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+						<p className="mt-4 text-gray-600">Redirecting to most recent analysis...</p>
+					</div>
+				</div>
+			</div>
+		);
+	}
 	
 	// Create default 6-month date range centered on panic day
 	const [dateRangeConfig, setDateRangeConfig] = useState<DateRangeConfig>(() => 

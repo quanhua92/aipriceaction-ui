@@ -114,7 +114,7 @@ export function PrePanicWarningWidget({
 				</div>
 				{!compact && (
 					<CardDescription className="text-xs md:text-sm">
-						Updated: {new Date(sectorIndicators.date).toLocaleDateString('vi-VN')}
+						Data from: {sectorIndicators.date}
 					</CardDescription>
 				)}
 			</CardHeader>

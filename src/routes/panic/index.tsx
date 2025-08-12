@@ -32,6 +32,7 @@ import {
 	usePanicStatistics, 
 	usePanicDayFilters
 } from '@/hooks/use-panic-analysis';
+import { panicAnalyzer } from '@/lib/panic-analyzer';
 import { 
 	PANIC_DAYS_DATABASE, 
 	getPanicDaysByPattern, 
@@ -105,10 +106,15 @@ function PanicIndexPage() {
 					<PrePanicWarningWidget 
 						showTradingAdvice={true}
 						compact={true}
-						onViewDetails={() => {
-							// Navigate to current analysis
-							const today = new Date().toISOString().split('T')[0];
-							window.location.href = `/panic/analyze?date=${today}`;
+						onViewDetails={async () => {
+							// Navigate to analysis of most recent available date
+							const mostRecentDate = await panicAnalyzer.getMostRecentDate();
+							if (mostRecentDate) {
+								window.location.href = `/panic/analyze?date=${mostRecentDate}`;
+							} else {
+								console.error('No recent date available - system should wait for GitHub data');
+								// Don't navigate if no data available
+							}
 						}}
 					/>
 				</div>
@@ -399,9 +405,14 @@ function PanicIndexPage() {
 					<div className="flex flex-wrap gap-3">
 						<Button 
 							variant="outline" 
-							onClick={() => {
-								const today = new Date().toISOString().split('T')[0];
-								window.location.href = `/panic/analyze?date=${today}`;
+							onClick={async () => {
+								const mostRecentDate = await panicAnalyzer.getMostRecentDate();
+								if (mostRecentDate) {
+									window.location.href = `/panic/analyze?date=${mostRecentDate}`;
+								} else {
+									console.error('No recent date available - system should wait for GitHub data');
+									// Don't navigate if no data available
+								}
 							}}
 							className="flex items-center gap-2"
 						>
