@@ -1,7 +1,7 @@
 /**
  * Panic Indicator Card Component
  * 
- * Displays sector indicators (BSI/SSI/RSI) with panic classification
+ * Displays sector indicators (Banking/Securities/Real Estate) with panic classification
  * and warning levels. Reusable across home, sector, portfolio, and panic pages.
  */
 
@@ -126,7 +126,7 @@ export function PanicIndicatorCard({
 					<div className="text-center">
 						<div className="flex items-center justify-center gap-1 mb-1">
 							{getIndicatorIcon(bsi)}
-							<span className="text-sm font-medium text-gray-600">BSI</span>
+							<span className="text-sm font-medium text-gray-600">Banking Indicator</span>
 						</div>
 						<div className={cn("text-lg font-bold", getIndicatorColor(bsi))}>
 							{formatPercentage(bsi)}
@@ -137,7 +137,7 @@ export function PanicIndicatorCard({
 					<div className="text-center">
 						<div className="flex items-center justify-center gap-1 mb-1">
 							{getIndicatorIcon(ssi)}
-							<span className="text-sm font-medium text-gray-600">SSI</span>
+							<span className="text-sm font-medium text-gray-600">Securities Indicator</span>
 						</div>
 						<div className={cn("text-lg font-bold", getIndicatorColor(ssi))}>
 							{formatPercentage(ssi)}
@@ -148,7 +148,7 @@ export function PanicIndicatorCard({
 					<div className="text-center">
 						<div className="flex items-center justify-center gap-1 mb-1">
 							{getIndicatorIcon(rsi)}
-							<span className="text-sm font-medium text-gray-600">RSI</span>
+							<span className="text-sm font-medium text-gray-600">Real Estate Indicator</span>
 						</div>
 						<div className={cn("text-lg font-bold", getIndicatorColor(rsi))}>
 							{formatPercentage(rsi)}

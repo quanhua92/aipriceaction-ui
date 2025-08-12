@@ -124,7 +124,7 @@ export function PrePanicWarningWidget({
 				{!compact && (
 					<div className="grid grid-cols-3 gap-2 md:gap-3 text-center">
 						<div>
-							<div className="text-xs text-gray-500 mb-1">BSI</div>
+							<div className="text-xs text-gray-500 mb-1">Banking Indicator</div>
 							<div className={cn(
 								"text-xs md:text-sm font-bold",
 								sectorIndicators.bsi === null ? "text-gray-400" :
@@ -136,7 +136,7 @@ export function PrePanicWarningWidget({
 							</div>
 						</div>
 						<div>
-							<div className="text-xs text-gray-500 mb-1">SSI</div>
+							<div className="text-xs text-gray-500 mb-1">Securities Indicator</div>
 							<div className={cn(
 								"text-xs md:text-sm font-bold",
 								sectorIndicators.ssi === null ? "text-gray-400" :
@@ -148,7 +148,7 @@ export function PrePanicWarningWidget({
 							</div>
 						</div>
 						<div>
-							<div className="text-xs text-gray-500 mb-1">RSI</div>
+							<div className="text-xs text-gray-500 mb-1">Real Estate Indicator</div>
 							<div className={cn(
 								"text-xs md:text-sm font-bold",
 								sectorIndicators.rsi === null ? "text-gray-400" :

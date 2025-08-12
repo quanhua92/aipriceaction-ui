@@ -628,8 +628,20 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 		strongestWarning: 'NO_WARNING',
 		prePanicPattern: 'ISOLATED_SIGNALS',
 		context: 'Major 2025 market stress, institutional selling wave',
-		showcaseTickers: ['VCB', 'SSI', 'VIC'],
-		recovery: {
+		tradingLesson: 'Black swan event with no pre-warning signals. Real estate showed relative strength.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VIC', change: -5.8, reason: 'Real estate defensive leadership during crisis' }
+			],
+			worstPerformers: [
+				{ ticker: 'SSI', change: -8.1, reason: 'Securities crashed hardest during selling wave' },
+				{ ticker: 'VCB', change: -7.2, reason: 'Banking broad weakness during institutional selling' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VIC', change: -5.8, reason: 'Best defensive performance during black swan event' }
+			]
+		},
+		recoveryPattern: {
 			stabilizationDays: 3,
 			recoveryLeader: 'REAL_ESTATE',
 			nextDayVnindexChange: -1.56,
@@ -655,8 +667,20 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 		strongestWarning: 'STRONG_WARNING',
 		prePanicPattern: 'ESCALATING_TO_CRISIS',
 		context: 'Crisis acceleration, extended selling wave after initial panic',
-		showcaseTickers: ['VCB', 'MBS', 'VIC'],
-		recovery: {
+		tradingLesson: 'Perfect escalation pattern with T-1 STRONG_WARNING signal. VIC showed relative strength.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VIC', change: -5.2, reason: 'Real estate continued defensive leadership' }
+			],
+			worstPerformers: [
+				{ ticker: 'MBS', change: -8.5, reason: 'Securities extended weakness during crisis acceleration' },
+				{ ticker: 'VCB', change: -7.3, reason: 'Banking continued broad weakness' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VIC', change: -5.2, reason: 'Consistent defensive performance during extended crisis' }
+			]
+		},
+		recoveryPattern: {
 			stabilizationDays: 2,
 			recoveryLeader: 'REAL_ESTATE',
 			nextDayVnindexChange: -3.40,
@@ -684,8 +708,20 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 		strongestWarning: 'STRONG_WARNING',
 		prePanicPattern: 'MULTIPLE_WEAKNESS_EVENTS',
 		context: 'Third consecutive panic, crisis resolution beginning',
-		showcaseTickers: ['TCB', 'SHS', 'VIC'],
-		recovery: {
+		tradingLesson: 'Real estate indicator turned positive (+2.39%) during panic, signaling recovery. VIC leadership established.',
+		showcaseTickers: {
+			bestPerformers: [
+				{ ticker: 'VIC', change: 3.4, reason: 'Exceptional +3.4% gain during market panic - ultimate defensive excellence' },
+				{ ticker: 'TCB', change: -2.1, reason: 'Banking showing relative strength vs market -3.40%' }
+			],
+			worstPerformers: [
+				{ ticker: 'SHS', change: -7.8, reason: 'Securities lagged with severe weakness despite RSI recovery' }
+			],
+			defensiveLeaders: [
+				{ ticker: 'VIC', change: 3.4, reason: 'Historical defensive masterclass - positive during third consecutive panic' }
+			]
+		},
+		recoveryPattern: {
 			stabilizationDays: 1,
 			recoveryLeader: 'REAL_ESTATE',
 			nextDayVnindexChange: 4.85,

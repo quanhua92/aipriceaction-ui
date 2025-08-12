@@ -24,18 +24,23 @@ import {
 	BarChart3,
 	Clock,
 	Shield,
-	ExternalLink
+	ExternalLink,
+	LineChart
 } from 'lucide-react';
 import {
 	PanicIndicatorCard,
 	TradingSignalsCard
 } from '@/components/panic';
+import { CandlestickChart } from '@/components/charts';
+import { DateRangeSelector } from '@/components/ui/DateRangeSelector';
 import { 
 	usePanicAnalysis, 
 	usePrePanicAnalysis,
 	getWarningLevelColor,
 	getPanicTypeColor
 } from '@/hooks/use-panic-analysis';
+import { useTickerData } from '@/lib/queries';
+import { createDateRangeConfig, type DateRangeConfig } from '@/lib/stock-data';
 import { getPanicDayByDate } from '@/data/panic-days';
 import type { WarningLevel } from '@/lib/panic-analyzer';
 
@@ -48,6 +53,25 @@ export const Route = createFileRoute('/panic/analyze')({
 	},
 	component: PanicAnalyzeDetail,
 });
+
+// Helper function to create 6-month date range centered on panic day
+function createPanicAnalysisDateRange(panicDate: string): DateRangeConfig {
+	const date = new Date(panicDate);
+	
+	// 3 months before panic day
+	const startDate = new Date(date);
+	startDate.setMonth(date.getMonth() - 3);
+	
+	// 3 months after panic day  
+	const endDate = new Date(date);
+	endDate.setMonth(date.getMonth() + 3);
+	
+	return createDateRangeConfig(
+		'CUSTOM',
+		startDate.toISOString().split('T')[0],
+		endDate.toISOString().split('T')[0]
+	);
+}
 
 interface PrePanicTimelineItemProps {
 	timeframe: string;
@@ -138,9 +162,17 @@ function PanicAnalyzeDetail() {
 	const { date } = Route.useSearch();
 	const [selectedTab, setSelectedTab] = useState('analysis');
 	
+	// Create default 6-month date range centered on panic day
+	const [dateRangeConfig, setDateRangeConfig] = useState<DateRangeConfig>(() => 
+		createPanicAnalysisDateRange(date)
+	);
+	
 	// Get panic analysis for the specified date
 	const { data: panicAnalysis, isLoading: panicLoading, error: panicError } = usePanicAnalysis(date);
 	const { data: prePanicAnalysis, isLoading: prePanicLoading, error: prePanicError } = usePrePanicAnalysis(date);
+	
+	// Get VNINDEX data for the chart with 6-month range
+	const { data: vnindexData, isLoading: vnindexLoading } = useTickerData('VNINDEX', dateRangeConfig);
 	
 	// Check if this is a pre-calculated panic day
 	const precalculatedData = getPanicDayByDate(date);
@@ -309,7 +341,7 @@ function PanicAnalyzeDetail() {
 
 			{/* Detailed Analysis Tabs */}
 			<Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-				<TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
+				<TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
 					<TabsTrigger value="analysis" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<BarChart3 className="h-3 w-3 md:h-4 md:w-4" />
 						<span className="text-xs md:text-sm">Analysis</span>
@@ -325,6 +357,10 @@ function PanicAnalyzeDetail() {
 					<TabsTrigger value="context" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<Shield className="h-3 w-3 md:h-4 md:w-4" />
 						<span className="text-xs md:text-sm">Context</span>
+					</TabsTrigger>
+					<TabsTrigger value="chart" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<LineChart className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Chart</span>
 					</TabsTrigger>
 				</TabsList>
 
@@ -670,6 +706,92 @@ function PanicAnalyzeDetail() {
 							</AlertDescription>
 						</Alert>
 					)}
+				</TabsContent>
+
+				{/* Chart Tab */}
+				<TabsContent value="chart" className="space-y-6">
+					<Card>
+						<CardHeader>
+							<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+								<div>
+									<CardTitle className="flex items-center gap-2">
+										<LineChart className="h-5 w-5" />
+										Market Chart Analysis
+									</CardTitle>
+									<CardDescription>
+										6-month view: 3 months before and after panic day
+									</CardDescription>
+								</div>
+								<DateRangeSelector
+									value={dateRangeConfig}
+									onChange={setDateRangeConfig}
+									dataRange={vnindexData}
+									className="w-full md:w-auto"
+								/>
+							</div>
+						</CardHeader>
+						<CardContent>
+							{vnindexLoading ? (
+								<div className="h-[400px] flex items-center justify-center">
+									<div className="text-center">
+										<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+										<p className="mt-2 text-sm text-gray-600">Loading chart data...</p>
+									</div>
+								</div>
+							) : vnindexData && vnindexData.length > 0 ? (
+								<div className="h-[400px] w-full">
+									<CandlestickChart
+										data={vnindexData}
+										height={400}
+										showCard={false}
+									/>
+									{/* Panic day marker */}
+									<div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
+										<div className="w-3 h-3 bg-red-600 rounded-full"></div>
+										<span>Panic Day: {new Date(date).toLocaleDateString('vi-VN')}</span>
+									</div>
+								</div>
+							) : (
+								<div className="h-[400px] flex items-center justify-center">
+									<Alert>
+										<AlertTriangle className="h-4 w-4" />
+										<AlertDescription>
+											No chart data available for this date range. Try adjusting the date range or check if market data exists for this period.
+										</AlertDescription>
+									</Alert>
+								</div>
+							)}
+						</CardContent>
+					</Card>
+
+					{/* Chart Analysis Summary */}
+					<Card>
+						<CardHeader>
+							<CardTitle>Chart Analysis Summary</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div>
+									<div className="text-sm font-medium text-gray-700 mb-2">Key Insights</div>
+									<ul className="text-sm text-gray-600 space-y-1">
+										<li>&bull; 6-month view shows panic day in market context</li>
+										<li>&bull; Volume spikes often precede major price movements</li>
+										<li>&bull; Recovery patterns visible in post-panic price action</li>
+										<li>&bull; Support/resistance levels help identify entry/exit points</li>
+									</ul>
+								</div>
+								<div>
+									<div className="text-sm font-medium text-gray-700 mb-2">Trading Considerations</div>
+									<ul className="text-sm text-gray-600 space-y-1">
+										<li>&bull; High volume during panic indicates forced selling</li>
+										<li>&bull; Post-panic recovery patterns vary by market conditions</li>
+										<li>&bull; Use chart analysis alongside sector indicators</li>
+										<li>&bull; Consider market cap-weighted sector performance</li>
+									</ul>
+								</div>
+							</div>
+						</CardContent>
+					</Card>
 				</TabsContent>
 			</Tabs>
 

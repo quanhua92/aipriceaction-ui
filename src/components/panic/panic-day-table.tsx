@@ -199,7 +199,7 @@ export function PanicDayTable({
 			<CardContent className="p-0">
 				{/* Mobile Card Layout */}
 				<div className="block md:hidden p-3 space-y-3" style={{ maxHeight, overflow: 'auto' }}>
-					{sortedAndFilteredData.map((panic, index) => (
+					{sortedAndFilteredData.map((panic) => (
 						<Card key={panic.date} className="p-3 border border-gray-200">
 							<div className="flex items-center justify-between mb-2">
 								<div className="text-sm font-medium">
@@ -209,7 +209,7 @@ export function PanicDayTable({
 									<Button
 										size="sm"
 										variant="outline"
-										onClick={() => onViewDetails(panic.date)}
+										onClick={() => onViewDetails(panic)}
 										className="text-xs px-2 py-1 h-6"
 									>
 										View
@@ -224,21 +224,30 @@ export function PanicDayTable({
 									</span>
 								</div>
 								<div>
-									<span className="text-gray-500">BSI:</span>
-									<span className={`ml-1 font-medium ${panic.bsi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-										{panic.bsi >= 0 ? '+' : ''}{panic.bsi.toFixed(1)}%
+									<span className="text-gray-500">Banking:</span>
+									<span className={`ml-1 font-medium ${
+										panic.bsi === null ? 'text-gray-400' : 
+										panic.bsi >= 0 ? 'text-green-600' : 'text-red-600'
+									}`}>
+										{panic.bsi === null ? 'N/A' : `${panic.bsi >= 0 ? '+' : ''}${panic.bsi.toFixed(1)}%`}
 									</span>
 								</div>
 								<div>
-									<span className="text-gray-500">SSI:</span>
-									<span className={`ml-1 font-medium ${panic.ssi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-										{panic.ssi >= 0 ? '+' : ''}{panic.ssi.toFixed(1)}%
+									<span className="text-gray-500">Securities:</span>
+									<span className={`ml-1 font-medium ${
+										panic.ssi === null ? 'text-gray-400' : 
+										panic.ssi >= 0 ? 'text-green-600' : 'text-red-600'
+									}`}>
+										{panic.ssi === null ? 'N/A' : `${panic.ssi >= 0 ? '+' : ''}${panic.ssi.toFixed(1)}%`}
 									</span>
 								</div>
 								<div>
-									<span className="text-gray-500">RSI:</span>
-									<span className={`ml-1 font-medium ${panic.rsi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-										{panic.rsi >= 0 ? '+' : ''}{panic.rsi.toFixed(1)}%
+									<span className="text-gray-500">Real Estate:</span>
+									<span className={`ml-1 font-medium ${
+										panic.rsi === null ? 'text-gray-400' : 
+										panic.rsi >= 0 ? 'text-green-600' : 'text-red-600'
+									}`}>
+										{panic.rsi === null ? 'N/A' : `${panic.rsi >= 0 ? '+' : ''}${panic.rsi.toFixed(1)}%`}
 									</span>
 								</div>
 							</div>
@@ -265,14 +274,14 @@ export function PanicDayTable({
 								<TableHead className="w-[80px] text-right">
 									<SortButton field="vnindexChange">VNINDEX</SortButton>
 								</TableHead>
-								<TableHead className="w-[70px] text-center">
-									<SortButton field="bsi">BSI</SortButton>
+								<TableHead className="w-[90px] text-center">
+									<SortButton field="bsi">Banking Indicator</SortButton>
 								</TableHead>
-								<TableHead className="w-[70px] text-center">
-									<SortButton field="ssi">SSI</SortButton>
+								<TableHead className="w-[95px] text-center">
+									<SortButton field="ssi">Securities Indicator</SortButton>
 								</TableHead>
-								<TableHead className="w-[70px] text-center">
-									<SortButton field="rsi">RSI</SortButton>
+								<TableHead className="w-[100px] text-center">
+									<SortButton field="rsi">Real Estate Indicator</SortButton>
 								</TableHead>
 								<TableHead className="w-[130px]">
 									<SortButton field="panicType">Classification</SortButton>
