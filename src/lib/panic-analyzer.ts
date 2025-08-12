@@ -537,7 +537,7 @@ export class VietnamesePanicAnalyzer {
 	/**
 	 * Generate trading signals based on panic classification
 	 */
-	public generateTradingSignals(panicType: PanicType, indicators: SectorIndicatorData) {
+	public generateTradingSignals(panicType: PanicType, _indicators: SectorIndicatorData) {
 		const signals = {
 			POSITIVE_PANIC: {
 				buy: ['VIC', 'SHS', 'TCB'],

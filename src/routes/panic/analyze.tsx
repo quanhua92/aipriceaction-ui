@@ -81,7 +81,7 @@ function PrePanicTimelineItem({
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<span className="font-medium text-gray-900">{timeframe}</span>
-						<Badge className={getWarningLevelColor(signal)} size="sm">
+						<Badge className={getWarningLevelColor(signal)}>
 							{signal.replace('_', ' ')}
 						</Badge>
 					</div>
@@ -557,7 +557,7 @@ function PanicAnalyzeDetail() {
 																({new Date(drop.date).toLocaleDateString('vi-VN')})
 															</span>
 														</div>
-														<Badge className={getWarningLevelColor(drop.signal)} size="sm">
+														<Badge className={getWarningLevelColor(drop.signal)}>
 															{drop.signal.replace('_', ' ')}
 														</Badge>
 													</div>

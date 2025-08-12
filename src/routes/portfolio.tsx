@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useTranslation } from "@/hooks/useTranslation";
-import { PieChart, BarChart3, ExternalLink, Target, AlertTriangle } from "lucide-react";
+import { PieChart, BarChart3, ExternalLink, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
 import { TickerPerformanceTable } from "@/components/ui/TickerPerformanceTable";
-import { PrePanicWarningWidget } from "@/components/panic";
+// import { PrePanicWarningWidget } from "@/components/panic";
 import { useMultipleTickerData } from "@/lib/queries";
 import {
 	PerformanceOverview,

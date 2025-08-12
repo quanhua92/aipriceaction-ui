@@ -8,7 +8,7 @@
 
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { panicAnalyzer, type PanicType, type WarningLevel, type PatternType } from '../lib/panic-analyzer';
-import { PANIC_DAYS_DATABASE, getPanicDayByDate, type PanicDayData } from '../data/panic-days';
+import { PANIC_DAYS_DATABASE, getPanicDayByDate } from '../data/panic-days';
 
 export interface PanicAnalysisResult {
 	date: string;
@@ -60,7 +60,7 @@ export interface SectorIndicators {
  * Hook for analyzing a specific date for panic patterns
  */
 export function usePanicAnalysis(date: string): UseQueryResult<PanicAnalysisResult, Error> {
-	return useQuery({
+	return useQuery<PanicAnalysisResult, Error>({
 		queryKey: ['panic-analysis', date],
 		queryFn: async (): Promise<PanicAnalysisResult> => {
 			// First check pre-calculated database for faster response
@@ -102,8 +102,7 @@ export function usePanicAnalysis(date: string): UseQueryResult<PanicAnalysisResu
 			};
 		},
 		enabled: !!date,
-		staleTime: 1000 * 60 * 60, // 1 hour - panic analysis doesn't change
-		cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+		staleTime: 1000 * 60 * 60 // 1 hour - panic analysis doesn't change
 	});
 }
 
@@ -111,7 +110,7 @@ export function usePanicAnalysis(date: string): UseQueryResult<PanicAnalysisResu
  * Hook for pre-panic analysis and warning signals
  */
 export function usePrePanicAnalysis(targetDate: string): UseQueryResult<PrePanicAnalysisResult, Error> {
-	return useQuery({
+	return useQuery<PrePanicAnalysisResult, Error>({
 		queryKey: ['pre-panic-analysis', targetDate],
 		queryFn: async (): Promise<PrePanicAnalysisResult> => {
 			// Check pre-calculated database first
@@ -124,10 +123,10 @@ export function usePrePanicAnalysis(targetDate: string): UseQueryResult<PrePanic
 					patternType: precalculated.prePanicPattern,
 					tradingAdvice,
 					prePanicSignals: {
-						'T-1': precalculated.prePanicSignals.t1,
-						'T-7': precalculated.prePanicSignals.t7,
-						'T-14': precalculated.prePanicSignals.t14
-					}.filter(signal => signal !== undefined) as Record<string, any>,
+						'T-1': precalculated.prePanicSignals.t1 || { date: '', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' as WarningLevel },
+						'T-7': precalculated.prePanicSignals.t7 || { date: '', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' as WarningLevel },
+						'T-14': precalculated.prePanicSignals.t14 || { date: '', vnindexChange: 0, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' as WarningLevel }
+					},
 					significantDrops: precalculated.significantDrops
 				};
 			}
@@ -149,8 +148,7 @@ export function usePrePanicAnalysis(targetDate: string): UseQueryResult<PrePanic
 			};
 		},
 		enabled: !!targetDate,
-		staleTime: 1000 * 60 * 60, // 1 hour
-		cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+		staleTime: 1000 * 60 * 60 // 1 hour
 	});
 }
 
@@ -176,8 +174,7 @@ export function useCurrentSectorIndicators(): UseQueryResult<SectorIndicators, E
 			};
 		},
 		staleTime: 1000 * 60 * 5, // 5 minutes - current data refreshes frequently
-		cacheTime: 1000 * 60 * 30, // 30 minutes
-		refetchInterval: 1000 * 60 * 15, // Refetch every 15 minutes during trading hours
+		refetchInterval: 1000 * 60 * 15 // Refetch every 15 minutes during trading hours
 	});
 }
 
@@ -225,8 +222,7 @@ export function usePanicStatistics() {
 				)
 			};
 		},
-		staleTime: 1000 * 60 * 60 * 24, // 24 hours - statistics don't change often
-		cacheTime: 1000 * 60 * 60 * 24 * 7, // 7 days
+		staleTime: 1000 * 60 * 60 * 24 // 24 hours - statistics don't change often
 	});
 }
 
@@ -243,7 +239,11 @@ export function useCurrentWarningLevel(): UseQueryResult<{
 	yesterday.setDate(yesterday.getDate() - 1);
 	const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-	return useQuery({
+	return useQuery<{
+		currentWarning: WarningLevel;
+		tradingAdvice: ReturnType<typeof panicAnalyzer.getPrePanicTradingAdvice>;
+		sectorIndicators: SectorIndicators;
+	}, Error>({
 		queryKey: ['current-warning-level', yesterdayStr],
 		queryFn: async () => {
 			const analysisData = await panicAnalyzer.getDateData(yesterdayStr);
@@ -275,8 +275,7 @@ export function useCurrentWarningLevel(): UseQueryResult<{
 			};
 		},
 		staleTime: 1000 * 60 * 60, // 1 hour
-		cacheTime: 1000 * 60 * 60 * 4, // 4 hours
-		refetchInterval: 1000 * 60 * 30, // Refetch every 30 minutes
+		refetchInterval: 1000 * 60 * 30 // Refetch every 30 minutes
 	});
 }
 

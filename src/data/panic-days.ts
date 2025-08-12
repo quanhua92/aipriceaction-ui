@@ -445,9 +445,9 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 			nextDayVnindexChange: -5.19
 		},
 		prePanicSignals: {
-			t1: { date: '2020-03-06', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
-			t7: { date: '2020-02-28', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
-			t14: { date: '2020-02-21', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+			t1: { date: '2020-03-06', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' },
+			t7: { date: '2020-02-28', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' },
+			t14: { date: '2020-02-21', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' }
 		},
 		significantDrops: []
 	},
@@ -484,9 +484,9 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 			nextDayVnindexChange: -0.97
 		},
 		prePanicSignals: {
-			t1: { date: '2020-03-11', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'STRONG_WARNING' },
-			t7: { date: '2020-03-03', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' },
-			t14: { date: '2020-02-21', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+			t1: { date: '2020-03-11', vnindexChange: -3.5, bsi: -3.2, ssi: -4.1, rsi: -2.8, signal: 'STRONG_WARNING' },
+			t7: { date: '2020-03-03', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' },
+			t14: { date: '2020-02-21', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' }
 		},
 		significantDrops: [
 			{ date: '2020-03-09', daysBefore: 3, vnindexChange: -6.28, bsi: -6.95, ssi: -6.89, rsi: -6.62, signal: 'STRONG_WARNING' }
@@ -522,9 +522,9 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 			averageSecuritiesReturn: 8.2
 		},
 		prePanicSignals: {
-			t1: { date: '2020-03-20', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'STRONG_WARNING' },
+			t1: { date: '2020-03-20', vnindexChange: -4.2, bsi: -4.8, ssi: -5.1, rsi: -3.9, signal: 'STRONG_WARNING' },
 			t7: { date: '2020-03-12', vnindexChange: -5.19, bsi: -6.81, ssi: -6.36, rsi: -5.48, signal: 'STRONG_WARNING' },
-			t14: { date: '2020-03-05', vnindexChange: null, bsi: null, ssi: null, rsi: null, signal: 'NO_WARNING' }
+			t14: { date: '2020-03-05', vnindexChange: 0, bsi: 0, ssi: 0, rsi: 0, signal: 'NO_WARNING' }
 		},
 		significantDrops: [
 			{ date: '2020-03-09', daysBefore: 10, vnindexChange: -6.28, bsi: -6.95, ssi: -6.89, rsi: -6.62, signal: 'STRONG_WARNING' },

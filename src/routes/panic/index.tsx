@@ -30,9 +30,7 @@ import {
 } from '@/components/panic';
 import { 
 	usePanicStatistics, 
-	usePanicDayFilters,
-	getWarningLevelColor,
-	getPanicTypeColor
+	usePanicDayFilters
 } from '@/hooks/use-panic-analysis';
 import { 
 	PANIC_DAYS_DATABASE, 
@@ -49,8 +47,8 @@ export const Route = createFileRoute('/panic/')({
 
 function PanicIndexPage() {
 	const [selectedTab, setSelectedTab] = useState('overview');
-	const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined);
-	const { data: statistics, isLoading: statsLoading } = usePanicStatistics();
+	const [selectedYear] = useState<number | undefined>(undefined);
+	const { isLoading: statsLoading } = usePanicStatistics();
 
 	// Get filtered panic days based on current selection
 	const { data: filteredData } = usePanicDayFilters({

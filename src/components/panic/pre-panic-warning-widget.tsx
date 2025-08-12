@@ -13,8 +13,6 @@ import { Button } from "@/components/ui/button";
 import { 
 	AlertTriangle, 
 	Shield, 
-	TrendingDown, 
-	TrendingUp, 
 	Eye,
 	ExternalLink
 } from "lucide-react";
