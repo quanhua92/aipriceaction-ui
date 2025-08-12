@@ -80,28 +80,31 @@ function PanicIndexPage() {
 	}
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-3 md:p-6 space-y-4 md:space-y-6">
 			{/* Page Header */}
-			<div className="flex items-center justify-between">
-				<div>
-					<h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-						<TrendingDown className="h-8 w-8 text-red-600" />
-						Vietnamese Panic Analysis
+			<div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+				<div className="space-y-2">
+					<h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2 md:gap-3">
+						<TrendingDown className="h-6 w-6 md:h-8 md:w-8 text-red-600" />
+						<span className="leading-tight">Vietnamese Panic Analysis</span>
 					</h1>
-					<p className="text-gray-600 mt-2">
+					<p className="text-sm md:text-base text-gray-600">
 						Comprehensive analysis of Vietnamese market panic events with predictive warning system
 					</p>
 				</div>
-				<Badge variant="outline" className="text-lg px-4 py-2">
-					{PANIC_STATISTICS.totalPanicDays} Historical Events
-				</Badge>
+				<div className="flex justify-start md:justify-end">
+					<Badge variant="outline" className="text-sm md:text-lg px-3 py-1 md:px-4 md:py-2">
+						{PANIC_STATISTICS.totalPanicDays} Historical Events
+					</Badge>
+				</div>
 			</div>
 
 			{/* Current Warning Status */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
 				<div className="lg:col-span-2">
 					<PrePanicWarningWidget 
 						showTradingAdvice={true}
+						compact={true}
 						onViewDetails={() => {
 							// Navigate to current analysis
 							const today = new Date().toISOString().split('T')[0];
@@ -109,15 +112,15 @@ function PanicIndexPage() {
 						}}
 					/>
 				</div>
-				<div className="space-y-4">
+				<div className="space-y-3 md:space-y-4">
 					<Card>
-						<CardHeader className="pb-3">
-							<CardTitle className="text-lg flex items-center gap-2">
-								<BarChart3 className="h-5 w-5" />
+						<CardHeader className="pb-2 md:pb-3">
+							<CardTitle className="text-base md:text-lg flex items-center gap-2">
+								<BarChart3 className="h-4 w-4 md:h-5 md:w-5" />
 								System Performance
 							</CardTitle>
 						</CardHeader>
-						<CardContent className="space-y-3">
+						<CardContent className="space-y-2 md:space-y-3">
 							<div>
 								<div className="flex justify-between text-sm">
 									<span>Prediction Accuracy</span>
@@ -145,22 +148,22 @@ function PanicIndexPage() {
 
 			{/* Historical Analysis Tabs */}
 			<Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-				<TabsList className="grid w-full grid-cols-4">
-					<TabsTrigger value="overview" className="flex items-center gap-2">
-						<Eye className="h-4 w-4" />
-						Overview
+				<TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
+					<TabsTrigger value="overview" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<Eye className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Overview</span>
 					</TabsTrigger>
-					<TabsTrigger value="predictable" className="flex items-center gap-2">
-						<AlertTriangle className="h-4 w-4" />
-						Predictable ({predictablePanics.length})
+					<TabsTrigger value="predictable" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<AlertTriangle className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Predictable ({predictablePanics.length})</span>
 					</TabsTrigger>
-					<TabsTrigger value="blackswan" className="flex items-center gap-2">
-						<Shield className="h-4 w-4" />
-						Black Swan ({blackSwanPanics.length})
+					<TabsTrigger value="blackswan" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<Shield className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Black Swan ({blackSwanPanics.length})</span>
 					</TabsTrigger>
-					<TabsTrigger value="patterns" className="flex items-center gap-2">
-						<Target className="h-4 w-4" />
-						Patterns
+					<TabsTrigger value="patterns" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<Target className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Patterns</span>
 					</TabsTrigger>
 				</TabsList>
 

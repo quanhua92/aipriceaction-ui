@@ -100,33 +100,33 @@ export function PrePanicWarningWidget({
 	
 	return (
 		<Card className={cn("w-full", className)}>
-			<CardHeader className={cn("pb-3", compact && "pb-2")}>
-				<div className="flex items-center justify-between">
+			<CardHeader className={cn("pb-2 md:pb-3", compact && "pb-1 md:pb-2")}>
+				<div className="flex flex-col space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0">
 					<div className="flex items-center gap-2">
 						{getWarningIcon(currentWarning)}
-						<CardTitle className={cn("text-lg", compact && "text-base")}>
+						<CardTitle className={cn("text-base md:text-lg", compact && "text-sm md:text-base")}>
 							Pre-Panic Monitor
 						</CardTitle>
 					</div>
-					<Badge className={getWarningLevelColor(currentWarning)}>
+					<Badge className={cn(getWarningLevelColor(currentWarning), "text-xs md:text-sm px-2 py-1")}>
 						{currentWarning.replace('_', ' ')}
 					</Badge>
 				</div>
 				{!compact && (
-					<CardDescription>
+					<CardDescription className="text-xs md:text-sm">
 						Updated: {new Date(sectorIndicators.date).toLocaleDateString('vi-VN')}
 					</CardDescription>
 				)}
 			</CardHeader>
 
-			<CardContent className="space-y-4">
+			<CardContent className="space-y-3 md:space-y-4">
 				{/* Current Sector Indicators */}
 				{!compact && (
-					<div className="grid grid-cols-3 gap-3 text-center">
+					<div className="grid grid-cols-3 gap-2 md:gap-3 text-center">
 						<div>
 							<div className="text-xs text-gray-500 mb-1">BSI</div>
 							<div className={cn(
-								"font-bold",
+								"text-xs md:text-sm font-bold",
 								sectorIndicators.bsi === null ? "text-gray-400" :
 								sectorIndicators.bsi > 0 ? "text-green-600" :
 								sectorIndicators.bsi < -2 ? "text-red-600" : "text-orange-600"
@@ -138,7 +138,7 @@ export function PrePanicWarningWidget({
 						<div>
 							<div className="text-xs text-gray-500 mb-1">SSI</div>
 							<div className={cn(
-								"font-bold",
+								"text-xs md:text-sm font-bold",
 								sectorIndicators.ssi === null ? "text-gray-400" :
 								sectorIndicators.ssi > 0 ? "text-green-600" :
 								sectorIndicators.ssi < -2 ? "text-red-600" : "text-orange-600"
@@ -150,7 +150,7 @@ export function PrePanicWarningWidget({
 						<div>
 							<div className="text-xs text-gray-500 mb-1">RSI</div>
 							<div className={cn(
-								"font-bold",
+								"text-xs md:text-sm font-bold",
 								sectorIndicators.rsi === null ? "text-gray-400" :
 								sectorIndicators.rsi > 0 ? "text-green-600" :
 								sectorIndicators.rsi < -2 ? "text-red-600" : "text-orange-600"
@@ -184,12 +184,12 @@ export function PrePanicWarningWidget({
 				{/* Trading Advice */}
 				{showTradingAdvice && !compact && (
 					<div className="space-y-2">
-						<div className="text-sm font-medium text-gray-700">Trading Action</div>
-						<div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
+						<div className="text-xs md:text-sm font-medium text-gray-700">Trading Action</div>
+						<div className="text-xs md:text-sm text-gray-600 bg-gray-50 p-2 md:p-3 rounded-md">
 							{tradingAdvice.action}
 						</div>
 						
-						<div className="grid grid-cols-2 gap-4 text-xs">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-xs">
 							<div>
 								<span className="font-medium text-gray-700">Position Size:</span>
 								<div className="text-gray-600">{tradingAdvice.positionSize}</div>
@@ -204,29 +204,29 @@ export function PrePanicWarningWidget({
 
 				{/* Compact Trading Advice */}
 				{showTradingAdvice && compact && (
-					<div className="text-sm text-gray-600">
+					<div className="text-xs md:text-sm text-gray-600">
 						{tradingAdvice.action}
 					</div>
 				)}
 
 				{/* Action Buttons */}
-				<div className="flex gap-2 pt-2">
+				<div className="flex flex-col sm:flex-row gap-2 pt-2">
 					{onViewDetails && (
 						<Button
 							variant="outline"
 							size="sm"
 							onClick={onViewDetails}
-							className="flex items-center gap-1"
+							className="flex items-center gap-1 justify-center text-xs md:text-sm px-3 py-2"
 						>
 							<ExternalLink className="h-3 w-3" />
-							View Details
+							<span>View Details</span>
 						</Button>
 					)}
 					
 					{urgency === 'high' && (
 						<Button
 							size="sm"
-							className="bg-red-600 hover:bg-red-700 text-white"
+							className="justify-center text-xs md:text-sm px-3 py-2 bg-red-600 hover:bg-red-700 text-white"
 							onClick={() => {
 								// Could integrate with portfolio management or alerts
 								console.log('Urgent action required:', tradingAdvice);

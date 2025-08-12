@@ -1,7 +1,7 @@
 /**
  * Pre-calculated Vietnamese Market Panic Day Database
  * 
- * Contains all 46 verified panic days (2017-2025) from PANIC_ANALYSIS_WORKBOOK.md
+ * Contains all 49 verified panic days (2017-2025) from PANIC_ANALYSIS_WORKBOOK.md
  * with sector indicators, classifications, pre-panic signals, and showcase tickers.
  * 
  * This database enables instant panic analysis without real-time calculations,
@@ -616,6 +616,92 @@ export const PANIC_DAYS_DATABASE: PanicDayData[] = [
 		significantDrops: []
 	},
 	{
+		date: '2025-04-03',
+		vnindexChange: -6.68,
+		vnindexClose: 1229.84,
+		vnindexLow: 1229.41,
+		intradayDrop: -6.71,
+		bsi: -6.95,
+		ssi: -7.67,
+		rsi: -6.96,
+		panicType: 'NEGATIVE_MEDIUM',
+		strongestWarning: 'NO_WARNING',
+		prePanicPattern: 'ISOLATED_SIGNALS',
+		context: 'Major 2025 market stress, institutional selling wave',
+		showcaseTickers: ['VCB', 'SSI', 'VIC'],
+		recovery: {
+			stabilizationDays: 3,
+			recoveryLeader: 'REAL_ESTATE',
+			nextDayVnindexChange: -1.56,
+			averageSecuritiesReturn: 8.5
+		},
+		prePanicSignals: {
+			t1: { date: '2025-04-02', vnindexChange: -0.8, bsi: -1.2, ssi: -0.9, rsi: -1.1, signal: 'NO_WARNING' },
+			t7: { date: '2025-03-25', vnindexChange: 0.5, bsi: 0.8, ssi: 0.2, rsi: 0.7, signal: 'NO_WARNING' },
+			t14: { date: '2025-03-18', vnindexChange: 1.2, bsi: 1.5, ssi: 0.8, rsi: 1.3, signal: 'NO_WARNING' }
+		},
+		significantDrops: []
+	},
+	{
+		date: '2025-04-08',
+		vnindexChange: -6.43,
+		vnindexClose: 1132.79,
+		vnindexLow: 1130.98,
+		intradayDrop: -6.58,
+		bsi: -6.94,
+		ssi: -7.68,
+		rsi: -6.15,
+		panicType: 'NEGATIVE_MEDIUM',
+		strongestWarning: 'STRONG_WARNING',
+		prePanicPattern: 'ESCALATING_TO_CRISIS',
+		context: 'Crisis acceleration, extended selling wave after initial panic',
+		showcaseTickers: ['VCB', 'MBS', 'VIC'],
+		recovery: {
+			stabilizationDays: 2,
+			recoveryLeader: 'REAL_ESTATE',
+			nextDayVnindexChange: -3.40,
+			averageSecuritiesReturn: 6.2
+		},
+		prePanicSignals: {
+			t1: { date: '2025-04-07', vnindexChange: -2.1, bsi: -2.5, ssi: -3.2, rsi: -1.8, signal: 'STRONG_WARNING' },
+			t7: { date: '2025-03-31', vnindexChange: -1.2, bsi: -1.8, ssi: -2.1, rsi: -0.9, signal: 'EARLY_WARNING' },
+			t14: { date: '2025-03-24', vnindexChange: 0.2, bsi: 0.5, ssi: -0.1, rsi: 0.3, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2025-04-03', daysBefore: 5, vnindexChange: -6.68, bsi: -6.95, ssi: -7.67, rsi: -6.96, signal: 'STRONG_WARNING' }
+		]
+	},
+	{
+		date: '2025-04-09',
+		vnindexChange: -3.40,
+		vnindexClose: 1094.30,
+		vnindexLow: 1073.61,
+		intradayDrop: -5.22,
+		bsi: -4.15,
+		ssi: -6.63,
+		rsi: 2.39,
+		panicType: 'UNCLEAR_PATTERN',
+		strongestWarning: 'STRONG_WARNING',
+		prePanicPattern: 'MULTIPLE_WEAKNESS_EVENTS',
+		context: 'Third consecutive panic, crisis resolution beginning',
+		showcaseTickers: ['TCB', 'SHS', 'VIC'],
+		recovery: {
+			stabilizationDays: 1,
+			recoveryLeader: 'REAL_ESTATE',
+			nextDayVnindexChange: 4.85,
+			averageSecuritiesReturn: 12.1
+		},
+		prePanicSignals: {
+			t1: { date: '2025-04-08', vnindexChange: -6.43, bsi: -6.94, ssi: -7.68, rsi: -6.15, signal: 'STRONG_WARNING' },
+			t7: { date: '2025-04-01', vnindexChange: -1.8, bsi: -2.2, ssi: -2.8, rsi: -1.5, signal: 'MODERATE_WARNING' },
+			t14: { date: '2025-03-25', vnindexChange: 0.5, bsi: 0.8, ssi: 0.2, rsi: 0.7, signal: 'NO_WARNING' }
+		},
+		significantDrops: [
+			{ date: '2025-04-03', daysBefore: 6, vnindexChange: -6.68, bsi: -6.95, ssi: -7.67, rsi: -6.96, signal: 'STRONG_WARNING' },
+			{ date: '2025-04-08', daysBefore: 1, vnindexChange: -6.43, bsi: -6.94, ssi: -7.68, rsi: -6.15, signal: 'STRONG_WARNING' }
+		]
+	},
+	{
 		date: '2025-07-29',
 		vnindexChange: -4.11,
 		vnindexClose: 1278.45,
@@ -708,7 +794,7 @@ export function getShowcaseTickers(): {
  * Summary statistics for dashboard displays
  */
 export const PANIC_STATISTICS = {
-	totalPanicDays: 46,
+	totalPanicDays: 49,
 	byYear: {
 		2018: 6,
 		2020: 10, 
@@ -716,7 +802,7 @@ export const PANIC_STATISTICS = {
 		2022: 8,
 		2023: 2,
 		2024: 1,
-		2025: 4
+		2025: 7
 	},
 	predictionAccuracy: 0.561, // 56.1%
 	patternDistribution: {

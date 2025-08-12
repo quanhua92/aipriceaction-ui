@@ -75,20 +75,20 @@ function PrePanicTimelineItem({
 		new Date(dateStr).toLocaleDateString('vi-VN');
 
 	return (
-		<div className="flex items-start gap-4 p-4 border-l-4 border-gray-200 relative">
-			<div className="absolute -left-2 top-6 w-4 h-4 bg-white border-2 border-gray-300 rounded-full"></div>
+		<div className="flex items-start gap-3 md:gap-4 p-3 md:p-4 border-l-4 border-gray-200 relative">
+			<div className="absolute -left-2 top-4 md:top-6 w-3 h-3 md:w-4 md:h-4 bg-white border-2 border-gray-300 rounded-full"></div>
 			<div className="flex-1 space-y-2">
-				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<span className="font-medium text-gray-900">{timeframe}</span>
+				<div className="flex flex-col space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0">
+					<div className="flex flex-col space-y-1 md:flex-row md:items-center md:gap-2 md:space-y-0">
+						<span className="text-sm md:text-base font-medium text-gray-900">{timeframe}</span>
 						<Badge className={getWarningLevelColor(signal)}>
 							{signal.replace('_', ' ')}
 						</Badge>
 					</div>
-					<span className="text-sm text-gray-500">{formatDate(date)}</span>
+					<span className="text-xs md:text-sm text-gray-500">{formatDate(date)}</span>
 				</div>
 				
-				<div className="grid grid-cols-4 gap-4 text-sm">
+				<div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 text-xs md:text-sm">
 					<div>
 						<span className="text-gray-500">VNINDEX:</span>
 						<span className={`ml-1 font-medium ${
@@ -183,40 +183,42 @@ function PanicAnalyzeDetail() {
 	}
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-3 md:p-6 space-y-4 md:space-y-6">
 			{/* Page Header */}
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-4">
+			<div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0">
+				<div className="flex flex-col space-y-2 md:flex-row md:items-center md:gap-4 md:space-y-0">
 					<Button 
 						variant="ghost" 
 						size="sm"
 						onClick={() => window.history.back()}
-						className="flex items-center gap-2"
+						className="flex items-center gap-2 self-start"
 					>
 						<ArrowLeft className="h-4 w-4" />
-						Back
+						<span className="text-sm">Back</span>
 					</Button>
-					<div>
-						<h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-							<TrendingDown className="h-6 w-6 text-red-600" />
-							Panic Analysis
+					<div className="space-y-1">
+						<h1 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-2 md:gap-3">
+							<TrendingDown className="h-5 w-5 md:h-6 md:w-6 text-red-600" />
+							<span className="leading-tight">Panic Analysis</span>
 						</h1>
-						<p className="text-gray-600 flex items-center gap-2">
-							<Calendar className="h-4 w-4" />
+						<p className="text-sm md:text-base text-gray-600 flex items-center gap-2">
+							<Calendar className="h-3 w-3 md:h-4 md:w-4" />
 							{formattedDate}
 						</p>
 					</div>
 				</div>
 				
 				{precalculatedData && (
-					<Badge variant="outline" className="text-sm">
-						Historical Event
-					</Badge>
+					<div className="flex justify-start md:justify-end">
+						<Badge variant="outline" className="text-xs md:text-sm px-2 py-1">
+							Historical Event
+						</Badge>
+					</div>
 				)}
 			</div>
 
 			{/* Main Analysis Overview */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
 				{/* Panic Indicators */}
 				<div className="lg:col-span-2">
 					<PanicIndicatorCard
@@ -307,22 +309,22 @@ function PanicAnalyzeDetail() {
 
 			{/* Detailed Analysis Tabs */}
 			<Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-				<TabsList className="grid w-full grid-cols-4">
-					<TabsTrigger value="analysis" className="flex items-center gap-2">
-						<BarChart3 className="h-4 w-4" />
-						Analysis
+				<TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
+					<TabsTrigger value="analysis" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<BarChart3 className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Analysis</span>
 					</TabsTrigger>
-					<TabsTrigger value="signals" className="flex items-center gap-2">
-						<Target className="h-4 w-4" />
-						Trading Signals
+					<TabsTrigger value="signals" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<Target className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Trading Signals</span>
 					</TabsTrigger>
-					<TabsTrigger value="prepanic" className="flex items-center gap-2">
-						<AlertTriangle className="h-4 w-4" />
-						Pre-Panic
+					<TabsTrigger value="prepanic" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<AlertTriangle className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Pre-Panic</span>
 					</TabsTrigger>
-					<TabsTrigger value="context" className="flex items-center gap-2">
-						<Shield className="h-4 w-4" />
-						Context
+					<TabsTrigger value="context" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<Shield className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">Context</span>
 					</TabsTrigger>
 				</TabsList>
 

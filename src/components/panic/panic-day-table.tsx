@@ -147,29 +147,29 @@ export function PanicDayTable({
 
 	return (
 		<Card className={cn("w-full", className)}>
-			<CardHeader>
-				<div className="flex items-center justify-between">
-					<div>
-						<CardTitle className="flex items-center gap-2">
-							<TrendingDown className="h-5 w-5" />
+			<CardHeader className="pb-3 md:pb-6">
+				<div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0">
+					<div className="space-y-1">
+						<CardTitle className="flex items-center gap-2 text-base md:text-lg">
+							<TrendingDown className="h-4 w-4 md:h-5 md:w-5" />
 							{title}
 						</CardTitle>
-						<CardDescription>{description}</CardDescription>
+						<CardDescription className="text-xs md:text-sm">{description}</CardDescription>
 					</div>
-					<Badge variant="outline" className="text-sm">
+					<Badge variant="outline" className="text-xs md:text-sm px-2 py-1 self-start md:self-center">
 						{sortedAndFilteredData.length} events
 					</Badge>
 				</div>
 
 				{/* Filters */}
 				{showFilters && (
-					<div className="flex gap-4 pt-4">
+					<div className="flex flex-col space-y-3 md:flex-row md:gap-4 md:space-y-0 pt-4">
 						<div className="flex items-center gap-2">
 							<Calendar className="h-4 w-4 text-gray-500" />
 							<select
 								value={filterYear}
 								onChange={(e) => setFilterYear(e.target.value)}
-								className="border border-gray-300 rounded px-3 py-1 text-sm"
+								className="border border-gray-300 rounded px-2 md:px-3 py-1 text-xs md:text-sm min-w-0 flex-1 md:flex-initial"
 							>
 								<option value="all">All Years</option>
 								{availableYears.map(year => (
@@ -183,7 +183,7 @@ export function PanicDayTable({
 							<select
 								value={filterPattern}
 								onChange={(e) => setFilterPattern(e.target.value)}
-								className="border border-gray-300 rounded px-3 py-1 text-sm"
+								className="border border-gray-300 rounded px-2 md:px-3 py-1 text-xs md:text-sm min-w-0 flex-1 md:flex-initial"
 							>
 								<option value="all">All Patterns</option>
 								<option value="ESCALATING_TO_CRISIS">Escalating to Crisis</option>
@@ -197,7 +197,65 @@ export function PanicDayTable({
 			</CardHeader>
 
 			<CardContent className="p-0">
-				<div className="overflow-auto" style={{ maxHeight }}>
+				{/* Mobile Card Layout */}
+				<div className="block md:hidden p-3 space-y-3" style={{ maxHeight, overflow: 'auto' }}>
+					{sortedAndFilteredData.map((panic, index) => (
+						<Card key={panic.date} className="p-3 border border-gray-200">
+							<div className="flex items-center justify-between mb-2">
+								<div className="text-sm font-medium">
+									{new Date(panic.date).toLocaleDateString('vi-VN')}
+								</div>
+								{onViewDetails && (
+									<Button
+										size="sm"
+										variant="outline"
+										onClick={() => onViewDetails(panic.date)}
+										className="text-xs px-2 py-1 h-6"
+									>
+										View
+									</Button>
+								)}
+							</div>
+							<div className="grid grid-cols-2 gap-2 text-xs">
+								<div>
+									<span className="text-gray-500">VNINDEX:</span>
+									<span className={`ml-1 font-medium ${panic.vnindexChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+										{panic.vnindexChange >= 0 ? '+' : ''}{panic.vnindexChange.toFixed(2)}%
+									</span>
+								</div>
+								<div>
+									<span className="text-gray-500">BSI:</span>
+									<span className={`ml-1 font-medium ${panic.bsi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+										{panic.bsi >= 0 ? '+' : ''}{panic.bsi.toFixed(1)}%
+									</span>
+								</div>
+								<div>
+									<span className="text-gray-500">SSI:</span>
+									<span className={`ml-1 font-medium ${panic.ssi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+										{panic.ssi >= 0 ? '+' : ''}{panic.ssi.toFixed(1)}%
+									</span>
+								</div>
+								<div>
+									<span className="text-gray-500">RSI:</span>
+									<span className={`ml-1 font-medium ${panic.rsi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+										{panic.rsi >= 0 ? '+' : ''}{panic.rsi.toFixed(1)}%
+									</span>
+								</div>
+							</div>
+							<div className="flex flex-wrap gap-1 mt-2">
+								<Badge className={getPanicTypeColor(panic.panicType)}>
+									{panic.panicType.replace('_', ' ')}
+								</Badge>
+								<Badge className={getWarningLevelColor(panic.strongestWarning)}>
+									{panic.strongestWarning.replace('_', ' ')}
+								</Badge>
+							</div>
+						</Card>
+					))}
+				</div>
+
+				{/* Desktop Table Layout */}
+				<div className="hidden md:block overflow-auto" style={{ maxHeight }}>
 					<Table>
 						<TableHeader className="sticky top-0 bg-white border-b z-10">
 							<TableRow>
