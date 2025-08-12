@@ -46,6 +46,7 @@ import {
 import { useTickerData } from '@/lib/queries';
 import { createDateRangeConfig, formatDateForUrl, type DateRangeConfig } from '@/lib/stock-data';
 import { getPanicDayByDate } from '@/data/panic-days';
+import { PANIC_CONTEXT_DATABASE } from '@/data/panic-context';
 import { panicAnalyzer } from '@/lib/panic-analyzer';
 import type { WarningLevel } from '@/lib/panic-analyzer';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -833,6 +834,47 @@ function PanicAnalyzeDetail() {
 									</div>
 								</CardContent>
 							</Card>
+
+							{/* Raw Analysis from PANIC_ANALYSIS_WORKBOOK */}
+							{date && PANIC_CONTEXT_DATABASE[date] && (
+								<Card>
+									<CardHeader>
+										<CardTitle>Comprehensive Analysis</CardTitle>
+										<CardDescription>Raw analysis extracted from PANIC_ANALYSIS_WORKBOOK.md</CardDescription>
+									</CardHeader>
+									<CardContent className="space-y-6">
+										{/* Pre-Panic Analysis */}
+										<div>
+											<div className="font-semibold text-blue-700 mb-3 text-lg">PRE-PANIC ANALYSIS</div>
+											<div className="prose prose-sm max-w-none">
+												<div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+													{PANIC_CONTEXT_DATABASE[date].prePanicAnalysis}
+												</div>
+											</div>
+										</div>
+
+										{/* Panic Day Analysis */}
+										<div className="border-t pt-6">
+											<div className="font-semibold text-red-700 mb-3 text-lg">PANIC DAY ANALYSIS</div>
+											<div className="prose prose-sm max-w-none">
+												<div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+													{PANIC_CONTEXT_DATABASE[date].panicAnalysis}
+												</div>
+											</div>
+										</div>
+
+										{/* Post-Panic Recovery Analysis */}
+										<div className="border-t pt-6">
+											<div className="font-semibold text-green-700 mb-3 text-lg">POST-PANIC RECOVERY ANALYSIS</div>
+											<div className="prose prose-sm max-w-none">
+												<div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+													{PANIC_CONTEXT_DATABASE[date].postPanicAnalysis}
+												</div>
+											</div>
+										</div>
+									</CardContent>
+								</Card>
+							)}
 
 							{/* Recovery Pattern */}
 							<Card>
