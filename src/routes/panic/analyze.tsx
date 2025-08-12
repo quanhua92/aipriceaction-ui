@@ -26,7 +26,9 @@ import {
 	Shield,
 	ExternalLink,
 	LineChart,
-	FileText
+	FileText,
+	BookOpen,
+	GraduationCap
 } from 'lucide-react';
 import {
 	PanicIndicatorCard,
@@ -46,6 +48,7 @@ import { createDateRangeConfig, formatDateForUrl, type DateRangeConfig } from '@
 import { getPanicDayByDate } from '@/data/panic-days';
 import { panicAnalyzer } from '@/lib/panic-analyzer';
 import type { WarningLevel } from '@/lib/panic-analyzer';
+import { useTranslation } from '@/hooks/useTranslation';
 
 // Route schema with search params validation
 export const Route = createFileRoute('/panic/analyze')({
@@ -172,6 +175,7 @@ function PrePanicTimelineItem({
 }
 
 function PanicAnalyzeDetail() {
+	const { t } = useTranslation();
 	const { date, range, startDate, endDate } = Route.useSearch();
 	const navigate = useNavigate();
 	const [selectedTab, setSelectedTab] = useState('analysis');
@@ -375,9 +379,9 @@ function PanicAnalyzeDetail() {
 						</CardHeader>
 						<CardContent className="space-y-3">
 							<div>
-								<div className="text-sm text-gray-600 mb-1">Panic Type</div>
+								<div className="text-sm text-gray-600 mb-1">{t('panic.panicType')}</div>
 								<Badge className={getPanicTypeColor(panicAnalysis.panicType)}>
-									{panicAnalysis.panicType.replace('_', ' ')}
+									{t(`panic.panicTypes.${panicAnalysis.panicType}`)}
 								</Badge>
 							</div>
 							{prePanicLoading ? (
@@ -390,9 +394,9 @@ function PanicAnalyzeDetail() {
 								</div>
 							) : prePanicAnalysis && (
 								<div>
-									<div className="text-sm text-gray-600 mb-1">Warning Level</div>
+									<div className="text-sm text-gray-600 mb-1">{t('panic.warningLevel')}</div>
 									<Badge className={getWarningLevelColor(prePanicAnalysis.strongestWarning)}>
-										{prePanicAnalysis.strongestWarning.replace('_', ' ')}
+										{t(`panic.warningLevels.${prePanicAnalysis.strongestWarning}`)}
 									</Badge>
 								</div>
 							)}
@@ -406,9 +410,9 @@ function PanicAnalyzeDetail() {
 								</div>
 							) : prePanicAnalysis && (
 								<div>
-									<div className="text-sm text-gray-600 mb-1">Pattern Type</div>
+									<div className="text-sm text-gray-600 mb-1">{t('panic.patternType')}</div>
 									<Badge variant="outline">
-										{prePanicAnalysis.patternType.replace('_', ' ')}
+										{t(`panic.patternTypes.${prePanicAnalysis.patternType}`)}
 									</Badge>
 								</div>
 							)}
@@ -434,7 +438,7 @@ function PanicAnalyzeDetail() {
 								<div>
 									<span className="text-gray-600">Recovery Leader:</span>
 									<span className="ml-2 font-medium">
-										{precalculatedData.recoveryPattern.recoveryLeader.replace('_', ' ')}
+										{t(`panic.recoveryLeaders.${precalculatedData.recoveryPattern.recoveryLeader}`)}
 									</span>
 								</div>
 								{precalculatedData.recoveryPattern.nextDayVnindexChange && (
@@ -455,6 +459,47 @@ function PanicAnalyzeDetail() {
 					)}
 				</div>
 			</div>
+
+			{/* Educational Card for Analyze */}
+			<Card className="border-blue-200 bg-blue-50">
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2 text-blue-900">
+						<GraduationCap className="h-5 w-5" />
+						{t('panic.educationalGuide')}
+					</CardTitle>
+					<CardDescription className="text-blue-700">
+						{t('panic.learnPanicAnalysis')} - {t('panic.understandVietnameseMarket')}
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<div className="space-y-4">
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+							<div>
+								<h4 className="font-medium text-blue-900 mb-2">{t('panic.threePhaseSystem')}</h4>
+								<p className="text-sm text-blue-700">{t('panic.threePhaseDescription')}</p>
+							</div>
+							<div>
+								<h4 className="font-medium text-blue-900 mb-2">{t('panic.sectorIndicators')}</h4>
+								<p className="text-sm text-blue-700">{t('panic.sectorIndicatorsDescription')}</p>
+							</div>
+							<div>
+								<h4 className="font-medium text-blue-900 mb-2">{t('panic.warningSystem')}</h4>
+								<p className="text-sm text-blue-700">{t('panic.warningSystemDescription')}</p>
+							</div>
+						</div>
+						<div className="pt-2">
+							<Button 
+								variant="outline" 
+								className="w-full bg-white text-blue-700 border-blue-300 hover:bg-blue-100"
+								onClick={() => window.open('https://github.com/quanhua92/aipriceaction-ui/blob/main/PANIC_ANALYSIS_GUIDE.md', '_blank')}
+							>
+								<BookOpen className="h-4 w-4 mr-2" />
+								{t('panic.readFullGuide')}
+							</Button>
+						</div>
+					</div>
+				</CardContent>
+			</Card>
 
 			{/* Detailed Analysis Tabs */}
 			<Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
