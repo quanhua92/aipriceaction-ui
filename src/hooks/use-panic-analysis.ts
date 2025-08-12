@@ -334,7 +334,7 @@ export function useCurrentWarningLevel(): UseQueryResult<{
 				sectorIndicators
 			};
 		},
-		staleTime: 0, // Force fresh data during development
+		staleTime: 1000 * 60 * 60, // 1 hour
 		refetchInterval: 1000 * 60 * 30 // Refetch every 30 minutes
 	});
 }

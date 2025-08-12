@@ -140,8 +140,8 @@ export class VietnamesePanicAnalyzer {
 		// Sort by date to ensure chronological order
 		const sortedData = [...tickerData].sort((a, b) => a.date.getTime() - b.date.getTime());
 		
-		const targetDateTime = new Date(targetDate).getTime();
-		const targetIndex = sortedData.findIndex(d => d.date.getTime() === targetDateTime);
+		// Use string comparison instead of datetime to avoid timezone issues
+		const targetIndex = sortedData.findIndex(d => d.time === targetDate);
 		
 		if (targetIndex === -1) {
 			console.log(`🔍 getPriceChange: ${targetDate} not found in data. Available dates: ${sortedData.map(d => d.time).slice(-5).join(', ')} (showing last 5)`);
