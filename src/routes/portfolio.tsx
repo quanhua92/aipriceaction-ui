@@ -333,6 +333,7 @@ function PortfolioPage() {
 					items={portfolioItems}
 					deposit={actualDeposit}
 					currentUrl={window.location.href}
+					manualDeposit={manualDeposit}
 				/>
 			</div>
 

@@ -200,6 +200,8 @@ export const en = {
     cashEquityRatio: "Cash vs Equity Ratio",
     equityValue: "Equity Value",
     cashRemaining: "Cash Remaining",
+    depositScaled: "deposit scaled",
+    quantityScaled: "quantity scaled",
   },
 
   // Portfolio Metrics

@@ -24,12 +24,14 @@ interface SharePortfolioDialogProps {
 	items: PortfolioItem[];
 	deposit: number;
 	currentUrl: string;
+	manualDeposit?: boolean;
 }
 
 export function SharePortfolioDialog({
 	items,
 	deposit,
 	currentUrl,
+	manualDeposit = false,
 }: SharePortfolioDialogProps) {
 	const { t } = useTranslation();
 	const [isPrivacyEnabled, setIsPrivacyEnabled] = useState(true);
@@ -42,9 +44,23 @@ export function SharePortfolioDialog({
 		let shareDeposit = deposit;
 
 		if (isPrivacyEnabled) {
-			const scaled = scalePortfolioForPrivacy(items, deposit);
-			shareItems = scaled.scaledItems;
-			shareDeposit = scaled.scaledDeposit;
+			if (manualDeposit) {
+				// For manual deposit: scale to 100M and adjust stock prices to maintain profit ratio
+				const targetDeposit = 100_000_000; // 100M VND
+				const scaleFactor = targetDeposit / deposit;
+				
+				shareItems = items.map(item => ({
+					...item,
+					// Scale stock prices to maintain the same profit/loss ratio
+					price: item.price * scaleFactor,
+				}));
+				shareDeposit = targetDeposit;
+			} else {
+				// For auto deposit: use standard privacy scaling (scales quantities, keeps prices)
+				const scaled = scalePortfolioForPrivacy(items, deposit);
+				shareItems = scaled.scaledItems;
+				shareDeposit = scaled.scaledDeposit;
+			}
 		}
 
 		const encodedTickers = encodePortfolioItems(shareItems);
@@ -56,9 +72,13 @@ export function SharePortfolioDialog({
 		if (shareDeposit > 0) {
 			url.searchParams.set('deposit', shareDeposit.toString());
 		}
+		// Preserve manual deposit state
+		if (manualDeposit) {
+			url.searchParams.set('manualDeposit', 'true');
+		}
 
 		return url.toString();
-	}, [items, deposit, isPrivacyEnabled, currentUrl]);
+	}, [items, deposit, isPrivacyEnabled, manualDeposit, currentUrl]);
 
 	const handleCopy = async () => {
 		try {
@@ -139,7 +159,11 @@ export function SharePortfolioDialog({
 							{isPrivacyEnabled && totalValue > 0 && (
 								<div className="mt-2 pt-2 border-t border-amber-300/50">
 									<div className="text-xs opacity-80">
-										<strong>{t("portfolio.scalingFactor")}:</strong> {(privacyTargetAmount / totalValue).toFixed(2)}x
+										<strong>{t("portfolio.scalingFactor")}:</strong> {
+											manualDeposit 
+												? `${(100_000_000 / deposit).toFixed(2)}x (${t("portfolio.depositScaled")})`
+												: `${(privacyTargetAmount / totalValue).toFixed(2)}x (${t("portfolio.quantityScaled")})`
+										}
 									</div>
 								</div>
 							)}
@@ -213,7 +237,7 @@ export function SharePortfolioDialog({
 								<div className="bg-background rounded-lg p-3 text-center col-span-2">
 									<div className="text-lg font-bold text-blue-600">
 										{isPrivacyEnabled 
-											? formatVND(privacyTargetAmount)
+											? (manualDeposit ? formatVND((totalValue / deposit) * 100_000_000) : formatVND(privacyTargetAmount))
 											: formatVND(totalValue)
 										}
 									</div>
@@ -223,7 +247,7 @@ export function SharePortfolioDialog({
 									<div className="bg-background rounded-lg p-3 text-center col-span-2">
 										<div className="text-base font-semibold text-gray-700">
 											{isPrivacyEnabled 
-												? formatVND(privacyTargetAmount)
+												? (manualDeposit ? formatVND(100_000_000) : formatVND(privacyTargetAmount))
 												: formatVND(deposit)
 											}
 										</div>

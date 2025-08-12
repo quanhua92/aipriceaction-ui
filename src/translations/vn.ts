@@ -200,6 +200,8 @@ export const vn = {
     cashEquityRatio: "Tỷ lệ tiền mặt/Cổ phiếu",
     equityValue: "Giá trị cổ phiếu",
     cashRemaining: "Tiền mặt còn lại",
+    depositScaled: "vốn được tỷ lệ",
+    quantityScaled: "số lượng được tỷ lệ",
   },
 
   // Portfolio Metrics
