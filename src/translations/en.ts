@@ -2,6 +2,7 @@ export const en = {
   // Navigation
   nav: {
     dashboard: "Dashboard",
+    panicAnalysis: "Panic Analysis",
     sectors: "Sectors", 
     tickers: "Tickers",
     compareCharts: "Compare Charts",

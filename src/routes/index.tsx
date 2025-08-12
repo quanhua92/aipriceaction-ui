@@ -389,7 +389,6 @@ function Dashboard() {
 								<Grid3X3 className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("nav.compareCharts")}</p>
-									<p className="text-sm text-muted-foreground">{t("compare.subtitle")}</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -482,19 +481,8 @@ function Dashboard() {
 					</Card>
 				</div>
 
-				{/* Risk Monitoring Sidebar */}
-				<div className="space-y-4">
-					{/* Pre-Panic Warning Widget */}
-					<PrePanicWarningWidget
-						compact={true}
-						onViewDetails={() => {
-							window.location.href = '/panic';
-						}}
-					/>
-				</div>
-
-				{/* Market Stats & Quick Actions */}
-				<div className="space-y-4">
+				{/* Market Stats */}
+				<div>
 					<Card>
 						<CardHeader>
 							<div className="flex items-center justify-between">
@@ -569,33 +557,46 @@ function Dashboard() {
 									</div>
 								</>
 							)}
-							
-							{/* Quick Actions */}
-							<div className="pt-4 border-t space-y-2">
-								<p className="text-sm font-medium text-muted-foreground mb-3">{t("home.quickActions")}</p>
-								<div className="space-y-2">
-									<Link to="/ticker/$symbol" params={{ symbol: "VNINDEX" }}>
-										<Button variant="outline" size="sm" className="w-full justify-start">
-											{t("common.view")} {t("home.vnIndex")} Details
-										</Button>
-									</Link>
-									<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_HANG" }}>
-										<Button variant="outline" size="sm" className="w-full justify-start">
-											{t("sectorNames.NGAN_HANG")}
-										</Button>
-									</Link>
-									<Link to="/sector/$sectorName" params={{ sectorName: "CHUNG_KHOAN" }}>
-										<Button variant="outline" size="sm" className="w-full justify-start">
-											{t("sectorNames.CHUNG_KHOAN")}
-										</Button>
-									</Link>
-									<Link to="/sector/$sectorName" params={{ sectorName: "BAT_DONG_SAN" }}>
-										<Button variant="outline" size="sm" className="w-full justify-start">
-											{t("sectorNames.BAT_DONG_SAN")}
-										</Button>
-									</Link>
-								</div>
-							</div>
+						</CardContent>
+					</Card>
+				</div>
+
+				{/* Right Sidebar: Risk Monitoring & Quick Actions */}
+				<div className="space-y-4">
+					{/* Pre-Panic Warning Widget */}
+					<PrePanicWarningWidget
+						compact={true}
+						onViewDetails={() => {
+							window.location.href = '/panic';
+						}}
+					/>
+
+					{/* Quick Actions Card */}
+					<Card>
+						<CardHeader>
+							<CardTitle className="text-lg">{t("home.quickActions")}</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
+							<Link to="/ticker/$symbol" params={{ symbol: "VNINDEX" }}>
+								<Button variant="outline" size="sm" className="w-full justify-start">
+									{t("common.view")} {t("home.vnIndex")} Details
+								</Button>
+							</Link>
+							<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_HANG" }}>
+								<Button variant="outline" size="sm" className="w-full justify-start">
+									{t("sectorNames.NGAN_HANG")}
+								</Button>
+							</Link>
+							<Link to="/sector/$sectorName" params={{ sectorName: "CHUNG_KHOAN" }}>
+								<Button variant="outline" size="sm" className="w-full justify-start">
+									{t("sectorNames.CHUNG_KHOAN")}
+								</Button>
+							</Link>
+							<Link to="/sector/$sectorName" params={{ sectorName: "BAT_DONG_SAN" }}>
+								<Button variant="outline" size="sm" className="w-full justify-start">
+									{t("sectorNames.BAT_DONG_SAN")}
+								</Button>
+							</Link>
 						</CardContent>
 					</Card>
 				</div>

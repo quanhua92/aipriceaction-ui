@@ -2,6 +2,7 @@ export const vn = {
   // Navigation
   nav: {
     dashboard: "Tổng quan",
+    panicAnalysis: "Phân tích hoảng loạn",
     sectors: "Ngành", 
     tickers: "Mã chứng khoán",
     compareCharts: "So sánh biểu đồ",
