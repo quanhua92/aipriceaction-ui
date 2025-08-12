@@ -32,6 +32,8 @@ export function useTickerData(
 		enabled: !!ticker,
 		staleTime: 1000 * 60 * 5, // 5 minutes
 		gcTime: 1000 * 60 * 30, // 30 minutes
+		retry: 3, // Retry failed requests 3 times
+		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
 	});
 }
 
@@ -61,6 +63,8 @@ export function useMultipleTickerData(
 		enabled: tickers.length > 0,
 		staleTime: 1000 * 60 * 5, // 5 minutes
 		gcTime: 1000 * 60 * 30, // 30 minutes
+		retry: 3, // Retry failed requests 3 times
+		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
 	});
 }
 

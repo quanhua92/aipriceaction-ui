@@ -82,7 +82,7 @@ export function PortfolioSummaryCard({
 				<div className="bg-background border rounded-lg p-3 shadow-lg">
 					<p className="font-medium">{data.name}</p>
 					<p className="text-sm text-muted-foreground">
-						{displayValue(data.value)} ({data.percentage}%)
+						{displayValue(data.value)} ({showPrivacy ? "●●%" : `${data.percentage}%`})
 					</p>
 				</div>
 			);
@@ -92,6 +92,7 @@ export function PortfolioSummaryCard({
 
 	const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
 		if (percent < 0.05) return null; // Hide labels for slices smaller than 5%
+		if (showPrivacy) return null; // Hide labels in privacy mode
 		
 		const RADIAN = Math.PI / 180;
 		const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -218,7 +219,7 @@ export function PortfolioSummaryCard({
 										wrapperStyle={{ paddingTop: '20px' }}
 										formatter={(value, entry: any) => (
 											<span style={{ color: entry.color, fontSize: '12px', fontWeight: '500' }}>
-												{value} ({entry.payload.percentage}%)
+												{value} ({showPrivacy ? "●●%" : `${entry.payload.percentage}%`})
 											</span>
 										)}
 									/>

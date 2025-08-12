@@ -89,11 +89,12 @@ function PortfolioPage() {
 		return tickers;
 	}, [portfolioItems]);
 
-	const { data: tickerData, isLoading } = useMultipleTickerData(
+	const { data: tickerData, isLoading, error } = useMultipleTickerData(
 		allTickers,
 		dateRangeConfig,
 		500,
 	);
+
 
 	// Debounced URL updates to prevent page jumping
 	const updateSearchParams = useCallback(
@@ -352,7 +353,29 @@ function PortfolioPage() {
 			</Card>
 
 			{/* Portfolio Analysis Content */}
-			{isLoading ? (
+			{error ? (
+				<Card className="border-red-200 bg-red-50">
+					<CardContent className="p-6 text-center">
+						<div className="space-y-4">
+							<div className="text-red-600">
+								<svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+								<h3 className="text-lg font-semibold mb-2">Failed to load stock data</h3>
+								<p className="text-sm text-red-600/80 mb-4">Unable to fetch stock market data. Your portfolio configuration is saved, but analysis features are temporarily unavailable.</p>
+							</div>
+							<div className="text-sm text-muted-foreground">
+								<p>You can still:</p>
+								<ul className="list-disc list-inside mt-2 space-y-1">
+									<li>Add and remove stocks from your portfolio</li>
+									<li>Edit quantities and prices</li>
+									<li>Use the portfolio management tools above</li>
+								</ul>
+							</div>
+						</div>
+					</CardContent>
+				</Card>
+			) : isLoading ? (
 				<div className="space-y-6">
 					{/* Loading Portfolio Summary */}
 					<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20">
@@ -395,6 +418,23 @@ function PortfolioPage() {
 						))}
 					</div>
 				</div>
+			) : (!tickerData || Object.keys(tickerData).length === 0) ? (
+				<Card className="border-yellow-200 bg-yellow-50">
+					<CardContent className="p-6 text-center">
+						<div className="space-y-4">
+							<div className="text-yellow-700">
+								<svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+								<h3 className="text-lg font-semibold mb-2">No stock data available</h3>
+								<p className="text-sm text-yellow-700/80 mb-4">Stock market data could not be loaded for your portfolio. This may be due to network issues or data service unavailability.</p>
+							</div>
+							<div className="text-sm text-muted-foreground">
+								<p>Your portfolio configuration is preserved. Analysis features will be available once data loads.</p>
+							</div>
+						</div>
+					</CardContent>
+				</Card>
 			) : (
 				<div className="space-y-8">
 					{/* Performance Overview */}

@@ -175,6 +175,9 @@ export const en = {
     tabToNext: "Move to next cell",
     shiftTabToPrev: "Move to previous cell", 
     enterToNextRow: "Move to next row",
+    unsavedChanges: "You have unsaved changes",
+    save: "Save",
+    cancel: "Cancel",
   },
 
   // Portfolio Metrics

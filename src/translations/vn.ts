@@ -113,7 +113,7 @@ export const vn = {
     securitiesPortfolio: "Danh mục Chứng khoán",
     configuration: "Cấu hình danh mục",
     addStock: "Thêm cổ phiếu vào danh mục",
-    addStockPlaceholder: "Tìm kiếm và thêm cổ phiếu vào danh mục...",
+    addStockPlaceholder: "Thêm mã cổ phiếu...",
     addVnindexQuickly: "Thêm VN-Index làm chỉ số chuẩn để so sánh",
     missingBenchmark: "Không tìm thấy chỉ số chuẩn VN-Index",
     addVnindexForComparison: "Thêm VN-Index để so sánh hiệu suất danh mục",
@@ -175,6 +175,9 @@ export const vn = {
     tabToNext: "Chuyển đến ô tiếp theo",
     shiftTabToPrev: "Chuyển đến ô trước đó",
     enterToNextRow: "Chuyển đến hàng tiếp theo",
+    unsavedChanges: "Bạn có thay đổi chưa lưu",
+    save: "Lưu",
+    cancel: "Hủy",
   },
 
   // Portfolio Metrics
