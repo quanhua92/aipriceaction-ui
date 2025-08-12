@@ -181,6 +181,7 @@ export const en = {
     cancel: "Cancel",
     
     // Portfolio Summary Card
+    volume: "Volume",
     marketPrice: "Market Price",
     buyPrice: "Buy Price", 
     profitPercent: "Profit %",

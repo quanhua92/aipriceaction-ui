@@ -181,6 +181,7 @@ export const vn = {
     cancel: "Hủy",
     
     // Portfolio Summary Card
+    volume: "Khối lượng",
     marketPrice: "Giá thị trường",
     buyPrice: "Giá mua", 
     profitPercent: "Lãi %",
