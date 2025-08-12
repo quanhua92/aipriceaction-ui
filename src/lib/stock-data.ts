@@ -40,7 +40,7 @@ interface CacheEntry {
 
 class TickerDataCache {
 	private cache = new Map<string, CacheEntry>();
-	private readonly CACHE_DURATION = 1000 * 60 * 15; // 15 minutes cache
+	private readonly CACHE_DURATION = 1000 * 10; // 10 seconds for debugging
 
 	get(ticker: string): StockDataPoint[] | null {
 		const entry = this.cache.get(ticker);

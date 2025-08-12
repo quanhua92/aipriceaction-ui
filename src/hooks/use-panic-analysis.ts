@@ -251,7 +251,7 @@ export function useCurrentWarningLevel(): UseQueryResult<{
 		tradingAdvice: ReturnType<typeof panicAnalyzer.getPrePanicTradingAdvice>;
 		sectorIndicators: SectorIndicators;
 	}, Error>({
-		queryKey: ['current-warning-level'],
+		queryKey: ['current-warning-level-v2'], // Force cache refresh
 		queryFn: async () => {
 			console.log('🔍 useCurrentWarningLevel: Getting most recent available date...');
 			
@@ -334,7 +334,7 @@ export function useCurrentWarningLevel(): UseQueryResult<{
 				sectorIndicators
 			};
 		},
-		staleTime: 1000 * 60 * 60, // 1 hour
+		staleTime: 0, // Force fresh data during development
 		refetchInterval: 1000 * 60 * 30 // Refetch every 30 minutes
 	});
 }

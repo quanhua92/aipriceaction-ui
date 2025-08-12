@@ -299,7 +299,8 @@ export class VietnamesePanicAnalyzer {
 			const sortedData = [...vnindexData].sort((a, b) => a.date.getTime() - b.date.getTime());
 			const mostRecentDate = sortedData[sortedData.length - 1].time;
 			
-			console.log(`📅 Most recent available date: ${mostRecentDate}`);
+			console.log(`📅 Most recent available date: ${mostRecentDate} (total ${vnindexData.length} data points)`);
+			console.log(`📊 Date range: ${sortedData[0].time} to ${mostRecentDate}`);
 			return mostRecentDate;
 		} catch (error) {
 			console.error('❌ Error getting most recent date:', error);
