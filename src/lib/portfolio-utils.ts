@@ -11,7 +11,7 @@ export interface PortfolioData {
 
 /**
  * Encodes portfolio items to URL format: ticker,quantity,price~ticker2,quantity2,price2
- * Watch list items have quantity=0 and price=0
+ * Watch list items have price=0 (quantity can be any value)
  */
 export function encodePortfolioItems(items: PortfolioItem[]): string {
 	return items
@@ -21,7 +21,7 @@ export function encodePortfolioItems(items: PortfolioItem[]): string {
 
 /**
  * Decodes portfolio items from URL format
- * Items with quantity=0 and price=0 are watch list items
+ * Items with price=0 are watch list items
  */
 export function decodePortfolioItems(dataString: string): PortfolioItem[] {
 	if (!dataString) return [];
@@ -44,24 +44,24 @@ export function decodePortfolioItems(dataString: string): PortfolioItem[] {
  * Separates portfolio items into investments and watch list
  */
 export function separatePortfolioItems(items: PortfolioItem[]) {
-	const investments = items.filter(item => item.quantity > 0 && item.price > 0);
-	const watchList = items.filter(item => item.quantity === 0 && item.price === 0);
+	const investments = items.filter(item => item.price > 0);
+	const watchList = items.filter(item => item.price === 0);
 	return { investments, watchList };
 }
 
 /**
- * Checks if an item is in watch list (quantity=0 and price=0)
+ * Checks if an item is in watch list (price=0 only)
  */
 export function isWatchListItem(item: PortfolioItem): boolean {
-	return item.quantity === 0 && item.price === 0;
+	return item.price === 0;
 }
 
 /**
- * Calculates total portfolio value (only items with quantity > 0 and price > 0)
+ * Calculates total portfolio value (only items with price > 0)
  */
 export function calculatePortfolioValue(items: PortfolioItem[]): number {
 	return items.reduce((total, item) => {
-		if (item.quantity > 0 && item.price > 0) {
+		if (item.price > 0) {
 			return total + (item.quantity * item.price);
 		}
 		return total;
@@ -72,7 +72,7 @@ export function calculatePortfolioValue(items: PortfolioItem[]): number {
  * Calculates individual investment value
  */
 export function calculateInvestmentValue(item: PortfolioItem): number {
-	if (item.quantity > 0 && item.price > 0) {
+	if (item.price > 0) {
 		return item.quantity * item.price;
 	}
 	return 0;

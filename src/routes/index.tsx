@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { TrendingUp, Search, Grid3X3, Building2, DollarSign, AlertTriangle } from "lucide-react";
+import { TrendingUp, Search, Grid3X3, Building2, DollarSign, AlertTriangle, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CandlestickChart } from "@/components/charts";
@@ -339,8 +339,8 @@ function Dashboard() {
 					</div>
 				</div>
 
-				{/* Quick Navigation */}
-				<div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch">
+				{/* Quick Navigation - 2 rows, 3 columns */}
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
 					<Link to="/panic">
 						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
 							<CardContent className="flex items-center gap-3 p-4 h-full">
@@ -349,6 +349,20 @@ function Dashboard() {
 									<p className="font-semibold">{t("nav.panicAnalysis")}</p>
 									<p className="text-sm text-muted-foreground">
 										{t("home.marketRiskMonitoring")}
+									</p>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
+
+					<Link to="/portfolio">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+							<CardContent className="flex items-center gap-3 p-4 h-full">
+								<Target className="h-8 w-8 text-primary" />
+								<div>
+									<p className="font-semibold">{t("nav.portfolio")}</p>
+									<p className="text-sm text-muted-foreground">
+										{t("portfolio.subtitle")}
 									</p>
 								</div>
 							</CardContent>

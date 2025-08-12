@@ -138,7 +138,7 @@ function PortfolioPage() {
 	// Portfolio item management functions
 	const handleAddItem = useCallback((ticker: string) => {
 		if (!portfolioItems.some(item => item.ticker === ticker)) {
-			const newItems = [...portfolioItems, { ticker, quantity: 0, price: 0 }];
+			const newItems = [...portfolioItems, { ticker, quantity: 100, price: 0 }];
 			updatePortfolioItems(newItems);
 		}
 	}, [portfolioItems, updatePortfolioItems]);
@@ -233,7 +233,7 @@ function PortfolioPage() {
 										<Link
 											to="/portfolio"
 											search={{
-												tickers: "VCB,0,0~BID,0,0~CTG,0,0~ACB,0,0~VNINDEX,0,0",
+												tickers: "VCB,100,0~BID,100,0~CTG,100,0~ACB,100,0",
 												range: "3M",
 											}}
 										>
@@ -244,7 +244,7 @@ function PortfolioPage() {
 										<Link
 											to="/portfolio"
 											search={{
-												tickers: "VHM,0,0~VIC,0,0~VRE,0,0~KDH,0,0~VNINDEX,0,0",
+												tickers: "VHM,100,0~VIC,100,0~VRE,100,0~KDH,100,0",
 												range: "3M",
 											}}
 										>
@@ -255,7 +255,7 @@ function PortfolioPage() {
 										<Link
 											to="/portfolio"
 											search={{
-												tickers: "SSI,0,0~VCI,0,0~HCM,0,0~MBS,0,0~VNINDEX,0,0",
+												tickers: "SSI,100,0~VCI,100,0~HCM,100,0~MBS,100,0",
 												range: "3M",
 											}}
 										>
@@ -266,7 +266,7 @@ function PortfolioPage() {
 										<Link
 											to="/portfolio"
 											search={{
-												tickers: "HPG,0,0~HSG,0,0~NKG,0,0~POM,0,0~VNINDEX,0,0",
+												tickers: "HPG,100,0~HSG,100,0~NKG,100,0~POM,100,0",
 												range: "3M",
 											}}
 										>
