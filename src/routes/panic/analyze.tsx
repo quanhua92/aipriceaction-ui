@@ -22,7 +22,6 @@ import {
 	AlertTriangle,
 	Target,
 	BarChart3,
-	Clock,
 	Shield,
 	ExternalLink,
 	LineChart,
@@ -40,8 +39,7 @@ import { DateRangeSelector } from '@/components/ui/DateRangeSelector';
 import { 
 	usePanicAnalysis, 
 	usePrePanicAnalysis,
-	getWarningLevelColor,
-	getPanicTypeColor
+	getWarningLevelColor
 } from '@/hooks/use-panic-analysis';
 import { useTickerData } from '@/lib/queries';
 import { createDateRangeConfig, formatDateForUrl, type DateRangeConfig } from '@/lib/stock-data';
@@ -368,97 +366,17 @@ function PanicAnalyzeDetail() {
 						panicType={panicAnalysis.panicType}
 						warningLevel={prePanicLoading ? undefined : prePanicAnalysis?.strongestWarning}
 						showDetails={true}
+						recoveryData={precalculatedData ? {
+							stabilizationDays: precalculatedData.recoveryPattern.stabilizationDays,
+							recoveryLeader: precalculatedData.recoveryPattern.recoveryLeader,
+							nextDayVnindexChange: precalculatedData.recoveryPattern.nextDayVnindexChange || undefined
+						} : undefined}
+						patternType={prePanicLoading ? undefined : prePanicAnalysis?.patternType}
 					/>
 				</div>
 
-				{/* Quick Stats */}
-				<div className="flex flex-col gap-4 h-full">
-					{/* Classification Summary */}
-					<Card className="flex-1">
-						<CardHeader className="pb-3">
-							<CardTitle className="text-lg">{t('panic.classification')}</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-3">
-							<div>
-								<div className="text-sm text-gray-600 mb-1">{t('panic.panicType')}</div>
-								<Badge className={getPanicTypeColor(panicAnalysis.panicType)}>
-									{t(`panic.panicTypes.${panicAnalysis.panicType}`)}
-								</Badge>
-							</div>
-							{prePanicLoading ? (
-								<div>
-									<div className="text-sm text-gray-600 mb-1">Warning Level</div>
-									<div className="flex items-center gap-2">
-										<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-										<span className="text-xs text-gray-500">Loading...</span>
-									</div>
-								</div>
-							) : prePanicAnalysis && (
-								<div>
-									<div className="text-sm text-gray-600 mb-1">{t('panic.warningLevel')}</div>
-									<Badge className={getWarningLevelColor(prePanicAnalysis.strongestWarning)}>
-										{t(`panic.warningLevels.${prePanicAnalysis.strongestWarning}`)}
-									</Badge>
-								</div>
-							)}
-							{prePanicLoading ? (
-								<div>
-									<div className="text-sm text-gray-600 mb-1">Pattern Type</div>
-									<div className="flex items-center gap-2">
-										<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-										<span className="text-xs text-gray-500">Loading...</span>
-									</div>
-								</div>
-							) : prePanicAnalysis && (
-								<div>
-									<div className="text-sm text-gray-600 mb-1">{t('panic.patternType')}</div>
-									<Badge variant="outline">
-										{t(`panic.patternTypes.${prePanicAnalysis.patternType}`)}
-									</Badge>
-								</div>
-							)}
-						</CardContent>
-					</Card>
-
-					{/* Historical Context */}
-					{precalculatedData && (
-						<Card className="flex-1">
-							<CardHeader className="pb-3">
-								<CardTitle className="text-lg flex items-center gap-2">
-									<Clock className="h-4 w-4" />
-									Recovery
-								</CardTitle>
-							</CardHeader>
-							<CardContent className="space-y-2 text-sm">
-								<div>
-									<span className="text-gray-600">Stabilization:</span>
-									<span className="ml-2 font-medium">
-										{precalculatedData.recoveryPattern.stabilizationDays} days
-									</span>
-								</div>
-								<div>
-									<span className="text-gray-600">Recovery Leader:</span>
-									<span className="ml-2 font-medium">
-										{t(`panic.recoveryLeaders.${precalculatedData.recoveryPattern.recoveryLeader}`)}
-									</span>
-								</div>
-								{precalculatedData.recoveryPattern.nextDayVnindexChange && (
-									<div>
-										<span className="text-gray-600">Next Day:</span>
-										<span className={`ml-2 font-medium ${
-											precalculatedData.recoveryPattern.nextDayVnindexChange > 0 
-												? 'text-green-600' 
-												: 'text-red-600'
-										}`}>
-											{precalculatedData.recoveryPattern.nextDayVnindexChange >= 0 ? '+' : ''}
-											{precalculatedData.recoveryPattern.nextDayVnindexChange.toFixed(2)}%
-										</span>
-									</div>
-								)}
-							</CardContent>
-						</Card>
-					)}
-				</div>
+				{/* Empty space - content now integrated into main card */}
+				<div></div>
 			</div>
 
 			{/* Educational Card for Analyze */}

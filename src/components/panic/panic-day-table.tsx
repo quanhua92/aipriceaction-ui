@@ -21,7 +21,6 @@ import {
 	ArrowUpDown, 
 	ArrowUp, 
 	ArrowDown,
-	Eye,
 	TrendingDown,
 	AlertTriangle,
 	Calendar
@@ -321,7 +320,7 @@ export function PanicDayTable({
 												{formatDate(panicDay.date)}
 											</Button>
 										) : (
-											{formatDate(panicDay.date)}
+											formatDate(panicDay.date)
 										)}
 									</TableCell>
 									<TableCell className={cn(
