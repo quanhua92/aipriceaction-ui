@@ -8,7 +8,9 @@ import { CandlestickChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { TickerPerformanceTable } from "@/components/ui/TickerPerformanceTable";
+import { ChartSuspense } from "@/components/ui/ChartSuspense";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useTickerState } from "@/hooks/useLowPriorityState";
 import { useMultipleTickerData } from "@/lib/queries";
 import {
 	createDateRangeConfig,
@@ -40,11 +42,27 @@ export const Route = createFileRoute("/compare")({
 function ComparePage() {
 	const { t } = useTranslation();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { tickers = [], range = "3M", startDate, endDate } = Route.useSearch();
+	const { tickers: urlTickers = [], range = "3M", startDate, endDate } = Route.useSearch();
+	
+	// Use low-priority state for ticker management to improve performance
+	const { 
+		tickers, 
+		removeTicker, 
+		clearTickers, 
+		setTickers, 
+		isPending: tickersUpdating 
+	} = useTickerState(urlTickers);
 	
 	// Track screen size for responsive chart heights
 	const [isMobile, setIsMobile] = useState(false);
 	
+	// Sync URL tickers with local state
+	useEffect(() => {
+		if (JSON.stringify(urlTickers) !== JSON.stringify(tickers)) {
+			setTickers(urlTickers);
+		}
+	}, [urlTickers, tickers, setTickers]);
+
 	useEffect(() => {
 		const checkIsMobile = () => {
 			setIsMobile(window.innerWidth < 640);
@@ -81,10 +99,16 @@ function ComparePage() {
 	}, [tickers, tickerData]);
 
 	const handleTickersChange = (newTickers: string[]) => {
+		// Update local state with low priority for performance
+		setTickers(newTickers);
+		// Sync to URL after a brief delay to avoid excessive navigation
 		updateSearchParams({ tickers: newTickers });
 	};
 
-	const removeTicker = (tickerToRemove: string) => {
+	const handleRemoveTicker = (tickerToRemove: string) => {
+		// Urgent removal for immediate user feedback
+		removeTicker(tickerToRemove);
+		// Sync to URL
 		const newTickers = tickers.filter(t => t !== tickerToRemove);
 		updateSearchParams({ tickers: newTickers });
 	};
@@ -125,8 +149,14 @@ function ComparePage() {
 				<CardContent className="space-y-4">
 					{/* Ticker Selection */}
 					<div>
-						<label className="text-sm font-medium mb-2 block">
+						<label className="text-sm font-medium mb-2 block flex items-center gap-2">
 							{t("compare.selectTickers")}
+							{tickersUpdating && (
+								<div className="inline-flex items-center text-xs text-muted-foreground">
+									<div className="animate-spin rounded-full h-3 w-3 border-b border-current mr-1"></div>
+									Updating...
+								</div>
+							)}
 						</label>
 						<MultiTickerSearch
 							selectedTickers={tickers}
@@ -194,40 +224,43 @@ function ComparePage() {
 							</Link>
 							<Button
 								variant="outline"
-								onClick={() =>
-									updateSearchParams({
-										tickers: [
-											"VNINDEX",
-											...tickers.filter((t) => t !== "VNINDEX"),
-										],
-									})
-								}
+								onClick={() => {
+									const newTickers = [
+										"VNINDEX",
+										...tickers.filter((t) => t !== "VNINDEX"),
+									];
+									setTickers(newTickers);
+									updateSearchParams({ tickers: newTickers });
+								}}
 							>
 								{t("compare.addVnIndex")}
 							</Button>
 							<Button
 								variant="outline"
-								onClick={() =>
-									updateSearchParams({
-										tickers: ["VCB", "BID", "CTG", "ACB"],
-									})
-								}
+								onClick={() => {
+									const newTickers = ["VCB", "BID", "CTG", "ACB"];
+									setTickers(newTickers);
+									updateSearchParams({ tickers: newTickers });
+								}}
 							>
 								{t("compare.bankingStocks")}
 							</Button>
 							<Button
 								variant="outline"
-								onClick={() =>
-									updateSearchParams({
-										tickers: ["VHM", "VIC", "VRE", "KDH"],
-									})
-								}
+								onClick={() => {
+									const newTickers = ["VHM", "VIC", "VRE", "KDH"];
+									setTickers(newTickers);
+									updateSearchParams({ tickers: newTickers });
+								}}
 							>
 								{t("compare.realEstate")}
 							</Button>
 							<Button
 								variant="outline"
-								onClick={() => updateSearchParams({ tickers: [] })}
+								onClick={() => {
+									clearTickers();
+									updateSearchParams({ tickers: [] });
+								}}
 							>
 								{t("common.clearAll")}
 							</Button>
@@ -267,7 +300,7 @@ function ComparePage() {
 										<Button
 											variant="ghost"
 											size="sm"
-											onClick={() => removeTicker(item.ticker)}
+											onClick={() => handleRemoveTicker(item.ticker)}
 											className="h-6 w-6 p-0"
 										>
 											<X className="h-4 w-4" />
@@ -280,17 +313,19 @@ function ComparePage() {
 							</CardHeader>
 							<CardContent>
 								{item.data.length > 0 ? (
-									isLoading ? (
-										<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
-											<div className="text-muted-foreground">{t("common.loading")}</div>
-										</div>
-									) : (
+									<ChartSuspense 
+										fallbackTitle={`Loading ${item.ticker}`}
+										fallbackDescription={`Preparing ${item.ticker} chart data...`}
+										height={`${isMobile ? 250 : 300}px`}
+										chartType="candlestick"
+										className="h-[250px] sm:h-[300px]"
+									>
 										<CandlestickChart
 											data={item.data}
 											height={isMobile ? 250 : 300}
 											showCard={false}
 										/>
-									)
+									</ChartSuspense>
 								) : isLoading ? (
 									<div className="h-[250px] sm:h-[300px] flex items-center justify-center">
 										<div className="text-muted-foreground">

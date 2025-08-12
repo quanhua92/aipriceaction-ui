@@ -39,6 +39,7 @@ import { VPACard } from '@/components/vpa';
 import { DateRangeSelector } from '@/components/ui/DateRangeSelector';
 import { MultiTickerSearch } from '@/components/ui/TickerSearch';
 import { ComparisonChart } from '@/components/charts';
+import { ChartSuspense } from '@/components/ui/ChartSuspense';
 import { 
 	usePanicAnalysis, 
 	usePrePanicAnalysis,
@@ -643,11 +644,18 @@ function PanicAnalyzeDetail() {
 													<div className="text-muted-foreground">Loading...</div>
 												</div>
 											) : (
-												<CandlestickChart
-													data={tickerData[ticker]}
-													height={250}
-													showCard={false}
-												/>
+												<ChartSuspense 
+													fallbackTitle={`Loading ${ticker}`}
+													fallbackDescription={`Preparing ${ticker} chart data...`}
+													height="250px"
+													chartType="candlestick"
+												>
+													<CandlestickChart
+														data={tickerData[ticker]}
+														height={250}
+														showCard={false}
+													/>
+												</ChartSuspense>
 											)
 										) : tickerLoading ? (
 											<div className="h-[250px] flex items-center justify-center">
@@ -1033,7 +1041,13 @@ function PanicAnalyzeDetail() {
 													const strokeWidths = getLineStrokeWidths(allTickers);
 													
 													return (
-														<ComparisonChart
+														<ChartSuspense
+															fallbackTitle="Loading Banking Sector"
+															fallbackDescription="Preparing banking sector comparison..."
+															height="300px"
+															chartType="comparison"
+														>
+															<ComparisonChart
 															data={(() => {
 																// Normalize data for comparison - convert to percentage change from first data point
 																const normalizedData: any[] = [];
@@ -1076,6 +1090,7 @@ function PanicAnalyzeDetail() {
 															strokeWidths={strokeWidths}
 															height={300}
 														/>
+														</ChartSuspense>
 													);
 												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
@@ -1121,7 +1136,13 @@ function PanicAnalyzeDetail() {
 													const strokeWidths = getLineStrokeWidths(allTickers);
 													
 													return (
-														<ComparisonChart
+														<ChartSuspense
+															fallbackTitle="Loading Securities Sector"
+															fallbackDescription="Preparing securities sector comparison..."
+															height="300px"
+															chartType="comparison"
+														>
+															<ComparisonChart
 															data={(() => {
 																// Normalize data for comparison
 																const normalizedData: any[] = [];
@@ -1164,6 +1185,7 @@ function PanicAnalyzeDetail() {
 															strokeWidths={strokeWidths}
 															height={300}
 														/>
+														</ChartSuspense>
 													);
 												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
@@ -1209,7 +1231,13 @@ function PanicAnalyzeDetail() {
 													const strokeWidths = getLineStrokeWidths(allTickers);
 													
 													return (
-														<ComparisonChart
+														<ChartSuspense
+															fallbackTitle="Loading Real Estate Sector"
+															fallbackDescription="Preparing real estate sector comparison..."
+															height="300px"
+															chartType="comparison"
+														>
+															<ComparisonChart
 															data={(() => {
 																// Normalize data for comparison
 																const normalizedData: any[] = [];
@@ -1252,6 +1280,7 @@ function PanicAnalyzeDetail() {
 															strokeWidths={strokeWidths}
 															height={300}
 														/>
+														</ChartSuspense>
 													);
 												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
@@ -1421,11 +1450,18 @@ function PanicAnalyzeDetail() {
 								</div>
 							) : vnindexData && vnindexData.length > 0 ? (
 								<div className="h-[400px] w-full">
-									<CandlestickChart
-										data={vnindexData}
-										height={400}
-										showCard={false}
-									/>
+									<ChartSuspense
+										fallbackTitle="Loading Market Chart"
+										fallbackDescription="Preparing VN-Index chart data..."
+										height="400px"
+										chartType="candlestick"
+									>
+										<CandlestickChart
+											data={vnindexData}
+											height={400}
+											showCard={false}
+										/>
+									</ChartSuspense>
 									{/* Panic day marker */}
 									<div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
 										<div className="w-3 h-3 bg-red-600 rounded-full"></div>
@@ -1457,14 +1493,20 @@ function PanicAnalyzeDetail() {
 								<CardDescription>{t("panic.vnindexVsBankingStocks")}</CardDescription>
 							</CardHeader>
 							<CardContent>
-								<div className="h-[300px]">
-									{tickerData && BANKING_TICKERS.length > 0 ? (() => {
-										const allTickers = ['VNINDEX', ...BANKING_TICKERS];
-										const sectorColors = getSectorChartColors(allTickers);
-										const strokeWidths = getLineStrokeWidths(allTickers);
-										
-										return (
-											<ComparisonChart
+								<ChartSuspense
+									fallbackTitle="Loading Banking Performance"
+									fallbackDescription="Preparing banking sector performance chart..."
+									height="300px"
+									chartType="comparison"
+								>
+									<div className="h-[300px]">
+										{tickerData && BANKING_TICKERS.length > 0 ? (() => {
+											const allTickers = ['VNINDEX', ...BANKING_TICKERS];
+											const sectorColors = getSectorChartColors(allTickers);
+											const strokeWidths = getLineStrokeWidths(allTickers);
+											
+											return (
+												<ComparisonChart
 												data={(() => {
 													// Normalize data for comparison - convert to percentage change from first data point
 													const normalizedData: any[] = [];
@@ -1518,6 +1560,7 @@ function PanicAnalyzeDetail() {
 										</div>
 									)}
 								</div>
+								</ChartSuspense>
 								<div className="mt-4">
 									{(() => {
 										const allTickers = ['VNINDEX', ...BANKING_TICKERS];

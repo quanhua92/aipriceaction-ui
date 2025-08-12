@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Badge } from "@/components/ui/badge";
 import { ComparisonChart } from "@/components/charts";
+import { ChartSuspense } from "@/components/ui/ChartSuspense";
 import {
 	calculatePortfolioPerformance,
 	calculateCumulativeReturns,
@@ -222,12 +223,19 @@ export function PerformanceOverview({
 				</CardHeader>
 				<CardContent>
 					{comparisonChartData.length > 0 ? (
-						<ComparisonChart
-							data={comparisonChartData}
-							tickers={["Portfolio", "VN-Index"]}
-							height={300}
-							colors={["#3B82F6", "#10B981"]}
-						/>
+						<ChartSuspense 
+							fallbackTitle="Loading Performance Comparison"
+							fallbackDescription="Preparing portfolio vs benchmark chart..."
+							height="300px"
+							chartType="comparison"
+						>
+							<ComparisonChart
+								data={comparisonChartData}
+								tickers={["Portfolio", "VN-Index"]}
+								height={300}
+								colors={["#3B82F6", "#10B981"]}
+							/>
+						</ChartSuspense>
 					) : (
 						<div className="h-[300px] flex items-center justify-center">
 							<p className="text-muted-foreground">{t("loading.chartData")}</p>
