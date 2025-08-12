@@ -38,6 +38,7 @@ interface PortfolioSummaryCardProps {
 	onTogglePrivacy: (show: boolean) => void;
 	manualDeposit?: boolean;
 	onUpdateDeposit?: (deposit: number) => void;
+	tickerData?: Record<string, any[]>; // Real market data for each ticker
 }
 
 const COLORS = [
@@ -60,6 +61,7 @@ export function PortfolioSummaryCard({
 	onTogglePrivacy,
 	manualDeposit = false,
 	onUpdateDeposit,
+	tickerData,
 }: PortfolioSummaryCardProps) {
 	const { t } = useTranslation();
 	const [editingDeposit, setEditingDeposit] = useState(false);
@@ -73,24 +75,43 @@ export function PortfolioSummaryCard({
 		}
 	}, [deposit, editingDeposit]);
 
-	const { investments, totalValue, chartData } = useMemo(() => {
+	// Helper function to get current market price for a ticker
+	const getCurrentMarketPrice = (ticker: string): number => {
+		if (!tickerData || !tickerData[ticker] || tickerData[ticker].length === 0) {
+			return 0; // No market data available
+		}
+		const latestData = tickerData[ticker][tickerData[ticker].length - 1];
+		return latestData.close || 0;
+	};
+
+	const { investments, currentMarketValue, chartData } = useMemo(() => {
 		const investments = items.filter(item => !isWatchListItem(item));
-		const totalValue = investments.reduce((sum, item) => sum + calculateInvestmentValue(item), 0);
+		
+		// Calculate current market value using real prices when available
+		const currentMarketValue = investments.reduce((sum, item) => {
+			const marketPrice = getCurrentMarketPrice(item.ticker);
+			const currentValue = marketPrice > 0 ? item.quantity * marketPrice : calculateInvestmentValue(item);
+			return sum + currentValue;
+		}, 0);
 
 		const chartData = investments
-			.map((item, index) => ({
-				name: item.ticker,
-				value: calculateInvestmentValue(item),
-				percentage: totalValue > 0 ? ((calculateInvestmentValue(item) / totalValue) * 100).toFixed(1) : "0",
-				color: COLORS[index % COLORS.length],
-			}))
+			.map((item, index) => {
+				const marketPrice = getCurrentMarketPrice(item.ticker);
+				const currentValue = marketPrice > 0 ? item.quantity * marketPrice : calculateInvestmentValue(item);
+				return {
+					name: item.ticker,
+					value: currentValue,
+					percentage: currentMarketValue > 0 ? ((currentValue / currentMarketValue) * 100).toFixed(1) : "0",
+					color: COLORS[index % COLORS.length],
+				};
+			})
 			.filter(item => item.value > 0)
 			.sort((a, b) => b.value - a.value);
 
-		return { investments, totalValue, chartData };
-	}, [items]);
+		return { investments, currentMarketValue, chartData };
+	}, [items, tickerData]);
 
-	const profitLoss = totalValue - deposit;
+	const profitLoss = currentMarketValue - deposit;
 	const profitLossPercentage = deposit > 0 ? ((profitLoss / deposit) * 100) : 0;
 
 	const displayValue = (value: number) => {
@@ -182,14 +203,14 @@ export function PortfolioSummaryCard({
 				<div className="mb-6 space-y-3">
 					<div className="text-center">
 						<div className="text-3xl font-bold text-green-600">
-							{displayValue(totalValue)}
+							{displayValue(currentMarketValue)}
 						</div>
 						<div className="text-muted-foreground text-sm">{t("portfolio.totalValue")}</div>
 					</div>
 					<div className="grid grid-cols-2 gap-4 text-sm">
 						<div>
 							<span className="text-muted-foreground">{t("portfolio.totalAssets")}:</span>
-							<div className="font-medium">{displayValue(totalValue)}</div>
+							<div className="font-medium">{displayValue(currentMarketValue)}</div>
 						</div>
 						<div>
 							<span className="text-muted-foreground">{t("portfolio.totalCapital")}:</span>
@@ -261,7 +282,7 @@ export function PortfolioSummaryCard({
 								{/* Card Rows */}
 								<div className="divide-y divide-gray-100">
 									{investments.map((item) => {
-										const marketPrice = item.price; // Use buy price as market price for now
+										const marketPrice = getCurrentMarketPrice(item.ticker) || item.price; // Use real market price or fallback to buy price
 										const costBasis = item.price; // Cost basis (buy price)
 										const profitPrice = (marketPrice - costBasis) * item.quantity; // Profit in VND
 										const profitPercent = costBasis > 0 ? ((marketPrice - costBasis) / costBasis) * 100 : 0; // Profit percentage
@@ -365,7 +386,7 @@ export function PortfolioSummaryCard({
 										</TableHeader>
 										<TableBody>
 											{investments.map((item) => {
-												const marketPrice = item.price; // Use buy price as market price for now
+												const marketPrice = getCurrentMarketPrice(item.ticker) || item.price; // Use real market price or fallback to buy price
 												const costBasis = item.price; // Cost basis (buy price)
 												const profitPrice = (marketPrice - costBasis) * item.quantity; // Profit in VND
 												const profitPercent = costBasis > 0 ? ((marketPrice - costBasis) / costBasis) * 100 : 0; // Profit percentage
@@ -542,7 +563,7 @@ export function PortfolioSummaryCard({
 						{/* Card Rows - Compact */}
 						<div className="divide-y divide-gray-100">
 							{investments.map((item) => {
-								const marketPrice = item.price; // Use buy price as market price for now
+								const marketPrice = getCurrentMarketPrice(item.ticker) || item.price; // Use real market price or fallback to buy price
 								const costBasis = item.price; // Cost basis (buy price)
 								const profitPrice = (marketPrice - costBasis) * item.quantity; // Profit in VND
 								const profitPercent = costBasis > 0 ? ((marketPrice - costBasis) / costBasis) * 100 : 0; // Profit percentage
@@ -608,7 +629,7 @@ export function PortfolioSummaryCard({
 								</TableHeader>
 								<TableBody>
 									{investments.map((item) => {
-										const marketPrice = item.price; // Use buy price as market price for now
+										const marketPrice = getCurrentMarketPrice(item.ticker) || item.price; // Use real market price or fallback to buy price
 										const costBasis = item.price; // Cost basis (buy price)
 										const profitPrice = (marketPrice - costBasis) * item.quantity; // Profit in VND
 										const profitPercent = costBasis > 0 ? ((marketPrice - costBasis) / costBasis) * 100 : 0; // Profit percentage

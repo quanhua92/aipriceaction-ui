@@ -3,6 +3,7 @@ export const en = {
   nav: {
     dashboard: "Dashboard",
     panicAnalysis: "Panic Analysis",
+    portfolio: "Portfolio",
     sectors: "Sectors", 
     tickers: "Tickers",
     compareCharts: "Compare Charts",
@@ -178,6 +179,19 @@ export const en = {
     unsavedChanges: "You have unsaved changes",
     save: "Save",
     cancel: "Cancel",
+    
+    // Portfolio Summary Card
+    marketPrice: "Market Price",
+    buyPrice: "Buy Price", 
+    profitPercent: "Profit %",
+    profitPrice: "Profit (VND)",
+    costBasis: "Cost Basis",
+    totalDeposit: "Total Deposit",
+    totalAssets: "Total Assets",
+    totalCapital: "Total Capital",
+    overview: "Overview",
+    allocation: "Allocation",
+    marketValue: "Market Value",
   },
 
   // Portfolio Metrics

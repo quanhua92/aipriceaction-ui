@@ -313,6 +313,7 @@ function PortfolioPage() {
 				onTogglePrivacy={setShowPrivacy}
 				manualDeposit={manualDeposit}
 				onUpdateDeposit={updateDeposit}
+				tickerData={tickerData}
 			/>
 
 			{/* Share Portfolio */}
