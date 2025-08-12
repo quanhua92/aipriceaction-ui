@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { TrendingUp, Search, Grid3X3, Building2, DollarSign } from "lucide-react";
+import { TrendingUp, Search, Grid3X3, Building2, DollarSign, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CandlestickChart } from "@/components/charts";
@@ -9,6 +9,7 @@ import { TickerSearch } from "@/components/ui/TickerSearch";
 import { useTickerData, useTickerGroups, useSectorData } from "@/lib/queries";
 import { useTranslation } from "@/hooks/useTranslation";
 import { VPAButton } from "@/components/vpa";
+import { PrePanicWarningWidget } from "@/components/panic";
 import { 
 	calculatePriceChange, 
 	calculateRangeChange, 
@@ -340,6 +341,20 @@ function Dashboard() {
 
 				{/* Quick Navigation */}
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+					<Link to="/panic">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow">
+							<CardContent className="flex items-center gap-3 p-4">
+								<AlertTriangle className="h-8 w-8 text-red-600" />
+								<div>
+									<p className="font-semibold">Panic Analysis</p>
+									<p className="text-sm text-muted-foreground">
+										Market risk monitoring
+									</p>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
+
 					<Link to="/sectors">
 						<Card className="cursor-pointer hover:shadow-md transition-shadow">
 							<CardContent className="flex items-center gap-3 p-4">
@@ -461,6 +476,56 @@ function Dashboard() {
 									<div className="text-muted-foreground">
 										{t("errors.failedToLoad")}
 									</div>
+								</div>
+							)}
+						</CardContent>
+					</Card>
+				</div>
+
+				{/* Risk Monitoring Sidebar */}
+				<div className="space-y-4">
+					{/* Pre-Panic Warning Widget */}
+					<PrePanicWarningWidget
+						compact={true}
+						onViewDetails={() => {
+							window.location.href = '/panic';
+						}}
+					/>
+
+					{/* VNINDEX Stats */}
+					<Card>
+						<CardHeader className="p-3 md:p-6">
+							<CardTitle className="text-sm md:text-base">{t("home.vnIndex")} Stats</CardTitle>
+						</CardHeader>
+						<CardContent className="p-2 md:p-6 space-y-3">
+							{latestPrice && (
+								<div className="flex justify-between items-center">
+									<span className="text-sm text-muted-foreground">{t("common.price")}:</span>
+									<span className="font-semibold">
+										{latestPrice.close.toFixed(2)}
+									</span>
+								</div>
+							)}
+							{dailyChange && (
+								<div className="flex justify-between items-center">
+									<span className="text-sm text-muted-foreground">{t("common.daily")}:</span>
+									<span className={`font-semibold ${
+										dailyChange.changePercent >= 0 ? "text-green-600" : "text-red-600"
+									}`}>
+										{dailyChange.changePercent >= 0 ? "+" : ""}
+										{dailyChange.changePercent.toFixed(2)}%
+									</span>
+								</div>
+							)}
+							{rangeChange && (
+								<div className="flex justify-between items-center">
+									<span className="text-sm text-muted-foreground">{t(`timeRanges.${timeRange}` as any)}:</span>
+									<span className={`font-semibold ${
+										rangeChange.changePercent >= 0 ? "text-green-600" : "text-red-600"
+									}`}>
+										{rangeChange.changePercent >= 0 ? "+" : ""}
+										{rangeChange.changePercent.toFixed(2)}%
+									</span>
 								</div>
 							)}
 						</CardContent>

@@ -10,6 +10,7 @@ import {
 	Menu,
 	X,
 	Languages,
+	AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -25,6 +26,11 @@ export default function Header() {
 			to: "/",
 			icon: BarChart3,
 			label: t("nav.dashboard"),
+		},
+		{
+			to: "/panic",
+			icon: AlertTriangle,
+			label: "Panic Analysis",
 		},
 		{
 			to: "/sectors",

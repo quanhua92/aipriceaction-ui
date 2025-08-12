@@ -14,8 +14,10 @@ import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectorsIndexRouteImport } from './routes/sectors/index'
+import { Route as PanicIndexRouteImport } from './routes/panic/index'
 import { Route as TickerSymbolRouteImport } from './routes/ticker/$symbol'
 import { Route as SectorSectorNameRouteImport } from './routes/sector/$sectorName'
+import { Route as PanicAnalyzeRouteImport } from './routes/panic/analyze'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
 
 const TickersRoute = TickersRouteImport.update({
@@ -43,6 +45,11 @@ const SectorsIndexRoute = SectorsIndexRouteImport.update({
   path: '/sectors/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PanicIndexRoute = PanicIndexRouteImport.update({
+  id: '/panic/',
+  path: '/panic/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TickerSymbolRoute = TickerSymbolRouteImport.update({
   id: '/ticker/$symbol',
   path: '/ticker/$symbol',
@@ -51,6 +58,11 @@ const TickerSymbolRoute = TickerSymbolRouteImport.update({
 const SectorSectorNameRoute = SectorSectorNameRouteImport.update({
   id: '/sector/$sectorName',
   path: '/sector/$sectorName',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PanicAnalyzeRoute = PanicAnalyzeRouteImport.update({
+  id: '/panic/analyze',
+  path: '/panic/analyze',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -65,8 +77,10 @@ export interface FileRoutesByFullPath {
   '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/panic/analyze': typeof PanicAnalyzeRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
   '/ticker/$symbol': typeof TickerSymbolRoute
+  '/panic': typeof PanicIndexRoute
   '/sectors': typeof SectorsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -75,8 +89,10 @@ export interface FileRoutesByTo {
   '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/panic/analyze': typeof PanicAnalyzeRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
   '/ticker/$symbol': typeof TickerSymbolRoute
+  '/panic': typeof PanicIndexRoute
   '/sectors': typeof SectorsIndexRoute
 }
 export interface FileRoutesById {
@@ -86,8 +102,10 @@ export interface FileRoutesById {
   '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/panic/analyze': typeof PanicAnalyzeRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
   '/ticker/$symbol': typeof TickerSymbolRoute
+  '/panic/': typeof PanicIndexRoute
   '/sectors/': typeof SectorsIndexRoute
 }
 export interface FileRouteTypes {
@@ -98,8 +116,10 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/tickers'
     | '/demo/tanstack-query'
+    | '/panic/analyze'
     | '/sector/$sectorName'
     | '/ticker/$symbol'
+    | '/panic'
     | '/sectors'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,8 +128,10 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/tickers'
     | '/demo/tanstack-query'
+    | '/panic/analyze'
     | '/sector/$sectorName'
     | '/ticker/$symbol'
+    | '/panic'
     | '/sectors'
   id:
     | '__root__'
@@ -118,8 +140,10 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/tickers'
     | '/demo/tanstack-query'
+    | '/panic/analyze'
     | '/sector/$sectorName'
     | '/ticker/$symbol'
+    | '/panic/'
     | '/sectors/'
   fileRoutesById: FileRoutesById
 }
@@ -129,8 +153,10 @@ export interface RootRouteChildren {
   PortfolioRoute: typeof PortfolioRoute
   TickersRoute: typeof TickersRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  PanicAnalyzeRoute: typeof PanicAnalyzeRoute
   SectorSectorNameRoute: typeof SectorSectorNameRoute
   TickerSymbolRoute: typeof TickerSymbolRoute
+  PanicIndexRoute: typeof PanicIndexRoute
   SectorsIndexRoute: typeof SectorsIndexRoute
 }
 
@@ -171,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SectorsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/panic/': {
+      id: '/panic/'
+      path: '/panic'
+      fullPath: '/panic'
+      preLoaderRoute: typeof PanicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ticker/$symbol': {
       id: '/ticker/$symbol'
       path: '/ticker/$symbol'
@@ -183,6 +216,13 @@ declare module '@tanstack/react-router' {
       path: '/sector/$sectorName'
       fullPath: '/sector/$sectorName'
       preLoaderRoute: typeof SectorSectorNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/panic/analyze': {
+      id: '/panic/analyze'
+      path: '/panic/analyze'
+      fullPath: '/panic/analyze'
+      preLoaderRoute: typeof PanicAnalyzeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -201,8 +241,10 @@ const rootRouteChildren: RootRouteChildren = {
   PortfolioRoute: PortfolioRoute,
   TickersRoute: TickersRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  PanicAnalyzeRoute: PanicAnalyzeRoute,
   SectorSectorNameRoute: SectorSectorNameRoute,
   TickerSymbolRoute: TickerSymbolRoute,
+  PanicIndexRoute: PanicIndexRoute,
   SectorsIndexRoute: SectorsIndexRoute,
 }
 export const routeTree = rootRouteImport
