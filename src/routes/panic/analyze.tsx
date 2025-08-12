@@ -8,8 +8,8 @@
  * - Pre-panic pattern development visualization
  */
 
-import { createFileRoute } from '@tanstack/react-router';
-import { useState, useEffect } from 'react';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -40,7 +40,7 @@ import {
 	getPanicTypeColor
 } from '@/hooks/use-panic-analysis';
 import { useTickerData } from '@/lib/queries';
-import { createDateRangeConfig, type DateRangeConfig } from '@/lib/stock-data';
+import { createDateRangeConfig, formatDateForUrl, type DateRangeConfig } from '@/lib/stock-data';
 import { getPanicDayByDate } from '@/data/panic-days';
 import { panicAnalyzer } from '@/lib/panic-analyzer';
 import type { WarningLevel } from '@/lib/panic-analyzer';
@@ -49,14 +49,21 @@ import type { WarningLevel } from '@/lib/panic-analyzer';
 export const Route = createFileRoute('/panic/analyze')({
 	validateSearch: (search: Record<string, unknown>) => {
 		return {
-			date: search.date as string || undefined
+			date: search.date as string || undefined,
+			range: search.range as string || undefined,
+			startDate: search.startDate as string || undefined,
+			endDate: search.endDate as string || undefined
 		};
 	},
 	component: PanicAnalyzeDetail,
 });
 
 // Helper function to create 6-month date range centered on panic day
-function createPanicAnalysisDateRange(panicDate: string): DateRangeConfig {
+function createPanicAnalysisDateRange(panicDate: string): {
+	config: DateRangeConfig;
+	startDateStr: string;
+	endDateStr: string;
+} {
 	const date = new Date(panicDate);
 	
 	// 3 months before panic day
@@ -67,11 +74,14 @@ function createPanicAnalysisDateRange(panicDate: string): DateRangeConfig {
 	const endDate = new Date(date);
 	endDate.setMonth(date.getMonth() + 3);
 	
-	return createDateRangeConfig(
-		'CUSTOM',
-		startDate.toISOString().split('T')[0],
-		endDate.toISOString().split('T')[0]
-	);
+	const startDateStr = startDate.toISOString().split('T')[0];
+	const endDateStr = endDate.toISOString().split('T')[0];
+	
+	return {
+		config: createDateRangeConfig('CUSTOM', startDateStr, endDateStr),
+		startDateStr,
+		endDateStr
+	};
 }
 
 interface PrePanicTimelineItemProps {
@@ -160,7 +170,8 @@ function PrePanicTimelineItem({
 }
 
 function PanicAnalyzeDetail() {
-	const { date } = Route.useSearch();
+	const { date, range, startDate, endDate } = Route.useSearch();
+	const navigate = useNavigate();
 	const [selectedTab, setSelectedTab] = useState('analysis');
 	
 	// Redirect to most recent date if no date provided
@@ -175,6 +186,59 @@ function PanicAnalyzeDetail() {
 			});
 		}
 	}, [date]);
+
+	// Auto-populate startDate and endDate URL params if not provided
+	useEffect(() => {
+		if (date && (!range || !startDate || !endDate)) {
+			const { startDateStr, endDateStr } = createPanicAnalysisDateRange(date);
+			
+			// Update URL with the date range parameters
+			navigate({
+				to: '/panic/analyze',
+				search: {
+					date,
+					range: 'CUSTOM',
+					startDate: startDateStr,
+					endDate: endDateStr
+				},
+				replace: true // Use replace to avoid adding to history
+			});
+		}
+	}, [date, range, startDate, endDate, navigate]);
+
+	// Sync dateRangeConfig changes back to URL parameters
+	const handleDateRangeChange = useCallback((newConfig: DateRangeConfig) => {
+		setDateRangeConfig(newConfig);
+		
+		if (newConfig.range === 'CUSTOM') {
+			const newStartDate = newConfig.startDate ? formatDateForUrl(newConfig.startDate) : undefined;
+			const newEndDate = newConfig.endDate ? formatDateForUrl(newConfig.endDate) : undefined;
+			
+			// Update URL with custom range parameters
+			navigate({
+				to: '/panic/analyze',
+				search: {
+					date,
+					range: 'CUSTOM',
+					startDate: newStartDate,
+					endDate: newEndDate
+				},
+				replace: true
+			});
+		} else {
+			// For preset ranges, include range in URL but clear custom dates
+			navigate({
+				to: '/panic/analyze',
+				search: {
+					date,
+					range: newConfig.range,
+					startDate: undefined,
+					endDate: undefined
+				},
+				replace: true
+			});
+		}
+	}, [date, navigate]);
 	
 	// Don't proceed if no date - will redirect
 	if (!date) {
@@ -190,10 +254,16 @@ function PanicAnalyzeDetail() {
 		);
 	}
 	
-	// Create default 6-month date range centered on panic day
-	const [dateRangeConfig, setDateRangeConfig] = useState<DateRangeConfig>(() => 
-		createPanicAnalysisDateRange(date)
-	);
+	// Create date range config from URL params or default 6-month range
+	const [dateRangeConfig, setDateRangeConfig] = useState<DateRangeConfig>(() => {
+		if (range && (range !== 'CUSTOM' || (startDate || endDate))) {
+			// Use URL parameters if available
+			return createDateRangeConfig(range as any, startDate, endDate);
+		} else {
+			// Fall back to default 6-month range centered on panic day
+			return createPanicAnalysisDateRange(date).config;
+		}
+	});
 	
 	// Get panic analysis for the specified date
 	const { data: panicAnalysis, isLoading: panicLoading, error: panicError } = usePanicAnalysis(date);
@@ -752,7 +822,7 @@ function PanicAnalyzeDetail() {
 								</div>
 								<DateRangeSelector
 									value={dateRangeConfig}
-									onChange={setDateRangeConfig}
+									onChange={handleDateRangeChange}
 									dataRange={vnindexData}
 									className="w-full md:w-auto"
 								/>
