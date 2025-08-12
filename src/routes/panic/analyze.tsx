@@ -705,16 +705,16 @@ function PanicAnalyzeDetail() {
 						{/* Sector Breakdown */}
 						<Card>
 							<CardHeader>
-								<CardTitle>Sector Performance Breakdown</CardTitle>
-								<CardDescription>Individual sector indicator analysis</CardDescription>
+								<CardTitle>{t("panic.sectorPerformanceBreakdown")}</CardTitle>
+								<CardDescription>{t("panic.individualSectorAnalysis")}</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="space-y-3">
 									<div className="flex justify-between items-center p-3 border rounded">
 										<div>
-											<div className="font-medium">Banking Sector Indicator (BSI)</div>
+											<div className="font-medium">{t("panic.bankingSectorIndicator")}</div>
 											<div className="text-sm text-gray-600">
-												VCB, BID, TCB, CTG, VPB - Market cap weighted
+												{t("panic.bankingDescription")}
 											</div>
 										</div>
 										<div className={`text-xl font-bold ${
@@ -729,9 +729,9 @@ function PanicAnalyzeDetail() {
 
 									<div className="flex justify-between items-center p-3 border rounded">
 										<div>
-											<div className="font-medium">Securities Sector Indicator (SSI)</div>
+											<div className="font-medium">{t("panic.securitiesSectorIndicator")}</div>
 											<div className="text-sm text-gray-600">
-												SSI, VCI, HCM, MBS, SHS - Market cap weighted
+												{t("panic.securitiesDescription")}
 											</div>
 										</div>
 										<div className={`text-xl font-bold ${
@@ -746,9 +746,9 @@ function PanicAnalyzeDetail() {
 
 									<div className="flex justify-between items-center p-3 border rounded">
 										<div>
-											<div className="font-medium">Real Estate Sector Indicator (RSI)</div>
+											<div className="font-medium">{t("panic.realEstateSectorIndicator")}</div>
 											<div className="text-sm text-gray-600">
-												VIC, VHM, VRE, KDH, NVL - Market cap weighted
+												{t("panic.realEstateDescription")}
 											</div>
 										</div>
 										<div className={`text-xl font-bold ${
@@ -772,53 +772,53 @@ function PanicAnalyzeDetail() {
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="p-4 bg-gray-50 rounded">
-									<div className="font-medium mb-2">Classification Logic:</div>
+									<div className="font-medium mb-2">{t("panic.classificationLogic")}</div>
 									<div className="text-sm text-gray-700 space-y-1">
 										{panicAnalysis.panicType === 'POSITIVE_PANIC' && (
 											<>
-												<div>&check; Banking stable (BSI &gt; -2%)</div>
-												<div>&check; Securities oversold (SSI &lt; -3%)</div>
-												<div>&check; Real estate oversold (RSI &lt; -4%)</div>
+												<div>&check; {t("panic.bankingStable")}</div>
+												<div>&check; {t("panic.securitiesOversold")}</div>
+												<div>&check; {t("panic.realEstateOversold")}</div>
 												<div className="font-medium text-green-600 mt-2">
-													&rarr; BUY OPPORTUNITY: Banking stability enables recovery
+													&rarr; {t("panic.buyOpportunity")}
 												</div>
 											</>
 										)}
 										{panicAnalysis.panicType === 'NEGATIVE_EXTREME' && (
 											<>
-												<div>&bull; Banking deep red (BSI &lt; -5%)</div>
-												<div>&bull; Securities crashed (SSI &lt; -7%)</div>
-												<div>&bull; Real estate crashed (RSI &lt; -8%)</div>
+												<div>&bull; {t("panic.bankingDeepRed")}</div>
+												<div>&bull; {t("panic.securitiesCrashed")}</div>
+												<div>&bull; {t("panic.realEstateCrashed")}</div>
 												<div className="font-medium text-red-600 mt-2">
-													&rarr; DEFENSIVE ONLY: All sectors in distress
+													&rarr; {t("panic.defensiveOnly")}
 												</div>
 											</>
 										)}
 										{panicAnalysis.panicType === 'NEGATIVE_MEDIUM' && (
 											<>
-												<div>&bull; Banking weakness (BSI &lt; -3%)</div>
-												<div>&bull; Securities weakness (SSI &lt; -5%)</div>
-												<div>&bull; Real estate weakness (RSI &lt; -6%)</div>
+												<div>&bull; {t("panic.bankingWeakness")}</div>
+												<div>&bull; {t("panic.securitiesWeakness")}</div>
+												<div>&bull; {t("panic.realEstateWeakness")}</div>
 												<div className="font-medium text-orange-600 mt-2">
-													&rarr; REDUCE EXPOSURE: Cross-sector weakness
+													&rarr; {t("panic.reduceExposure")}
 												</div>
 											</>
 										)}
 										{panicAnalysis.panicType === 'UNCLEAR_PATTERN' && (
 											<>
-												<div>&bull; Mixed sector signals</div>
-												<div>&bull; No clear pattern dominance</div>
+												<div>&bull; {t("panic.mixedSectorSignals")}</div>
+												<div>&bull; {t("panic.noClearPattern")}</div>
 												<div className="font-medium text-purple-600 mt-2">
-													&rarr; SELECTIVE POSITIONING: Monitor for clarity
+													&rarr; {t("panic.selectivePositioning")}
 												</div>
 											</>
 										)}
 										{panicAnalysis.panicType === 'NO_PANIC' && (
 											<>
-												<div>&bull; VNINDEX change &lt; 3%</div>
-												<div>&bull; Normal market conditions</div>
+												<div>&bull; {t("panic.vnindexChangeNormal")}</div>
+												<div>&bull; {t("panic.normalMarketConditions")}</div>
 												<div className="font-medium text-gray-600 mt-2">
-													&rarr; STANDARD STRATEGIES: Normal allocation
+													&rarr; {t("panic.standardStrategies")}
 												</div>
 											</>
 										)}

@@ -11,6 +11,7 @@ import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { PanicType, WarningLevel } from "@/lib/panic-analyzer";
 import { getPanicTypeColor, getWarningLevelColor } from "@/hooks/use-panic-analysis";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PanicIndicatorCardProps {
 	date: string;
@@ -63,6 +64,7 @@ export function PanicIndicatorCard({
 	recoveryData,
 	patternType
 }: PanicIndicatorCardProps) {
+	const { t } = useTranslation();
 	const formattedDate = new Date(date).toLocaleDateString('vi-VN');
 	
 	return (
@@ -78,11 +80,11 @@ export function PanicIndicatorCard({
 						
 						{warningLevel && (
 							<Badge className={cn("mb-2", getWarningLevelColor(warningLevel))}>
-								{warningLevel.replace('_', ' ')}
+								{t(`panic.warningLevels.${warningLevel}`)}
 							</Badge>
 						)}
 						<Badge className={getPanicTypeColor(panicType)}>
-							{panicType.replace('_', ' ')}
+							{t(`panic.panicTypes.${panicType}`)}
 						</Badge>
 
 						{/* Sector Indicators */}
@@ -90,34 +92,34 @@ export function PanicIndicatorCard({
 							<div className="text-center p-3 border rounded bg-white">
 								<div className="flex items-center justify-center gap-1 mb-1">
 									{getIndicatorIcon(bsi)}
-									<span className="text-xs font-medium text-gray-600">Banking Indicator</span>
+									<span className="text-xs font-medium text-gray-600">{t("panic.bankingSectorIndicator")}</span>
 								</div>
 								<div className={cn("text-lg font-bold", getIndicatorColor(bsi))}>
 									{formatPercentage(bsi)}
 								</div>
-								<div className="text-xs text-gray-500">Banking</div>
+								<div className="text-xs text-gray-500">{t("panic.recoveryLeaders.BANKING")}</div>
 							</div>
 							
 							<div className="text-center p-3 border rounded bg-white">
 								<div className="flex items-center justify-center gap-1 mb-1">
 									{getIndicatorIcon(ssi)}
-									<span className="text-xs font-medium text-gray-600">Securities Indicator</span>
+									<span className="text-xs font-medium text-gray-600">{t("panic.securitiesSectorIndicator")}</span>
 								</div>
 								<div className={cn("text-lg font-bold", getIndicatorColor(ssi))}>
 									{formatPercentage(ssi)}
 								</div>
-								<div className="text-xs text-gray-500">Securities</div>
+								<div className="text-xs text-gray-500">{t("panic.recoveryLeaders.SECURITIES")}</div>
 							</div>
 							
 							<div className="text-center p-3 border rounded bg-white">
 								<div className="flex items-center justify-center gap-1 mb-1">
 									{getIndicatorIcon(rsi)}
-									<span className="text-xs font-medium text-gray-600">Real Estate Indicator</span>
+									<span className="text-xs font-medium text-gray-600">{t("panic.realEstateSectorIndicator")}</span>
 								</div>
 								<div className={cn("text-lg font-bold", getIndicatorColor(rsi))}>
 									{formatPercentage(rsi)}
 								</div>
-								<div className="text-xs text-gray-500">Real Estate</div>
+								<div className="text-xs text-gray-500">{t("panic.recoveryLeaders.REAL_ESTATE")}</div>
 							</div>
 						</div>
 					</div>
@@ -126,27 +128,27 @@ export function PanicIndicatorCard({
 					<div className="flex flex-col gap-6">
 						{/* Classification - Top Right */}
 						<div className={`p-4 border rounded ${!recoveryData ? 'flex-1' : ''}`}>
-							<div className="text-sm font-medium text-gray-700 mb-3">Classification</div>
+							<div className="text-sm font-medium text-gray-700 mb-3">{t("panic.classification")}</div>
 							<div className="space-y-3">
 								<div>
-									<div className="text-xs text-gray-600 mb-1">Panic Type</div>
+									<div className="text-xs text-gray-600 mb-1">{t("panic.panicType")}</div>
 									<Badge className={getPanicTypeColor(panicType)}>
-										{panicType.replace('_', ' ')}
+										{t(`panic.panicTypes.${panicType}`)}
 									</Badge>
 								</div>
 								{warningLevel && (
 									<div>
-										<div className="text-xs text-gray-600 mb-1">Warning Level</div>
+										<div className="text-xs text-gray-600 mb-1">{t("panic.warningLevel")}</div>
 										<Badge className={getWarningLevelColor(warningLevel)}>
-											{warningLevel.replace('_', ' ')}
+											{t(`panic.warningLevels.${warningLevel}`)}
 										</Badge>
 									</div>
 								)}
 								{patternType && (
 									<div>
-										<div className="text-xs text-gray-600 mb-1">Pattern Type</div>
+										<div className="text-xs text-gray-600 mb-1">{t("panic.patternType")}</div>
 										<Badge variant="outline">
-											{patternType.replace('_', ' ')}
+											{t(`panic.patternTypes.${patternType}`)}
 										</Badge>
 									</div>
 								)}
@@ -156,19 +158,19 @@ export function PanicIndicatorCard({
 						{/* Recovery - Bottom Right (only if data exists) */}
 						{recoveryData && (
 							<div className="p-4 border rounded">
-								<div className="text-sm font-medium text-gray-700 mb-3">Recovery</div>
+								<div className="text-sm font-medium text-gray-700 mb-3">{t("panic.recovery")}</div>
 								<div className="space-y-2 text-sm">
 									<div>
-										<span className="text-gray-600">Stabilization:</span>
-										<span className="ml-2 font-medium">{recoveryData.stabilizationDays} days</span>
+										<span className="text-gray-600">{t("panic.stabilization")}:</span>
+										<span className="ml-2 font-medium">{recoveryData.stabilizationDays} {t("panic.days")}</span>
 									</div>
 									<div>
-										<span className="text-gray-600">Recovery Leader:</span>
-										<span className="ml-2 font-medium">{recoveryData.recoveryLeader}</span>
+										<span className="text-gray-600">{t("panic.recoveryLeader")}:</span>
+										<span className="ml-2 font-medium">{t(`panic.recoveryLeaders.${recoveryData.recoveryLeader}`)}</span>
 									</div>
 									{recoveryData.nextDayVnindexChange && (
 										<div>
-											<span className="text-gray-600">Next Day:</span>
+											<span className="text-gray-600">{t("panic.nextDay")}:</span>
 											<span className={`ml-2 font-medium ${
 												recoveryData.nextDayVnindexChange > 0 ? 'text-green-600' : 'text-red-600'
 											}`}>
