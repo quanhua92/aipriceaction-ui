@@ -481,8 +481,9 @@ function Dashboard() {
 					</Card>
 				</div>
 
-				{/* Market Stats */}
-				<div>
+				{/* Right Side: Market Stats and Actions */}
+				<div className="lg:col-span-2 space-y-4">
+					{/* Market Overview - spans full width */}
 					<Card>
 						<CardHeader>
 							<div className="flex items-center justify-between">
@@ -559,46 +560,46 @@ function Dashboard() {
 							)}
 						</CardContent>
 					</Card>
-				</div>
 
-				{/* Right Sidebar: Risk Monitoring & Quick Actions */}
-				<div className="space-y-4">
-					{/* Pre-Panic Warning Widget */}
-					<PrePanicWarningWidget
-						compact={true}
-						onViewDetails={() => {
-							window.location.href = '/panic';
-						}}
-					/>
+					{/* Bottom row: Pre-Panic Warning and Quick Actions side by side */}
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						{/* Pre-Panic Warning Widget */}
+						<PrePanicWarningWidget
+							compact={true}
+							onViewDetails={() => {
+								window.location.href = '/panic';
+							}}
+						/>
 
-					{/* Quick Actions Card */}
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-lg">{t("home.quickActions")}</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-2">
-							<Link to="/ticker/$symbol" params={{ symbol: "VNINDEX" }}>
-								<Button variant="outline" size="sm" className="w-full justify-start">
-									{t("common.view")} {t("home.vnIndex")} Details
-								</Button>
-							</Link>
-							<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_HANG" }}>
-								<Button variant="outline" size="sm" className="w-full justify-start">
-									{t("sectorNames.NGAN_HANG")}
-								</Button>
-							</Link>
-							<Link to="/sector/$sectorName" params={{ sectorName: "CHUNG_KHOAN" }}>
-								<Button variant="outline" size="sm" className="w-full justify-start">
-									{t("sectorNames.CHUNG_KHOAN")}
-								</Button>
-							</Link>
-							<Link to="/sector/$sectorName" params={{ sectorName: "BAT_DONG_SAN" }}>
-								<Button variant="outline" size="sm" className="w-full justify-start">
-									{t("sectorNames.BAT_DONG_SAN")}
-								</Button>
-							</Link>
-						</CardContent>
-					</Card>
+						{/* Quick Actions Card */}
+						<Card>
+							<CardHeader>
+								<CardTitle className="text-lg">{t("home.quickActions")}</CardTitle>
+							</CardHeader>
+							<CardContent className="space-y-2">
+								<Link to="/ticker/$symbol" params={{ symbol: "VNINDEX" }}>
+									<Button variant="outline" size="sm" className="w-full justify-start">
+										{t("common.view")} {t("home.vnIndex")} Details
+									</Button>
+								</Link>
+								<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_HANG" }}>
+									<Button variant="outline" size="sm" className="w-full justify-start">
+										{t("sectorNames.NGAN_HANG")}
+									</Button>
+								</Link>
+								<Link to="/sector/$sectorName" params={{ sectorName: "CHUNG_KHOAN" }}>
+									<Button variant="outline" size="sm" className="w-full justify-start">
+										{t("sectorNames.CHUNG_KHOAN")}
+									</Button>
+								</Link>
+								<Link to="/sector/$sectorName" params={{ sectorName: "BAT_DONG_SAN" }}>
+									<Button variant="outline" size="sm" className="w-full justify-start">
+										{t("sectorNames.BAT_DONG_SAN")}
+									</Button>
+								</Link>
+							</CardContent>
+						</Card>
+					</div>
 				</div>
 			</div>
 
