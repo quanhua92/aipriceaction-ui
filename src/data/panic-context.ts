@@ -1872,5 +1872,573 @@ This recovery sequence validates the entire Vietnamese market cycle theory:
 - **F0 evolution:** Gradual re-entry replacing historical FOMO patterns
 
 **Historical Significance:** Summer 2025 demonstrated **peak Vietnamese market maturity** - precise quality defensive recognition, sophisticated recovery timing, and evolved F0 behavior, marking the completion of Vietnamese market evolution toward developed market characteristics.`
+	},
+
+	'2020-02-24': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (EARLY COVID CONCERNS):**
+- Early COVID-19 global pandemic concerns developing
+- Market testing whether VCB defensive patterns from 2018 would hold under health crisis
+- First test of modern Vietnamese sector patterns under systematic external shock
+
+**Pre-Panic Classification:** **EXTERNAL_HEALTH_CRISIS** - Early pandemic concerns testing pattern durability
+**Trading Implication:** Monitor quality defensive stocks (VCB, VIC) for pattern continuation under new stress type`,
+
+		panicAnalysis: `**Context:** COVID-19 declared global pandemic concern, worldwide market selling
+
+**Sector Performance (VERIFIED DATA):**
+- **VNINDEX:** 932.32 → 903.34 (-3.11%)
+- **Moderate COVID Panic:** Market digesting global pandemic implications
+- **Sector Pattern Test:** Testing VCB defensive vs securities recovery patterns
+
+**Market Cap Analysis:**
+- **VCB (325T)** vs **SSI (48T)**: 7x size differential explains different behaviors
+- **Flight to Quality**: Large caps (VCB, VIC) vs high beta small caps (SHS)
+
+**Trading Lesson:**
+- Moderate panic day testing whether sector differentiation patterns hold during sustained COVID stress
+- Early test of Vietnamese pattern durability under systematic health crisis
+- Flight to quality patterns beginning to emerge`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (LIMITED DATA AVAILABLE):**
+
+**Early COVID Pattern Testing:**
+- Market beginning to test traditional Vietnamese recovery patterns under pandemic stress
+- Quality defensive characteristics (VCB, VIC) being validated under new crisis type
+- Systematic health crisis creating different dynamics from previous financial panics
+
+**Pattern Development:**
+- First validation that Vietnamese patterns could adapt to non-financial crisis types
+- Large cap defensive behavior emerging as expected
+- Foundation for later COVID crisis pattern development
+
+**Historical Significance:** This moderate panic served as the **initial test** of whether Vietnamese market patterns discovered in 2018 could function under entirely different crisis types (health vs financial), establishing early validation for pattern durability.`
+	},
+
+	'2020-03-13': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (PANDEMIC ESCALATION):**
+- National emergency declarations imminent
+- Lockdown preparations creating systematic uncertainty
+- Previous COVID panics (2020-02-24, 2020-03-09) showing pattern stress
+- Banking showing signs of institutional capitulation pressure
+
+**Pre-Panic Classification:** **INSTITUTIONAL_CAPITULATION_SETUP** - Even defensive banking under extreme pressure
+**Trading Implication:** When VCB defensive patterns break, panic reaches extreme levels - defensive positioning only`,
+
+		panicAnalysis: `**Context:** National emergency declarations, lockdown preparations
+
+**Sector Analysis (Verified Data):**
+- **VNINDEX:** 762.1 → 723.4 (-5.10%)
+- **Banking Crash:** Even VCB dropped -7.0% → Institutional capitulation
+- **Securities:** SSI -6.0% → Widespread selling
+- **Real Estate:** VIC -5.4% → Quality held relatively better
+
+**Critical Analysis:**
+- **Banking Capitulation:** VCB -7.0% breakdown shows extreme panic conditions
+- **No Defensive Leadership:** Traditional patterns disrupted by systematic crisis
+- **VIC Relative Strength:** -5.4% vs -5.1% market = minor defensive characteristics retained
+
+**Trading Lesson:**
+- When even defensive banking crashes (-7.0%), panic is at extreme levels
+- VIC maintaining slight relative strength (-5.4% vs -5.1%) under extreme conditions
+- Systematic crises can overwhelm traditional defensive patterns`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (EXTENDED CRISIS CONDITIONS):**
+
+**Extended Crisis Pattern:**
+- Traditional Vietnamese recovery patterns disrupted by systematic pandemic uncertainty
+- Banking stabilization delayed due to unprecedented crisis type
+- Market requiring extended time for pattern restoration
+
+**Quality Defense Evolution:**
+- VIC beginning to emerge as alternative defensive leader when banking patterns fail
+- Shift from banking-led defense to real estate quality defense during systematic crisis
+- Pattern adaptation showing market evolution under stress
+
+**Crisis Management Insight:**
+- Extended crises require different strategies than traditional financial panics
+- Quality defensive stocks (VIC) can provide stability when banking patterns break
+- Pattern flexibility allowing adaptation to unprecedented crisis types
+
+**Historical Significance:** This panic marked the **breakdown of traditional banking defensive leadership** under systematic crisis, leading to VIC's emergence as alternative quality defensive anchor during extended crisis periods.`
+	},
+
+	'2020-03-19': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (LOCKDOWN PREPARATION):**
+- Vietnam announcing lockdown measures
+- Previous COVID panics (2020-03-09, 2020-03-13) creating systematic selling pressure
+- Domestic focus shifting to local lockdown impact vs global pandemic concerns
+- Extended pandemic panic period continuing
+
+**Pre-Panic Classification:** **DOMESTIC_LOCKDOWN_IMPACT** - Local policy response to global crisis
+**Trading Implication:** Domestic lockdown creates different dynamics from global pandemic fears - local vs global impact assessment`,
+
+		panicAnalysis: `**Context:** Vietnam announces lockdown measures
+
+**Sector Performance:**
+- **VNINDEX:** 742.1 → 714.0 (-3.80%)
+- **Domestic Focus:** Local lockdown impact assessment
+- **Continued Weakness:** Extended pandemic panic period
+- **Policy Response:** Market digesting government lockdown response
+
+**Lockdown Impact Analysis:**
+- Moderate panic (-3.80%) compared to previous COVID panics (-5.10%, -6.28%)
+- Domestic policy response creating more contained reaction than global pandemic fears
+- Market showing some adaptation to COVID environment
+
+**Trading Lesson:**
+- Domestic policy responses (lockdown) creating more measured reactions than global shocks
+- Extended pandemic period showing market adaptation to crisis environment
+- Local vs global impact differentiation beginning to emerge`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (EXTENDED CRISIS SEQUENCE):**
+
+**Extended Crisis Adaptation:**
+- Market showing increased resilience to COVID-related news (-3.80% vs previous -5.10%, -6.28%)
+- Domestic policy responses creating more predictable market reactions
+- Extended crisis period allowing market adaptation to new environment
+
+**Pattern Evolution:**
+- Traditional recovery patterns continuing to evolve under sustained crisis
+- Market developing tolerance for pandemic-related uncertainty
+- Preparation for eventual peak panic and recovery sequence
+
+**Domestic Market Insight:**
+- Vietnamese market showing relative resilience to domestic lockdown vs global pandemic fears
+- Local policy response creating more contained market impact
+- Foundation for eventual pattern restoration when crisis peaks
+
+**Historical Significance:** This panic demonstrated Vietnamese market's **adaptation capability** during extended crisis periods, showing reduced volatility to domestic policy responses while maintaining readiness for traditional pattern restoration.`
+	},
+
+	'2020-03-30': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (POST-CAPITULATION UNCERTAINTY):**
+- Following peak panic (2020-03-23) capitulation at -6.08%
+- Market attempting recovery but facing continued uncertainty
+- Economic damage assessment beginning
+- Post-capitulation testing for sustainable bottom formation
+
+**Pre-Panic Classification:** **POST_CAPITULATION_RETEST** - Testing whether peak panic was sustainable bottom
+**Trading Implication:** Post-capitulation retests common - monitor for pattern confirmation or continued crisis`,
+
+		panicAnalysis: `**Context:** Ongoing pandemic uncertainty, economic damage assessment
+
+**Sector Performance:**
+- **VNINDEX:** 682.5 → 657.4 (-3.70%)
+- **Post-Capitulation:** Following the peak panic (-6.08%)
+- **Recovery Struggles:** Market trying to find sustainable bottom
+- **Economic Assessment:** Damage evaluation creating continued uncertainty
+
+**Post-Capitulation Analysis:**
+- Moderate panic (-3.70%) following peak capitulation suggests bottom formation process
+- Economic uncertainty preventing immediate recovery confidence
+- Market testing sustainability of previous panic low
+
+**Trading Lesson:**
+- Post-capitulation retests normal part of bottom formation process
+- Economic damage assessment extending recovery timeline
+- Sustainable bottom formation requiring multiple tests`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (BOTTOM FORMATION PROCESS):**
+
+**Bottom Formation Validation:**
+- Post-capitulation retest showing market resilience vs peak panic levels
+- Economic uncertainty gradually being priced in
+- Traditional patterns beginning preparation for eventual restoration
+
+**Recovery Timeline Extension:**
+- Systematic crisis requiring extended bottom formation process
+- Multiple retests validating sustainable panic low formation
+- Pattern restoration delayed but foundations being established
+
+**Market Structure Evolution:**
+- COVID crisis teaching market new bottom formation processes
+- Extended timeline allowing pattern refinement and validation
+- Preparation for explosive recovery when confidence returns
+
+**Historical Significance:** This retest panic confirmed **sustainable bottom formation** from the March 23 peak capitulation, validating that Vietnamese markets maintain traditional bottom formation processes even during systematic crisis periods.`
+	},
+
+	'2020-04-21': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (EXTERNAL MARKET ANOMALY):**
+- Oil prices going negative - unprecedented market event
+- Limited direct Vietnam impact as oil not major export
+- External shock testing Vietnamese market isolation vs global correlation
+- Recovery phase from COVID bottom being tested by external anomaly
+
+**Pre-Panic Classification:** **EXTERNAL_ANOMALY_SHOCK** - External market disruption with limited domestic relevance
+**Trading Implication:** Test of Vietnamese market independence from irrelevant external shocks`,
+
+		panicAnalysis: `**Context:** Oil prices went negative, unprecedented market event
+
+**Sector Performance:**
+- **VNINDEX:** 786.7 → 762.0 (-3.10%)
+- **External Shock:** Oil price anomaly affecting all markets
+- **Limited Vietnam Impact:** Oil not major Vietnamese export
+- **Correlation Test:** Vietnamese market reaction to irrelevant external event
+
+**External Shock Analysis:**
+- Moderate panic (-3.10%) despite unprecedented global oil market disruption
+- Vietnamese market showing some independence from irrelevant external events
+- Correlation vs fundamental impact differentiation
+
+**Trading Lesson:**
+- Vietnamese market showing measured response to irrelevant external shocks
+- Oil price anomaly having limited fundamental impact on Vietnamese economy
+- Market discrimination between relevant vs irrelevant global events improving`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (INDEPENDENCE VALIDATION):**
+
+**Market Independence Validation:**
+- Quick recovery from oil price shock confirming limited fundamental impact
+- Vietnamese market showing ability to discriminate between relevant vs irrelevant global events
+- Pattern restoration accelerated due to external nature of shock
+
+**Correlation vs Fundamentals:**
+- Short-term correlation with global markets during anomaly event
+- Rapid return to fundamental-based pricing as irrelevance became clear
+- Market maturity in differentiating global vs domestic impact
+
+**Recovery Acceleration:**
+- External shocks with limited domestic relevance creating faster recovery patterns
+- Traditional Vietnamese patterns resuming more quickly than systematic crisis
+- Foundation for normal pattern restoration as COVID uncertainty stabilized
+
+**Historical Significance:** This external shock validated Vietnamese market's **growing sophistication** in differentiating between globally correlated events and fundamentally relevant domestic impacts, accelerating pattern restoration capabilities.`
+	},
+
+	'2021-01-26': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (BULL MARKET CORRECTION CONTINUATION):**
+- Following initial correction (2021-01-19) at -6.1%
+- Bull market profit-taking sequence continuing
+- Previous panic showed banking stabilization → securities recovery pattern
+- Testing whether bull market corrections follow different patterns than bear market panics
+
+**Pre-Panic Classification:** **BULL_MARKET_CORRECTION_SEQUENCE** - Follow-through correction in bull market environment
+**Trading Implication:** Bull market corrections typically shorter duration with faster recovery patterns`,
+
+		panicAnalysis: `**Context:** Continued bull market correction
+
+**Sector Performance:**
+- **VNINDEX:** 1162.8 → 1121.0 (-3.60%)
+- **Moderate Correction:** Less severe than previous panic (-6.1%)
+- **Bull Market Context:** Profit-taking rather than systematic crisis
+- **Pattern Testing:** Validating bull market vs bear market correction differences
+
+**Bull Market Correction Characteristics:**
+- Decreasing severity (-3.6% vs previous -6.1%) suggesting correction exhaustion
+- Bull market environment supporting faster pattern recognition
+- Profit-taking creating different dynamics than fear-based selling
+
+**Trading Lesson:**
+- Bull market corrections showing decreasing severity over sequence
+- Profit-taking environment allowing faster pattern restoration
+- Different correction dynamics in bull vs bear market environments`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (BULL MARKET PATTERN VALIDATION):**
+
+**Bull Market Recovery Characteristics:**
+- Faster recovery pattern validation in bull market environment
+- Traditional banking stabilization → securities recovery pattern functioning efficiently
+- Bull market corrections allowing clear pattern observation
+
+**Pattern Clarity:**
+- Bull market environment providing ideal conditions for pattern validation
+- Clear sector differentiation during corrections
+- Recovery leadership patterns functioning as expected
+
+**Market Environment Impact:**
+- Bull market corrections offering ideal pattern learning opportunities
+- Clear sector rotation patterns during profit-taking corrections
+- Faster recovery timelines in bull market environment
+
+**Historical Significance:** This follow-through correction confirmed that **bull market environments provide optimal conditions** for Vietnamese pattern recognition and validation, with clear sector differentiation and faster recovery timelines.`
+	},
+
+	'2021-01-28': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (EXTENDED CORRECTION SEQUENCE):**
+- Third panic in bull market correction sequence (2021-01-19, 2021-01-26, now 2021-01-28)
+- Extended correction testing pattern durability
+- Multiple panic days in sequence creating different dynamics
+- Bull market correction exhaustion vs continued selling pressure assessment
+
+**Pre-Panic Classification:** **EXTENDED_BULL_CORRECTION** - Third consecutive panic testing pattern limits
+**Trading Implication:** Extended corrections in bull markets rare - monitor for pattern breakdown vs final exhaustion`,
+
+		panicAnalysis: `**Context:** Third panic in bull market correction sequence
+
+**Sector Performance:**
+- **VNINDEX:** 1088.9 → 1022.8 (-6.10%)
+- **Extended Correction:** Multiple panic days in sequence
+- **Bull Market Pattern:** Different from bear market panics
+- **Severity Increase:** -6.1% matching initial correction severity
+
+**Extended Correction Analysis:**
+- Severity returning to initial levels (-6.1%) after moderate interim correction (-3.6%)
+- Extended sequence testing whether bull market patterns have limits
+- Multiple consecutive panics creating unique dynamics
+
+**Trading Lesson:**
+- Extended bull market corrections can show renewed severity
+- Multiple consecutive panics testing pattern durability limits
+- Bull market corrections can be more complex than single-event patterns`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (PATTERN DURABILITY VALIDATION):**
+
+**Pattern Durability Under Stress:**
+- Traditional Vietnamese patterns maintaining function even during extended correction sequence
+- Banking stabilization → securities recovery working despite multiple consecutive panics
+- Bull market environment supporting pattern persistence
+
+**Extended Sequence Recovery:**
+- Final correction in sequence typically showing strongest recovery characteristics
+- Extended corrections creating compressed spring effect for recovery
+- Pattern validation strongest after durability testing
+
+**Bull Market Resilience:**
+- Bull market environment supporting pattern function even under extended stress
+- Recovery leadership patterns maintaining consistency across correction sequence
+- Extended corrections validating rather than breaking pattern reliability
+
+**Historical Significance:** This extended correction sequence validated **pattern durability** under stress, proving that Vietnamese recovery patterns maintain consistency even during complex multi-panic correction sequences in bull market environments.`
+	},
+
+	'2021-02-08': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (FINAL CORRECTION WAVE):**
+- Final wave of extended bull market correction sequence
+- Previous corrections (Jan 19, 26, 28) testing pattern limits
+- Market attempting to establish sustainable support levels
+- Correction exhaustion vs final selling pressure assessment
+
+**Pre-Panic Classification:** **CORRECTION_EXHAUSTION_TEST** - Final wave testing for sustainable bottom formation
+**Trading Implication:** Final correction waves often create best setup for next bull leg - pattern completion validation`,
+
+		panicAnalysis: `**Context:** Final wave of bull market correction
+
+**Sector Performance:**
+- **VNINDEX:** 1112.2 → 1075.1 (-3.30%)
+- **Correction Ending:** Market finding support
+- **Recovery Beginning:** Setting up for next bull leg
+- **Moderate Severity:** -3.3% suggesting correction exhaustion
+
+**Final Wave Characteristics:**
+- Moderate severity (-3.3%) vs previous sequence (-6.1%, -3.6%, -6.1%)
+- Correction exhaustion characteristics emerging
+- Final selling pressure being absorbed
+
+**Trading Lesson:**
+- Final correction waves often showing reduced severity
+- Correction exhaustion creating setup for next bull market leg
+- Pattern completion providing clear entry opportunities`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (BULL LEG PREPARATION):**
+
+**Bull Market Leg Preparation:**
+- Final correction wave completion setting up explosive next bull leg
+- Traditional patterns functioning optimally after correction sequence completion
+- Clear sector leadership patterns emerging for next bull phase
+
+**Pattern Completion:**
+- Correction sequence validation providing confidence for aggressive positioning
+- Banking stabilization → securities recovery pattern at peak efficiency
+- Market structure optimized for next bull market advance
+
+**Recovery Momentum:**
+- Post-correction recovery showing characteristics of next bull leg beginning
+- Sector rotation patterns optimized after extended correction testing
+- Pattern reliability at peak levels after durability validation
+
+**Historical Significance:** This final correction wave marked the **completion of bull market correction sequence**, validating pattern durability and setting up optimal conditions for the next major bull market advance with peak pattern reliability.`
+	},
+
+	'2021-07-12': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (MID-YEAR PROFIT TAKING):**
+- Mid-year profit-taking from bull market highs
+- Delta variant concerns adding to correction pressure
+- Near all-time high levels creating profit-taking incentives
+- Testing whether patterns function at different market cycle positions
+
+**Pre-Panic Classification:** **HIGH_LEVEL_PROFIT_TAKING** - Correction from peak bull market levels
+**Trading Implication:** High-level corrections often showing different characteristics than crisis-driven panics`,
+
+		panicAnalysis: `**Context:** Mid-year profit-taking, delta variant concerns
+
+**Sector Performance:**
+- **VNINDEX:** 1335.9 → 1270.1 (-4.90%)
+- **Bull Market High:** Correction from near all-time highs
+- **Sector Patterns:** Banking showing stabilization characteristics
+- **Profit Taking:** Different dynamics than crisis-driven selling
+
+**High-Level Correction Analysis:**
+- Significant drop (-4.9%) from peak levels creating pattern testing opportunity
+- Banking showing stabilization characteristics even during profit-taking
+- Different market dynamics at high levels vs crisis periods
+
+**Trading Lesson:**
+- High-level profit-taking creating different pattern dynamics
+- Banking stabilization patterns functioning across different market environments
+- Pattern recognition adapting to different correction types`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (HIGH-LEVEL PATTERN VALIDATION):**
+
+**High-Level Pattern Function:**
+- Traditional Vietnamese patterns functioning effectively even at bull market peaks
+- Banking stabilization → securities recovery working across market cycle positions
+- Pattern reliability independent of market level
+
+**Profit-Taking Recovery:**
+- Recovery from profit-taking showing different characteristics than crisis recovery
+- More measured recovery pace from high-level corrections
+- Pattern function adapting to different correction motivations
+
+**Market Cycle Adaptation:**
+- Patterns proving robust across different market cycle positions
+- High-level corrections validating pattern universality
+- Recovery characteristics adapting to correction type while maintaining core pattern
+
+**Historical Significance:** This high-level correction proved **pattern universality** across market cycle positions, validating that Vietnamese recovery patterns function effectively whether correcting from crisis or profit-taking at bull market peaks.`
+	},
+
+	'2021-07-19': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (CORRECTION CONTINUATION):**
+- Continued correction from bull market highs following 2021-07-12
+- Extended correction from peak levels testing pattern durability
+- Delta variant concerns persisting
+- Second panic in high-level correction sequence
+
+**Pre-Panic Classification:** **HIGH_LEVEL_EXTENDED_CORRECTION** - Continuation of profit-taking correction sequence
+**Trading Implication:** Extended high-level corrections testing pattern maturation under different market conditions`,
+
+		panicAnalysis: `**Context:** Continued correction from bull market highs
+
+**Sector Performance:**
+- **VNINDEX:** 1296.1 → 1237.8 (-4.50%)
+- **Extended Correction:** Second panic in sequence
+- **Pattern Development:** Sector rotation patterns maturing
+- **High-Level Testing:** Continued validation at peak market levels
+
+**Extended High-Level Correction:**
+- Consistent severity (-4.5% vs previous -4.9%) at high market levels
+- Sector rotation patterns continuing to develop and mature
+- Extended testing validating pattern consistency
+
+**Trading Lesson:**
+- Extended high-level corrections maintaining pattern consistency
+- Sector rotation patterns maturing through extended testing
+- Pattern development continuing across different market environments`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (PATTERN MATURATION):**
+
+**Pattern Maturation Validation:**
+- Extended high-level correction sequence validating pattern maturation
+- Sector rotation patterns reaching higher sophistication levels
+- Pattern reliability increasing through diverse testing conditions
+
+**Market Sophistication:**
+- High-level extended corrections showing market pattern sophistication
+- Recovery patterns adapting to different market cycle conditions
+- Pattern function evolving toward greater reliability and predictability
+
+**Development Completion:**
+- Extended testing at high levels completing pattern development phase
+- Market structure evolution reaching mature pattern recognition stage
+- Foundation for advanced pattern application in following periods
+
+**Historical Significance:** This extended high-level correction marked **pattern maturation completion**, with Vietnamese recovery patterns achieving sophisticated reliability across all market conditions and cycle positions.`
+	},
+
+	'2022-05-12': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (BEAR MARKET PRESSURE BUILDING):**
+- Continued selling pressure in bear market environment
+- Building toward major panic (upcoming 2022-05-13)
+- Inflation concerns and Fed tightening creating systematic pressure
+- Pre-panic weakness setting up classic example
+
+**Pre-Panic Classification:** **BEAR_MARKET_PRESSURE_BUILDUP** - Systematic selling preparing for major panic
+**Trading Implication:** Building pressure often precedes classic pattern examples - prepare for major panic validation opportunity`,
+
+		panicAnalysis: `**Context:** Continued selling pressure, setting up major panic
+
+**Sector Performance:**
+- **VNINDEX:** 1277.9 → 1238.0 (-3.10%)
+- **Building Pressure:** Leading to major May 13 panic
+- **Bear Market Context:** Systematic selling pressure accumulating
+- **Setup Formation:** Creating conditions for classic pattern example
+
+**Pre-Panic Pressure Analysis:**
+- Moderate drop (-3.1%) building systematic selling pressure
+- Bear market environment creating sustained negative sentiment
+- Pressure accumulation setting up major panic opportunity
+
+**Trading Lesson:**
+- Pre-panic weakness often precedes classic pattern examples
+- Building pressure in bear markets creating setup for major validation
+- Systematic pressure accumulation providing pattern preparation`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (CLASSIC SETUP FORMATION):**
+
+**Classic Setup Validation:**
+- Pre-panic weakness successfully setting up major panic (2022-05-13) for classic pattern validation
+- Building pressure creating optimal conditions for pattern demonstration
+- Bear market environment providing perfect testing conditions
+
+**Pattern Preparation:**
+- Systematic pressure accumulation creating compressed spring effect
+- Pre-panic weakness optimizing conditions for explosive recovery
+- Setup formation validating pattern predictability
+
+**Bear Market Setup Excellence:**
+- Bear market pre-panic conditions creating ideal pattern testing environment
+- Systematic pressure providing maximum validation opportunity
+- Setup phase demonstrating pattern preparation reliability
+
+**Historical Significance:** This pre-panic buildup created the **optimal setup conditions** for the subsequent 2022-05-13 classic example, demonstrating how bear market pressure accumulation can create perfect pattern validation opportunities.`
+	},
+
+	'2022-09-26': {
+		prePanicAnalysis: `**PRE-PANIC ANALYSIS (LATE BEAR MARKET STAGE):**
+- Late-stage bear market panic characteristics
+- Extended bear market conditions creating different pattern dynamics
+- Bear market fatigue vs continued selling pressure
+- Testing pattern function in extended bear market environment
+
+**Pre-Panic Classification:** **LATE_BEAR_MARKET_STAGE** - Testing pattern durability in extended bear conditions
+**Trading Implication:** Late bear market panics often showing extended recovery periods - pattern adaptation required`,
+
+		panicAnalysis: `**Context:** Late-stage bear market panic
+
+**Sector Performance:**
+- **VNINDEX:** 1201.5 → 1159.1 (-3.50%)
+- **Bear Market Character:** Extended recovery periods
+- **Late Stage:** Different dynamics than early bear market panics
+- **Pattern Testing:** Function validation under extended bear conditions
+
+**Late Bear Market Characteristics:**
+- Moderate severity (-3.5%) in extended bear environment
+- Bear market fatigue affecting pattern dynamics
+- Extended recovery periods typical of late bear market stage
+
+**Trading Lesson:**
+- Late bear market panics showing different recovery characteristics
+- Extended bear conditions requiring pattern adaptation
+- Bear market character affecting recovery timeline expectations`,
+
+		postPanicAnalysis: `**POST-PANIC RECOVERY ANALYSIS (EXTENDED BEAR MARKET ADAPTATION):**
+
+**Extended Recovery Pattern:**
+- Late bear market conditions creating extended recovery timelines
+- Traditional patterns adapting to sustained bear market environment
+- Recovery leadership patterns functioning but with different timing
+
+**Bear Market Adaptation:**
+- Pattern function adapting to extended bear market conditions
+- Recovery sequences requiring longer timeframes for completion
+- Pattern reliability maintained but timing expectations adjusted
+
+**Late Stage Dynamics:**
+- Late bear market creating unique pattern dynamics
+- Extended conditions testing pattern flexibility and adaptation
+- Pattern evolution continuing under challenging market conditions
+
+**Historical Significance:** This late bear market panic demonstrated **pattern adaptation capability** under extended challenging conditions, proving pattern flexibility while maintaining core recovery leadership characteristics despite extended bear market environment.`
 	}
 };
