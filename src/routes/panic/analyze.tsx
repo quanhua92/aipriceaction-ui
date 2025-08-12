@@ -27,7 +27,8 @@ import {
 	LineChart,
 	FileText,
 	BookOpen,
-	GraduationCap
+	GraduationCap,
+	X
 } from 'lucide-react';
 import {
 	PanicIndicatorCard,
@@ -36,12 +37,14 @@ import {
 import { CandlestickChart } from '@/components/charts';
 import { VPACard } from '@/components/vpa';
 import { DateRangeSelector } from '@/components/ui/DateRangeSelector';
+import { MultiTickerSearch } from '@/components/ui/TickerSearch';
+import { ComparisonChart } from '@/components/charts';
 import { 
 	usePanicAnalysis, 
 	usePrePanicAnalysis,
 	getWarningLevelColor
 } from '@/hooks/use-panic-analysis';
-import { useTickerData } from '@/lib/queries';
+import { useTickerData, useMultipleTickerData } from '@/lib/queries';
 import { createDateRangeConfig, formatDateForUrl, type DateRangeConfig } from '@/lib/stock-data';
 import { getPanicDayByDate } from '@/data/panic-days';
 import { PANIC_CONTEXT_DATABASE } from '@/data/panic-context';
@@ -56,7 +59,8 @@ export const Route = createFileRoute('/panic/analyze')({
 			date: search.date as string || undefined,
 			range: search.range as string || undefined,
 			startDate: search.startDate as string || undefined,
-			endDate: search.endDate as string || undefined
+			endDate: search.endDate as string || undefined,
+			tickers: Array.isArray(search.tickers) ? search.tickers as string[] : []
 		};
 	},
 	component: PanicAnalyzeDetail,
@@ -175,9 +179,14 @@ function PrePanicTimelineItem({
 
 function PanicAnalyzeDetail() {
 	const { t } = useTranslation();
-	const { date, range, startDate, endDate } = Route.useSearch();
+	const { date, range, startDate, endDate, tickers = [] } = Route.useSearch();
 	const navigate = useNavigate();
 	const [selectedTab, setSelectedTab] = useState('analysis');
+	
+	// Define sector tickers for quick actions
+	const BANKING_TICKERS = ['VCB', 'BID', 'TCB', 'CTG', 'VPB'];
+	const SECURITIES_TICKERS = ['SSI', 'VCI', 'HCM', 'MBS', 'SHS'];
+	const REAL_ESTATE_TICKERS = ['VHM', 'VIC', 'VRE', 'KDH', 'NVL'];
 	
 	// Redirect to most recent date if no date provided
 	useEffect(() => {
@@ -204,7 +213,8 @@ function PanicAnalyzeDetail() {
 					date,
 					range: 'CUSTOM',
 					startDate: startDateStr,
-					endDate: endDateStr
+					endDate: endDateStr,
+					tickers
 				},
 				replace: true // Use replace to avoid adding to history
 			});
@@ -226,7 +236,8 @@ function PanicAnalyzeDetail() {
 					date,
 					range: 'CUSTOM',
 					startDate: newStartDate,
-					endDate: newEndDate
+					endDate: newEndDate,
+					tickers
 				},
 				replace: true
 			});
@@ -238,12 +249,50 @@ function PanicAnalyzeDetail() {
 					date,
 					range: newConfig.range,
 					startDate: undefined,
-					endDate: undefined
+					endDate: undefined,
+					tickers
 				},
 				replace: true
 			});
 		}
-	}, [date, navigate]);
+	}, [date, navigate, tickers]);
+
+	// Handle ticker changes
+	const handleTickersChange = useCallback((newTickers: string[]) => {
+		navigate({
+			to: '/panic/analyze',
+			search: {
+				date,
+				range,
+				startDate,
+				endDate,
+				tickers: newTickers
+			},
+			replace: true
+		});
+	}, [date, range, startDate, endDate, navigate]);
+
+	// Quick action handlers
+	const addSectorTickers = useCallback((sectorTickers: string[]) => {
+		const uniqueTickers = Array.from(new Set([...tickers, ...sectorTickers]));
+		handleTickersChange(uniqueTickers);
+	}, [tickers, handleTickersChange]);
+
+	const clearTickers = useCallback(() => {
+		handleTickersChange([]);
+	}, [handleTickersChange]);
+
+	// Chart colors for consistency
+	const chartColors = [
+		"#3B82F6", // blue-500
+		"#10B981", // emerald-500  
+		"#F59E0B", // amber-500
+		"#EF4444", // red-500
+		"#8B5CF6", // violet-500
+		"#06B6D4", // cyan-500
+		"#F97316", // orange-500
+		"#84CC16", // lime-500
+	];
 	
 	// Don't proceed if no date - will redirect
 	if (!date) {
@@ -276,6 +325,22 @@ function PanicAnalyzeDetail() {
 	
 	// Get VNINDEX data for the chart with 6-month range
 	const { data: vnindexData, isLoading: vnindexLoading } = useTickerData('VNINDEX', dateRangeConfig);
+	
+	// Get multi-ticker data for comparison charts and sector analysis
+	const allRequiredTickers = [
+		'VNINDEX',
+		...tickers,
+		...BANKING_TICKERS,
+		...SECURITIES_TICKERS,
+		...REAL_ESTATE_TICKERS
+	];
+	const uniqueTickersToLoad = Array.from(new Set(allRequiredTickers));
+	
+	const { data: tickerData, isLoading: tickerLoading } = useMultipleTickerData(
+		uniqueTickersToLoad,
+		dateRangeConfig,
+		300
+	);
 	
 	// Check if this is a pre-calculated panic day
 	const precalculatedData = getPanicDayByDate(date);
@@ -354,30 +419,22 @@ function PanicAnalyzeDetail() {
 			</div>
 
 			{/* Main Analysis Overview */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 lg:items-start">
-				{/* Panic Indicators */}
-				<div className="lg:col-span-2 h-full">
-					<PanicIndicatorCard
-						date={panicAnalysis.date}
-						vnindexChange={panicAnalysis.vnindexChange}
-						bsi={panicAnalysis.bsi}
-						ssi={panicAnalysis.ssi}
-						rsi={panicAnalysis.rsi}
-						panicType={panicAnalysis.panicType}
-						warningLevel={prePanicLoading ? undefined : prePanicAnalysis?.strongestWarning}
-						showDetails={true}
-						recoveryData={precalculatedData ? {
-							stabilizationDays: precalculatedData.recoveryPattern.stabilizationDays,
-							recoveryLeader: precalculatedData.recoveryPattern.recoveryLeader,
-							nextDayVnindexChange: precalculatedData.recoveryPattern.nextDayVnindexChange || undefined
-						} : undefined}
-						patternType={prePanicLoading ? undefined : prePanicAnalysis?.patternType}
-					/>
-				</div>
-
-				{/* Empty space - content now integrated into main card */}
-				<div></div>
-			</div>
+			<PanicIndicatorCard
+				date={panicAnalysis.date}
+				vnindexChange={panicAnalysis.vnindexChange}
+				bsi={panicAnalysis.bsi}
+				ssi={panicAnalysis.ssi}
+				rsi={panicAnalysis.rsi}
+				panicType={panicAnalysis.panicType}
+				warningLevel={prePanicLoading ? undefined : prePanicAnalysis?.strongestWarning}
+				showDetails={true}
+				recoveryData={precalculatedData ? {
+					stabilizationDays: precalculatedData.recoveryPattern.stabilizationDays,
+					recoveryLeader: precalculatedData.recoveryPattern.recoveryLeader,
+					nextDayVnindexChange: precalculatedData.recoveryPattern.nextDayVnindexChange || undefined
+				} : undefined}
+				patternType={prePanicLoading ? undefined : prePanicAnalysis?.patternType}
+			/>
 
 			{/* Educational Card for Analyze */}
 			<Card className="border-blue-200 bg-blue-50">
@@ -417,6 +474,145 @@ function PanicAnalyzeDetail() {
 							</Button>
 						</div>
 					</div>
+				</CardContent>
+			</Card>
+
+			{/* Chart Comparison Section */}
+			<Card>
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2">
+						<BarChart3 className="h-5 w-5" />
+						Chart Comparison
+					</CardTitle>
+					<CardDescription>
+						Compare panic day with sector tickers and any other stocks
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="space-y-4">
+					{/* Ticker Selection */}
+					<div>
+						<label className="text-sm font-medium mb-2 block">
+							Select Tickers to Compare
+						</label>
+						<MultiTickerSearch
+							selectedTickers={tickers}
+							onTickersChange={handleTickersChange}
+							maxSelection={50}
+							placeholder="Search and add tickers to compare..."
+							className="w-full"
+						/>
+					</div>
+
+					{/* Quick Action Buttons */}
+					<div className="flex flex-wrap gap-2">
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => addSectorTickers(BANKING_TICKERS)}
+							className="text-xs"
+						>
+							+ Banking Sector
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => addSectorTickers(SECURITIES_TICKERS)}
+							className="text-xs"
+						>
+							+ Securities Sector
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => addSectorTickers(REAL_ESTATE_TICKERS)}
+							className="text-xs"
+						>
+							+ Real Estate Sector
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => handleTickersChange(['VNINDEX', ...tickers.filter(t => t !== 'VNINDEX')])}
+							className="text-xs"
+						>
+							+ VNINDEX
+						</Button>
+						{tickers.length > 0 && (
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={clearTickers}
+								className="text-xs"
+							>
+								Clear All
+							</Button>
+						)}
+					</div>
+
+					{/* Comparison Grid */}
+					{tickers.length > 0 && (
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+							{tickers.slice(0, 8).map((ticker, index) => (
+								<Card key={ticker} className="min-h-[300px]">
+									<CardHeader className="pb-2">
+										<div className="flex items-center justify-between">
+											<div className="flex items-center gap-2">
+												<Badge
+													variant="default"
+													style={{
+														backgroundColor: chartColors[index % chartColors.length],
+													}}
+												>
+													{ticker}
+												</Badge>
+												<Button
+													variant="ghost"
+													size="sm"
+													onClick={() => {
+														const newTickers = tickers.filter(t => t !== ticker);
+														handleTickersChange(newTickers);
+													}}
+													className="h-6 w-6 p-0"
+												>
+													<X className="h-4 w-4" />
+												</Button>
+											</div>
+											<div className="text-xs text-muted-foreground">
+												#{index + 1}
+											</div>
+										</div>
+									</CardHeader>
+									<CardContent>
+										{tickerData && tickerData[ticker] && tickerData[ticker].length > 0 ? (
+											tickerLoading ? (
+												<div className="h-[250px] flex items-center justify-center">
+													<div className="text-muted-foreground">Loading...</div>
+												</div>
+											) : (
+												<CandlestickChart
+													data={tickerData[ticker]}
+													height={250}
+													showCard={false}
+												/>
+											)
+										) : tickerLoading ? (
+											<div className="h-[250px] flex items-center justify-center">
+												<div className="text-muted-foreground">
+													Loading {ticker}...
+												</div>
+											</div>
+										) : (
+											<div className="h-[250px] flex items-center justify-center">
+												<div className="text-muted-foreground">
+													No data available for {ticker}
+												</div>
+											</div>
+										)}
+									</CardContent>
+								</Card>
+							))}
+						</div>
+					)}
 				</CardContent>
 			</Card>
 
@@ -747,6 +943,242 @@ function PanicAnalyzeDetail() {
 											<div className="font-medium text-gray-700 mb-2">Trading Lesson:</div>
 											<div className="text-gray-600 p-3 bg-blue-50 rounded">
 												{precalculatedData.tradingLesson}
+											</div>
+										</div>
+									</div>
+								</CardContent>
+							</Card>
+
+							{/* Sector Performance Analysis */}
+							<Card>
+								<CardHeader>
+									<CardTitle>Sector Performance Analysis</CardTitle>
+									<CardDescription>Compare VNINDEX with top 5 stocks from each sector</CardDescription>
+								</CardHeader>
+								<CardContent>
+									<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+										{/* Banking Sector Chart */}
+										<div className="space-y-3">
+											<h4 className="font-medium text-gray-700">Banking Sector</h4>
+											<div className="h-[300px]">
+												{tickerData && BANKING_TICKERS.length > 0 ? (
+													<ComparisonChart
+														data={(() => {
+															// Normalize data for comparison - convert to percentage change from first data point
+															const normalizedData: any[] = [];
+															const allTickers = ['VNINDEX', ...BANKING_TICKERS];
+
+															if (tickerData && allTickers.length > 0) {
+																const maxLength = Math.max(
+																	...allTickers.map(
+																		(ticker) => tickerData[ticker]?.length || 0,
+																	),
+																);
+
+																for (let i = 0; i < maxLength; i++) {
+																	const dataPoint: any = { time: "", date: null };
+
+																	allTickers.forEach((ticker) => {
+																		const data = tickerData[ticker] || [];
+																		if (data[i] && data[0]) {
+																			const changePercent =
+																				((data[i].close - data[0].close) /
+																					data[0].close) *
+																				100;
+																			dataPoint[ticker] = changePercent;
+																			if (!dataPoint.time) {
+																				dataPoint.time = data[i].time;
+																				dataPoint.date = data[i].date;
+																			}
+																		}
+																	});
+
+																	if (dataPoint.time) {
+																		normalizedData.push(dataPoint);
+																	}
+																}
+															}
+
+															return normalizedData;
+														})()}
+														tickers={['VNINDEX', ...BANKING_TICKERS]}
+														colors={chartColors}
+														height={300}
+													/>
+												) : tickerLoading ? (
+													<div className="h-[300px] flex items-center justify-center">
+														<div className="text-muted-foreground">Loading banking sector...</div>
+													</div>
+												) : (
+													<div className="h-[300px] flex items-center justify-center">
+														<div className="text-muted-foreground">No banking sector data available</div>
+													</div>
+												)}
+											</div>
+											<div className="flex flex-wrap gap-1">
+												<Badge variant="outline" className="text-xs" style={{ borderColor: chartColors[0] }}>
+													VNINDEX
+												</Badge>
+												{BANKING_TICKERS.map((ticker, index) => (
+													<Badge
+														key={ticker}
+														variant="outline"
+														className="text-xs"
+														style={{ borderColor: chartColors[(index + 1) % chartColors.length] }}
+													>
+														{ticker}
+													</Badge>
+												))}
+											</div>
+										</div>
+
+										{/* Securities Sector Chart */}
+										<div className="space-y-3">
+											<h4 className="font-medium text-gray-700">Securities Sector</h4>
+											<div className="h-[300px]">
+												{tickerData && SECURITIES_TICKERS.length > 0 ? (
+													<ComparisonChart
+														data={(() => {
+															// Normalize data for comparison
+															const normalizedData: any[] = [];
+															const allTickers = ['VNINDEX', ...SECURITIES_TICKERS];
+
+															if (tickerData && allTickers.length > 0) {
+																const maxLength = Math.max(
+																	...allTickers.map(
+																		(ticker) => tickerData[ticker]?.length || 0,
+																	),
+																);
+
+																for (let i = 0; i < maxLength; i++) {
+																	const dataPoint: any = { time: "", date: null };
+
+																	allTickers.forEach((ticker) => {
+																		const data = tickerData[ticker] || [];
+																		if (data[i] && data[0]) {
+																			const changePercent =
+																				((data[i].close - data[0].close) /
+																					data[0].close) *
+																				100;
+																			dataPoint[ticker] = changePercent;
+																			if (!dataPoint.time) {
+																				dataPoint.time = data[i].time;
+																				dataPoint.date = data[i].date;
+																			}
+																		}
+																	});
+
+																	if (dataPoint.time) {
+																		normalizedData.push(dataPoint);
+																	}
+																}
+															}
+
+															return normalizedData;
+														})()}
+														tickers={['VNINDEX', ...SECURITIES_TICKERS]}
+														colors={chartColors}
+														height={300}
+													/>
+												) : tickerLoading ? (
+													<div className="h-[300px] flex items-center justify-center">
+														<div className="text-muted-foreground">Loading securities sector...</div>
+													</div>
+												) : (
+													<div className="h-[300px] flex items-center justify-center">
+														<div className="text-muted-foreground">No securities sector data available</div>
+													</div>
+												)}
+											</div>
+											<div className="flex flex-wrap gap-1">
+												<Badge variant="outline" className="text-xs" style={{ borderColor: chartColors[0] }}>
+													VNINDEX
+												</Badge>
+												{SECURITIES_TICKERS.map((ticker, index) => (
+													<Badge
+														key={ticker}
+														variant="outline"
+														className="text-xs"
+														style={{ borderColor: chartColors[(index + 1) % chartColors.length] }}
+													>
+														{ticker}
+													</Badge>
+												))}
+											</div>
+										</div>
+
+										{/* Real Estate Sector Chart */}
+										<div className="space-y-3">
+											<h4 className="font-medium text-gray-700">Real Estate Sector</h4>
+											<div className="h-[300px]">
+												{tickerData && REAL_ESTATE_TICKERS.length > 0 ? (
+													<ComparisonChart
+														data={(() => {
+															// Normalize data for comparison
+															const normalizedData: any[] = [];
+															const allTickers = ['VNINDEX', ...REAL_ESTATE_TICKERS];
+
+															if (tickerData && allTickers.length > 0) {
+																const maxLength = Math.max(
+																	...allTickers.map(
+																		(ticker) => tickerData[ticker]?.length || 0,
+																	),
+																);
+
+																for (let i = 0; i < maxLength; i++) {
+																	const dataPoint: any = { time: "", date: null };
+
+																	allTickers.forEach((ticker) => {
+																		const data = tickerData[ticker] || [];
+																		if (data[i] && data[0]) {
+																			const changePercent =
+																				((data[i].close - data[0].close) /
+																					data[0].close) *
+																				100;
+																			dataPoint[ticker] = changePercent;
+																			if (!dataPoint.time) {
+																				dataPoint.time = data[i].time;
+																				dataPoint.date = data[i].date;
+																			}
+																		}
+																	});
+
+																	if (dataPoint.time) {
+																		normalizedData.push(dataPoint);
+																	}
+																}
+															}
+
+															return normalizedData;
+														})()}
+														tickers={['VNINDEX', ...REAL_ESTATE_TICKERS]}
+														colors={chartColors}
+														height={300}
+													/>
+												) : tickerLoading ? (
+													<div className="h-[300px] flex items-center justify-center">
+														<div className="text-muted-foreground">Loading real estate sector...</div>
+													</div>
+												) : (
+													<div className="h-[300px] flex items-center justify-center">
+														<div className="text-muted-foreground">No real estate sector data available</div>
+													</div>
+												)}
+											</div>
+											<div className="flex flex-wrap gap-1">
+												<Badge variant="outline" className="text-xs" style={{ borderColor: chartColors[0] }}>
+													VNINDEX
+												</Badge>
+												{REAL_ESTATE_TICKERS.map((ticker, index) => (
+													<Badge
+														key={ticker}
+														variant="outline"
+														className="text-xs"
+														style={{ borderColor: chartColors[(index + 1) % chartColors.length] }}
+													>
+														{ticker}
+													</Badge>
+												))}
 											</div>
 										</div>
 									</div>
