@@ -342,12 +342,12 @@ function Dashboard() {
 				{/* Quick Navigation */}
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 					<Link to="/panic">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow bg-red-600 text-white">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow">
 							<CardContent className="flex items-center gap-3 p-4">
-								<AlertTriangle className="h-8 w-8 text-white" />
+								<AlertTriangle className="h-8 w-8 text-primary" />
 								<div>
-									<p className="font-semibold text-white">Panic Analysis</p>
-									<p className="text-sm text-red-100">
+									<p className="font-semibold">Panic Analysis</p>
+									<p className="text-sm text-muted-foreground">
 										Market risk monitoring
 									</p>
 								</div>
