@@ -145,6 +145,7 @@ export const en = {
     dateRange: "Date Range",
     addVnIndex: "Add VN-Index",
     bankingStocks: "Banking Stocks",
+    securities: "Securities",
     realEstate: "Real Estate",
     noTickersSelected: "No tickers selected",
     noTickersMessage: "Search and select stocks to compare their performance",

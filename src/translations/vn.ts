@@ -145,6 +145,7 @@ export const vn = {
     dateRange: "Khoảng thời gian",
     addVnIndex: "Thêm VN-Index",
     bankingStocks: "Cổ phiếu ngân hàng",
+    securities: "Chứng khoán",
     realEstate: "Bất động sản",
     noTickersSelected: "Chưa chọn mã cổ phiếu",
     noTickersMessage: "Tìm kiếm và chọn cổ phiếu để so sánh hiệu suất",

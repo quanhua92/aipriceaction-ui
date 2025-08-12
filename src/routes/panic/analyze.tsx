@@ -536,23 +536,23 @@ function PanicAnalyzeDetail() {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<BarChart3 className="h-5 w-5" />
-						Chart Comparison
+						{t("compare.title")}
 					</CardTitle>
 					<CardDescription>
-						Compare panic day with sector tickers and any other stocks
+						{t("compare.subtitle")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					{/* Ticker Selection */}
 					<div>
 						<label className="text-sm font-medium mb-2 block">
-							Select Tickers to Compare
+							{t("compare.selectTickers")}
 						</label>
 						<MultiTickerSearch
 							selectedTickers={tickers}
 							onTickersChange={handleTickersChange}
 							maxSelection={50}
-							placeholder="Search and add tickers to compare..."
+							placeholder={t("compare.searchPlaceholder")}
 							className="w-full"
 						/>
 					</div>
@@ -565,7 +565,7 @@ function PanicAnalyzeDetail() {
 							onClick={() => addSectorTickers(BANKING_TICKERS)}
 							className="text-xs"
 						>
-							+ Banking Sector
+							+ {t("compare.bankingStocks")}
 						</Button>
 						<Button
 							variant="outline"
@@ -573,7 +573,7 @@ function PanicAnalyzeDetail() {
 							onClick={() => addSectorTickers(SECURITIES_TICKERS)}
 							className="text-xs"
 						>
-							+ Securities Sector
+							+ {t("compare.securities")}
 						</Button>
 						<Button
 							variant="outline"
@@ -581,7 +581,7 @@ function PanicAnalyzeDetail() {
 							onClick={() => addSectorTickers(REAL_ESTATE_TICKERS)}
 							className="text-xs"
 						>
-							+ Real Estate Sector
+							+ {t("compare.realEstate")}
 						</Button>
 						<Button
 							variant="outline"
@@ -589,7 +589,7 @@ function PanicAnalyzeDetail() {
 							onClick={() => handleTickersChange(['VNINDEX', ...tickers.filter(t => t !== 'VNINDEX')])}
 							className="text-xs"
 						>
-							+ VNINDEX
+							+ {t("compare.addVnIndex")}
 						</Button>
 						{tickers.length > 0 && (
 							<Button
@@ -598,7 +598,7 @@ function PanicAnalyzeDetail() {
 								onClick={clearTickers}
 								className="text-xs"
 							>
-								Clear All
+								{t("common.clearAll")}
 							</Button>
 						)}
 					</div>
