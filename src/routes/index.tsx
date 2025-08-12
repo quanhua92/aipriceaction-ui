@@ -340,7 +340,7 @@ function Dashboard() {
 				</div>
 
 				{/* Quick Navigation */}
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+				<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
 					<Link to="/panic">
 						<Card className="cursor-pointer hover:shadow-md transition-shadow">
 							<CardContent className="flex items-center gap-3 p-4">
@@ -447,7 +447,7 @@ function Dashboard() {
 			</div>
 
 			{/* Main Content */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-6">
+			<div className="grid grid-cols-1 lg:grid-cols-4 gap-2 md:gap-6">
 				{/* VN-Index Chart */}
 				<div className="lg:col-span-2">
 					<Card>
@@ -491,45 +491,6 @@ function Dashboard() {
 							window.location.href = '/panic';
 						}}
 					/>
-
-					{/* VNINDEX Stats */}
-					<Card>
-						<CardHeader className="p-3 md:p-6">
-							<CardTitle className="text-sm md:text-base">{t("home.vnIndex")} Stats</CardTitle>
-						</CardHeader>
-						<CardContent className="p-2 md:p-6 space-y-3">
-							{latestPrice && (
-								<div className="flex justify-between items-center">
-									<span className="text-sm text-muted-foreground">{t("common.price")}:</span>
-									<span className="font-semibold">
-										{latestPrice.close.toFixed(2)}
-									</span>
-								</div>
-							)}
-							{dailyChange && (
-								<div className="flex justify-between items-center">
-									<span className="text-sm text-muted-foreground">{t("common.daily")}:</span>
-									<span className={`font-semibold ${
-										dailyChange.changePercent >= 0 ? "text-green-600" : "text-red-600"
-									}`}>
-										{dailyChange.changePercent >= 0 ? "+" : ""}
-										{dailyChange.changePercent.toFixed(2)}%
-									</span>
-								</div>
-							)}
-							{rangeChange && (
-								<div className="flex justify-between items-center">
-									<span className="text-sm text-muted-foreground">{t(`timeRanges.${timeRange}` as any)}:</span>
-									<span className={`font-semibold ${
-										rangeChange.changePercent >= 0 ? "text-green-600" : "text-red-600"
-									}`}>
-										{rangeChange.changePercent >= 0 ? "+" : ""}
-										{rangeChange.changePercent.toFixed(2)}%
-									</span>
-								</div>
-							)}
-						</CardContent>
-					</Card>
 				</div>
 
 				{/* Market Stats & Quick Actions */}
@@ -608,34 +569,33 @@ function Dashboard() {
 									</div>
 								</>
 							)}
-						</CardContent>
-					</Card>
-
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-lg">{t("home.quickActions")}</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-2">
-							<Link to="/ticker/$symbol" params={{ symbol: "VNINDEX" }}>
-								<Button variant="outline" className="w-full justify-start">
-									{t("common.view")} {t("home.vnIndex")} Details
-								</Button>
-							</Link>
-							<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_HANG" }}>
-								<Button variant="outline" className="w-full justify-start">
-									{t("sectorNames.NGAN_HANG")}
-								</Button>
-							</Link>
-							<Link to="/sector/$sectorName" params={{ sectorName: "CHUNG_KHOAN" }}>
-								<Button variant="outline" className="w-full justify-start">
-									{t("sectorNames.CHUNG_KHOAN")}
-								</Button>
-							</Link>
-							<Link to="/sector/$sectorName" params={{ sectorName: "BAT_DONG_SAN" }}>
-								<Button variant="outline" className="w-full justify-start">
-									{t("sectorNames.BAT_DONG_SAN")}
-								</Button>
-							</Link>
+							
+							{/* Quick Actions */}
+							<div className="pt-4 border-t space-y-2">
+								<p className="text-sm font-medium text-muted-foreground mb-3">{t("home.quickActions")}</p>
+								<div className="space-y-2">
+									<Link to="/ticker/$symbol" params={{ symbol: "VNINDEX" }}>
+										<Button variant="outline" size="sm" className="w-full justify-start">
+											{t("common.view")} {t("home.vnIndex")} Details
+										</Button>
+									</Link>
+									<Link to="/sector/$sectorName" params={{ sectorName: "NGAN_HANG" }}>
+										<Button variant="outline" size="sm" className="w-full justify-start">
+											{t("sectorNames.NGAN_HANG")}
+										</Button>
+									</Link>
+									<Link to="/sector/$sectorName" params={{ sectorName: "CHUNG_KHOAN" }}>
+										<Button variant="outline" size="sm" className="w-full justify-start">
+											{t("sectorNames.CHUNG_KHOAN")}
+										</Button>
+									</Link>
+									<Link to="/sector/$sectorName" params={{ sectorName: "BAT_DONG_SAN" }}>
+										<Button variant="outline" size="sm" className="w-full justify-start">
+											{t("sectorNames.BAT_DONG_SAN")}
+										</Button>
+									</Link>
+								</div>
+							</div>
 						</CardContent>
 					</Card>
 				</div>
