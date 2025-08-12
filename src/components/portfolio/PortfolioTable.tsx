@@ -1,9 +1,11 @@
-import { useState, useRef } from "react";
-import { Trash2, Save } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Trash2, Save, DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
 	Table,
 	TableBody,
@@ -28,6 +30,10 @@ interface PortfolioTableProps {
 	onUpdateItem: (ticker: string, quantity: number, price: number) => void;
 	onRemoveItem: (ticker: string) => void;
 	onAddItem: (ticker: string) => void;
+	deposit: number;
+	manualDeposit: boolean;
+	onUpdateDeposit?: (deposit: number) => void;
+	onToggleManualDeposit?: (manual: boolean) => void;
 }
 
 export function PortfolioTable({
@@ -35,17 +41,43 @@ export function PortfolioTable({
 	onUpdateItem,
 	onRemoveItem,
 	onAddItem,
+	deposit,
+	manualDeposit,
+	onUpdateDeposit,
+	onToggleManualDeposit,
 }: PortfolioTableProps) {
 	const { t } = useTranslation();
 	const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 	const [localValues, setLocalValues] = useState<{ [key: string]: string }>({});
 	const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+	const [editingDeposit, setEditingDeposit] = useState(false);
+	const [depositValue, setDepositValue] = useState(deposit.toString());
+
+	// Update depositValue when deposit prop changes (but not when editing)
+	useEffect(() => {
+		if (!editingDeposit) {
+			setDepositValue(deposit.toString());
+		}
+	}, [deposit, editingDeposit]);
 
 	// Simple input change - direct state update only
 	const handleInputChange = (ticker: string, field: 'price' | 'quantity', value: string) => {
 		const key = `${ticker}-${field}`;
 		setLocalValues(prev => ({ ...prev, [key]: value }));
 		setHasUnsavedChanges(true);
+	};
+
+	const handleDepositSubmit = () => {
+		if (onUpdateDeposit) {
+			const newDeposit = parseFormattedNumber(depositValue);
+			onUpdateDeposit(newDeposit);
+		}
+		setEditingDeposit(false);
+	};
+
+	const handleDepositCancel = () => {
+		setDepositValue(deposit.toString());
+		setEditingDeposit(false);
 	};
 
 	// Save all changes at once
@@ -100,6 +132,59 @@ export function PortfolioTable({
 							className="w-full"
 						/>
 					</div>
+					
+					{/* Manual Deposit Toggle */}
+					{onToggleManualDeposit && onUpdateDeposit && (
+						<div className="flex flex-col sm:flex-row gap-4 p-4 bg-amber-50/50 rounded-lg border border-amber-200">
+							<div className="flex items-center gap-3">
+								<div className="h-8 w-8 rounded-lg bg-amber-100 flex items-center justify-center">
+									<DollarSign className="h-4 w-4 text-amber-600" />
+								</div>
+								<div className="flex items-center gap-2">
+									<Switch
+										id="manual-deposit-toggle"
+										checked={manualDeposit}
+										onCheckedChange={onToggleManualDeposit}
+									/>
+									<Label htmlFor="manual-deposit-toggle" className="text-sm font-medium cursor-pointer">
+										{t("portfolio.manualDeposit")}
+									</Label>
+								</div>
+							</div>
+							
+							{manualDeposit && (
+								<div className="flex items-center gap-2 flex-1">
+									{editingDeposit ? (
+										<>
+											<Input
+												type="text"
+												inputMode="numeric"
+												value={depositValue}
+												onChange={(e) => setDepositValue(e.target.value)}
+												className="flex-1 text-right font-medium"
+												placeholder={t("portfolio.enterDeposit")}
+												autoFocus
+											/>
+											<Button size="sm" onClick={handleDepositSubmit} className="bg-green-600 hover:bg-green-700 text-white">
+												<Save className="h-4 w-4" />
+											</Button>
+											<Button size="sm" variant="outline" onClick={handleDepositCancel}>
+												Cancel
+											</Button>
+										</>
+									) : (
+										<>
+											<span className="text-sm text-muted-foreground">{t("portfolio.currentDeposit")}:</span>
+											<span className="font-medium">{formatVND(deposit)}</span>
+											<Button size="sm" variant="outline" onClick={() => setEditingDeposit(true)}>
+												Edit
+											</Button>
+										</>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="px-0">

@@ -135,6 +135,13 @@ function PortfolioPage() {
 		});
 	}, [updateSearchParams]);
 
+	// Toggle manual deposit mode
+	const toggleManualDeposit = useCallback((manual: boolean) => {
+		updateSearchParams({ 
+			manualDeposit: manual 
+		});
+	}, [updateSearchParams]);
+
 	// Portfolio item management functions
 	const handleAddItem = useCallback((ticker: string) => {
 		if (!portfolioItems.some(item => item.ticker === ticker)) {
@@ -303,6 +310,10 @@ function PortfolioPage() {
 				onUpdateItem={handleUpdateItem}
 				onRemoveItem={handleRemoveItem}
 				onAddItem={handleAddItem}
+				deposit={actualDeposit}
+				manualDeposit={manualDeposit}
+				onUpdateDeposit={updateDeposit}
+				onToggleManualDeposit={toggleManualDeposit}
 			/>
 
 			{/* Portfolio Summary Card - Screenshot friendly */}

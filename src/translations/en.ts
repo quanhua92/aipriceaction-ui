@@ -193,6 +193,13 @@ export const en = {
     overview: "Overview",
     allocation: "Allocation",
     marketValue: "Market Value",
+    manualDeposit: "Manual Deposit",
+    currentDeposit: "Current Deposit",
+    enterDeposit: "Enter deposit amount",
+    stockAllocation: "Stock Allocation",
+    cashEquityRatio: "Cash vs Equity Ratio",
+    equityValue: "Equity Value",
+    cashRemaining: "Cash Remaining",
   },
 
   // Portfolio Metrics

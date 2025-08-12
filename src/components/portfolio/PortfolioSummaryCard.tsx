@@ -174,7 +174,7 @@ export function PortfolioSummaryCard({
 
 	return (
 		<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20 border-2 border-dashed border-muted/30">
-			<CardHeader className="pb-2">
+			<CardHeader>
 				<CardTitle className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
 						<div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-center">
@@ -198,9 +198,9 @@ export function PortfolioSummaryCard({
 					</div>
 				</CardTitle>
 			</CardHeader>
-			<CardContent className="pt-2">
+			<CardContent className="px-0">
 				{/* Portfolio Summary Stats - Compact */}
-				<div className="mb-3 space-y-2">
+				<div className="px-6 mb-3 space-y-2">
 					<div className="text-center">
 						<div className="text-2xl md:text-3xl font-bold text-green-600">
 							{displayValue(currentMarketValue)}
@@ -226,7 +226,7 @@ export function PortfolioSummaryCard({
 				</div>
 
 				{/* Mobile: Tabs, Desktop: Side by Side */}
-				<div className="block lg:hidden">
+				<div className="block lg:hidden px-6">
 					<Tabs defaultValue="overview" className="w-full">
 						<TabsList className="grid w-full grid-cols-2">
 							<TabsTrigger value="overview">{t("portfolio.overview")}</TabsTrigger>
@@ -456,11 +456,12 @@ export function PortfolioSummaryCard({
 							)}
 						</TabsContent>
 						
-						<TabsContent value="allocation" className="mt-4">
-							{/* Allocation Chart */}
+						<TabsContent value="allocation" className="mt-4 space-y-4">
+							{/* Stock Allocation Chart */}
 							{chartData.length > 0 && (
 								<div className="bg-white rounded-lg border border-gray-200 p-4">
-									<div className="h-64">
+									<h4 className="font-semibold text-gray-800 mb-3">{t("portfolio.stockAllocation")}</h4>
+									<div className="h-48">
 										<ResponsiveContainer width="100%" height="100%">
 											<RechartsPieChart>
 												<Pie
@@ -469,7 +470,7 @@ export function PortfolioSummaryCard({
 													cy="50%"
 													labelLine={false}
 													label={renderCustomLabel}
-													outerRadius="80%"
+													outerRadius="70%"
 													innerRadius="30%"
 													fill="#8884d8"
 													dataKey="value"
@@ -503,12 +504,114 @@ export function PortfolioSummaryCard({
 									</div>
 								</div>
 							)}
+
+							{/* Cash vs Equity Chart */}
+							<div className="bg-white rounded-lg border border-gray-200 p-4">
+								<h4 className="font-semibold text-gray-800 mb-3">{t("portfolio.cashEquityRatio")}</h4>
+								<div className="h-48">
+									<ResponsiveContainer width="100%" height="100%">
+										<RechartsPieChart>
+											<Pie
+												data={[
+													{
+														name: t("portfolio.equityValue"),
+														value: currentMarketValue,
+														color: "#10B981",
+														percentage: deposit > 0 ? ((currentMarketValue / deposit) * 100).toFixed(1) : "0"
+													},
+													{
+														name: t("portfolio.cashRemaining"),
+														value: Math.max(0, deposit - currentMarketValue),
+														color: "#6B7280",
+														percentage: deposit > 0 ? (((deposit - currentMarketValue) / deposit) * 100).toFixed(1) : "0"
+													}
+												]}
+												cx="50%"
+												cy="50%"
+												labelLine={false}
+												label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+													if (!percent || percent < 0.05) return null;
+													if (showPrivacy) return null;
+													
+													const RADIAN = Math.PI / 180;
+													const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+													const x = cx + radius * Math.cos(-midAngle * RADIAN);
+													const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+													return (
+														<text 
+															x={x} 
+															y={y} 
+															fill="white" 
+															textAnchor={x > cx ? 'start' : 'end'} 
+															dominantBaseline="central"
+															className="text-xs font-medium"
+														>
+															{`${(percent * 100).toFixed(0)}%`}
+														</text>
+													);
+												}}
+												outerRadius="70%"
+												innerRadius="30%"
+												fill="#8884d8"
+												dataKey="value"
+												stroke="white"
+												strokeWidth={2}
+											>
+												<Cell fill="#10B981" />
+												<Cell fill="#6B7280" />
+											</Pie>
+											<Tooltip content={({ active, payload }) => {
+												if (active && payload && payload.length) {
+													const data = payload[0].payload;
+													return (
+														<div className="bg-background border rounded-lg p-3 shadow-lg">
+															<p className="font-medium">{data.name}</p>
+															<p className="text-sm text-muted-foreground">
+																{displayValue(data.value)} ({data.percentage}%)
+															</p>
+														</div>
+													);
+												}
+												return null;
+											}} />
+										</RechartsPieChart>
+									</ResponsiveContainer>
+								</div>
+								{/* Cash vs Equity Summary */}
+								<div className="mt-4 space-y-3">
+									<div className="flex justify-between items-center">
+										<div className="flex items-center gap-3">
+											<div className="w-4 h-4 rounded-full bg-green-500"></div>
+											<span className="font-medium text-gray-900">{t("portfolio.equityValue")}</span>
+										</div>
+										<div className="text-right">
+											<span className="font-medium text-gray-900">{displayValue(currentMarketValue)}</span>
+											<span className="ml-2 text-gray-600">
+												{deposit > 0 ? ((currentMarketValue / deposit) * 100).toFixed(1) : "0"}%
+											</span>
+										</div>
+									</div>
+									<div className="flex justify-between items-center">
+										<div className="flex items-center gap-3">
+											<div className="w-4 h-4 rounded-full bg-gray-500"></div>
+											<span className="font-medium text-gray-900">{t("portfolio.cashRemaining")}</span>
+										</div>
+										<div className="text-right">
+											<span className="font-medium text-gray-900">{displayValue(Math.max(0, deposit - currentMarketValue))}</span>
+											<span className="ml-2 text-gray-600">
+												{deposit > 0 ? (((deposit - currentMarketValue) / deposit) * 100).toFixed(1) : "0"}%
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
 						</TabsContent>
 					</Tabs>
 				</div>
 
 				{/* Desktop: Side by Side */}
-				<div className="hidden lg:grid lg:grid-cols-2 lg:gap-6">
+				<div className="hidden lg:grid lg:grid-cols-2 lg:gap-6 px-6">
 					{/* Left: Overview Table with Toggle */}
 					<div className="space-y-3">
 						{/* Toggle View Mode */}

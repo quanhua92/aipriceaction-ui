@@ -193,6 +193,13 @@ export const vn = {
     overview: "Tổng quan",
     allocation: "Phân bổ",
     marketValue: "Giá trị thị trường",
+    manualDeposit: "Vốn thủ công",
+    currentDeposit: "Vốn hiện tại",
+    enterDeposit: "Nhập số tiền vốn",
+    stockAllocation: "Phân bổ cổ phiếu",
+    cashEquityRatio: "Tỷ lệ tiền mặt/Cổ phiếu",
+    equityValue: "Giá trị cổ phiếu",
+    cashRemaining: "Tiền mặt còn lại",
   },
 
   // Portfolio Metrics
