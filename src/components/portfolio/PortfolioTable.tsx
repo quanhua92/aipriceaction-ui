@@ -41,6 +41,7 @@ export function PortfolioTable({
 	const [sortField, setSortField] = useState<SortField>("ticker");
 	const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 	const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
+	const [localValues, setLocalValues] = useState<{ [key: string]: string }>({});
 
 	const sortedItems = useMemo(() => {
 		return [...items].sort((a, b) => {
@@ -141,8 +142,18 @@ export function PortfolioTable({
 		}
 	}, [sortedItems]);
 
-	// Handle input changes
+	// Handle input changes (local state only)
 	const handleInputChange = useCallback((
+		ticker: string, 
+		field: 'price' | 'quantity', 
+		value: string
+	) => {
+		const key = `${ticker}-${field}`;
+		setLocalValues(prev => ({ ...prev, [key]: value }));
+	}, []);
+
+	// Handle input blur (commit to props)
+	const handleInputBlur = useCallback((
 		ticker: string, 
 		field: 'price' | 'quantity', 
 		value: string
@@ -158,6 +169,17 @@ export function PortfolioTable({
 			onUpdateItem(ticker, numValue, item.price);
 		}
 	}, [items, onUpdateItem]);
+
+	// Get current value (local or from props)
+	const getCurrentValue = useCallback((ticker: string, field: 'price' | 'quantity') => {
+		const key = `${ticker}-${field}`;
+		if (localValues[key] !== undefined) {
+			return localValues[key];
+		}
+		const item = items.find(item => item.ticker === ticker);
+		if (!item) return '';
+		return field === 'price' ? item.price.toString() : item.quantity.toString();
+	}, [localValues, items]);
 
 	const SortButton = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
 		<Button
@@ -211,8 +233,9 @@ export function PortfolioTable({
 							inputRefs.current[`${item.ticker}-price`] = el;
 						}}
 						type="number"
-						value={item.price || ''}
+						value={getCurrentValue(item.ticker, 'price')}
 						onChange={(e) => handleInputChange(item.ticker, 'price', e.target.value)}
+						onBlur={(e) => handleInputBlur(item.ticker, 'price', e.target.value)}
 						onKeyDown={(e) => handleKeyDown(e, item.ticker, 'price')}
 						placeholder="0"
 						className="w-full text-right border-transparent hover:border-muted focus:border-blue-500 bg-transparent"
@@ -226,8 +249,9 @@ export function PortfolioTable({
 							inputRefs.current[`${item.ticker}-quantity`] = el;
 						}}
 						type="number"
-						value={item.quantity || ''}
+						value={getCurrentValue(item.ticker, 'quantity')}
 						onChange={(e) => handleInputChange(item.ticker, 'quantity', e.target.value)}
+						onBlur={(e) => handleInputBlur(item.ticker, 'quantity', e.target.value)}
 						onKeyDown={(e) => handleKeyDown(e, item.ticker, 'quantity')}
 						placeholder="0"
 						className="w-full text-right border-transparent hover:border-muted focus:border-blue-500 bg-transparent"
