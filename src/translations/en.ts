@@ -417,6 +417,8 @@ export const en = {
     recoveryLeader: "Recovery Leader",
     nextDay: "Next Day",
     historicalEvent: "Historical Event",
+    
+    // Tab labels
     analysis: "Analysis",
     tradingSignals: "Trading Signals",
     prePanic: "Pre-Panic",

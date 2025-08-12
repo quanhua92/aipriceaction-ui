@@ -417,6 +417,8 @@ export const vn = {
     recoveryLeader: "Người Dẫn đầu Phục hồi",
     nextDay: "Ngày tiếp theo",
     historicalEvent: "Sự kiện Lịch sử",
+    
+    // Tab labels
     analysis: "Phân tích",
     tradingSignals: "Tín hiệu Giao dịch",
     prePanic: "Tiền Hoảng loạn",

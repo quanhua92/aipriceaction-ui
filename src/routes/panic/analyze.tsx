@@ -336,7 +336,7 @@ function PanicAnalyzeDetail() {
 					<div className="space-y-1">
 						<h1 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-2 md:gap-3">
 							<TrendingDown className="h-5 w-5 md:h-6 md:w-6 text-red-600" />
-							<span className="leading-tight">Panic Analysis</span>
+							<span className="leading-tight">{t('panic.analyzeTitle')}</span>
 						</h1>
 						<p className="text-sm md:text-base text-gray-600 flex items-center gap-2">
 							<Calendar className="h-3 w-3 md:h-4 md:w-4" />
@@ -375,7 +375,7 @@ function PanicAnalyzeDetail() {
 					{/* Classification Summary */}
 					<Card className="flex-1">
 						<CardHeader className="pb-3">
-							<CardTitle className="text-lg">Classification</CardTitle>
+							<CardTitle className="text-lg">{t('panic.classification')}</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-3">
 							<div>
@@ -506,27 +506,27 @@ function PanicAnalyzeDetail() {
 				<TabsList className="grid w-full grid-cols-2 md:grid-cols-6 h-auto">
 					<TabsTrigger value="analysis" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<BarChart3 className="h-3 w-3 md:h-4 md:w-4" />
-						<span className="text-xs md:text-sm">Analysis</span>
+						<span className="text-xs md:text-sm">{t('panic.analysis')}</span>
 					</TabsTrigger>
 					<TabsTrigger value="signals" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<Target className="h-3 w-3 md:h-4 md:w-4" />
-						<span className="text-xs md:text-sm">Trading Signals</span>
+						<span className="text-xs md:text-sm">{t('panic.tradingSignals')}</span>
 					</TabsTrigger>
 					<TabsTrigger value="prepanic" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<AlertTriangle className="h-3 w-3 md:h-4 md:w-4" />
-						<span className="text-xs md:text-sm">Pre-Panic</span>
+						<span className="text-xs md:text-sm">{t('panic.prePanic')}</span>
 					</TabsTrigger>
 					<TabsTrigger value="context" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<Shield className="h-3 w-3 md:h-4 md:w-4" />
-						<span className="text-xs md:text-sm">Context</span>
+						<span className="text-xs md:text-sm">{t('panic.context')}</span>
 					</TabsTrigger>
 					<TabsTrigger value="chart" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<LineChart className="h-3 w-3 md:h-4 md:w-4" />
-						<span className="text-xs md:text-sm">Chart</span>
+						<span className="text-xs md:text-sm">{t('panic.chart')}</span>
 					</TabsTrigger>
 					<TabsTrigger value="vpa" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<FileText className="h-3 w-3 md:h-4 md:w-4" />
-						<span className="text-xs md:text-sm">VPA</span>
+						<span className="text-xs md:text-sm">{t('panic.vpa')}</span>
 					</TabsTrigger>
 				</TabsList>
 
@@ -598,8 +598,8 @@ function PanicAnalyzeDetail() {
 						{/* Pattern Recognition */}
 						<Card>
 							<CardHeader>
-								<CardTitle>Pattern Analysis</CardTitle>
-								<CardDescription>Vietnamese market pattern classification</CardDescription>
+								<CardTitle>{t('panic.patternAnalysis')}</CardTitle>
+								<CardDescription>{t('panic.vietnameseMarketClassification')}</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="p-4 bg-gray-50 rounded">
