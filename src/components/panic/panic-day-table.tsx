@@ -203,7 +203,18 @@ export function PanicDayTable({
 						<Card key={panic.date} className="p-3 border border-gray-200">
 							<div className="flex items-center justify-between mb-2">
 								<div className="text-sm font-medium">
-									{new Date(panic.date).toLocaleDateString('vi-VN')}
+									{onViewDetails ? (
+										<Button
+											variant="ghost"
+											size="sm"
+											onClick={() => onViewDetails(panic)}
+											className="h-auto p-0 font-medium hover:underline text-blue-600"
+										>
+											{new Date(panic.date).toLocaleDateString('vi-VN')}
+										</Button>
+									) : (
+										new Date(panic.date).toLocaleDateString('vi-VN')
+									)}
 								</div>
 								{onViewDetails && (
 									<Button
@@ -300,7 +311,18 @@ export function PanicDayTable({
 									className="hover:bg-gray-50"
 								>
 									<TableCell className="font-medium">
-										{formatDate(panicDay.date)}
+										{onViewDetails ? (
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() => onViewDetails(panicDay)}
+												className="h-auto p-0 font-medium hover:underline text-blue-600"
+											>
+												{formatDate(panicDay.date)}
+											</Button>
+										) : (
+											{formatDate(panicDay.date)}
+										)}
 									</TableCell>
 									<TableCell className={cn(
 										"text-right font-bold",
@@ -351,12 +373,12 @@ export function PanicDayTable({
 									<TableCell>
 										{onViewDetails && (
 											<Button
-												variant="ghost"
+												variant="outline"
 												size="sm"
 												onClick={() => onViewDetails(panicDay)}
-												className="h-8 w-8 p-0"
+												className="h-8 px-3 py-1"
 											>
-												<Eye className="h-4 w-4" />
+												View
 											</Button>
 										)}
 									</TableCell>
