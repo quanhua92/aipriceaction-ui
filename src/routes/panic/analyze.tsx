@@ -351,9 +351,9 @@ function PanicAnalyzeDetail() {
 			</div>
 
 			{/* Main Analysis Overview */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 lg:items-start">
 				{/* Panic Indicators */}
-				<div className="lg:col-span-2">
+				<div className="lg:col-span-2 h-full">
 					<PanicIndicatorCard
 						date={panicAnalysis.date}
 						vnindexChange={panicAnalysis.vnindexChange}
@@ -367,9 +367,9 @@ function PanicAnalyzeDetail() {
 				</div>
 
 				{/* Quick Stats */}
-				<div className="space-y-4">
+				<div className="flex flex-col gap-4 h-full">
 					{/* Classification Summary */}
-					<Card>
+					<Card className="flex-1">
 						<CardHeader className="pb-3">
 							<CardTitle className="text-lg">Classification</CardTitle>
 						</CardHeader>
@@ -417,7 +417,7 @@ function PanicAnalyzeDetail() {
 
 					{/* Historical Context */}
 					{precalculatedData && (
-						<Card>
+						<Card className="flex-1">
 							<CardHeader className="pb-3">
 								<CardTitle className="text-lg flex items-center gap-2">
 									<Clock className="h-4 w-4" />
