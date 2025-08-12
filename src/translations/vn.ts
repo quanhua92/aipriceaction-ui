@@ -137,7 +137,7 @@ export const vn = {
   // Compare
   compare: {
     title: "So sánh biểu đồ",
-    subtitle: "So sánh không giới hạn biểu đồ cổ phiếu trong lưới 2 cột linh hoạt (1 cột trên mobile)",
+    subtitle: "So sánh biểu đồ cổ phiếu cạnh nhau",
     chartConfiguration: "Cấu hình biểu đồ",
     selectTickers: "Chọn mã cổ phiếu",
     dateRange: "Khoảng thời gian",

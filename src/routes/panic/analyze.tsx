@@ -25,13 +25,15 @@ import {
 	Clock,
 	Shield,
 	ExternalLink,
-	LineChart
+	LineChart,
+	FileText
 } from 'lucide-react';
 import {
 	PanicIndicatorCard,
 	TradingSignalsCard
 } from '@/components/panic';
 import { CandlestickChart } from '@/components/charts';
+import { VPACard } from '@/components/vpa';
 import { DateRangeSelector } from '@/components/ui/DateRangeSelector';
 import { 
 	usePanicAnalysis, 
@@ -275,8 +277,9 @@ function PanicAnalyzeDetail() {
 	// Check if this is a pre-calculated panic day
 	const precalculatedData = getPanicDayByDate(date);
 	
-	const isLoading = panicLoading || prePanicLoading;
-	const error = panicError || prePanicError;
+	// Progressive loading: Only block rendering if we don't have basic panic analysis
+	const isLoading = panicLoading;
+	const error = panicError;
 
 	// Format date for display
 	const formattedDate = new Date(date).toLocaleDateString('vi-VN', {
@@ -358,7 +361,7 @@ function PanicAnalyzeDetail() {
 						ssi={panicAnalysis.ssi}
 						rsi={panicAnalysis.rsi}
 						panicType={panicAnalysis.panicType}
-						warningLevel={prePanicAnalysis?.strongestWarning}
+						warningLevel={prePanicLoading ? undefined : prePanicAnalysis?.strongestWarning}
 						showDetails={true}
 					/>
 				</div>
@@ -377,7 +380,15 @@ function PanicAnalyzeDetail() {
 									{panicAnalysis.panicType.replace('_', ' ')}
 								</Badge>
 							</div>
-							{prePanicAnalysis && (
+							{prePanicLoading ? (
+								<div>
+									<div className="text-sm text-gray-600 mb-1">Warning Level</div>
+									<div className="flex items-center gap-2">
+										<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+										<span className="text-xs text-gray-500">Loading...</span>
+									</div>
+								</div>
+							) : prePanicAnalysis && (
 								<div>
 									<div className="text-sm text-gray-600 mb-1">Warning Level</div>
 									<Badge className={getWarningLevelColor(prePanicAnalysis.strongestWarning)}>
@@ -385,7 +396,15 @@ function PanicAnalyzeDetail() {
 									</Badge>
 								</div>
 							)}
-							{prePanicAnalysis && (
+							{prePanicLoading ? (
+								<div>
+									<div className="text-sm text-gray-600 mb-1">Pattern Type</div>
+									<div className="flex items-center gap-2">
+										<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+										<span className="text-xs text-gray-500">Loading...</span>
+									</div>
+								</div>
+							) : prePanicAnalysis && (
 								<div>
 									<div className="text-sm text-gray-600 mb-1">Pattern Type</div>
 									<Badge variant="outline">
@@ -439,7 +458,7 @@ function PanicAnalyzeDetail() {
 
 			{/* Detailed Analysis Tabs */}
 			<Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-				<TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+				<TabsList className="grid w-full grid-cols-2 md:grid-cols-6 h-auto">
 					<TabsTrigger value="analysis" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<BarChart3 className="h-3 w-3 md:h-4 md:w-4" />
 						<span className="text-xs md:text-sm">Analysis</span>
@@ -459,6 +478,10 @@ function PanicAnalyzeDetail() {
 					<TabsTrigger value="chart" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
 						<LineChart className="h-3 w-3 md:h-4 md:w-4" />
 						<span className="text-xs md:text-sm">Chart</span>
+					</TabsTrigger>
+					<TabsTrigger value="vpa" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+						<FileText className="h-3 w-3 md:h-4 md:w-4" />
+						<span className="text-xs md:text-sm">VPA</span>
 					</TabsTrigger>
 				</TabsList>
 
@@ -604,7 +627,25 @@ function PanicAnalyzeDetail() {
 
 				{/* Pre-Panic Analysis Tab */}
 				<TabsContent value="prepanic" className="space-y-6">
-					{prePanicAnalysis ? (
+					{prePanicLoading ? (
+						<Card>
+							<CardContent className="py-8">
+								<div className="flex items-center justify-center">
+									<div className="text-center">
+										<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+										<p className="mt-2 text-sm text-gray-600">Loading pre-panic analysis...</p>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+					) : prePanicError ? (
+						<Alert>
+							<AlertTriangle className="h-4 w-4" />
+							<AlertDescription>
+								Failed to load pre-panic analysis. {prePanicError.message}
+							</AlertDescription>
+						</Alert>
+					) : prePanicAnalysis ? (
 						<div className="space-y-6">
 							{/* Trading Advice */}
 							<Card>
@@ -890,6 +931,17 @@ function PanicAnalyzeDetail() {
 							</div>
 						</CardContent>
 					</Card>
+				</TabsContent>
+
+				{/* VPA Tab */}
+				<TabsContent value="vpa" className="space-y-4">
+					<VPACard 
+						ticker="VNINDEX"
+						title="Volume Price Analysis - VNINDEX"
+						defaultExpanded={true}
+						showViewButton={true}
+						compact={false}
+					/>
 				</TabsContent>
 			</Tabs>
 

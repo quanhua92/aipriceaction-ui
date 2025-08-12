@@ -219,7 +219,7 @@ export function PrePanicWarningWidget({
 							className="flex items-center gap-1 justify-center text-xs md:text-sm px-3 py-2"
 						>
 							<ExternalLink className="h-3 w-3" />
-							<span>View Details</span>
+							<span>Analyze {sectorIndicators.date}</span>
 						</Button>
 					)}
 					

@@ -137,7 +137,7 @@ export const en = {
   // Compare
   compare: {
     title: "Compare Charts",
-    subtitle: "Compare unlimited stock charts in a responsive 2-column grid (1 column on mobile)",
+    subtitle: "Compare stock charts side by side",
     chartConfiguration: "Chart Configuration",
     selectTickers: "Select Tickers",
     dateRange: "Date Range",
