@@ -2,6 +2,7 @@ import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import Header from "../components/Header";
+import { FpsMonitor } from "../components/ui/FpsMonitor";
 import { LanguageProvider, useLanguage } from "../contexts/LanguageContext";
 
 import TanStackQueryLayout from "../integrations/tanstack-query/layout.tsx";
@@ -23,8 +24,13 @@ function AppContent() {
 		<>
 			<Header />
 			<Outlet />
+			
+			{/* Development Tools */}
 			<TanStackRouterDevtools />
 			<TanStackQueryLayout />
+			
+			{/* FPS Monitor - positioned in top-right corner */}
+			<FpsMonitor position="top-right" showOnlyInDev={true} />
 		</>
 	);
 }
