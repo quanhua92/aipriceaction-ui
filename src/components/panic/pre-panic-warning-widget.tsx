@@ -213,10 +213,9 @@ export function PrePanicWarningWidget({
 				<div className="flex flex-col sm:flex-row gap-2 pt-2">
 					{onViewDetails && (
 						<Button
-							variant="outline"
 							size="sm"
 							onClick={onViewDetails}
-							className="flex items-center gap-1 justify-center text-xs md:text-sm px-3 py-2"
+							className="flex items-center gap-1 justify-center text-xs md:text-sm px-3 py-2 bg-green-600 hover:bg-green-700 text-white font-medium shadow-sm"
 						>
 							<ExternalLink className="h-3 w-3" />
 							<span>Analyze {sectorIndicators.date}</span>
