@@ -207,7 +207,7 @@ function ComparePage() {
 							<Link 
 								to="/portfolio" 
 								search={{ 
-									tickers: tickers,
+									tickers: tickers.map(t => `${t},0,0`).join('~'),
 									range: dateRangeConfig.range !== "CUSTOM" ? dateRangeConfig.range : undefined,
 									startDate: dateRangeConfig.range === "CUSTOM" && dateRangeConfig.startDate 
 										? dateRangeConfig.startDate.toISOString().split('T')[0] 
