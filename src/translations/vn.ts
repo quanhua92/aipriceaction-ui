@@ -54,6 +54,46 @@ export const vn = {
     quickActions: "Thao tác nhanh",
     compareStocks: "So sánh cổ phiếu",
     analyzePortfolio: "Phân tích danh mục",
+    marketRiskMonitoring: "Giám sát rủi ro thị trường",
+    stocks: "cổ phiếu",
+    majorSectors: "Từ 6 ngành chính",
+    
+    // Pre-Panic Monitor Widget
+    prePanicMonitor: "Giám sát Tiền Hoảng loạn",
+    dataFrom: "Dữ liệu từ",
+    bankingIndicator: "Chỉ số Ngân hàng",
+    securitiesIndicator: "Chỉ số Chứng khoán",
+    realEstateIndicator: "Chỉ số Bất động sản",
+    highRiskAlert: "RỦI RO CAO",
+    moderateRiskAlert: "RỦI RO TRUNG BÌNH",
+    tradingAction: "Hành động Giao dịch",
+    normalTradingStrategies: "Chiến lược giao dịch bình thường",
+    takeAction: "Thực hiện Hành động",
+    analyze: "Phân tích",
+    unableToLoadWarningLevel: "Không thể tải mức cảnh báo hiện tại. Vui lòng thử lại sau.",
+    
+    // Panic Day Table
+    panicDaysAnalysis: "Phân tích Ngày Hoảng loạn",
+    historicalVietnameseMarket: "Các sự kiện hoảng loạn thị trường Việt Nam lịch sử với phân tích ngành",
+    events: "sự kiện",
+    allYears: "Tất cả năm",
+    allPatterns: "Tất cả mô hình",
+    escalatingToCrisis: "Lên thành Khủng hoảng",
+    multipleWeakness: "Nhiều Yếu kém",
+    sustainedDeterioration: "Suy giảm Kéo dài",
+    blackSwan: "Thiên nga Đen",
+    date: "Ngày",
+    bankingIndicator: "Chỉ số Ngân hàng",
+    securitiesIndicator: "Chỉ số Chứng khoán",
+    realEstateIndicator: "Chỉ số Bất động sản",
+    classification: "Phân loại",
+    warning: "Cảnh báo",
+    context: "Bối cảnh",
+    action: "Thao tác",
+    view: "Xem",
+    banking: "Ngân hàng",
+    securities: "Chứng khoán",
+    realEstate: "Bất động sản",
   },
 
   // Portfolio
@@ -503,6 +543,33 @@ export const vn = {
     riskLevelExtreme: "CỰC KỲ",
     maximumEquityExposure: "Tối đa 30% tỷ trọng cổ phiếu",
     vcbOnlyExitOthers: "Chỉ VCB, thoát tất cả các cổ phiếu khác",
+    
+    // Hành động lời khuyên giao dịch
+    reducePortfolioBy40: "Giảm danh mục 40%, chuẩn bị vị thế phòng thủ",
+    reduceRiskiestPositions: "Giảm các vị thế rủi ro nhất, tăng tiền mặt lên 30%",
+    monitorCloselyPrepareDefensive: "Theo dõi chặt chẽ, chuẩn bị xoay sang phòng thủ", 
+    normalTradingStrategies: "Chiến lược giao dịch bình thường",
+    
+    // Mức độ rủi ro
+    riskLevelHigh: "CAO - Theo dõi hàng ngày để phát hiện leo thang",
+    riskLevelMedium: "TRUNG BÌNH - Quan sát sự phát triển mô hình",
+    riskLevelLowMedium: "THẤP-TRUNG BÌNH - Cảnh báo giai đoạn đầu",
+    riskLevelLow: "THẤP - Không có tín hiệu panic ngay lập tức",
+    riskLevelUnknown: "KHÔNG RÕ - Dữ liệu không đủ để phân tích",
+    
+    // Quy mô vị thế
+    maximum60EquityExposure: "Tối đa 60% tỷ trọng cổ phiếu",
+    maximum70EquityExposure: "Tối đa 70% tỷ trọng cổ phiếu",
+    normalAllocationWithCaution: "Phân bổ bình thường với thận trọng",
+    normalAllocation: "Phân bổ bình thường",
+    conservativeAllocation: "Khuyến nghị phân bổ thận trọng",
+    
+    // Cổ phiếu phòng thủ
+    vcbVicCoreHoldings: "Chỉ nắm giữ cốt lõi VCB, VIC",
+    emphasizeVcbVicTcb: "Nhấn mạnh chất lượng VCB, VIC, TCB",
+    qualityFocusBankingVic: "Tập trung chất lượng: Kết hợp Ngân hàng/VIC",
+    standardDiversification: "Đa dạng hóa tiêu chuẩn",
+    maintainDefensiveBaseline: "Duy trì nền tảng phòng thủ",
     loadingPrePanicAnalysis: "Đang tải phân tích tiền hoảng loạn...",
     failedToLoadPrePanic: "Không thể tải phân tích tiền hoảng loạn",
     t14: "T-14",
@@ -611,6 +678,7 @@ export const vn = {
     patternTypes: {
       ESCALATING_TO_CRISIS: "Leo thang thành Khủng hoảng",
       MULTIPLE_WEAKNESS_EVENTS: "Sự kiện Yếu kém Nhiều lần",
+      SUSTAINED_DETERIORATION: "Suy thoái Kéo dài",
       ISOLATED_SIGNALS: "Tín hiệu Riêng lẻ",
       INSUFFICIENT_DATA: "Dữ liệu Không đủ"
     },

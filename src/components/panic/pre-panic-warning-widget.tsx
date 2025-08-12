@@ -19,6 +19,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useCurrentWarningLevel, getWarningLevelColor } from "@/hooks/use-panic-analysis";
 import type { WarningLevel } from "@/lib/panic-analyzer";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PrePanicWarningWidgetProps {
 	className?: string;
@@ -64,6 +65,7 @@ export function PrePanicWarningWidget({
 	compact = false,
 	onViewDetails
 }: PrePanicWarningWidgetProps) {
+	const { t, translateTradingAdvice } = useTranslation();
 	const { data: warningData, isLoading, error } = useCurrentWarningLevel();
 
 	if (isLoading) {
@@ -83,7 +85,7 @@ export function PrePanicWarningWidget({
 					<Alert>
 						<AlertTriangle className="h-4 w-4" />
 						<AlertDescription>
-							Unable to load current warning level. Please try again later.
+							{t('home.unableToLoadWarningLevel')}
 						</AlertDescription>
 					</Alert>
 				</CardContent>
@@ -105,16 +107,16 @@ export function PrePanicWarningWidget({
 					<div className="flex items-center gap-2">
 						{getWarningIcon(currentWarning)}
 						<CardTitle className={cn("text-base md:text-lg", compact && "text-sm md:text-base")}>
-							Pre-Panic Monitor
+							{t('home.prePanicMonitor')}
 						</CardTitle>
 					</div>
 					<Badge className={cn(getWarningLevelColor(currentWarning), "text-xs md:text-sm px-2 py-1")}>
-						{currentWarning.replace('_', ' ')}
+						{t(`panic.warningLevels.${currentWarning}`)}
 					</Badge>
 				</div>
 				{!compact && (
 					<CardDescription className="text-xs md:text-sm">
-						Data from: {sectorIndicators.date}
+						{t('home.dataFrom')}: {sectorIndicators.date}
 					</CardDescription>
 				)}
 			</CardHeader>
@@ -124,7 +126,7 @@ export function PrePanicWarningWidget({
 				{!compact && (
 					<div className="grid grid-cols-3 gap-2 md:gap-3 text-center">
 						<div>
-							<div className="text-xs text-gray-500 mb-1">Banking Indicator</div>
+							<div className="text-xs text-gray-500 mb-1">{t('home.bankingIndicator')}</div>
 							<div className={cn(
 								"text-xs md:text-sm font-bold",
 								sectorIndicators.bsi === null ? "text-gray-400" :
@@ -136,7 +138,7 @@ export function PrePanicWarningWidget({
 							</div>
 						</div>
 						<div>
-							<div className="text-xs text-gray-500 mb-1">Securities Indicator</div>
+							<div className="text-xs text-gray-500 mb-1">{t('home.securitiesIndicator')}</div>
 							<div className={cn(
 								"text-xs md:text-sm font-bold",
 								sectorIndicators.ssi === null ? "text-gray-400" :
@@ -148,7 +150,7 @@ export function PrePanicWarningWidget({
 							</div>
 						</div>
 						<div>
-							<div className="text-xs text-gray-500 mb-1">Real Estate Indicator</div>
+							<div className="text-xs text-gray-500 mb-1">{t('home.realEstateIndicator')}</div>
 							<div className={cn(
 								"text-xs md:text-sm font-bold",
 								sectorIndicators.rsi === null ? "text-gray-400" :
@@ -167,7 +169,7 @@ export function PrePanicWarningWidget({
 					<Alert className="border-red-200 bg-red-50">
 						<AlertTriangle className="h-4 w-4 text-red-500" />
 						<AlertDescription className="text-red-700">
-							<strong>HIGH RISK:</strong> {tradingAdvice.riskLevel}
+							<strong>{t('home.highRiskAlert')}:</strong> {translateTradingAdvice(tradingAdvice.riskLevel)}
 						</AlertDescription>
 					</Alert>
 				)}
@@ -176,7 +178,7 @@ export function PrePanicWarningWidget({
 					<Alert className="border-orange-200 bg-orange-50">
 						<AlertTriangle className="h-4 w-4 text-orange-500" />
 						<AlertDescription className="text-orange-700">
-							<strong>MODERATE RISK:</strong> {tradingAdvice.riskLevel}
+							<strong>{t('home.moderateRiskAlert')}:</strong> {translateTradingAdvice(tradingAdvice.riskLevel)}
 						</AlertDescription>
 					</Alert>
 				)}
@@ -184,19 +186,19 @@ export function PrePanicWarningWidget({
 				{/* Trading Advice */}
 				{showTradingAdvice && !compact && (
 					<div className="space-y-2">
-						<div className="text-xs md:text-sm font-medium text-gray-700">Trading Action</div>
+						<div className="text-xs md:text-sm font-medium text-gray-700">{t('home.tradingAction')}</div>
 						<div className="text-xs md:text-sm text-gray-600 bg-gray-50 p-2 md:p-3 rounded-md">
-							{tradingAdvice.action}
+							{translateTradingAdvice(tradingAdvice.action)}
 						</div>
 						
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-xs">
 							<div>
-								<span className="font-medium text-gray-700">Position Size:</span>
-								<div className="text-gray-600">{tradingAdvice.positionSize}</div>
+								<span className="font-medium text-gray-700">{t('panic.positionSize')}:</span>
+								<div className="text-gray-600">{translateTradingAdvice(tradingAdvice.positionSize)}</div>
 							</div>
 							<div>
-								<span className="font-medium text-gray-700">Defensive Stocks:</span>
-								<div className="text-gray-600">{tradingAdvice.defensiveStocks}</div>
+								<span className="font-medium text-gray-700">{t('panic.defensiveStocks')}:</span>
+								<div className="text-gray-600">{translateTradingAdvice(tradingAdvice.defensiveStocks)}</div>
 							</div>
 						</div>
 					</div>
@@ -205,7 +207,7 @@ export function PrePanicWarningWidget({
 				{/* Compact Trading Advice */}
 				{showTradingAdvice && compact && (
 					<div className="text-xs md:text-sm text-gray-600">
-						{tradingAdvice.action}
+						{translateTradingAdvice(tradingAdvice.action)}
 					</div>
 				)}
 
@@ -218,7 +220,7 @@ export function PrePanicWarningWidget({
 							className="flex items-center gap-1 justify-center text-xs md:text-sm px-3 py-2 bg-green-600 hover:bg-green-700 text-white font-medium shadow-sm"
 						>
 							<ExternalLink className="h-3 w-3" />
-							<span>Analyze {sectorIndicators.date}</span>
+							<span>{t('home.analyze')} {sectorIndicators.date}</span>
 						</Button>
 					)}
 					
@@ -231,7 +233,7 @@ export function PrePanicWarningWidget({
 								console.log('Urgent action required:', tradingAdvice);
 							}}
 						>
-							Take Action
+							{t('home.takeAction')}
 						</Button>
 					)}
 				</div>

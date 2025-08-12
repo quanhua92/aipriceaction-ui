@@ -527,7 +527,7 @@ export class VietnamesePanicAnalyzer {
 		const adviceMatrix: Record<WarningLevel, TradingAdvice> = {
 			STRONG_WARNING: {
 				action: 'REDUCE positions immediately, increase cash to 70%+',
-				riskLevel: 'EXTREME - Panic likely within 1-3 days',
+				riskLevel: 'EXTREME',
 				positionSize: 'Maximum 30% equity exposure',
 				defensiveStocks: 'VCB only, exit all others'
 			},

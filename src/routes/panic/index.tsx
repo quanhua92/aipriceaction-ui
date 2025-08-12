@@ -348,7 +348,7 @@ function PanicIndexPage() {
 										<div key={pattern} className="space-y-2">
 											<div className="flex justify-between text-sm">
 												<span className="font-medium">
-													{pattern.replace(/_/g, ' ')}
+													{t(`panic.patternTypes.${pattern}`)}
 												</span>
 												<span>{count} {t('panic.events')} ({percentage}%)</span>
 											</div>

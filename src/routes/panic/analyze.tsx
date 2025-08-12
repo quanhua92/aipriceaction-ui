@@ -178,7 +178,7 @@ function PrePanicTimelineItem({
 }
 
 function PanicAnalyzeDetail() {
-	const { t } = useTranslation();
+	const { t, translateTradingAdvice } = useTranslation();
 	const { date, range, startDate, endDate, tickers = [] } = Route.useSearch();
 	const navigate = useNavigate();
 	const [selectedTab, setSelectedTab] = useState('analysis');
@@ -880,9 +880,9 @@ function PanicAnalyzeDetail() {
 									}`}>
 										<AlertTriangle className="h-4 w-4" />
 										<AlertDescription className="space-y-2">
-											<div className="font-medium">{prePanicAnalysis.tradingAdvice.action}</div>
+											<div className="font-medium">{translateTradingAdvice(prePanicAnalysis.tradingAdvice.action)}</div>
 											<div className="text-sm">
-												<strong>{t('panic.riskLevel')}:</strong> {prePanicAnalysis.tradingAdvice.riskLevel}
+												<strong>{t('panic.riskLevel')}:</strong> {translateTradingAdvice(prePanicAnalysis.tradingAdvice.riskLevel)}
 											</div>
 										</AlertDescription>
 									</Alert>
@@ -890,11 +890,11 @@ function PanicAnalyzeDetail() {
 									<div className="grid grid-cols-2 gap-4 text-sm">
 										<div>
 											<span className="font-medium text-gray-700">{t('panic.positionSize')}:</span>
-											<div className="text-gray-600">{prePanicAnalysis.tradingAdvice.positionSize}</div>
+											<div className="text-gray-600">{translateTradingAdvice(prePanicAnalysis.tradingAdvice.positionSize)}</div>
 										</div>
 										<div>
 											<span className="font-medium text-gray-700">{t('panic.defensiveStocks')}:</span>
-											<div className="text-gray-600">{prePanicAnalysis.tradingAdvice.defensiveStocks}</div>
+											<div className="text-gray-600">{translateTradingAdvice(prePanicAnalysis.tradingAdvice.defensiveStocks)}</div>
 										</div>
 									</div>
 								</CardContent>

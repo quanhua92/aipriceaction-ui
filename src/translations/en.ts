@@ -54,6 +54,46 @@ export const en = {
     quickActions: "Quick Actions",
     compareStocks: "Compare Stocks",
     analyzePortfolio: "Analyze Portfolio",
+    marketRiskMonitoring: "Market risk monitoring",
+    stocks: "stocks",
+    majorSectors: "From 6 major sectors",
+    
+    // Pre-Panic Monitor Widget
+    prePanicMonitor: "Pre-Panic Monitor",
+    dataFrom: "Data from",
+    bankingIndicator: "Banking Indicator",
+    securitiesIndicator: "Securities Indicator",
+    realEstateIndicator: "Real Estate Indicator",
+    highRiskAlert: "HIGH RISK",
+    moderateRiskAlert: "MODERATE RISK",
+    tradingAction: "Trading Action",
+    normalTradingStrategies: "Normal trading strategies",
+    takeAction: "Take Action",
+    analyze: "Analyze",
+    unableToLoadWarningLevel: "Unable to load current warning level. Please try again later.",
+    
+    // Panic Day Table
+    panicDaysAnalysis: "Panic Days Analysis",
+    historicalVietnameseMarket: "Historical Vietnamese market panic events with sector analysis",
+    events: "events",
+    allYears: "All Years",
+    allPatterns: "All Patterns",
+    escalatingToCrisis: "Escalating to Crisis",
+    multipleWeakness: "Multiple Weakness",
+    sustainedDeterioration: "Sustained Deterioration",
+    blackSwan: "Black Swan",
+    date: "Date",
+    bankingIndicator: "Banking Indicator",
+    securitiesIndicator: "Securities Indicator",
+    realEstateIndicator: "Real Estate Indicator",
+    classification: "Classification",
+    warning: "Warning",
+    context: "Context",
+    action: "Action",
+    view: "View",
+    banking: "Banking",
+    securities: "Securities",
+    realEstate: "Real Estate",
   },
 
   // Portfolio
@@ -503,6 +543,33 @@ export const en = {
     riskLevelExtreme: "EXTREME",
     maximumEquityExposure: "Maximum 30% equity exposure",
     vcbOnlyExitOthers: "VCB only, exit all others",
+    
+    // Trading advice actions
+    reducePortfolioBy40: "Reduce portfolio by 40%, prepare defensive positions",
+    reduceRiskiestPositions: "Reduce riskiest positions, raise cash to 30%",
+    monitorCloselyPrepareDefensive: "Monitor closely, prepare for defensive rotation",
+    normalTradingStrategies: "Normal trading strategies",
+    
+    // Risk levels
+    riskLevelHigh: "HIGH - Monitor daily for escalation",
+    riskLevelMedium: "MEDIUM - Watch for pattern development",
+    riskLevelLowMedium: "LOW-MEDIUM - Early stage warning",
+    riskLevelLow: "LOW - No immediate panic signals",
+    riskLevelUnknown: "UNKNOWN - Insufficient data for analysis",
+    
+    // Position sizes
+    maximum60EquityExposure: "Maximum 60% equity exposure",
+    maximum70EquityExposure: "Maximum 70% equity exposure",
+    normalAllocationWithCaution: "Normal allocation with caution",
+    normalAllocation: "Normal allocation",
+    conservativeAllocation: "Conservative allocation recommended",
+    
+    // Defensive stocks
+    vcbVicCoreHoldings: "VCB, VIC core holdings only",
+    emphasizeVcbVicTcb: "Emphasize VCB, VIC, TCB quality",
+    qualityFocusBankingVic: "Quality focus: Banking/VIC blend",
+    standardDiversification: "Standard diversification",
+    maintainDefensiveBaseline: "Maintain defensive baseline",
     loadingPrePanicAnalysis: "Loading pre-panic analysis...",
     failedToLoadPrePanic: "Failed to load pre-panic analysis",
     t14: "T-14",
@@ -611,6 +678,7 @@ export const en = {
     patternTypes: {
       ESCALATING_TO_CRISIS: "Escalating to Crisis",
       MULTIPLE_WEAKNESS_EVENTS: "Multiple Weakness Events",
+      SUSTAINED_DETERIORATION: "Sustained Deterioration",
       ISOLATED_SIGNALS: "Isolated Signals",
       INSUFFICIENT_DATA: "Insufficient Data"
     },

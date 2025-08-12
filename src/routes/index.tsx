@@ -340,15 +340,15 @@ function Dashboard() {
 				</div>
 
 				{/* Quick Navigation */}
-				<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+				<div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch">
 					<Link to="/panic">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow">
-							<CardContent className="flex items-center gap-3 p-4">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<AlertTriangle className="h-8 w-8 text-primary" />
 								<div>
-									<p className="font-semibold">Panic Analysis</p>
+									<p className="font-semibold">{t("nav.panicAnalysis")}</p>
 									<p className="text-sm text-muted-foreground">
-										Market risk monitoring
+										{t("home.marketRiskMonitoring")}
 									</p>
 								</div>
 							</CardContent>
@@ -356,8 +356,8 @@ function Dashboard() {
 					</Link>
 
 					<Link to="/sectors">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow">
-							<CardContent className="flex items-center gap-3 p-4">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<Building2 className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("home.sectors")}</p>
@@ -370,13 +370,13 @@ function Dashboard() {
 					</Link>
 
 					<Link to="/tickers">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow">
-							<CardContent className="flex items-center gap-3 p-4">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<Search className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("nav.tickers")}</p>
 									<p className="text-sm text-muted-foreground">
-										{totalTickers} stocks
+										{totalTickers} {t("home.stocks")}
 									</p>
 								</div>
 							</CardContent>
@@ -384,8 +384,8 @@ function Dashboard() {
 					</Link>
 
 					<Link to="/compare">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow">
-							<CardContent className="flex items-center gap-3 p-4">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<Grid3X3 className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("nav.compareCharts")}</p>
@@ -394,8 +394,8 @@ function Dashboard() {
 						</Card>
 					</Link>
 
-					<Card>
-						<CardContent className="flex items-center gap-3 p-4">
+					<Card className="h-full">
+						<CardContent className="flex items-center gap-3 p-4 h-full">
 							<TrendingUp className="h-8 w-8 text-primary" />
 							<div>
 								<p className="font-semibold">{t("home.vnIndex")}</p>
@@ -550,7 +550,7 @@ function Dashboard() {
 
 									<div>
 										<p className="text-sm font-medium text-muted-foreground">
-											Volume
+											{t("common.volume")}
 										</p>
 										<p className="text-lg font-semibold">
 											{latestPrice.volume.toLocaleString()}
@@ -608,7 +608,7 @@ function Dashboard() {
 				<div className="flex items-center justify-between mb-4">
 					<h2 className="text-xl font-semibold">{t("home.topPerformers")}</h2>
 					<p className="text-sm text-muted-foreground">
-						From 6 major sectors
+						{t("home.majorSectors")}
 					</p>
 				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">

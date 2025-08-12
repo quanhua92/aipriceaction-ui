@@ -29,6 +29,7 @@ import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import type { PanicDayData } from "@/data/panic-days";
 import { getPanicTypeColor, getWarningLevelColor } from "@/hooks/use-panic-analysis";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PanicDayTableProps {
 	panicDays: PanicDayData[];
@@ -58,13 +59,14 @@ function formatDate(dateStr: string): string {
 
 export function PanicDayTable({
 	panicDays,
-	title = "Panic Days Analysis",
-	description = "Historical Vietnamese market panic events with sector analysis",
+	title,
+	description,
 	showFilters = false,
 	onViewDetails,
 	maxHeight = "600px",
 	className
 }: PanicDayTableProps) {
+	const { t } = useTranslation();
 	const [sortField, setSortField] = useState<SortField>('date');
 	const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 	const [filterYear, setFilterYear] = useState<string>('all');
@@ -151,12 +153,12 @@ export function PanicDayTable({
 					<div className="space-y-1">
 						<CardTitle className="flex items-center gap-2 text-base md:text-lg">
 							<TrendingDown className="h-4 w-4 md:h-5 md:w-5" />
-							{title}
+							{title || t('home.panicDaysAnalysis')}
 						</CardTitle>
-						<CardDescription className="text-xs md:text-sm">{description}</CardDescription>
+						<CardDescription className="text-xs md:text-sm">{description || t('home.historicalVietnameseMarket')}</CardDescription>
 					</div>
 					<Badge variant="outline" className="text-xs md:text-sm px-2 py-1 self-start md:self-center">
-						{sortedAndFilteredData.length} events
+						{sortedAndFilteredData.length} {t('home.events')}
 					</Badge>
 				</div>
 
@@ -170,7 +172,7 @@ export function PanicDayTable({
 								onChange={(e) => setFilterYear(e.target.value)}
 								className="border border-gray-300 rounded px-2 md:px-3 py-1 text-xs md:text-sm min-w-0 flex-1 md:flex-initial"
 							>
-								<option value="all">All Years</option>
+								<option value="all">{t('home.allYears')}</option>
 								{availableYears.map(year => (
 									<option key={year} value={year.toString()}>{year}</option>
 								))}
@@ -184,11 +186,11 @@ export function PanicDayTable({
 								onChange={(e) => setFilterPattern(e.target.value)}
 								className="border border-gray-300 rounded px-2 md:px-3 py-1 text-xs md:text-sm min-w-0 flex-1 md:flex-initial"
 							>
-								<option value="all">All Patterns</option>
-								<option value="ESCALATING_TO_CRISIS">Escalating to Crisis</option>
-								<option value="MULTIPLE_WEAKNESS_EVENTS">Multiple Weakness</option>
-								<option value="SUSTAINED_DETERIORATION">Sustained Deterioration</option>
-								<option value="ISOLATED_SIGNALS">Black Swan</option>
+								<option value="all">{t('home.allPatterns')}</option>
+								<option value="ESCALATING_TO_CRISIS">{t('home.escalatingToCrisis')}</option>
+								<option value="MULTIPLE_WEAKNESS_EVENTS">{t('home.multipleWeakness')}</option>
+								<option value="SUSTAINED_DETERIORATION">{t('home.sustainedDeterioration')}</option>
+								<option value="ISOLATED_SIGNALS">{t('home.blackSwan')}</option>
 							</select>
 						</div>
 					</div>
@@ -207,7 +209,7 @@ export function PanicDayTable({
 											variant="ghost"
 											size="sm"
 											onClick={() => onViewDetails(panic)}
-											className="h-auto p-0 font-medium hover:underline text-blue-600"
+											className="h-auto px-2 py-1 font-medium hover:underline text-blue-600 hover:bg-blue-50 rounded"
 										>
 											{new Date(panic.date).toLocaleDateString('vi-VN')}
 										</Button>
@@ -222,7 +224,7 @@ export function PanicDayTable({
 										onClick={() => onViewDetails(panic)}
 										className="text-xs px-2 py-1 h-6"
 									>
-										View
+										{t('home.view')}
 									</Button>
 								)}
 							</div>
@@ -234,7 +236,7 @@ export function PanicDayTable({
 									</span>
 								</div>
 								<div>
-									<span className="text-gray-500">Banking:</span>
+									<span className="text-gray-500">{t('home.banking')}:</span>
 									<span className={`ml-1 font-medium ${
 										panic.bsi === null ? 'text-gray-400' : 
 										panic.bsi >= 0 ? 'text-green-600' : 'text-red-600'
@@ -243,7 +245,7 @@ export function PanicDayTable({
 									</span>
 								</div>
 								<div>
-									<span className="text-gray-500">Securities:</span>
+									<span className="text-gray-500">{t('home.securities')}:</span>
 									<span className={`ml-1 font-medium ${
 										panic.ssi === null ? 'text-gray-400' : 
 										panic.ssi >= 0 ? 'text-green-600' : 'text-red-600'
@@ -252,7 +254,7 @@ export function PanicDayTable({
 									</span>
 								</div>
 								<div>
-									<span className="text-gray-500">Real Estate:</span>
+									<span className="text-gray-500">{t('home.realEstate')}:</span>
 									<span className={`ml-1 font-medium ${
 										panic.rsi === null ? 'text-gray-400' : 
 										panic.rsi >= 0 ? 'text-green-600' : 'text-red-600'
@@ -263,10 +265,10 @@ export function PanicDayTable({
 							</div>
 							<div className="flex flex-wrap gap-1 mt-2">
 								<Badge className={getPanicTypeColor(panic.panicType)}>
-									{panic.panicType.replace('_', ' ')}
+									{t(`panic.panicTypes.${panic.panicType}`)}
 								</Badge>
 								<Badge className={getWarningLevelColor(panic.strongestWarning)}>
-									{panic.strongestWarning.replace('_', ' ')}
+									{t(`panic.warningLevels.${panic.strongestWarning}`)}
 								</Badge>
 							</div>
 						</Card>
@@ -279,28 +281,28 @@ export function PanicDayTable({
 						<TableHeader className="sticky top-0 bg-white border-b z-10">
 							<TableRow>
 								<TableHead className="w-[100px]">
-									<SortButton field="date">Date</SortButton>
+									<SortButton field="date">{t('home.date')}</SortButton>
 								</TableHead>
 								<TableHead className="w-[80px] text-right">
 									<SortButton field="vnindexChange">VNINDEX</SortButton>
 								</TableHead>
 								<TableHead className="w-[90px] text-center">
-									<SortButton field="bsi">Banking Indicator</SortButton>
+									<SortButton field="bsi">{t('home.bankingIndicator')}</SortButton>
 								</TableHead>
 								<TableHead className="w-[95px] text-center">
-									<SortButton field="ssi">Securities Indicator</SortButton>
+									<SortButton field="ssi">{t('home.securitiesIndicator')}</SortButton>
 								</TableHead>
 								<TableHead className="w-[100px] text-center">
-									<SortButton field="rsi">Real Estate Indicator</SortButton>
+									<SortButton field="rsi">{t('home.realEstateIndicator')}</SortButton>
 								</TableHead>
 								<TableHead className="w-[130px]">
-									<SortButton field="panicType">Classification</SortButton>
+									<SortButton field="panicType">{t('home.classification')}</SortButton>
 								</TableHead>
 								<TableHead className="w-[120px]">
-									<SortButton field="strongestWarning">Warning</SortButton>
+									<SortButton field="strongestWarning">{t('home.warning')}</SortButton>
 								</TableHead>
-								<TableHead className="w-[250px]">Context</TableHead>
-								<TableHead className="w-[80px]">Action</TableHead>
+								<TableHead className="w-[250px]">{t('home.context')}</TableHead>
+								<TableHead className="w-[80px]">{t('home.action')}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -315,7 +317,7 @@ export function PanicDayTable({
 												variant="ghost"
 												size="sm"
 												onClick={() => onViewDetails(panicDay)}
-												className="h-auto p-0 font-medium hover:underline text-blue-600"
+												className="h-auto px-2 py-1 font-medium hover:underline text-blue-600 hover:bg-blue-50 rounded"
 											>
 												{formatDate(panicDay.date)}
 											</Button>
@@ -357,13 +359,12 @@ export function PanicDayTable({
 									</TableCell>
 									<TableCell>
 										<Badge className={cn(getPanicTypeColor(panicDay.panicType), "text-xs")}>
-											{panicDay.panicType.replace('_', ' ')}
+											{t(`panic.panicTypes.${panicDay.panicType}`)}
 										</Badge>
 									</TableCell>
 									<TableCell>
 										<Badge className={cn(getWarningLevelColor(panicDay.strongestWarning), "text-xs")}>
-											{panicDay.strongestWarning === 'NO_WARNING' ? 'BLACK SWAN' :
-											 panicDay.strongestWarning.replace('_', ' ')}
+											{t(`panic.warningLevels.${panicDay.strongestWarning}`)}
 										</Badge>
 									</TableCell>
 									<TableCell className="text-sm text-gray-600 max-w-[250px] truncate">
@@ -377,7 +378,7 @@ export function PanicDayTable({
 												onClick={() => onViewDetails(panicDay)}
 												className="h-8 px-3 py-1"
 											>
-												View
+												{t('home.view')}
 											</Button>
 										)}
 									</TableCell>
