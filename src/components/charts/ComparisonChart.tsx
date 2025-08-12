@@ -15,6 +15,7 @@ interface ComparisonChartProps {
 	tickers: string[];
 	height?: number;
 	colors?: string[];
+	strokeWidths?: Record<string, number>;
 	title?: string;
 }
 
@@ -44,6 +45,7 @@ export function ComparisonChart({
 		"#3B82F6", "#10B981", "#F59E0B", "#EF4444", 
 		"#8B5CF6", "#06B6D4", "#F97316", "#84CC16"
 	],
+	strokeWidths = {},
 }: ComparisonChartProps) {
 	if (!data || data.length === 0) {
 		return (
@@ -85,7 +87,7 @@ export function ComparisonChart({
 						type="monotone"
 						dataKey={ticker}
 						stroke={colors[index]}
-						strokeWidth={2}
+						strokeWidth={strokeWidths[ticker] || 2}
 						dot={false}
 						name={ticker}
 						connectNulls={false}

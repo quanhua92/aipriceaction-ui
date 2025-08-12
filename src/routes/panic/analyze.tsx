@@ -293,6 +293,60 @@ function PanicAnalyzeDetail() {
 		"#F97316", // orange-500
 		"#84CC16", // lime-500
 	];
+
+	// Fixed sector colors - stable and highly distinguishable within each chart
+	const FIXED_SECTOR_COLORS: Record<string, string> = {
+		// VNINDEX is always red - most important line
+		'VNINDEX': "#EF4444", // red-500
+		
+		// Banking Sector - High contrast colors for easy separation
+		'VCB': "#3B82F6",      // blue-500 (bright blue)
+		'BID': "#10B981",      // emerald-500 (bright green) 
+		'TCB': "#F59E0B",      // amber-500 (bright orange)
+		'CTG': "#8B5CF6",      // violet-500 (bright purple)
+		'VPB': "#06B6D4",      // cyan-500 (bright cyan)
+		
+		// Securities Sector - Different high contrast colors
+		'SSI': "#3B82F6",      // blue-500 (bright blue)
+		'VCI': "#F59E0B",      // amber-500 (bright orange)
+		'HCM': "#10B981",      // emerald-500 (bright green)
+		'MBS': "#8B5CF6",      // violet-500 (bright purple) 
+		'SHS': "#EC4899",      // pink-500 (bright pink)
+		
+		// Real Estate Sector - Another set of high contrast colors
+		'VHM': "#10B981",      // emerald-500 (bright green)
+		'VIC': "#3B82F6",      // blue-500 (bright blue)
+		'VRE': "#F59E0B",      // amber-500 (bright orange)
+		'KDH': "#8B5CF6",      // violet-500 (bright purple)
+		'NVL': "#06B6D4",      // cyan-500 (bright cyan)
+		
+		// Additional fallback colors - all highly distinguishable
+		'DEFAULT_1': "#F97316", // orange-500
+		'DEFAULT_2': "#84CC16", // lime-500
+		'DEFAULT_3': "#EC4899", // pink-500
+		'DEFAULT_4': "#14B8A6", // teal-500
+		'DEFAULT_5': "#F43F5E", // rose-500
+	};
+
+	// Get sector chart colors - always consistent
+	const getSectorChartColors = (tickers: string[]) => {
+		const colors: Record<string, string> = {};
+		
+		tickers.forEach(ticker => {
+			colors[ticker] = FIXED_SECTOR_COLORS[ticker] || FIXED_SECTOR_COLORS['DEFAULT_1'];
+		});
+		
+		return colors;
+	};
+
+	// Get line stroke widths - VNINDEX is bold
+	const getLineStrokeWidths = (tickers: string[]) => {
+		const strokeWidths: Record<string, number> = {};
+		tickers.forEach(ticker => {
+			strokeWidths[ticker] = ticker === 'VNINDEX' ? 3 : 1.5; // VNINDEX is thicker
+		});
+		return strokeWidths;
+	};
 	
 	// Don't proceed if no date - will redirect
 	if (!date) {
@@ -952,8 +1006,20 @@ function PanicAnalyzeDetail() {
 							{/* Sector Performance Analysis */}
 							<Card>
 								<CardHeader>
-									<CardTitle>Sector Performance Analysis</CardTitle>
-									<CardDescription>Compare VNINDEX with top 5 stocks from each sector</CardDescription>
+									<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+										<div>
+											<CardTitle>Sector Performance Analysis</CardTitle>
+											<CardDescription>Compare VNINDEX with top 5 stocks from each sector</CardDescription>
+										</div>
+										<div className="md:w-auto">
+											<DateRangeSelector
+												value={dateRangeConfig}
+												onChange={handleDateRangeChange}
+												showNavigationButtons={true}
+												className="w-full md:w-auto"
+											/>
+										</div>
+									</div>
 								</CardHeader>
 								<CardContent>
 									<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -961,51 +1027,57 @@ function PanicAnalyzeDetail() {
 										<div className="space-y-3">
 											<h4 className="font-medium text-gray-700">Banking Sector</h4>
 											<div className="h-[300px]">
-												{tickerData && BANKING_TICKERS.length > 0 ? (
-													<ComparisonChart
-														data={(() => {
-															// Normalize data for comparison - convert to percentage change from first data point
-															const normalizedData: any[] = [];
-															const allTickers = ['VNINDEX', ...BANKING_TICKERS];
+												{tickerData && BANKING_TICKERS.length > 0 ? (() => {
+													const allTickers = ['VNINDEX', ...BANKING_TICKERS];
+													const sectorColors = getSectorChartColors(allTickers);
+													const strokeWidths = getLineStrokeWidths(allTickers);
+													
+													return (
+														<ComparisonChart
+															data={(() => {
+																// Normalize data for comparison - convert to percentage change from first data point
+																const normalizedData: any[] = [];
 
-															if (tickerData && allTickers.length > 0) {
-																const maxLength = Math.max(
-																	...allTickers.map(
-																		(ticker) => tickerData[ticker]?.length || 0,
-																	),
-																);
+																if (tickerData && allTickers.length > 0) {
+																	const maxLength = Math.max(
+																		...allTickers.map(
+																			(ticker) => tickerData[ticker]?.length || 0,
+																		),
+																	);
 
-																for (let i = 0; i < maxLength; i++) {
-																	const dataPoint: any = { time: "", date: null };
+																	for (let i = 0; i < maxLength; i++) {
+																		const dataPoint: any = { time: "", date: null };
 
-																	allTickers.forEach((ticker) => {
-																		const data = tickerData[ticker] || [];
-																		if (data[i] && data[0]) {
-																			const changePercent =
-																				((data[i].close - data[0].close) /
-																					data[0].close) *
-																				100;
-																			dataPoint[ticker] = changePercent;
-																			if (!dataPoint.time) {
-																				dataPoint.time = data[i].time;
-																				dataPoint.date = data[i].date;
+																		allTickers.forEach((ticker) => {
+																			const data = tickerData[ticker] || [];
+																			if (data[i] && data[0]) {
+																				const changePercent =
+																					((data[i].close - data[0].close) /
+																						data[0].close) *
+																					100;
+																				dataPoint[ticker] = changePercent;
+																				if (!dataPoint.time) {
+																					dataPoint.time = data[i].time;
+																					dataPoint.date = data[i].date;
+																				}
 																			}
-																		}
-																	});
+																		});
 
-																	if (dataPoint.time) {
-																		normalizedData.push(dataPoint);
+																		if (dataPoint.time) {
+																			normalizedData.push(dataPoint);
+																		}
 																	}
 																}
-															}
 
-															return normalizedData;
-														})()}
-														tickers={['VNINDEX', ...BANKING_TICKERS]}
-														colors={chartColors}
-														height={300}
-													/>
-												) : tickerLoading ? (
+																return normalizedData;
+															})()}
+															tickers={allTickers}
+															colors={Object.values(sectorColors)}
+															strokeWidths={strokeWidths}
+															height={300}
+														/>
+													);
+												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
 														<div className="text-muted-foreground">Loading banking sector...</div>
 													</div>
@@ -1015,72 +1087,85 @@ function PanicAnalyzeDetail() {
 													</div>
 												)}
 											</div>
-											<div className="flex flex-wrap gap-1">
-												<Badge variant="outline" className="text-xs" style={{ borderColor: chartColors[0] }}>
-													VNINDEX
-												</Badge>
-												{BANKING_TICKERS.map((ticker, index) => (
-													<Badge
-														key={ticker}
-														variant="outline"
-														className="text-xs"
-														style={{ borderColor: chartColors[(index + 1) % chartColors.length] }}
-													>
-														{ticker}
-													</Badge>
-												))}
-											</div>
+											{(() => {
+												const allTickers = ['VNINDEX', ...BANKING_TICKERS];
+												const sectorColors = getSectorChartColors(allTickers);
+												
+												return (
+													<div className="flex flex-wrap gap-1">
+														<Badge variant="outline" className="text-xs font-bold" style={{ borderColor: sectorColors['VNINDEX'], color: sectorColors['VNINDEX'] }}>
+															VNINDEX
+														</Badge>
+														{BANKING_TICKERS.map((ticker) => (
+															<Badge
+																key={ticker}
+																variant="outline"
+																className="text-xs"
+																style={{ borderColor: sectorColors[ticker] }}
+															>
+																{ticker}
+															</Badge>
+														))}
+													</div>
+												);
+											})()}
 										</div>
 
 										{/* Securities Sector Chart */}
 										<div className="space-y-3">
 											<h4 className="font-medium text-gray-700">Securities Sector</h4>
 											<div className="h-[300px]">
-												{tickerData && SECURITIES_TICKERS.length > 0 ? (
-													<ComparisonChart
-														data={(() => {
-															// Normalize data for comparison
-															const normalizedData: any[] = [];
-															const allTickers = ['VNINDEX', ...SECURITIES_TICKERS];
+												{tickerData && SECURITIES_TICKERS.length > 0 ? (() => {
+													const allTickers = ['VNINDEX', ...SECURITIES_TICKERS];
+													const sectorColors = getSectorChartColors(allTickers);
+													const strokeWidths = getLineStrokeWidths(allTickers);
+													
+													return (
+														<ComparisonChart
+															data={(() => {
+																// Normalize data for comparison
+																const normalizedData: any[] = [];
 
-															if (tickerData && allTickers.length > 0) {
-																const maxLength = Math.max(
-																	...allTickers.map(
-																		(ticker) => tickerData[ticker]?.length || 0,
-																	),
-																);
+																if (tickerData && allTickers.length > 0) {
+																	const maxLength = Math.max(
+																		...allTickers.map(
+																			(ticker) => tickerData[ticker]?.length || 0,
+																		),
+																	);
 
-																for (let i = 0; i < maxLength; i++) {
-																	const dataPoint: any = { time: "", date: null };
+																	for (let i = 0; i < maxLength; i++) {
+																		const dataPoint: any = { time: "", date: null };
 
-																	allTickers.forEach((ticker) => {
-																		const data = tickerData[ticker] || [];
-																		if (data[i] && data[0]) {
-																			const changePercent =
-																				((data[i].close - data[0].close) /
-																					data[0].close) *
-																				100;
-																			dataPoint[ticker] = changePercent;
-																			if (!dataPoint.time) {
-																				dataPoint.time = data[i].time;
-																				dataPoint.date = data[i].date;
+																		allTickers.forEach((ticker) => {
+																			const data = tickerData[ticker] || [];
+																			if (data[i] && data[0]) {
+																				const changePercent =
+																					((data[i].close - data[0].close) /
+																						data[0].close) *
+																					100;
+																				dataPoint[ticker] = changePercent;
+																				if (!dataPoint.time) {
+																					dataPoint.time = data[i].time;
+																					dataPoint.date = data[i].date;
+																				}
 																			}
-																		}
-																	});
+																		});
 
-																	if (dataPoint.time) {
-																		normalizedData.push(dataPoint);
+																		if (dataPoint.time) {
+																			normalizedData.push(dataPoint);
+																		}
 																	}
 																}
-															}
 
-															return normalizedData;
-														})()}
-														tickers={['VNINDEX', ...SECURITIES_TICKERS]}
-														colors={chartColors}
-														height={300}
-													/>
-												) : tickerLoading ? (
+																return normalizedData;
+															})()}
+															tickers={allTickers}
+															colors={Object.values(sectorColors)}
+															strokeWidths={strokeWidths}
+															height={300}
+														/>
+													);
+												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
 														<div className="text-muted-foreground">Loading securities sector...</div>
 													</div>
@@ -1090,72 +1175,85 @@ function PanicAnalyzeDetail() {
 													</div>
 												)}
 											</div>
-											<div className="flex flex-wrap gap-1">
-												<Badge variant="outline" className="text-xs" style={{ borderColor: chartColors[0] }}>
-													VNINDEX
-												</Badge>
-												{SECURITIES_TICKERS.map((ticker, index) => (
-													<Badge
-														key={ticker}
-														variant="outline"
-														className="text-xs"
-														style={{ borderColor: chartColors[(index + 1) % chartColors.length] }}
-													>
-														{ticker}
-													</Badge>
-												))}
-											</div>
+											{(() => {
+												const allTickers = ['VNINDEX', ...SECURITIES_TICKERS];
+												const sectorColors = getSectorChartColors(allTickers);
+												
+												return (
+													<div className="flex flex-wrap gap-1">
+														<Badge variant="outline" className="text-xs font-bold" style={{ borderColor: sectorColors['VNINDEX'], color: sectorColors['VNINDEX'] }}>
+															VNINDEX
+														</Badge>
+														{SECURITIES_TICKERS.map((ticker) => (
+															<Badge
+																key={ticker}
+																variant="outline"
+																className="text-xs"
+																style={{ borderColor: sectorColors[ticker] }}
+															>
+																{ticker}
+															</Badge>
+														))}
+													</div>
+												);
+											})()}
 										</div>
 
 										{/* Real Estate Sector Chart */}
 										<div className="space-y-3">
 											<h4 className="font-medium text-gray-700">Real Estate Sector</h4>
 											<div className="h-[300px]">
-												{tickerData && REAL_ESTATE_TICKERS.length > 0 ? (
-													<ComparisonChart
-														data={(() => {
-															// Normalize data for comparison
-															const normalizedData: any[] = [];
-															const allTickers = ['VNINDEX', ...REAL_ESTATE_TICKERS];
+												{tickerData && REAL_ESTATE_TICKERS.length > 0 ? (() => {
+													const allTickers = ['VNINDEX', ...REAL_ESTATE_TICKERS];
+													const sectorColors = getSectorChartColors(allTickers);
+													const strokeWidths = getLineStrokeWidths(allTickers);
+													
+													return (
+														<ComparisonChart
+															data={(() => {
+																// Normalize data for comparison
+																const normalizedData: any[] = [];
 
-															if (tickerData && allTickers.length > 0) {
-																const maxLength = Math.max(
-																	...allTickers.map(
-																		(ticker) => tickerData[ticker]?.length || 0,
-																	),
-																);
+																if (tickerData && allTickers.length > 0) {
+																	const maxLength = Math.max(
+																		...allTickers.map(
+																			(ticker) => tickerData[ticker]?.length || 0,
+																		),
+																	);
 
-																for (let i = 0; i < maxLength; i++) {
-																	const dataPoint: any = { time: "", date: null };
+																	for (let i = 0; i < maxLength; i++) {
+																		const dataPoint: any = { time: "", date: null };
 
-																	allTickers.forEach((ticker) => {
-																		const data = tickerData[ticker] || [];
-																		if (data[i] && data[0]) {
-																			const changePercent =
-																				((data[i].close - data[0].close) /
-																					data[0].close) *
-																				100;
-																			dataPoint[ticker] = changePercent;
-																			if (!dataPoint.time) {
-																				dataPoint.time = data[i].time;
-																				dataPoint.date = data[i].date;
+																		allTickers.forEach((ticker) => {
+																			const data = tickerData[ticker] || [];
+																			if (data[i] && data[0]) {
+																				const changePercent =
+																					((data[i].close - data[0].close) /
+																						data[0].close) *
+																					100;
+																				dataPoint[ticker] = changePercent;
+																				if (!dataPoint.time) {
+																					dataPoint.time = data[i].time;
+																					dataPoint.date = data[i].date;
+																				}
 																			}
-																		}
-																	});
+																		});
 
-																	if (dataPoint.time) {
-																		normalizedData.push(dataPoint);
+																		if (dataPoint.time) {
+																			normalizedData.push(dataPoint);
+																		}
 																	}
 																}
-															}
 
-															return normalizedData;
-														})()}
-														tickers={['VNINDEX', ...REAL_ESTATE_TICKERS]}
-														colors={chartColors}
-														height={300}
-													/>
-												) : tickerLoading ? (
+																return normalizedData;
+															})()}
+															tickers={allTickers}
+															colors={Object.values(sectorColors)}
+															strokeWidths={strokeWidths}
+															height={300}
+														/>
+													);
+												})() : tickerLoading ? (
 													<div className="h-[300px] flex items-center justify-center">
 														<div className="text-muted-foreground">Loading real estate sector...</div>
 													</div>
@@ -1165,21 +1263,28 @@ function PanicAnalyzeDetail() {
 													</div>
 												)}
 											</div>
-											<div className="flex flex-wrap gap-1">
-												<Badge variant="outline" className="text-xs" style={{ borderColor: chartColors[0] }}>
-													VNINDEX
-												</Badge>
-												{REAL_ESTATE_TICKERS.map((ticker, index) => (
-													<Badge
-														key={ticker}
-														variant="outline"
-														className="text-xs"
-														style={{ borderColor: chartColors[(index + 1) % chartColors.length] }}
-													>
-														{ticker}
-													</Badge>
-												))}
-											</div>
+											{(() => {
+												const allTickers = ['VNINDEX', ...REAL_ESTATE_TICKERS];
+												const sectorColors = getSectorChartColors(allTickers);
+												
+												return (
+													<div className="flex flex-wrap gap-1">
+														<Badge variant="outline" className="text-xs font-bold" style={{ borderColor: sectorColors['VNINDEX'], color: sectorColors['VNINDEX'] }}>
+															VNINDEX
+														</Badge>
+														{REAL_ESTATE_TICKERS.map((ticker) => (
+															<Badge
+																key={ticker}
+																variant="outline"
+																className="text-xs"
+																style={{ borderColor: sectorColors[ticker] }}
+															>
+																{ticker}
+															</Badge>
+														))}
+													</div>
+												);
+											})()}
 										</div>
 									</div>
 								</CardContent>
