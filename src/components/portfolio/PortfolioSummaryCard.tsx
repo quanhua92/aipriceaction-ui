@@ -174,56 +174,54 @@ export function PortfolioSummaryCard({
 
 	return (
 		<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20 border-2 border-dashed border-muted/30">
-			<CardHeader className="pb-4">
-				<CardTitle className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-					<div className="flex items-center gap-3">
-						<div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-center">
-							<PieChart className="h-5 w-5 text-white" />
+			<CardHeader className="pb-2">
+				<CardTitle className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+					<div className="flex items-center gap-2">
+						<div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-center">
+							<PieChart className="h-4 w-4 text-white" />
 						</div>
 						<div>
-							<h2 className="text-xl font-bold">{t("portfolio.summary")}</h2>
-							<p className="text-sm text-muted-foreground">{t("portfolio.screenshotOptimized")}</p>
+							<h2 className="text-lg font-bold">{t("portfolio.summary")}</h2>
+							<p className="text-xs text-muted-foreground hidden sm:block">{t("portfolio.screenshotOptimized")}</p>
 						</div>
 					</div>
-					<div className="flex items-center gap-3 bg-background/50 rounded-full px-4 py-2 border">
+					<div className="flex items-center gap-2 bg-background/50 rounded-full px-3 py-1 border">
 						<Switch
 							id="privacy-toggle"
 							checked={showPrivacy}
 							onCheckedChange={onTogglePrivacy}
 						/>
-						<Label htmlFor="privacy-toggle" className="text-sm flex items-center gap-2 cursor-pointer">
-							{showPrivacy ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+						<Label htmlFor="privacy-toggle" className="text-xs flex items-center gap-1 cursor-pointer">
+							{showPrivacy ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
 							{t("portfolio.privacy")}
 						</Label>
 					</div>
 				</CardTitle>
 			</CardHeader>
-			<CardContent>
-				{/* Portfolio Summary Stats */}
-				<div className="mb-6 space-y-3">
+			<CardContent className="pt-2">
+				{/* Portfolio Summary Stats - Compact */}
+				<div className="mb-3 space-y-2">
 					<div className="text-center">
-						<div className="text-3xl font-bold text-green-600">
+						<div className="text-2xl md:text-3xl font-bold text-green-600">
 							{displayValue(currentMarketValue)}
 						</div>
-						<div className="text-muted-foreground text-sm">{t("portfolio.totalValue")}</div>
+						<div className="text-muted-foreground text-xs">{t("portfolio.totalValue")}</div>
 					</div>
-					<div className="grid grid-cols-2 gap-4 text-sm">
-						<div>
-							<span className="text-muted-foreground">{t("portfolio.totalAssets")}:</span>
-							<div className="font-medium">{displayValue(currentMarketValue)}</div>
+					<div className="grid grid-cols-3 gap-2 text-xs">
+						<div className="text-center">
+							<span className="text-muted-foreground block">{t("portfolio.totalAssets")}</span>
+							<div className="font-medium text-sm">{displayValue(currentMarketValue)}</div>
 						</div>
-						<div>
-							<span className="text-muted-foreground">{t("portfolio.totalCapital")}:</span>
-							<div className="font-medium">{displayValue(deposit)}</div>
+						<div className="text-center">
+							<span className="text-muted-foreground block">{t("portfolio.totalCapital")}</span>
+							<div className="font-medium text-sm">{displayValue(deposit)}</div>
 						</div>
-					</div>
-					<div className="text-center">
-						<span className={`text-2xl font-bold ${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-							{profitLoss >= 0 ? '+' : ''}{displayValue(Math.abs(profitLoss))}
-						</span>
-						<span className={`ml-4 text-xl ${profitLossPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-							{profitLossPercentage >= 0 ? '+' : ''}{profitLossPercentage.toFixed(2)}%
-						</span>
+						<div className="text-center">
+							<span className="text-muted-foreground block">P&L</span>
+							<div className={`font-bold text-sm ${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+								{profitLossPercentage >= 0 ? '+' : ''}{profitLossPercentage.toFixed(1)}%
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -264,16 +262,16 @@ export function PortfolioSummaryCard({
 								/* Card-style Overview Table - SSI Layout */
 								<div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
 								{/* Header */}
-								<div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-									<div className="grid grid-cols-4 gap-4 text-sm font-medium text-gray-600">
+								<div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
+									<div className="grid grid-cols-4 gap-2 text-xs font-medium text-gray-600">
 										<div>{t("portfolio.ticker")}</div>
 										<div className="text-center">{t("portfolio.volume")}</div>
 										<div className="text-center">
-											<div>{t("portfolio.marketPrice")}</div>
+											<div className="text-xs">{t("portfolio.marketPrice")}</div>
 											<div className="text-xs">{t("portfolio.buyPrice")}</div>
 										</div>
 										<div className="text-center">
-											<div>{t("portfolio.profitPercent")}</div>
+											<div className="text-xs">{t("portfolio.profitPercent")}</div>
 											<div className="text-xs">{t("portfolio.profitPrice")}</div>
 										</div>
 									</div>
@@ -289,38 +287,38 @@ export function PortfolioSummaryCard({
 										const volume = item.quantity; // Volume/Quantity
 
 										return (
-											<div key={item.ticker} className="px-4 py-4 hover:bg-gray-50 transition-colors">
-												<div className="grid grid-cols-4 gap-4 items-center">
+											<div key={item.ticker} className="px-3 py-2 hover:bg-gray-50 transition-colors">
+												<div className="grid grid-cols-4 gap-2 items-center">
 													{/* Ticker */}
-													<div className="font-semibold text-gray-900">{item.ticker}</div>
+													<div className="font-semibold text-gray-900 text-sm">{item.ticker}</div>
 													
 													{/* Volume */}
 													<div className="text-center">
 														{showPrivacy ? (
-															<span className="text-gray-400">●●●</span>
+															<span className="text-gray-400 text-xs">●●●</span>
 														) : (
-															<span className="font-medium">{formatNumber(volume)}</span>
+															<span className="font-medium text-xs">{formatNumber(volume)}</span>
 														)}
 													</div>
 													
 													{/* Market Price / Buy Price */}
-													<div className="text-center space-y-1">
-														<div className="font-medium text-gray-900">{formatVND(marketPrice)}</div>
-														<div className="text-sm text-gray-500">{formatVND(costBasis)}</div>
+													<div className="text-center space-y-0.5">
+														<div className="font-medium text-gray-900 text-xs">{formatVND(marketPrice)}</div>
+														<div className="text-xs text-gray-500">{formatVND(costBasis)}</div>
 													</div>
 													
 													{/* Profit % / Profit VND */}
-													<div className="text-center space-y-1">
-														<div className={`font-semibold ${profitPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-															{profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(2)}%
+													<div className="text-center space-y-0.5">
+														<div className={`font-semibold text-xs ${profitPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+															{profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(1)}%
 														</div>
 														{!showPrivacy && (
-															<div className={`text-sm font-medium ${profitPrice >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+															<div className={`text-xs font-medium ${profitPrice >= 0 ? 'text-green-600' : 'text-red-600'}`}>
 																{profitPrice >= 0 ? '+' : ''}{formatVND(Math.abs(profitPrice))}
 															</div>
 														)}
 														{showPrivacy && (
-															<div className="text-sm text-gray-400">●●●</div>
+															<div className="text-xs text-gray-400">●●●</div>
 														)}
 													</div>
 												</div>
@@ -331,37 +329,37 @@ export function PortfolioSummaryCard({
 								
 								{/* Deposit input at bottom */}
 								{onUpdateDeposit && (
-									<div className="border-t border-gray-200 p-4 bg-gray-50">
+									<div className="border-t border-gray-200 p-2 bg-gray-50">
 										{editingDeposit ? (
-											<div className="flex items-center gap-3">
-												<span className="text-sm font-medium min-w-0">{t("portfolio.totalDeposit")}:</span>
+											<div className="flex items-center gap-2">
+												<span className="text-xs font-medium min-w-0">{t("portfolio.totalDeposit")}:</span>
 												<Input
 													type="text"
 													inputMode="numeric"
 													value={depositValue}
 													onChange={(e) => setDepositValue(e.target.value)}
-													className="flex-1 text-right font-medium bg-white"
+													className="flex-1 text-right font-medium bg-white text-xs h-8"
 													autoFocus
 												/>
-												<div className="flex gap-2">
-													<Button size="default" className="bg-green-600 hover:bg-green-700 text-white px-6 py-2" onClick={handleDepositSubmit}>Save</Button>
-													<Button size="sm" variant="outline" onClick={handleDepositCancel}>Cancel</Button>
+												<div className="flex gap-1">
+													<Button size="sm" className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-xs h-8" onClick={handleDepositSubmit}>Save</Button>
+													<Button size="sm" variant="outline" className="px-2 py-1 text-xs h-8" onClick={handleDepositCancel}>Cancel</Button>
 												</div>
 											</div>
 										) : (
 											<div className="flex items-center justify-between group">
-												<span className="text-sm font-medium text-gray-700">
+												<span className="text-xs font-medium text-gray-700">
 													{t("portfolio.totalDeposit")} {!manualDeposit && "(auto)"}:
 												</span>
-												<div className="flex items-center gap-2">
-													<span className="font-medium text-gray-900">{displayValue(deposit)}</span>
+												<div className="flex items-center gap-1">
+													<span className="font-medium text-gray-900 text-xs">{displayValue(deposit)}</span>
 													<Button
 														size="sm"
 														variant="ghost"
-														className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+														className="h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
 														onClick={() => setEditingDeposit(true)}
 													>
-														<Edit3 className="h-3 w-3" />
+														<Edit3 className="h-2 w-2" />
 													</Button>
 												</div>
 											</div>
