@@ -427,6 +427,42 @@ export const vn = {
     chart: "Biểu đồ",
     vpa: "VPA",
     
+    // Tín hiệu giao dịch
+    highConfidence: "ĐỘ TIN CẬY CAO",
+    mediumConfidence: "ĐỘ TIN CẬY TRUNG BÌNH",
+    lowConfidence: "ĐỘ TIN CẬY THẤP",
+    timeframe: "Khung thời gian",
+    riskLevel: "Mức độ Rủi ro",
+    highRisk: "RỦI RO CAO",
+    exerciseCaution: "Hãy cực kỳ thận trọng với quy mô vị thế",
+    buyOpportunities: "CƠ HỘI MUA",
+    avoidReduce: "TRÁNH / GIẢM",
+    watchMonitor: "THEO DÕI / GIÁM SÁT",
+    historicalPerformanceContext: "Bối cảnh Hiệu suất Lịch sử",
+    historicalBestPerformers: "Cổ phiếu Tốt nhất Lịch sử",
+    historicalWorstPerformers: "Cổ phiếu Tệ nhất Lịch sử",
+    historicalDefensiveLeaders: "Cổ phiếu Phòng thủ Lịch sử",
+    
+    // Chiến lược giao dịch
+    aggressiveBuyingOpportunity: "Cơ hội mua tích cực - Ngân hàng ổn định trong khi Chứng khoán/Bđs quá bán",
+    defensivePositioningOnly: "Chỉ định vị phòng thủ - Tất cả các ngành đang gặp khó khăn sâu sắc",
+    reduceExposurePrepare: "Giảm rủi ro, chuẩn bị cho sự suy yếu thêm",
+    mixedSignalsSelective: "Tín hiệu hỗn hợp - Định vị chất lượng chọn lọc",
+    recoveryPatternsEmerging: "Các mô hình phục hồi đang xuất hiện - Dự kiến Chứng khoán dẫn đầu",
+    normalMarketStandardDiv: "Điều kiện thị trường bình thường - Đa dạng hóa tiêu chuẩn",
+    oneDayRecoveryWindow: "Khổi phục trong 1-3 ngày",
+    oneWeekRecovery: "Phục hồi trong 1-2 tuần",
+    threeDaysMonitoring: "Giám sát trong 3-7 ngày",
+    oneToFiveDaysPattern: "Phát triển mô hình trong 1-5 ngày",
+    twoToFiveDaysMomentum: "Xây dựng động lực trong 2-5 ngày",
+    ongoingMonitoring: "Giám sát liên tục",
+    mediumSelectivePositioning: "Trung bình - Định vị chọn lọc",
+    extremeCapitalPreservation: "Cực đoan - Chế độ bảo tồn vốn",
+    highCrossSectorWeakness: "Cao - Sự suy yếu đáng kể qua các ngành",
+    mediumSectorDivergence: "Trung bình - Phân kỳ ngành",
+    lowMediumRecoveryPositioning: "Thấp-Trung bình - Định vị phục hồi",
+    lowRegularMarketConditions: "Thấp - Điều kiện thị trường thông thường",
+    
     // Sector Performance Breakdown
     sectorPerformanceBreakdown: "Phân tích Hiệu suất theo Ngành",
     individualSectorAnalysis: "Phân tích chỉ số ngành riêng lẻ",
@@ -463,7 +499,16 @@ export const vn = {
     // Pre-Panic Analysis
     prePanicTradingAdvice: "Lời khuyên Giao dịch Tiền Hoảng loạn",
     riskManagementRecommendations: "Khuyến nghị quản lý rủi ro dựa trên tín hiệu tiền hoảng loạn",
-    riskLevel: "Mức Rủi ro",
+    reducePositionsImmediately: "GIẢM vị thế ngay lập tức, tăng tiền mặt lên 70%+",
+    riskLevelExtreme: "CỰC KỲ",
+    maximumEquityExposure: "Tối đa 30% tỷ trọng cổ phiếu",
+    vcbOnlyExitOthers: "Chỉ VCB, thoát tất cả các cổ phiếu khác",
+    loadingPrePanicAnalysis: "Đang tải phân tích tiền hoảng loạn...",
+    failedToLoadPrePanic: "Không thể tải phân tích tiền hoảng loạn",
+    t14: "T-14",
+    t7: "T-7",
+    t1: "T-1",
+    additionalWeaknessSignal: "Phát hiện tín hiệu yếu kém bổ sung trong quá trình quét tiền hoảng loạn",
     positionSize: "Quy mô Vị thế",
     defensiveStocks: "Cổ phiếu Phòng thủ",
     prePanicSignalTimeline: "Dòng thời gian Tín hiệu Tiền Hoảng loạn",
@@ -471,7 +516,6 @@ export const vn = {
     comprehensiveScan: "Quét Toàn diện 14 Ngày",
     significantDropsDetected: "Phát hiện sụt giảm đáng kể (≥2%) trong giai đoạn tiền hoảng loạn 14 ngày",
     daysBefore: "T-",
-    additionalWeaknessSignal: "Tín hiệu yếu kém bổ sung được phát hiện trong quá trình quét tiền hoảng loạn",
     prePanicNotAvailable: "Phân tích tiền hoảng loạn không có sẵn cho ngày này. Đây có thể là phân tích thị trường hiện tại hoặc dữ liệu lịch sử không đủ.",
     
     // Historical Context
@@ -525,12 +569,10 @@ export const vn = {
     
     // Loading states
     loadingAnalysis: "Đang phân tích dữ liệu thị trường cho",
-    loadingPrePanicAnalysis: "Đang tải phân tích tiền hoảng loạn...",
     redirectingToRecent: "Đang chuyển hướng đến phân tích gần đây nhất...",
     
     // Error states
     unableToLoadAnalysis: "Không thể tải phân tích cho {date}. Ngày có thể không hợp lệ hoặc dữ liệu thị trường có thể không có sẵn.",
-    failedToLoadPrePanic: "Không thể tải phân tích tiền hoảng loạn.",
     
     // Educational card
     educationalGuide: "Hướng dẫn Giáo dục",

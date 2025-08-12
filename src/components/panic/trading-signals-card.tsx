@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { PanicType } from "@/lib/panic-analyzer";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface TradingSignalsCardProps {
 	panicType: PanicType;
@@ -36,7 +37,7 @@ interface TradingSignalsCardProps {
 	showHistoricalContext?: boolean;
 }
 
-function getPanicTypeStrategy(type: PanicType): {
+function getPanicTypeStrategy(type: PanicType, t: (key: string) => string): {
 	strategy: string;
 	confidence: 'high' | 'medium' | 'low';
 	timeframe: string;
@@ -45,46 +46,46 @@ function getPanicTypeStrategy(type: PanicType): {
 	switch (type) {
 		case 'POSITIVE_PANIC':
 			return {
-				strategy: 'Aggressive buying opportunity - Banking stable while Securities/Real Estate oversold',
+				strategy: t('panic.aggressiveBuyingOpportunity'),
 				confidence: 'high',
-				timeframe: '1-3 days recovery window',
-				risk: 'Medium - Selective positioning'
+				timeframe: t('panic.oneDayRecoveryWindow'),
+				risk: t('panic.mediumSelectivePositioning')
 			};
 		case 'NEGATIVE_EXTREME':
 			return {
-				strategy: 'Defensive positioning only - All sectors in deep distress',
+				strategy: t('panic.defensivePositioningOnly'),
 				confidence: 'high',
-				timeframe: '1-2 weeks recovery',
-				risk: 'Extreme - Capital preservation mode'
+				timeframe: t('panic.oneWeekRecovery'),
+				risk: t('panic.extremeCapitalPreservation')
 			};
 		case 'NEGATIVE_MEDIUM':
 			return {
-				strategy: 'Reduce exposure, prepare for further weakness',
+				strategy: t('panic.reduceExposurePrepare'),
 				confidence: 'medium',
-				timeframe: '3-7 days monitoring',
-				risk: 'High - Significant cross-sector weakness'
+				timeframe: t('panic.threeDaysMonitoring'),
+				risk: t('panic.highCrossSectorWeakness')
 			};
 		case 'UNCLEAR_PATTERN':
 			return {
-				strategy: 'Mixed signals - Selective quality positioning',
+				strategy: t('panic.mixedSignalsSelective'),
 				confidence: 'low',
-				timeframe: '1-5 days pattern development',
-				risk: 'Medium - Sector divergence'
+				timeframe: t('panic.oneToFiveDaysPattern'),
+				risk: t('panic.mediumSectorDivergence')
 			};
 		case 'RECOVERY_SIGNAL':
 			return {
-				strategy: 'Recovery patterns emerging - Securities leadership expected',
+				strategy: t('panic.recoveryPatternsEmerging'),
 				confidence: 'high',
-				timeframe: '2-5 days momentum build',
-				risk: 'Low-Medium - Recovery positioning'
+				timeframe: t('panic.twoToFiveDaysMomentum'),
+				risk: t('panic.lowMediumRecoveryPositioning')
 			};
 		case 'NO_PANIC':
 		default:
 			return {
-				strategy: 'Normal market conditions - Standard diversification',
+				strategy: t('panic.normalMarketStandardDiv'),
 				confidence: 'medium',
-				timeframe: 'Ongoing monitoring',
-				risk: 'Low - Regular market conditions'
+				timeframe: t('panic.ongoingMonitoring'),
+				risk: t('panic.lowRegularMarketConditions')
 			};
 	}
 }
@@ -100,7 +101,8 @@ export function TradingSignalsCard({
 	className,
 	showHistoricalContext = false
 }: TradingSignalsCardProps) {
-	const strategy = getPanicTypeStrategy(panicType);
+	const { t } = useTranslation();
+	const strategy = getPanicTypeStrategy(panicType, t);
 
 	return (
 		<Card className={cn("w-full", className)}>
@@ -108,7 +110,7 @@ export function TradingSignalsCard({
 				<div className="flex items-center justify-between">
 					<CardTitle className="flex items-center gap-2">
 						<Target className="h-5 w-5" />
-						Trading Signals
+						{t('panic.tradingSignals')}
 					</CardTitle>
 					<Badge 
 						variant="outline"
@@ -118,7 +120,7 @@ export function TradingSignalsCard({
 							'border-red-500 text-red-700'
 						)}
 					>
-						{strategy.confidence.toUpperCase()} CONFIDENCE
+						{t(`panic.${strategy.confidence}Confidence`)}
 					</Badge>
 				</div>
 				<CardDescription>{strategy.strategy}</CardDescription>
@@ -128,11 +130,11 @@ export function TradingSignalsCard({
 				{/* Strategy Overview */}
 				<div className="grid grid-cols-2 gap-4 text-sm">
 					<div>
-						<span className="font-medium text-gray-700">Timeframe:</span>
+						<span className="font-medium text-gray-700">{t('panic.timeframe')}:</span>
 						<div className="text-gray-600">{strategy.timeframe}</div>
 					</div>
 					<div>
-						<span className="font-medium text-gray-700">Risk Level:</span>
+						<span className="font-medium text-gray-700">{t('panic.riskLevel')}:</span>
 						<div className="text-gray-600">{strategy.risk}</div>
 					</div>
 				</div>
@@ -142,7 +144,7 @@ export function TradingSignalsCard({
 					<Alert className="border-red-200 bg-red-50">
 						<AlertTriangle className="h-4 w-4 text-red-500" />
 						<AlertDescription className="text-red-700">
-							<strong>HIGH RISK:</strong> {strategy.risk} - Exercise extreme caution with position sizing.
+							<strong>{t('panic.highRisk')}:</strong> {strategy.risk} - {t('panic.exerciseCaution')}
 						</AlertDescription>
 					</Alert>
 				)}
@@ -154,7 +156,7 @@ export function TradingSignalsCard({
 						<div>
 							<div className="flex items-center gap-2 mb-2">
 								<TrendingUp className="h-4 w-4 text-green-500" />
-								<span className="font-medium text-green-700">BUY OPPORTUNITIES</span>
+								<span className="font-medium text-green-700">{t('panic.buyOpportunities')}</span>
 							</div>
 							<div className="flex flex-wrap gap-2">
 								{tradingSignals.buy.map((ticker) => (
@@ -171,7 +173,7 @@ export function TradingSignalsCard({
 						<div>
 							<div className="flex items-center gap-2 mb-2">
 								<TrendingDown className="h-4 w-4 text-red-500" />
-								<span className="font-medium text-red-700">AVOID / REDUCE</span>
+								<span className="font-medium text-red-700">{t('panic.avoidReduce')}</span>
 							</div>
 							<div className="flex flex-wrap gap-2">
 								{tradingSignals.avoid.map((ticker) => (
@@ -188,7 +190,7 @@ export function TradingSignalsCard({
 						<div>
 							<div className="flex items-center gap-2 mb-2">
 								<Eye className="h-4 w-4 text-blue-500" />
-								<span className="font-medium text-blue-700">WATCH / MONITOR</span>
+								<span className="font-medium text-blue-700">{t('panic.watchMonitor')}</span>
 							</div>
 							<div className="flex flex-wrap gap-2">
 								{tradingSignals.watch.map((item) => (
@@ -204,12 +206,12 @@ export function TradingSignalsCard({
 				{/* Historical Context */}
 				{showHistoricalContext && showcaseTickers && (
 					<div className="space-y-4 pt-4 border-t">
-						<div className="text-sm font-medium text-gray-700">Historical Performance Context</div>
+						<div className="text-sm font-medium text-gray-700">{t('panic.historicalPerformanceContext')}</div>
 						
 						{/* Best Performers */}
 						{showcaseTickers.bestPerformers.length > 0 && (
 							<div>
-								<div className="text-sm text-green-700 font-medium mb-2">✓ Historical Best Performers</div>
+								<div className="text-sm text-green-700 font-medium mb-2">✓ {t('panic.historicalBestPerformers')}</div>
 								{showcaseTickers.bestPerformers.map((performer) => (
 									<div key={performer.ticker} className="text-xs p-2 bg-green-50 rounded mb-1">
 										<span className="font-medium">{performer.ticker}</span>
@@ -223,7 +225,7 @@ export function TradingSignalsCard({
 						{/* Worst Performers */}
 						{showcaseTickers.worstPerformers.length > 0 && (
 							<div>
-								<div className="text-sm text-red-700 font-medium mb-2">✗ Historical Worst Performers</div>
+								<div className="text-sm text-red-700 font-medium mb-2">✗ {t('panic.historicalWorstPerformers')}</div>
 								{showcaseTickers.worstPerformers.map((performer) => (
 									<div key={performer.ticker} className="text-xs p-2 bg-red-50 rounded mb-1">
 										<span className="font-medium">{performer.ticker}</span>
@@ -239,7 +241,7 @@ export function TradingSignalsCard({
 							<div>
 								<div className="text-sm text-blue-700 font-medium mb-2 flex items-center gap-1">
 									<Shield className="h-3 w-3" />
-									Historical Defensive Leaders
+									{t('panic.historicalDefensiveLeaders')}
 								</div>
 								{showcaseTickers.defensiveLeaders.map((leader) => (
 									<div key={leader.ticker} className="text-xs p-2 bg-blue-50 rounded mb-1">

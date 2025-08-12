@@ -427,6 +427,42 @@ export const en = {
     chart: "Chart",
     vpa: "VPA",
     
+    // Trading Signals
+    highConfidence: "HIGH CONFIDENCE",
+    mediumConfidence: "MEDIUM CONFIDENCE", 
+    lowConfidence: "LOW CONFIDENCE",
+    timeframe: "Timeframe",
+    riskLevel: "Risk Level",
+    highRisk: "HIGH RISK",
+    exerciseCaution: "Exercise extreme caution with position sizing",
+    buyOpportunities: "BUY OPPORTUNITIES",
+    avoidReduce: "AVOID / REDUCE",
+    watchMonitor: "WATCH / MONITOR",
+    historicalPerformanceContext: "Historical Performance Context",
+    historicalBestPerformers: "Historical Best Performers",
+    historicalWorstPerformers: "Historical Worst Performers",
+    historicalDefensiveLeaders: "Historical Defensive Leaders",
+    
+    // Trading Strategies
+    aggressiveBuyingOpportunity: "Aggressive buying opportunity - Banking stable while Securities/Real Estate oversold",
+    defensivePositioningOnly: "Defensive positioning only - All sectors in deep distress",
+    reduceExposurePrepare: "Reduce exposure, prepare for further weakness",
+    mixedSignalsSelective: "Mixed signals - Selective quality positioning",
+    recoveryPatternsEmerging: "Recovery patterns emerging - Securities leadership expected",
+    normalMarketStandardDiv: "Normal market conditions - Standard diversification",
+    oneDayRecoveryWindow: "1-3 days recovery window",
+    oneWeekRecovery: "1-2 weeks recovery",
+    threeDaysMonitoring: "3-7 days monitoring",
+    oneToFiveDaysPattern: "1-5 days pattern development",
+    twoToFiveDaysMomentum: "2-5 days momentum build",
+    ongoingMonitoring: "Ongoing monitoring",
+    mediumSelectivePositioning: "Medium - Selective positioning",
+    extremeCapitalPreservation: "Extreme - Capital preservation mode",
+    highCrossSectorWeakness: "High - Significant cross-sector weakness",
+    mediumSectorDivergence: "Medium - Sector divergence",
+    lowMediumRecoveryPositioning: "Low-Medium - Recovery positioning",
+    lowRegularMarketConditions: "Low - Regular market conditions",
+    
     // Sector Performance Breakdown
     sectorPerformanceBreakdown: "Sector Performance Breakdown",
     individualSectorAnalysis: "Individual sector indicator analysis",
@@ -463,7 +499,16 @@ export const en = {
     // Pre-Panic Analysis
     prePanicTradingAdvice: "Pre-Panic Trading Advice",
     riskManagementRecommendations: "Risk management recommendations based on pre-panic signals",
-    riskLevel: "Risk Level",
+    reducePositionsImmediately: "REDUCE positions immediately, increase cash to 70%+",
+    riskLevelExtreme: "EXTREME",
+    maximumEquityExposure: "Maximum 30% equity exposure",
+    vcbOnlyExitOthers: "VCB only, exit all others",
+    loadingPrePanicAnalysis: "Loading pre-panic analysis...",
+    failedToLoadPrePanic: "Failed to load pre-panic analysis",
+    t14: "T-14",
+    t7: "T-7",
+    t1: "T-1",
+    additionalWeaknessSignal: "Additional weakness signal detected during pre-panic scanning",
     positionSize: "Position Size",
     defensiveStocks: "Defensive Stocks",
     prePanicSignalTimeline: "Pre-Panic Signal Timeline",
@@ -471,7 +516,6 @@ export const en = {
     comprehensiveScan: "14-Day Comprehensive Scan",
     significantDropsDetected: "Significant drops (≥2%) detected in 14-day pre-panic period",
     daysBefore: "T-",
-    additionalWeaknessSignal: "Additional weakness signal detected during pre-panic scanning",
     prePanicNotAvailable: "Pre-panic analysis not available for this date. This may be a current market analysis or insufficient historical data.",
     
     // Historical Context
@@ -525,12 +569,10 @@ export const en = {
     
     // Loading states
     loadingAnalysis: "Analyzing market data for",
-    loadingPrePanicAnalysis: "Loading pre-panic analysis...",
     redirectingToRecent: "Redirecting to most recent analysis...",
     
     // Error states
     unableToLoadAnalysis: "Unable to load analysis for {date}. The date may be invalid or market data may not be available.",
-    failedToLoadPrePanic: "Failed to load pre-panic analysis.",
     
     // Educational card
     educationalGuide: "Educational Guide",

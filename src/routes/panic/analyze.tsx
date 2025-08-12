@@ -847,7 +847,7 @@ function PanicAnalyzeDetail() {
 								<div className="flex items-center justify-center">
 									<div className="text-center">
 										<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-										<p className="mt-2 text-sm text-gray-600">Loading pre-panic analysis...</p>
+										<p className="mt-2 text-sm text-gray-600">{t('panic.loadingPrePanicAnalysis')}</p>
 									</div>
 								</div>
 							</CardContent>
@@ -856,7 +856,7 @@ function PanicAnalyzeDetail() {
 						<Alert>
 							<AlertTriangle className="h-4 w-4" />
 							<AlertDescription>
-								Failed to load pre-panic analysis. {prePanicError.message}
+								{t('panic.failedToLoadPrePanic')}. {prePanicError.message}
 							</AlertDescription>
 						</Alert>
 					) : prePanicAnalysis ? (
@@ -866,10 +866,10 @@ function PanicAnalyzeDetail() {
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
 										<AlertTriangle className="h-5 w-5 text-orange-500" />
-										Pre-Panic Trading Advice
+										{t('panic.prePanicTradingAdvice')}
 									</CardTitle>
 									<CardDescription>
-										Risk management recommendations based on pre-panic signals
+										{t('panic.riskManagementRecommendations')}
 									</CardDescription>
 								</CardHeader>
 								<CardContent className="space-y-4">
@@ -882,18 +882,18 @@ function PanicAnalyzeDetail() {
 										<AlertDescription className="space-y-2">
 											<div className="font-medium">{prePanicAnalysis.tradingAdvice.action}</div>
 											<div className="text-sm">
-												<strong>Risk Level:</strong> {prePanicAnalysis.tradingAdvice.riskLevel}
+												<strong>{t('panic.riskLevel')}:</strong> {prePanicAnalysis.tradingAdvice.riskLevel}
 											</div>
 										</AlertDescription>
 									</Alert>
 
 									<div className="grid grid-cols-2 gap-4 text-sm">
 										<div>
-											<span className="font-medium text-gray-700">Position Size:</span>
+											<span className="font-medium text-gray-700">{t('panic.positionSize')}:</span>
 											<div className="text-gray-600">{prePanicAnalysis.tradingAdvice.positionSize}</div>
 										</div>
 										<div>
-											<span className="font-medium text-gray-700">Defensive Stocks:</span>
+											<span className="font-medium text-gray-700">{t('panic.defensiveStocks')}:</span>
 											<div className="text-gray-600">{prePanicAnalysis.tradingAdvice.defensiveStocks}</div>
 										</div>
 									</div>
@@ -903,9 +903,9 @@ function PanicAnalyzeDetail() {
 							{/* Pre-Panic Timeline */}
 							<Card>
 								<CardHeader>
-									<CardTitle>Pre-Panic Signal Timeline</CardTitle>
+									<CardTitle>{t('panic.prePanicSignalTimeline')}</CardTitle>
 									<CardDescription>
-										T-1, T-7, T-14 analysis showing pattern development
+										{t('panic.timeframeAnalysis')}
 									</CardDescription>
 								</CardHeader>
 								<CardContent>
@@ -932,9 +932,9 @@ function PanicAnalyzeDetail() {
 							{prePanicAnalysis.significantDrops.length > 0 && (
 								<Card>
 									<CardHeader>
-										<CardTitle>14-Day Comprehensive Scan</CardTitle>
+										<CardTitle>{t('panic.comprehensiveScan')}</CardTitle>
 										<CardDescription>
-											Significant drops (≥2%) detected in 14-day pre-panic period
+											{t('panic.significantDropsDetected')}
 										</CardDescription>
 									</CardHeader>
 									<CardContent>
@@ -943,7 +943,7 @@ function PanicAnalyzeDetail() {
 												<div key={index} className="p-3 border rounded bg-yellow-50">
 													<div className="flex justify-between items-start mb-2">
 														<div>
-															<span className="font-medium">T-{drop.daysBefore}</span>
+															<span className="font-medium">{t('panic.daysBefore')}{drop.daysBefore}</span>
 															<span className="text-gray-600 ml-2">
 																({new Date(drop.date).toLocaleDateString('vi-VN')})
 															</span>
@@ -956,7 +956,7 @@ function PanicAnalyzeDetail() {
 														VNINDEX: {drop.vnindexChange >= 0 ? '+' : ''}{drop.vnindexChange.toFixed(2)}%
 													</div>
 													<div className="text-sm text-gray-600">
-														Additional weakness signal detected during pre-panic scanning
+														{t('panic.additionalWeaknessSignal')}
 													</div>
 												</div>
 											))}
@@ -969,7 +969,7 @@ function PanicAnalyzeDetail() {
 						<Alert>
 							<AlertTriangle className="h-4 w-4" />
 							<AlertDescription>
-								Pre-panic analysis not available for this date. This may be a current market analysis or insufficient historical data.
+								{t('panic.prePanicNotAvailable')}
 							</AlertDescription>
 						</Alert>
 					)}
