@@ -35,6 +35,7 @@ import {
 interface PortfolioPageSearch {
 	tickers?: string;
 	deposit?: number;
+	manualDeposit?: boolean;
 	range?: TimeRange;
 	startDate?: string;
 	endDate?: string;
@@ -49,6 +50,7 @@ export const Route = createFileRoute("/portfolio")({
 				: typeof search.deposit === 'string' 
 					? parseFloat(search.deposit) || 0
 					: 0,
+			manualDeposit: search.manualDeposit === 'true' || search.manualDeposit === true,
 			range: (search.range as TimeRange) || "3M",
 			startDate: search.startDate as string,
 			endDate: search.endDate as string,
@@ -60,7 +62,7 @@ export const Route = createFileRoute("/portfolio")({
 function PortfolioPage() {
 	const { t } = useTranslation();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { tickers: tickersString = "", deposit = 0, range = "3M", startDate, endDate } = Route.useSearch();
+	const { tickers: tickersString = "", deposit = 0, manualDeposit = false, range = "3M", startDate, endDate } = Route.useSearch();
 
 	// Parse portfolio items from URL
 	const portfolioItems = useMemo(() => 
@@ -72,6 +74,18 @@ function PortfolioPage() {
 		separatePortfolioItems(portfolioItems), 
 		[portfolioItems]
 	);
+
+	// Calculate actual deposit - either manual or auto from portfolio value
+	const actualDeposit = useMemo(() => {
+		if (manualDeposit) {
+			return deposit; // Use user-set deposit
+		}
+		// Auto-calculate from portfolio total value
+		const totalValue = investments.reduce((sum, item) => {
+			return sum + (item.quantity * item.price);
+		}, 0);
+		return totalValue;
+	}, [manualDeposit, deposit, investments]);
 
 	// State for UI
 	const [dateRangeConfig, setDateRangeConfig] = useState<DateRangeConfig>(
@@ -113,10 +127,13 @@ function PortfolioPage() {
 		updateSearchParams({ tickers: encoded });
 	}, [updateSearchParams]);
 
-	// Update deposit in URL (for future use)
-	// const updateDeposit = useCallback((newDeposit: number) => {
-	// 	updateSearchParams({ deposit: newDeposit });
-	// }, [updateSearchParams]);
+	// Update deposit in URL with manual flag
+	const updateDeposit = useCallback((newDeposit: number) => {
+		updateSearchParams({ 
+			deposit: newDeposit, 
+			manualDeposit: true 
+		});
+	}, [updateSearchParams]);
 
 	// Portfolio item management functions
 	const handleAddItem = useCallback((ticker: string) => {
@@ -270,23 +287,14 @@ function PortfolioPage() {
 	return (
 		<div className="container mx-auto p-6 space-y-6">
 			{/* Header */}
-			<div className="flex items-center justify-between">
-				<div>
-					<h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-						<Target className="h-8 w-8" />
-						{t("portfolio.title")}
-					</h1>
-					<p className="text-muted-foreground">
-						{t("portfolio.subtitle", { count: investments.length })}
-					</p>
-				</div>
-				<div className="flex items-center gap-2">
-					<SharePortfolioDialog 
-						items={portfolioItems}
-						deposit={deposit}
-						currentUrl={window.location.href}
-					/>
-				</div>
+			<div>
+				<h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+					<Target className="h-8 w-8" />
+					{t("portfolio.title")}
+				</h1>
+				<p className="text-muted-foreground">
+					{t("portfolio.subtitle", { count: investments.length })}
+				</p>
 			</div>
 
 			{/* Portfolio Management */}
@@ -300,10 +308,21 @@ function PortfolioPage() {
 			{/* Portfolio Summary Card - Screenshot friendly */}
 			<PortfolioSummaryCard
 				items={portfolioItems}
-				deposit={deposit}
+				deposit={actualDeposit}
 				showPrivacy={showPrivacy}
 				onTogglePrivacy={setShowPrivacy}
+				manualDeposit={manualDeposit}
+				onUpdateDeposit={updateDeposit}
 			/>
+
+			{/* Share Portfolio */}
+			<div className="flex justify-center">
+				<SharePortfolioDialog 
+					items={portfolioItems}
+					deposit={actualDeposit}
+					currentUrl={window.location.href}
+				/>
+			</div>
 
 			{/* Analysis Controls */}
 			<Card>

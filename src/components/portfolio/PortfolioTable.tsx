@@ -92,21 +92,13 @@ export function PortfolioTable({
 						</div>
 						<span className="text-lg font-semibold">{t("portfolio.configuration")}</span>
 					</div>
-					<div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
-						<div className="flex-1 min-w-0 bg-background/50 rounded-full px-4 py-2 border">
-							<TickerSearch
-								onSelect={onAddItem}
-								placeholder={t("portfolio.addStockPlaceholder")}
-								keepOpenAfterSelect={true}
-								className="w-full"
-							/>
-						</div>
-						{hasUnsavedChanges && (
-							<Button onClick={handleSaveAll} className="flex items-center gap-2">
-								<Save className="h-4 w-4" />
-								{t("portfolio.save")}
-							</Button>
-						)}
+					<div className="flex-1 min-w-0 bg-background/50 rounded-full px-4 py-2 border">
+						<TickerSearch
+							onSelect={onAddItem}
+							placeholder={t("portfolio.addStockPlaceholder")}
+							keepOpenAfterSelect={true}
+							className="w-full"
+						/>
 					</div>
 				</CardTitle>
 			</CardHeader>
@@ -331,6 +323,16 @@ export function PortfolioTable({
 						</TableBody>
 					</Table>
 				</div>
+
+				{/* Save Button at bottom */}
+				{hasUnsavedChanges && (
+					<div className="px-4 pb-4">
+						<Button onClick={handleSaveAll} className="w-full flex items-center justify-center gap-2">
+							<Save className="h-4 w-4" />
+							{t("portfolio.save")}
+						</Button>
+					</div>
+				)}
 			</CardContent>
 		</Card>
 	);

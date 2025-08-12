@@ -1,15 +1,25 @@
-import { useMemo } from "react";
-import { PieChart, Eye, EyeOff, TrendingUp, TrendingDown } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
+import { PieChart, Eye, EyeOff, Edit3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
 	PieChart as RechartsPieChart,
 	Pie,
 	Cell,
 	ResponsiveContainer,
 	Tooltip,
-	Legend,
 } from "recharts";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -17,6 +27,7 @@ import {
 	calculateInvestmentValue,
 	formatVND,
 	isWatchListItem,
+	parseFormattedNumber,
 } from "@/lib/portfolio-utils";
 
 interface PortfolioSummaryCardProps {
@@ -24,6 +35,8 @@ interface PortfolioSummaryCardProps {
 	deposit: number;
 	showPrivacy: boolean;
 	onTogglePrivacy: (show: boolean) => void;
+	manualDeposit?: boolean;
+	onUpdateDeposit?: (deposit: number) => void;
 }
 
 const COLORS = [
@@ -44,12 +57,22 @@ export function PortfolioSummaryCard({
 	deposit,
 	showPrivacy,
 	onTogglePrivacy,
+	manualDeposit = false,
+	onUpdateDeposit,
 }: PortfolioSummaryCardProps) {
 	const { t } = useTranslation();
+	const [editingDeposit, setEditingDeposit] = useState(false);
+	const [depositValue, setDepositValue] = useState(deposit.toString());
 
-	const { investments, watchListItems, totalValue, chartData } = useMemo(() => {
+	// Update depositValue when deposit prop changes (but not when editing)
+	useEffect(() => {
+		if (!editingDeposit) {
+			setDepositValue(deposit.toString());
+		}
+	}, [deposit, editingDeposit]);
+
+	const { investments, totalValue, chartData } = useMemo(() => {
 		const investments = items.filter(item => !isWatchListItem(item));
-		const watchListItems = items.filter(item => isWatchListItem(item));
 		const totalValue = investments.reduce((sum, item) => sum + calculateInvestmentValue(item), 0);
 
 		const chartData = investments
@@ -62,7 +85,7 @@ export function PortfolioSummaryCard({
 			.filter(item => item.value > 0)
 			.sort((a, b) => b.value - a.value);
 
-		return { investments, watchListItems, totalValue, chartData };
+		return { investments, totalValue, chartData };
 	}, [items]);
 
 	const profitLoss = totalValue - deposit;
@@ -75,6 +98,19 @@ export function PortfolioSummaryCard({
 		return formatVND(value);
 	};
 
+	const handleDepositSubmit = () => {
+		if (onUpdateDeposit) {
+			const newDeposit = parseFormattedNumber(depositValue);
+			onUpdateDeposit(newDeposit);
+		}
+		setEditingDeposit(false);
+	};
+
+	const handleDepositCancel = () => {
+		setDepositValue(deposit.toString());
+		setEditingDeposit(false);
+	};
+
 	const CustomTooltip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
 			const data = payload[0].payload;
@@ -82,7 +118,7 @@ export function PortfolioSummaryCard({
 				<div className="bg-background border rounded-lg p-3 shadow-lg">
 					<p className="font-medium">{data.name}</p>
 					<p className="text-sm text-muted-foreground">
-						{displayValue(data.value)} ({showPrivacy ? "●●%" : `${data.percentage}%`})
+						{displayValue(data.value)} ({showPrivacy ? "●●●" : `${data.percentage}%`})
 					</p>
 				</div>
 			);
@@ -139,122 +175,285 @@ export function PortfolioSummaryCard({
 					</div>
 				</CardTitle>
 			</CardHeader>
-			<CardContent className="space-y-6">
-				{/* Key Metrics */}
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-					<div className="bg-background/60 rounded-xl p-4 text-center border border-muted/50">
-						<div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 mb-1">
+			<CardContent>
+				{/* Portfolio Summary Stats */}
+				<div className="mb-6 space-y-3">
+					<div className="text-center">
+						<div className="text-3xl font-bold text-green-600">
 							{displayValue(totalValue)}
 						</div>
-						<div className="text-xs sm:text-sm text-muted-foreground font-medium">
-							{t("portfolio.totalValue")}
+						<div className="text-muted-foreground text-sm">{t("portfolio.totalValue")}</div>
+					</div>
+					<div className="grid grid-cols-2 gap-4 text-sm">
+						<div>
+							<span className="text-muted-foreground">{t("portfolio.totalAssets")}:</span>
+							<div className="font-medium">{displayValue(totalValue)}</div>
+						</div>
+						<div>
+							<span className="text-muted-foreground">{t("portfolio.totalCapital")}:</span>
+							<div className="font-medium">{displayValue(deposit)}</div>
 						</div>
 					</div>
-					
-					<div className="bg-background/60 rounded-xl p-4 text-center border border-muted/50">
-						<div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-600 mb-1">
-							{displayValue(deposit)}
-						</div>
-						<div className="text-xs sm:text-sm text-muted-foreground font-medium">
-							{t("portfolio.deposit")}
-						</div>
-					</div>
-
-					<div className="bg-background/60 rounded-xl p-4 text-center border border-muted/50">
-						<div className={`text-lg sm:text-xl lg:text-2xl font-bold flex items-center justify-center gap-1 mb-1 ${
-							profitLoss >= 0 ? 'text-green-600' : 'text-red-600'
-						}`}>
-							{profitLoss >= 0 ? (
-								<TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
-							) : (
-								<TrendingDown className="h-4 w-4 sm:h-5 sm:w-5" />
-							)}
-							<span>{displayValue(Math.abs(profitLoss))}</span>
-						</div>
-						<div className="text-xs sm:text-sm text-muted-foreground font-medium">
-							{t("portfolio.profitLoss")}
-						</div>
-					</div>
-
-					<div className="bg-background/60 rounded-xl p-4 text-center border border-muted/50">
-						<div className={`text-lg sm:text-xl lg:text-2xl font-bold mb-1 ${
-							profitLossPercentage >= 0 ? 'text-green-600' : 'text-red-600'
-						}`}>
-							{showPrivacy ? "●●%" : `${profitLossPercentage >= 0 ? '+' : ''}${profitLossPercentage.toFixed(1)}%`}
-						</div>
-						<div className="text-xs sm:text-sm text-muted-foreground font-medium">
-							{t("portfolio.returns")}
-						</div>
+					<div className="text-center">
+						<span className={`text-2xl font-bold ${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+							{profitLoss >= 0 ? '+' : ''}{displayValue(Math.abs(profitLoss))}
+						</span>
+						<span className={`ml-4 text-xl ${profitLossPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+							{showPrivacy ? "●●●" : `${profitLossPercentage >= 0 ? '+' : ''}${profitLossPercentage.toFixed(2)}%`}
+						</span>
 					</div>
 				</div>
 
-				{/* Portfolio Composition Chart */}
-				{chartData.length > 0 && (
-					<div className="bg-background/40 rounded-xl p-4 border border-muted/50">
-						<h4 className="font-semibold text-center mb-6 text-lg">{t("portfolio.composition")}</h4>
-						<div className="h-64 sm:h-80">
-							<ResponsiveContainer width="100%" height="100%">
-								<RechartsPieChart>
-									<Pie
-										data={chartData}
-										cx="50%"
-										cy="50%"
-										labelLine={false}
-										label={renderCustomLabel}
-										outerRadius="80%"
-										innerRadius="30%"
-										fill="#8884d8"
-										dataKey="value"
-										stroke="white"
-										strokeWidth={2}
-									>
-										{chartData.map((entry, index) => (
-											<Cell key={`cell-${index}`} fill={entry.color} />
-										))}
-									</Pie>
-									<Tooltip content={<CustomTooltip />} />
-									<Legend 
-										verticalAlign="bottom" 
-										height={50}
-										wrapperStyle={{ paddingTop: '20px' }}
-										formatter={(value, entry: any) => (
-											<span style={{ color: entry.color, fontSize: '12px', fontWeight: '500' }}>
-												{value} ({showPrivacy ? "●●%" : `${entry.payload.percentage}%`})
-											</span>
-										)}
-									/>
-								</RechartsPieChart>
-							</ResponsiveContainer>
-						</div>
-					</div>
-				)}
+				{/* Mobile: Tabs, Desktop: Side by Side */}
+				<div className="block lg:hidden">
+					<Tabs defaultValue="overview" className="w-full">
+						<TabsList className="grid w-full grid-cols-2">
+							<TabsTrigger value="overview">{t("portfolio.overview")}</TabsTrigger>
+							<TabsTrigger value="allocation">{t("portfolio.allocation")}</TabsTrigger>
+						</TabsList>
+						
+						<TabsContent value="overview" className="mt-4">
+							{/* Overview Table */}
+							<div className="bg-background/40 rounded-lg border border-muted/50 overflow-hidden">
+								<Table>
+									<TableHeader>
+										<TableRow className="hover:bg-transparent border-muted/50">
+											<TableHead className="font-semibold">{t("portfolio.ticker")}</TableHead>
+											<TableHead className="font-semibold text-right">{t("portfolio.buyPrice")}</TableHead>
+											<TableHead className="font-semibold text-right">{t("portfolio.marketPrice")}</TableHead>
+											<TableHead className="font-semibold text-right">{t("portfolio.profitPercent")}</TableHead>
+											<TableHead className="font-semibold text-right">{t("portfolio.costBasis")}</TableHead>
+											{!showPrivacy && <TableHead className="font-semibold text-right">{t("portfolio.volume")}</TableHead>}
+											{!showPrivacy && <TableHead className="font-semibold text-right">{t("portfolio.profitPrice")}</TableHead>}
+										</TableRow>
+									</TableHeader>
+									<TableBody>
+										{investments.map((item) => {
+											const marketPrice = item.price; // Use buy price as market price
+											const profitPrice = 0; // No profit since market price = buy price
+											const profitPercent = 0; // No profit percentage
+											const totalCost = item.quantity * item.price; // Cost basis (always visible)
+											const volume = item.quantity * marketPrice; // Volume (hide in privacy)
 
-				{/* Portfolio Stats */}
-				<div className="bg-muted/20 rounded-xl p-4">
-					<div className="flex flex-wrap gap-3 justify-center items-center">
-						<div className="flex items-center gap-2 px-3 py-1 bg-background rounded-full border">
-							<div className="w-3 h-3 rounded-full bg-green-500"></div>
-							<span className="text-sm font-medium">{t("portfolio.investments")}: <strong>{investments.length}</strong></span>
+											return (
+												<TableRow key={item.ticker} className="hover:bg-muted/30">
+													<TableCell className="font-medium">{item.ticker}</TableCell>
+													<TableCell className="text-right">
+														{formatVND(item.price)}
+													</TableCell>
+													<TableCell className="text-right">
+														{formatVND(marketPrice)}
+													</TableCell>
+													<TableCell className={`text-right font-medium ${profitPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+														{`${profitPercent >= 0 ? '+' : ''}${profitPercent.toFixed(2)}%`}
+													</TableCell>
+													<TableCell className="text-right">
+														{formatVND(totalCost)}
+													</TableCell>
+													{!showPrivacy && (
+														<TableCell className="text-right">{formatVND(volume)}</TableCell>
+													)}
+													{!showPrivacy && (
+														<TableCell className={`text-right font-medium ${profitPrice >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+															{profitPrice >= 0 ? '+' : ''}{formatVND(profitPrice)}
+														</TableCell>
+													)}
+												</TableRow>
+											);
+										})}
+									</TableBody>
+								</Table>
+								
+								{/* Deposit input at bottom */}
+								{onUpdateDeposit && (
+									<div className="border-t border-muted/50 p-4 bg-muted/10">
+										{editingDeposit ? (
+											<div className="flex items-center gap-3">
+												<span className="text-sm font-medium min-w-0">{t("portfolio.totalDeposit")}:</span>
+												<Input
+													type="text"
+													inputMode="numeric"
+													value={depositValue}
+													onChange={(e) => setDepositValue(e.target.value)}
+													className="flex-1 text-right font-medium"
+													autoFocus
+												/>
+												<div className="flex gap-2">
+													<Button size="sm" onClick={handleDepositSubmit}>Save</Button>
+													<Button size="sm" variant="outline" onClick={handleDepositCancel}>Cancel</Button>
+												</div>
+											</div>
+										) : (
+											<div className="flex items-center justify-between group">
+												<span className="text-sm font-medium">
+													{t("portfolio.totalDeposit")} {!manualDeposit && "(auto)"}:
+												</span>
+												<div className="flex items-center gap-2">
+													<span className="font-medium">{displayValue(deposit)}</span>
+													<Button
+														size="sm"
+														variant="ghost"
+														className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+														onClick={() => setEditingDeposit(true)}
+													>
+														<Edit3 className="h-3 w-3" />
+													</Button>
+												</div>
+											</div>
+										)}
+									</div>
+								)}
+							</div>
+						</TabsContent>
+						
+						<TabsContent value="allocation" className="mt-4">
+							{/* Allocation Chart */}
+							{chartData.length > 0 && (
+								<div className="bg-background/40 rounded-lg border border-muted/50 p-4">
+									<div className="h-64">
+										<ResponsiveContainer width="100%" height="100%">
+											<RechartsPieChart>
+												<Pie
+													data={chartData}
+													cx="50%"
+													cy="50%"
+													labelLine={false}
+													label={renderCustomLabel}
+													outerRadius="80%"
+													innerRadius="30%"
+													fill="#8884d8"
+													dataKey="value"
+													stroke="white"
+													strokeWidth={2}
+												>
+													{chartData.map((entry, index) => (
+														<Cell key={`cell-${index}`} fill={entry.color} />
+													))}
+												</Pie>
+												<Tooltip content={<CustomTooltip />} />
+											</RechartsPieChart>
+										</ResponsiveContainer>
+									</div>
+									{/* Allocation Table */}
+									<div className="mt-4 space-y-2">
+										{chartData.map((item) => (
+											<div key={item.name} className="flex justify-between items-center">
+												<div className="flex items-center gap-2">
+													<div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+													<span className="font-medium">{item.name}</span>
+												</div>
+												<div className="text-right">
+													<span className="font-medium">{displayValue(item.value)}</span>
+													<span className="ml-2 text-muted-foreground">
+														{showPrivacy ? "●●●" : `${item.percentage}%`}
+													</span>
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+						</TabsContent>
+					</Tabs>
+				</div>
+
+				{/* Desktop: Side by Side */}
+				<div className="hidden lg:grid lg:grid-cols-2 lg:gap-6">
+					{/* Left: Overview Table */}
+					<div className="bg-background/40 rounded-lg border border-muted/50 overflow-hidden">
+						<div className="p-3 border-b border-muted/50">
+							<h3 className="font-semibold">{t("portfolio.overview")}</h3>
 						</div>
-						<div className="flex items-center gap-2 px-3 py-1 bg-background rounded-full border">
-							<div className="w-3 h-3 rounded-full bg-gray-400"></div>
-							<span className="text-sm font-medium">{t("portfolio.watchList")}: <strong>{watchListItems.length}</strong></span>
-						</div>
-						{deposit > 0 && totalValue > 0 && (
-							<div className="flex items-center gap-2 px-3 py-1 bg-background rounded-full border">
-								<span className="text-sm font-medium">{t("portfolio.invested")}: <strong>{showPrivacy ? "●●%" : `${((totalValue / deposit) * 100).toFixed(0)}%`}</strong></span>
+						<Table>
+							<TableHeader>
+								<TableRow className="hover:bg-transparent border-muted/50">
+									<TableHead className="font-semibold text-xs">{t("portfolio.ticker")}</TableHead>
+									<TableHead className="font-semibold text-xs text-right">{t("portfolio.buyPrice")}</TableHead>
+									<TableHead className="font-semibold text-xs text-right">{t("portfolio.profitPercent")}</TableHead>
+									<TableHead className="font-semibold text-xs text-right">{t("portfolio.costBasis")}</TableHead>
+									{!showPrivacy && <TableHead className="font-semibold text-xs text-right">{t("portfolio.marketValue")}</TableHead>}
+									{!showPrivacy && <TableHead className="font-semibold text-xs text-right">{t("portfolio.allocation")}</TableHead>}
+								</TableRow>
+							</TableHeader>
+							<TableBody>
+								{investments.map((item) => {
+									const marketPrice = item.price; // Use buy price as market price
+									const profitPercent = 0; // No profit since market price = buy price
+									const marketValue = marketPrice * item.quantity;
+									const portfolioPercent = totalValue > 0 ? (marketValue / totalValue) * 100 : 0;
+									const costBasis = item.quantity * item.price; // Always visible
+
+									return (
+										<TableRow key={item.ticker} className="hover:bg-muted/30">
+											<TableCell className="font-medium text-sm">{item.ticker}</TableCell>
+											<TableCell className="text-right text-sm">
+												{formatVND(item.price)}
+											</TableCell>
+											<TableCell className={`text-right font-medium text-sm ${profitPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+												{`${profitPercent >= 0 ? '+' : ''}${profitPercent.toFixed(2)}%`}
+											</TableCell>
+											<TableCell className="text-right text-sm">
+												{formatVND(costBasis)}
+											</TableCell>
+											{!showPrivacy && (
+												<TableCell className="text-right text-sm">{formatVND(marketValue)}</TableCell>
+											)}
+											{!showPrivacy && (
+												<TableCell className="text-right text-muted-foreground text-sm">
+													{portfolioPercent.toFixed(2)}%
+												</TableCell>
+											)}
+										</TableRow>
+									);
+								})}
+							</TableBody>
+						</Table>
+					</div>
+
+					{/* Right: Allocation Chart */}
+					<div className="bg-background/40 rounded-lg border border-muted/50 p-4">
+						<h3 className="font-semibold mb-4">{t("portfolio.allocation")}</h3>
+						{chartData.length > 0 && (
+							<div>
+								<div className="h-48">
+									<ResponsiveContainer width="100%" height="100%">
+										<RechartsPieChart>
+											<Pie
+												data={chartData}
+												cx="50%"
+												cy="50%"
+												labelLine={false}
+												label={renderCustomLabel}
+												outerRadius="70%"
+												innerRadius="30%"
+												fill="#8884d8"
+												dataKey="value"
+												stroke="white"
+												strokeWidth={1}
+											>
+												{chartData.map((entry, index) => (
+													<Cell key={`cell-${index}`} fill={entry.color} />
+												))}
+											</Pie>
+											<Tooltip content={<CustomTooltip />} />
+										</RechartsPieChart>
+									</ResponsiveContainer>
+								</div>
+								<div className="mt-4 space-y-1">
+									{chartData.slice(0, 5).map((item) => (
+										<div key={item.name} className="flex justify-between items-center text-sm">
+											<div className="flex items-center gap-2">
+												<div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }}></div>
+												<span className="font-medium">{item.name}</span>
+											</div>
+											<span className="text-muted-foreground">
+												{showPrivacy ? "●●●" : `${item.percentage}%`}
+											</span>
+										</div>
+									))}
+								</div>
 							</div>
 						)}
-					</div>
-				</div>
-
-				{/* Screenshot hint */}
-				<div className="text-center border-2 border-dashed border-muted/40 rounded-lg p-3 bg-muted/10">
-					<div className="text-sm font-medium text-muted-foreground mb-1">
-						📸 {t("portfolio.screenshotHint")}
-					</div>
-					<div className="text-xs text-muted-foreground">
-						{t("portfolio.optimizedForSharing")}
 					</div>
 				</div>
 			</CardContent>

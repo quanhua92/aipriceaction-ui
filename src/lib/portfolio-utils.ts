@@ -196,6 +196,7 @@ export function suggestRoundPrice(price: number): number[] {
 	return Array.from(new Set(suggestions)).sort((a, b) => a - b);
 }
 
+
 /**
  * Get sector information for Vietnamese stocks
  */
@@ -408,8 +409,8 @@ export function scalePortfolioForPrivacy(
 	
 	const scaledItems = items.map(item => ({
 		...item,
-		quantity: item.quantity,
-		price: item.price > 0 ? item.price * scaleFactor : item.price,
+		quantity: item.quantity > 0 ? item.quantity * scaleFactor : item.quantity,
+		price: item.price,
 	}));
 	
 	return {
