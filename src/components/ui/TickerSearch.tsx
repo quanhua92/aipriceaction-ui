@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,7 @@ interface TickerSearchProps {
 	placeholder?: string;
 	className?: string;
 	keepOpenAfterSelect?: boolean;
+	persistOpenState?: boolean; // New prop to enable localStorage persistence
 }
 
 export function TickerSearch({
@@ -33,9 +34,28 @@ export function TickerSearch({
 	placeholder = "Search tickers...",
 	className,
 	keepOpenAfterSelect = false,
+	persistOpenState = false,
 }: TickerSearchProps) {
-	const [open, setOpen] = useState(false);
+	const STORAGE_KEY = 'ticker-search-open-state';
+	
+	// Initialize open state from localStorage if persistence is enabled
+	const [open, setOpen] = useState(() => {
+		if (persistOpenState && typeof window !== 'undefined') {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			return stored === 'true';
+		}
+		return false;
+	});
+	
 	const [search, setSearch] = useState("");
+
+	// Save open state to localStorage when it changes
+	useEffect(() => {
+		if (persistOpenState && typeof window !== 'undefined') {
+			localStorage.setItem(STORAGE_KEY, open.toString());
+			console.log(`TickerSearch: Saved open state to localStorage: ${open}`);
+		}
+	}, [open, persistOpenState]);
 
 	const { data: tickerGroups, isLoading } = useTickerGroups();
 
@@ -131,6 +151,7 @@ interface MultiTickerSearchProps {
 	maxSelection?: number;
 	placeholder?: string;
 	className?: string;
+	persistOpenState?: boolean; // Pass through to TickerSearch
 }
 
 export function MultiTickerSearch({
@@ -139,6 +160,7 @@ export function MultiTickerSearch({
 	maxSelection,
 	placeholder = "Add tickers...",
 	className,
+	persistOpenState = false,
 }: MultiTickerSearchProps) {
 	const addTicker = (ticker: string) => {
 		if (selectedTickers.includes(ticker)) return;
@@ -179,6 +201,7 @@ export function MultiTickerSearch({
 				}
 				className="w-full"
 				keepOpenAfterSelect={true}
+				persistOpenState={persistOpenState}
 			/>
 		</div>
 	);

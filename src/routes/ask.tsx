@@ -283,6 +283,7 @@ function AskPage() {
 								onTickersChange={handleTickersChange}
 								placeholder={t("askAI.searchTickersPlaceholder")}
 								className="w-full mb-4"
+								persistOpenState={true}
 							/>
 							{selectedTickers.length > 0 && (
 								<div>
