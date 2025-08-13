@@ -10,31 +10,48 @@ export interface PortfolioData {
 }
 
 /**
- * Encodes portfolio items to URL format: ticker,quantity,price~ticker2,quantity2,price2
+ * Encodes portfolio items to clean URL format: ticker-quantity-price_ticker2-quantity2-price2
  * Watch list items have price=0 (quantity can be any value)
+ * Uses dash (-) for field separation and underscore (_) for item separation to avoid URL encoding
  */
 export function encodePortfolioItems(items: PortfolioItem[]): string {
 	return items
-		.map(item => `${item.ticker},${item.quantity},${item.price}`)
-		.join('~');
+		.map(item => `${item.ticker}-${item.quantity}-${item.price}`)
+		.join('_');
 }
 
 /**
  * Decodes portfolio items from URL format
+ * Supports both new dash-underscore format (ticker-quantity-price_ticker2-quantity2-price2)
+ * and legacy comma-tilde format for backward compatibility
  * Items with price=0 are watch list items
  */
 export function decodePortfolioItems(dataString: string): PortfolioItem[] {
 	if (!dataString) return [];
 	
 	try {
-		return dataString.split('~').map(item => {
-			const [ticker, quantityStr, priceStr] = item.split(',');
-			return {
-				ticker,
-				quantity: parseFloat(quantityStr) || 0,
-				price: parseFloat(priceStr) || 0,
-			};
-		}).filter(item => item.ticker);
+		// Detect format: if contains underscore, use new format; otherwise use legacy
+		if (dataString.includes('_') && dataString.includes('-')) {
+			// New dash-underscore format
+			return dataString.split('_').map(item => {
+				const [ticker, quantityStr, priceStr] = item.split('-');
+				return {
+					ticker,
+					quantity: parseFloat(quantityStr) || 0,
+					price: parseFloat(priceStr) || 0,
+				};
+			}).filter(item => item.ticker);
+		} else {
+			// Legacy comma-tilde format
+			return dataString.split('~').map(item => {
+				const [ticker, quantityStr, priceStr] = item.split(',');
+				return {
+					ticker,
+					quantity: parseFloat(quantityStr) || 0,
+					price: parseFloat(priceStr) || 0,
+				};
+			}).filter(item => item.ticker);
+		}
 	} catch {
 		return [];
 	}
