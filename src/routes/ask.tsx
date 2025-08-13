@@ -107,9 +107,23 @@ function AskPage() {
 	const { data: singleTickerData } = useTickerData(defaultTicker, dateRangeConfig);
 	const { data: singleVPAData } = useVPAData(defaultTicker, !!defaultTicker);
 
-	// Data fetching for multiple tickers
-	const { data: multipleTickerData } = useMultipleTickerData(selectedTickers, dateRangeConfig);
-	const vpaQueries = selectedTickers.map(ticker => useVPAData(ticker));
+	// Data fetching for multiple tickers (only when on multi tab)
+	const multiTickersForFetch = activeTab === "multi" ? selectedTickers : [];
+	const { data: multipleTickerData } = useMultipleTickerData(multiTickersForFetch, dateRangeConfig);
+	
+	// VPA data for multi tab (fixed number of hooks to avoid violations)
+	const vpaQueries = [
+		useVPAData(activeTab === "multi" && selectedTickers[0] ? selectedTickers[0] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[1] ? selectedTickers[1] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[2] ? selectedTickers[2] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[3] ? selectedTickers[3] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[4] ? selectedTickers[4] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[5] ? selectedTickers[5] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[6] ? selectedTickers[6] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[7] ? selectedTickers[7] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[8] ? selectedTickers[8] : ''),
+		useVPAData(activeTab === "multi" && selectedTickers[9] ? selectedTickers[9] : ''),
+	];
 
 	// Handle copy with visual feedback
 	const handleCopy = async (template: AskAITemplate, context: string) => {
@@ -138,7 +152,7 @@ function AskPage() {
 	}, [defaultTicker, singleTickerData, singleVPAData]);
 
 	const multipleTickersContext = useMemo(() => {
-		if (selectedTickers.length === 0 || !multipleTickerData) return "";
+		if (activeTab !== "multi" || selectedTickers.length === 0 || !multipleTickerData) return "";
 		
 		const tickersData = selectedTickers.map((ticker, index) => ({
 			ticker,
@@ -147,7 +161,7 @@ function AskPage() {
 		}));
 
 		return buildMultipleTickersContext(tickersData);
-	}, [selectedTickers, multipleTickerData, vpaQueries]);
+	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries]);
 
 	// Handle single ticker change
 	const handleSingleTickerChange = (newTicker: string) => {
