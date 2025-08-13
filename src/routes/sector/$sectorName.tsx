@@ -36,6 +36,7 @@ import {
 	createDateRangeConfig,
 	type TimeRange,
 } from "@/lib/stock-data";
+import { getColorForIndex, generateColorsArray } from "@/lib/chart-colors";
 
 interface SectorPageSearch {
 	range?: TimeRange;
@@ -204,16 +205,6 @@ function SectorPage() {
 			});
 	}, [tickerData, sectorTickers, selectedTickers, sortBy, sortDirection]);
 
-	const chartColors = [
-		"#3B82F6", // blue-500
-		"#10B981", // emerald-500
-		"#F59E0B", // amber-500
-		"#EF4444", // red-500
-		"#8B5CF6", // violet-500
-		"#06B6D4", // cyan-500
-		"#F97316", // orange-500
-		"#84CC16", // lime-500
-	];
 
 	if (groupsLoading) {
 		return (
@@ -540,16 +531,16 @@ function SectorPage() {
 						<div className="space-y-4">
 							{/* Chart Legend */}
 							<div className="flex flex-wrap gap-2">
-								{chartTickers.slice(0, 8).map((ticker, index) => (
+								{chartTickers.map((ticker, index) => (
 									<Badge
 										key={ticker}
 										variant="outline"
 										className="flex items-center gap-1"
-										style={{ borderColor: chartColors[index] }}
+										style={{ borderColor: getColorForIndex(index) }}
 									>
 										<div
 											className="w-3 h-3 rounded-full"
-											style={{ backgroundColor: chartColors[index] }}
+											style={{ backgroundColor: getColorForIndex(index) }}
 										/>
 										{ticker}
 									</Badge>
@@ -573,7 +564,7 @@ function SectorPage() {
 											for (let i = 0; i < maxLength; i++) {
 												const dataPoint: any = { time: "", date: null };
 
-												chartTickers.slice(0, 8).forEach((ticker) => {
+												chartTickers.forEach((ticker) => {
 													const data = tickerData[ticker] || [];
 													if (data[i] && data[0]) {
 														const changePercent =
@@ -596,8 +587,8 @@ function SectorPage() {
 
 										return normalizedData;
 									})()}
-									tickers={chartTickers.slice(0, 8)}
-									colors={chartColors}
+									tickers={chartTickers}
+									colors={generateColorsArray(chartTickers.length)}
 									height={500}
 								/>
 							</div>

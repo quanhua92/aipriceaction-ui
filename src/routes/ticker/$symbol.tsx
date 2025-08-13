@@ -28,6 +28,7 @@ import {
 	type TimeRange,
 } from "@/lib/stock-data";
 import { format } from "date-fns";
+import { getColorForIndex } from "@/lib/chart-colors";
 
 interface TickerPageSearch {
 	range?: TimeRange;
@@ -93,17 +94,6 @@ function TickerPage() {
 		updateSearchParams({ compare: [] });
 	};
 
-	// Chart colors for comparison
-	const chartColors = [
-		"#3B82F6", // blue-500
-		"#10B981", // emerald-500
-		"#F59E0B", // amber-500
-		"#EF4444", // red-500
-		"#8B5CF6", // violet-500
-		"#06B6D4", // cyan-500
-		"#F97316", // orange-500
-		"#84CC16", // lime-500
-	];
 
 	const dailyChange = tickerData ? calculatePriceChange(tickerData) : null;
 	const rangeChange = tickerData ? calculateRangeChange(tickerData) : null;
@@ -508,7 +498,6 @@ function TickerPage() {
 							<MultiTickerSearch
 								selectedTickers={comparisonTickers}
 								onTickersChange={handleTickersChange}
-								maxSelection={7}
 								placeholder={t("tickers.clickHereToSearch")}
 								className="w-full"
 							/>
@@ -526,16 +515,16 @@ function TickerPage() {
 							<div className="space-y-4">
 								{/* Chart Legend */}
 								<div className="flex flex-wrap gap-2">
-									{[symbol, ...comparisonTickers].slice(0, 8).map((ticker, index) => (
+									{[symbol, ...comparisonTickers].map((ticker, index) => (
 										<Badge
 											key={ticker}
 											variant="outline"
 											className="flex items-center gap-1"
-											style={{ borderColor: chartColors[index] }}
+											style={{ borderColor: getColorForIndex(index) }}
 										>
 											<div
 												className="w-3 h-3 rounded-full"
-												style={{ backgroundColor: chartColors[index] }}
+												style={{ backgroundColor: getColorForIndex(index) }}
 											/>
 											{ticker}
 										</Badge>
@@ -606,8 +595,8 @@ function TickerPage() {
 
 											return normalizedData;
 										})()}
-										tickers={[symbol, ...comparisonTickers].slice(0, 8)}
-										colors={chartColors}
+										tickers={[symbol, ...comparisonTickers]}
+										colors={[symbol, ...comparisonTickers].map((_, index) => getColorForIndex(index))}
 										height={400}
 									/>
 								</div>

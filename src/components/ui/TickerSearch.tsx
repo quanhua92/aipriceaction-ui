@@ -136,13 +136,13 @@ interface MultiTickerSearchProps {
 export function MultiTickerSearch({
 	selectedTickers,
 	onTickersChange,
-	maxSelection = 10,
+	maxSelection,
 	placeholder = "Add tickers...",
 	className,
 }: MultiTickerSearchProps) {
 	const addTicker = (ticker: string) => {
 		if (selectedTickers.includes(ticker)) return;
-		if (selectedTickers.length >= maxSelection) return;
+		if (maxSelection && selectedTickers.length >= maxSelection) return;
 
 		onTickersChange([...selectedTickers, ticker]);
 	};
@@ -173,7 +173,7 @@ export function MultiTickerSearch({
 			<TickerSearch
 				onSelect={addTicker}
 				placeholder={
-					selectedTickers.length >= maxSelection
+					maxSelection && selectedTickers.length >= maxSelection
 						? `Maximum ${maxSelection} tickers selected`
 						: placeholder
 				}

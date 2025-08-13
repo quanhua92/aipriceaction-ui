@@ -81,7 +81,7 @@ export function ComparisonChart({
 				/>
 				<Tooltip content={<CustomTooltip />} />
 				<Legend />
-				{tickers.slice(0, 8).map((ticker, index) => (
+				{tickers.map((ticker, index) => (
 					<Line
 						key={ticker}
 						type="monotone"
