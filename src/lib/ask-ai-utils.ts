@@ -13,13 +13,13 @@ export interface AskAIContextData {
 }
 
 // Format chart data to context string
-export function formatChartContext(ticker: string, data: StockDataPoint[]): string {
-	if (!data || data.length === 0) {
-		return `${ticker}: No chart data available`;
+export function formatChartContext(ticker: string, data: StockDataPoint[], maxDays: number = 10): string {
+	if (!data || data.length === 0 || maxDays === 0) {
+		return maxDays === 0 ? "" : `${ticker}: No chart data available`;
 	}
 
-	// Get last 10 trading days for comprehensive context
-	const recentData = data.slice(-10);
+	// Get last N trading days based on configuration
+	const recentData = data.slice(-maxDays);
 	
 	const contextLines = recentData.map((point, index) => {
 		// Use the time string directly (already in YYYY-MM-DD format)
@@ -36,16 +36,16 @@ export function formatChartContext(ticker: string, data: StockDataPoint[]): stri
 		
 		return `${ticker}: Date=${dateStr}, Open=${point.open}, High=${point.high}, Low=${point.low}, Close=${point.close}, Volume=${point.volume.toLocaleString()}${changeStr}`;
 	});
-	return `# Last 10 Trading Days OHLCV Data\n${contextLines.join('\n')}`;
+	return `# Last ${maxDays} Trading Days OHLCV Data\n${contextLines.join('\n')}`;
 }
 
 // Format VPA data to context string
-export function formatVPAContext(ticker: string, vpaContent?: string): string {
-	if (!vpaContent) {
-		return `${ticker} VPA: No VPA data available`;
+export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: number = 5): string {
+	if (!vpaContent || maxDays === 0) {
+		return maxDays === 0 ? "" : `${ticker} VPA: No VPA data available`;
 	}
 
-	// Extract last 5 rows of meaningful VPA data
+	// Extract last N rows of meaningful VPA data
 	// VPA files typically contain tables with analysis data
 	const lines = vpaContent.split('\n').filter(line => line.trim());
 	
@@ -56,28 +56,39 @@ export function formatVPAContext(ticker: string, vpaContent?: string): string {
 		line.match(/\d{4}-\d{2}-\d{2}/)
 	);
 
-	// Get last 5 relevant lines
-	const recentVPA = dataLines.slice(-5);
+	// Get last N relevant lines based on configuration
+	const recentVPA = dataLines.slice(-maxDays);
 	
 	if (recentVPA.length === 0) {
-		// If no structured data found, get last 5 non-empty lines
-		const lastLines = lines.slice(-5);
-		return `${ticker} VPA:\n${lastLines.join('\n')}`;
+		// If no structured data found, get last N non-empty lines
+		const lastLines = lines.slice(-maxDays);
+		// Add TICKER: prefix to each line
+		const prefixedLines = lastLines.map(line => `${ticker}: ${line}`);
+		return `${ticker} VPA:\n${prefixedLines.join('\n')}`;
 	}
 
-	return `${ticker} VPA:\n${recentVPA.join('\n')}`;
+	// Add TICKER: prefix to each VPA data line
+	const prefixedVPA = recentVPA.map(line => `${ticker}: ${line}`);
+	return `${ticker} VPA:\n${prefixedVPA.join('\n')}`;
 }
 
 // Build complete context for single ticker
 export function buildSingleTickerContext(
 	ticker: string, 
 	chartData: StockDataPoint[], 
-	vpaContent?: string
+	vpaContent?: string,
+	chartContextDays: number = 10,
+	vpaContextDays: number = 5
 ): string {
-	const chartContext = formatChartContext(ticker, chartData);
-	const vpaContext = formatVPAContext(ticker, vpaContent);
+	const chartContext = formatChartContext(ticker, chartData, chartContextDays);
+	const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
 	
-	return `# Chart Context\n${chartContext}\n\n# Volume Price Action Context\n${vpaContext}`;
+	// Filter out empty contexts
+	const contexts = [];
+	if (chartContext) contexts.push(`# Chart Context\n${chartContext}`);
+	if (vpaContext) contexts.push(`# Volume Price Action Context\n${vpaContext}`);
+	
+	return contexts.join('\n\n');
 }
 
 // Build complete context for multiple tickers
@@ -86,14 +97,21 @@ export function buildMultipleTickersContext(
 		ticker: string;
 		chartData: StockDataPoint[];
 		vpaContent?: string;
-	}>
+	}>,
+	chartContextDays: number = 10,
+	vpaContextDays: number = 5
 ): string {
 	const contexts = tickersData.map(({ ticker, chartData, vpaContent }) => {
-		const chartContext = formatChartContext(ticker, chartData);
-		const vpaContext = formatVPAContext(ticker, vpaContent);
+		const chartContext = formatChartContext(ticker, chartData, chartContextDays);
+		const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
 		
-		return `## ${ticker}\n# Chart Context\n${chartContext}\n\n# Volume Price Action Context\n${vpaContext}`;
-	});
+		// Filter out empty contexts
+		const tickerContexts = [];
+		if (chartContext) tickerContexts.push(`# Chart Context\n${chartContext}`);
+		if (vpaContext) tickerContexts.push(`# Volume Price Action Context\n${vpaContext}`);
+		
+		return tickerContexts.length > 0 ? `## ${ticker}\n${tickerContexts.join('\n\n')}` : '';
+	}).filter(context => context); // Remove empty contexts
 
 	return contexts.join('\n\n---\n\n');
 }

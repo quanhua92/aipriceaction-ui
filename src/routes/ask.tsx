@@ -1,10 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import { createFileRoute, useSearch, Link, useNavigate } from "@tanstack/react-router";
-import { Brain, Copy, Check, ArrowLeft } from "lucide-react";
+import { Brain, Copy, Check, ArrowLeft, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { MultiTickerSearch, TickerSearch } from "@/components/ui/TickerSearch";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useMultipleTickerData } from "@/lib/queries";
@@ -66,6 +68,26 @@ function AskPage() {
 	});
 	
 	const [copyStates, setCopyStates] = useState<CopyState>({});
+	
+	// Configuration states
+	const [showConfig, setShowConfig] = useState(false);
+	const [chartContextDays, setChartContextDays] = useState(() => {
+		const saved = localStorage.getItem('askAI.chartContextDays');
+		return saved ? parseInt(saved, 10) : 10;
+	});
+	const [vpaContextDays, setVpaContextDays] = useState(() => {
+		const saved = localStorage.getItem('askAI.vpaContextDays');
+		return saved ? parseInt(saved, 10) : 5;
+	});
+
+	// Save settings to localStorage when changed
+	useEffect(() => {
+		localStorage.setItem('askAI.chartContextDays', chartContextDays.toString());
+	}, [chartContextDays]);
+
+	useEffect(() => {
+		localStorage.setItem('askAI.vpaContextDays', vpaContextDays.toString());
+	}, [vpaContextDays]);
 
 	// Update search params function
 	const updateSearchParams = (updates: Partial<SearchParams>) => {
@@ -147,9 +169,11 @@ function AskPage() {
 		return buildSingleTickerContext(
 			defaultTicker, 
 			singleTickerData, 
-			singleVPAData?.content
+			singleVPAData?.content,
+			chartContextDays,
+			vpaContextDays
 		);
-	}, [defaultTicker, singleTickerData, singleVPAData]);
+	}, [defaultTicker, singleTickerData, singleVPAData, chartContextDays, vpaContextDays]);
 
 	const multipleTickersContext = useMemo(() => {
 		if (activeTab !== "multi" || selectedTickers.length === 0 || !multipleTickerData) return "";
@@ -160,8 +184,8 @@ function AskPage() {
 			vpaContent: vpaQueries[index]?.data?.content
 		}));
 
-		return buildMultipleTickersContext(tickersData);
-	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries]);
+		return buildMultipleTickersContext(tickersData, chartContextDays, vpaContextDays);
+	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries, chartContextDays, vpaContextDays]);
 
 	// Handle single ticker change
 	const handleSingleTickerChange = (newTicker: string) => {
@@ -364,6 +388,74 @@ function AskPage() {
 				<p className="text-xs text-muted-foreground text-center">
 					{t("askAI.howToUse")}
 				</p>
+				
+				{/* Configuration Section */}
+				<div className="mt-4">
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={() => setShowConfig(!showConfig)}
+						className="mx-auto flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+					>
+						<Settings className="h-4 w-4" />
+						Configuration
+						{showConfig ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+					</Button>
+					
+					{showConfig && (
+						<Card className="mt-4 max-w-md mx-auto">
+							<CardHeader className="pb-4">
+								<CardTitle className="text-lg flex items-center gap-2">
+									<Settings className="h-5 w-5" />
+									Context Configuration
+								</CardTitle>
+							</CardHeader>
+							<CardContent className="space-y-4">
+								<div className="space-y-2">
+									<Label htmlFor="chart-context-days" className="text-sm font-medium">
+										Chart context days (0 = no chart data)
+									</Label>
+									<Input
+										id="chart-context-days"
+										type="number"
+										min="0"
+										max="1000"
+										value={chartContextDays}
+										onChange={(e) => setChartContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
+										className="w-full"
+										placeholder="10"
+									/>
+									<p className="text-xs text-muted-foreground">
+										Number of recent trading days to include in chart context
+									</p>
+								</div>
+								
+								<div className="space-y-2">
+									<Label htmlFor="vpa-context-days" className="text-sm font-medium">
+										VPA context days (0 = no VPA data)
+									</Label>
+									<Input
+										id="vpa-context-days"
+										type="number"
+										min="0"
+										max="1000"
+										value={vpaContextDays}
+										onChange={(e) => setVpaContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
+										className="w-full"
+										placeholder="5"
+									/>
+									<p className="text-xs text-muted-foreground">
+										Number of recent VPA entries to include in context
+									</p>
+								</div>
+								
+								<div className="pt-2 text-xs text-muted-foreground">
+									<p>💾 Settings are automatically saved to browser storage</p>
+								</div>
+							</CardContent>
+						</Card>
+					)}
+				</div>
 			</div>
 		</div>
 	);
