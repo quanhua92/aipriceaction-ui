@@ -327,15 +327,19 @@ function Dashboard() {
 	return (
 		<div className="container mx-auto p-2 md:p-6 space-y-4 md:space-y-6">
 			<div className="flex flex-col gap-4">
-				<div className="flex items-center justify-between">
-					<div>
+				<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+					<div className="flex-1">
 						<h1 className="text-3xl font-bold">{t("home.title")}</h1>
 						<p className="text-muted-foreground">
 							{t("home.subtitle")}
 						</p>
 					</div>
-					<div className="flex items-center gap-2">
-						<TickerSearch onSelect={handleTickerSelect} />
+					<div className="w-full md:w-auto md:max-w-md">
+						<TickerSearch 
+							onSelect={handleTickerSelect}
+							placeholder={t("tickers.searchTickersPlaceholder")}
+							className="w-full"
+						/>
 					</div>
 				</div>
 

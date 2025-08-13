@@ -317,6 +317,7 @@ export const en = {
     chart: "Chart",
     loadingTickers: "Loading tickers...",
     searchTickers: "Search tickers...",
+    searchTickersPlaceholder: "Search tickers...",
     tickerNotFound: "Stock ticker \"{symbol}\" not found",
     tickerData: "Stock Data",
     technicalAnalysis: "Technical Analysis",

@@ -317,6 +317,7 @@ export const vn = {
     chart: "Biểu đồ",
     loadingTickers: "Đang tải mã chứng khoán...",
     searchTickers: "Tìm kiếm mã CK...",
+    searchTickersPlaceholder: "Tìm kiếm mã CK...",
     tickerNotFound: "Không tìm thấy mã cổ phiếu \"{symbol}\"",
     tickerData: "Dữ liệu cổ phiếu",
     technicalAnalysis: "Phân tích kỹ thuật",
