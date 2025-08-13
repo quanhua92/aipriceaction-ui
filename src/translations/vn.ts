@@ -202,6 +202,10 @@ export const vn = {
     cashRemaining: "Tiền mặt còn lại",
     depositScaled: "vốn được tỷ lệ",
     quantityScaled: "số lượng được tỷ lệ",
+    sharedPortfolioNotice: "📊 Chế độ xem danh mục chia sẻ",
+    sharedPortfolioDescriptionManual: "Danh mục này đã được điều chỉnh tỷ lệ để bảo mật. Số tiền vốn đã được điều chỉnh thành 100 triệu VND trong khi vẫn duy trì cùng tỷ lệ lãi/lỗ và tỷ lệ tiền mặt.",
+    sharedPortfolioDescriptionAuto: "Danh mục này đã được điều chỉnh tỷ lệ để bảo mật. Số lượng cổ phiếu đã được điều chỉnh để đạt tổng giá trị 100 triệu VND trong khi giữ nguyên giá gốc.",
+    actualValuesNotShown: "💡 Lưu ý: Đây không phải là số tiền đầu tư thực tế, nhưng tỷ lệ và hiệu suất là chính xác.",
   },
 
   // Portfolio Metrics

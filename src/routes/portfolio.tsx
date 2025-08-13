@@ -36,6 +36,7 @@ interface PortfolioPageSearch {
 	tickers?: string;
 	deposit?: number;
 	manualDeposit?: boolean;
+	share?: boolean;
 	range?: TimeRange;
 	startDate?: string;
 	endDate?: string;
@@ -51,6 +52,7 @@ export const Route = createFileRoute("/portfolio")({
 					? parseFloat(search.deposit) || 0
 					: 0,
 			manualDeposit: search.manualDeposit === 'true' || search.manualDeposit === true,
+			share: search.share === 'true' || search.share === true,
 			range: (search.range as TimeRange) || "3M",
 			startDate: search.startDate as string,
 			endDate: search.endDate as string,
@@ -62,7 +64,7 @@ export const Route = createFileRoute("/portfolio")({
 function PortfolioPage() {
 	const { t } = useTranslation();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { tickers: tickersString = "", deposit = 0, manualDeposit = false, range = "3M", startDate, endDate } = Route.useSearch();
+	const { tickers: tickersString = "", deposit = 0, manualDeposit = false, share = false, range = "3M", startDate, endDate } = Route.useSearch();
 
 	// Parse portfolio items from URL
 	const portfolioItems = useMemo(() => 
@@ -141,6 +143,18 @@ function PortfolioPage() {
 			manualDeposit: manual 
 		});
 	}, [updateSearchParams]);
+
+	// Dismiss share warning
+	const dismissShareWarning = useCallback(() => {
+		navigate({
+			search: (prev) => {
+				const newSearch = { ...prev };
+				delete newSearch.share;
+				return newSearch;
+			},
+			replace: true,
+		});
+	}, [navigate]);
 
 	// Portfolio item management functions
 	const handleAddItem = useCallback((ticker: string) => {
@@ -303,6 +317,42 @@ function PortfolioPage() {
 					{t("portfolio.subtitle", { count: investments.length })}
 				</p>
 			</div>
+
+			{/* Share Warning Banner */}
+			{share && (
+				<div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 mb-6">
+					<div className="flex items-start justify-between gap-4">
+						<div className="flex items-start gap-3">
+							<div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+								<svg className="h-4 w-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+									<path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+								</svg>
+							</div>
+							<div>
+								<h3 className="font-semibold text-amber-800 mb-1">{t("portfolio.sharedPortfolioNotice")}</h3>
+								<p className="text-sm text-amber-700 leading-relaxed">
+									{manualDeposit 
+										? t("portfolio.sharedPortfolioDescriptionManual")
+										: t("portfolio.sharedPortfolioDescriptionAuto")
+									}
+								</p>
+								<p className="text-xs text-amber-600 mt-2">
+									{t("portfolio.actualValuesNotShown")}
+								</p>
+							</div>
+						</div>
+						<button
+							onClick={dismissShareWarning}
+							className="h-8 w-8 rounded-full hover:bg-amber-100 flex items-center justify-center text-amber-600 hover:text-amber-800 transition-colors flex-shrink-0"
+							aria-label={t("common.close")}
+						>
+							<svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
+					</div>
+				</div>
+			)}
 
 			{/* Portfolio Management */}
 			<PortfolioTable

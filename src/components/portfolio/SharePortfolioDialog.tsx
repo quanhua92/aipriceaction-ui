@@ -76,6 +76,11 @@ export function SharePortfolioDialog({
 		if (manualDeposit) {
 			url.searchParams.set('manualDeposit', 'true');
 		}
+		
+		// Add share parameter when privacy scaling is applied
+		if (isPrivacyEnabled) {
+			url.searchParams.set('share', 'true');
+		}
 
 		return url.toString();
 	}, [items, deposit, isPrivacyEnabled, manualDeposit, currentUrl]);

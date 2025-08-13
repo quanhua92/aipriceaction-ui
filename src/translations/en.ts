@@ -202,6 +202,10 @@ export const en = {
     cashRemaining: "Cash Remaining",
     depositScaled: "deposit scaled",
     quantityScaled: "quantity scaled",
+    sharedPortfolioNotice: "📊 Shared Portfolio View",
+    sharedPortfolioDescriptionManual: "This portfolio has been scaled for privacy. The deposit amount has been adjusted to 100M VND while maintaining the same profit/loss ratios and cash percentages.",
+    sharedPortfolioDescriptionAuto: "This portfolio has been scaled for privacy. Stock quantities have been adjusted to reach 100M VND total value while keeping original prices.",
+    actualValuesNotShown: "💡 Tip: These are not the actual investment amounts, but the proportions and performance are accurate.",
   },
 
   // Portfolio Metrics
