@@ -93,7 +93,7 @@ function PortfolioPage() {
 	const [dateRangeConfig, setDateRangeConfig] = useState<DateRangeConfig>(
 		createDateRangeConfig(range, startDate, endDate),
 	);
-	const [showPrivacy, setShowPrivacy] = useState(false);
+	const [showPrivacy, setShowPrivacy] = useState(true);
 
 	// Get all unique tickers for data fetching
 	const allTickers = useMemo(() => {
