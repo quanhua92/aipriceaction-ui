@@ -50,5 +50,55 @@ export const singleTickerTemplatesVN: AskAITemplate[] = [
 		id: "price-targets",
 		title: "Mục tiêu giá",
 		prompt: "Dựa trên phân tích kỹ thuật và các mức hỗ trợ/kháng cự, mục tiêu giá thực tế cho mã này trong 1-3 tháng tới là gì?"
+	},
+	{
+		id: "support-resistance",
+		title: "Các mức hỗ trợ và kháng cự",
+		prompt: "Xác định các mức hỗ trợ và kháng cự quan trọng cho mã này dựa trên dữ liệu giá lịch sử. Những mức giá quan trọng nhất cần theo dõi là gì?"
+	},
+	{
+		id: "chart-patterns",
+		title: "Nhận dạng mô hình biểu đồ",
+		prompt: "Có mô hình biểu đồ nào có thể nhận dạng được (đầu vai, tam giác, cờ, nêm, đỉnh/đáy kép) đang hình thành ở mã này không? Những mô hình này gợi ý điều gì?"
+	},
+	{
+		id: "breakout-potential",
+		title: "Phân tích đột phá",
+		prompt: "Mã này có đang chuẩn bị cho một đột phá tiềm năng không? Phân tích các mô hình củng cố, khối lượng và hành động giá để đánh giá khả năng và hướng đột phá."
+	},
+	{
+		id: "stop-loss-strategy",
+		title: "Khuyến nghị cắt lỗ",
+		prompt: "Dựa trên phân tích kỹ thuật và mô hình biến động, các mức cắt lỗ phù hợp cho cả vị thế mua và bán mã này ở đâu?"
+	},
+	{
+		id: "sector-comparison",
+		title: "So sánh hiệu suất ngành",
+		prompt: "Mã này đang hoạt động như thế nào so với ngành của nó và thị trường chung (VNINDEX)? Nó có vượt trội hay kém hơn so với các cổ phiếu cùng ngành?"
+	},
+	{
+		id: "liquidity-analysis",
+		title: "Phân tích thanh khoản và giao dịch",
+		prompt: "Phân tích thanh khoản của mã này dựa trên mô hình khối lượng và biên độ giá. Có đủ thanh khoản để vào và ra lệnh một cách suôn sẻ không?"
+	},
+	{
+		id: "institutional-activity",
+		title: "Phân tích hoạt động tổ chức",
+		prompt: "Dựa trên mô hình khối lượng và chuyển động giá, có thể suy luận gì về hoạt động của các tổ chức hoặc nhà đầu tư thông minh trong mã này? Họ có đang tích lũy hay phân phối?"
+	},
+	{
+		id: "fibonacci-analysis",
+		title: "Phân tích Fibonacci retracement",
+		prompt: "Áp dụng các mức Fibonacci retracement cho các chuyển động giá gần đây. Những mức Fibonacci quan trọng nào có thể hoạt động như hỗ trợ hoặc kháng cự?"
+	},
+	{
+		id: "volatility-assessment",
+		title: "Đánh giá biến động và rủi ro",
+		prompt: "Phân tích mô hình biến động của mã này. Nó biến động như thế nào so với mức bình thường lịch sử? Điều này có nghĩa gì cho việc định cỡ vị thế?"
+	},
+	{
+		id: "market-context",
+		title: "Phân tích bối cảnh thị trường",
+		prompt: "Bối cảnh thị trường rộng hơn (xu hướng VNINDEX, tâm lý thị trường, yếu tố kinh tế) đang ảnh hưởng đến hành động giá của mã này như thế nào? Tôi có nên xem xét các yếu tố vĩ mô?"
 	}
 ];

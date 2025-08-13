@@ -50,5 +50,55 @@ export const singleTickerTemplatesEN: AskAITemplate[] = [
 		id: "price-targets",
 		title: "Price targets",
 		prompt: "Based on the technical analysis and support/resistance levels, what are realistic price targets for this ticker in the next 1-3 months?"
+	},
+	{
+		id: "support-resistance",
+		title: "Support and resistance levels",
+		prompt: "Identify the key support and resistance levels for this ticker based on the historical price data. What are the most significant price levels to watch?"
+	},
+	{
+		id: "chart-patterns",
+		title: "Chart pattern recognition",
+		prompt: "Are there any recognizable chart patterns (head & shoulders, triangles, flags, wedges, double tops/bottoms) forming in this ticker? What do these patterns suggest?"
+	},
+	{
+		id: "breakout-potential",
+		title: "Breakout analysis",
+		prompt: "Is this ticker setting up for a potential breakout? Analyze the consolidation patterns, volume, and price action to assess breakout probability and direction."
+	},
+	{
+		id: "stop-loss-strategy",
+		title: "Stop loss recommendations",
+		prompt: "Based on the technical analysis and volatility patterns, where would be appropriate stop loss levels for both long and short positions in this ticker?"
+	},
+	{
+		id: "sector-comparison",
+		title: "Sector performance comparison",
+		prompt: "How is this ticker performing relative to its sector and the overall market (VNINDEX)? Is it outperforming or underperforming its peers?"
+	},
+	{
+		id: "liquidity-analysis",
+		title: "Liquidity and trading analysis",
+		prompt: "Analyze the liquidity of this ticker based on volume patterns and price spreads. Is there sufficient liquidity for smooth entry and exit?"
+	},
+	{
+		id: "institutional-activity",
+		title: "Institutional activity analysis",
+		prompt: "Based on volume patterns and price movements, what can you infer about institutional or smart money activity in this ticker? Are they accumulating or distributing?"
+	},
+	{
+		id: "fibonacci-analysis",
+		title: "Fibonacci retracement analysis",
+		prompt: "Apply Fibonacci retracement levels to recent price movements. What are the key Fibonacci levels that might act as support or resistance?"
+	},
+	{
+		id: "volatility-assessment",
+		title: "Volatility and risk metrics",
+		prompt: "Analyze the volatility patterns of this ticker. How volatile is it compared to historical norms? What does this mean for position sizing?"
+	},
+	{
+		id: "market-context",
+		title: "Market context analysis",
+		prompt: "How is the broader market context (VNINDEX trend, market sentiment, economic factors) affecting this ticker's price action? Should I consider macro factors?"
 	}
 ];

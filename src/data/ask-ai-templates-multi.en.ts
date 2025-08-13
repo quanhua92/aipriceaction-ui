@@ -50,5 +50,60 @@ export const multipleTickerTemplatesEN: AskAITemplate[] = [
 		id: "market-conditions",
 		title: "Performance under different market conditions",
 		prompt: "Based on the data, how do these tickers perform under different market conditions (bullish, bearish, sideways)? Which are defensive and which are growth-oriented?"
+	},
+	{
+		id: "pairs-trading",
+		title: "Pairs trading opportunities",
+		prompt: "Identify potential pairs trading opportunities among these tickers. Which pairs show strong correlation for mean reversion strategies or divergence for momentum plays?"
+	},
+	{
+		id: "sector-rotation",
+		title: "Sector rotation analysis",
+		prompt: "Based on the performance patterns, which sectors represented by these tickers are in favor and which are out of favor? What does this suggest for sector rotation strategy?"
+	},
+	{
+		id: "market-cap-analysis",
+		title: "Market capitalization analysis",
+		prompt: "Compare these tickers by market cap and analyze how large-cap vs small-cap stocks are performing. What market cap bias should I consider for my portfolio?"
+	},
+	{
+		id: "beta-analysis",
+		title: "Beta and market sensitivity",
+		prompt: "Analyze the beta (market sensitivity) of these tickers relative to VNINDEX. Which are high-beta growth stocks and which are low-beta defensive stocks?"
+	},
+	{
+		id: "liquidity-comparison",
+		title: "Liquidity comparison",
+		prompt: "Compare the liquidity profiles of these tickers based on volume patterns. Which stocks offer the best liquidity for large position entries and exits?"
+	},
+	{
+		id: "event-correlation",
+		title: "Event correlation analysis",
+		prompt: "How do these tickers react to market events, earnings announcements, or economic news? Are there common reaction patterns or divergent behaviors?"
+	},
+	{
+		id: "hedge-construction",
+		title: "Hedge portfolio construction",
+		prompt: "How can I use these tickers to construct a market-neutral or hedged portfolio? Which combinations provide the best hedge against market risk?"
+	},
+	{
+		id: "timing-strategy",
+		title: "Capital allocation timing",
+		prompt: "Based on the technical patterns and momentum, what would be the optimal timing for allocating capital to each of these tickers? Should I invest simultaneously or sequentially?"
+	},
+	{
+		id: "drawdown-analysis",
+		title: "Maximum drawdown comparison",
+		prompt: "Compare the maximum drawdown periods for these tickers. Which stocks show better downside protection and faster recovery from losses?"
+	},
+	{
+		id: "trend-strength",
+		title: "Trend strength comparison",
+		prompt: "Compare the trend strength across these tickers. Which stocks are in the strongest uptrends or downtrends based on price action and momentum indicators?"
+	},
+	{
+		id: "rebalancing-strategy",
+		title: "Portfolio rebalancing strategy",
+		prompt: "If I hold all these tickers in a portfolio, when and how should I rebalance based on their relative performance and technical signals?"
 	}
 ];
