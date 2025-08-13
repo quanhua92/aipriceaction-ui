@@ -384,6 +384,7 @@ function PortfolioPage() {
 			<PortfolioSummaryCard
 				items={portfolioItems}
 				deposit={actualDeposit}
+				remainingCash={remainingCash}
 				showPrivacy={showPrivacy}
 				onTogglePrivacy={setShowPrivacy}
 				manualDeposit={manualDeposit}
@@ -396,6 +397,7 @@ function PortfolioPage() {
 				<SharePortfolioDialog 
 					items={portfolioItems}
 					deposit={actualDeposit}
+					remainingCash={remainingCash}
 					currentUrl={window.location.href}
 					manualDeposit={manualDeposit}
 					tickerData={tickerData}

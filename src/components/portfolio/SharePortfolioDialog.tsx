@@ -22,6 +22,7 @@ import {
 interface SharePortfolioDialogProps {
 	items: PortfolioItem[];
 	deposit: number;
+	remainingCash?: number;
 	currentUrl: string;
 	manualDeposit?: boolean;
 	tickerData?: Record<string, any[]>;
@@ -30,6 +31,7 @@ interface SharePortfolioDialogProps {
 export function SharePortfolioDialog({
 	items,
 	deposit,
+	remainingCash = 0,
 	currentUrl,
 	manualDeposit = false,
 	tickerData,
@@ -38,19 +40,41 @@ export function SharePortfolioDialog({
 	const [isPrivacyEnabled, setIsPrivacyEnabled] = useState(true);
 	const [copied, setCopied] = useState(false);
 
+	// Helper function to get current market price for a ticker
+	const getCurrentMarketPrice = (ticker: string): number => {
+		if (!tickerData || !tickerData[ticker] || tickerData[ticker].length === 0) {
+			return 0; // No market data available
+		}
+		const latestData = tickerData[ticker][tickerData[ticker].length - 1];
+		return latestData.close || 0;
+	};
+	
+	// Calculate total value using current market prices (like PortfolioSummaryCard)
+	const totalValue = items.reduce((sum, item) => {
+		if (item.quantity > 0) {
+			const marketPrice = getCurrentMarketPrice(item.ticker);
+			// Only use market price if we have it, otherwise don't include in calculation
+			if (marketPrice > 0) {
+				return sum + (item.quantity * marketPrice);
+			}
+		}
+		return sum;
+	}, 0);
+
 	const shareableUrl = useMemo(() => {
 		if (items.length === 0) return currentUrl;
 
 		let shareItems = items;
 		let shareDeposit = deposit;
+		let shareRemainingCash = remainingCash;
 
 		if (isPrivacyEnabled) {
-			// Scale quantities to make deposit = 100M
-			const targetDeposit = 100_000_000; // 100M VND
+			// Scale quantities to make total portfolio = 100M
+			const targetTotal = 100_000_000; // 100M VND
 			
-			// If deposit = 0, auto-calculate from current portfolio value
-			const actualDeposit = deposit > 0 ? deposit : totalValue;
-			const scaleFactor = actualDeposit > 0 ? targetDeposit / actualDeposit : 1;
+			// Calculate actual total portfolio value (stocks + cash)
+			const actualTotal = totalValue + remainingCash;
+			const scaleFactor = actualTotal > 0 ? targetTotal / actualTotal : 1;
 			
 			shareItems = items.map(item => ({
 				...item,
@@ -59,7 +83,11 @@ export function SharePortfolioDialog({
 				price: item.price, // Keep original price
 			}));
 			
-			shareDeposit = targetDeposit;
+			// Scale remaining cash proportionally
+			shareRemainingCash = remainingCash * scaleFactor;
+			
+			// Keep deposit proportional to the scaled portfolio
+			shareDeposit = deposit * scaleFactor;
 		}
 
 		const encodedTickers = encodePortfolioItems(shareItems);
@@ -70,6 +98,9 @@ export function SharePortfolioDialog({
 		url.searchParams.set('tickers', encodedTickers);
 		if (shareDeposit > 0) {
 			url.searchParams.set('deposit', shareDeposit.toString());
+		}
+		if (shareRemainingCash > 0) {
+			url.searchParams.set('remainingCash', shareRemainingCash.toString());
 		}
 		// Preserve manual deposit state
 		if (manualDeposit) {
@@ -82,7 +113,7 @@ export function SharePortfolioDialog({
 		}
 
 		return url.toString();
-	}, [items, deposit, isPrivacyEnabled, manualDeposit, currentUrl]);
+	}, [items, deposit, remainingCash, isPrivacyEnabled, manualDeposit, currentUrl]);
 
 	const handleCopy = async () => {
 		try {
@@ -122,43 +153,22 @@ export function SharePortfolioDialog({
 
 	const privacyTargetAmount = 100_000_000; // 100M VND
 	
-	// Helper function to get current market price for a ticker
-	const getCurrentMarketPrice = (ticker: string): number => {
-		if (!tickerData || !tickerData[ticker] || tickerData[ticker].length === 0) {
-			return 0; // No market data available
-		}
-		const latestData = tickerData[ticker][tickerData[ticker].length - 1];
-		return latestData.close || 0;
-	};
-	
 	// Check if we have market data for all tickers
 	const hasAllMarketData = items.every(item => {
 		if (item.quantity === 0) return true; // Skip watch list items
 		return getCurrentMarketPrice(item.ticker) > 0;
 	});
-	
-	// Calculate total value using current market prices (like PortfolioSummaryCard)
-	const totalValue = items.reduce((sum, item) => {
-		if (item.quantity > 0) {
-			const marketPrice = getCurrentMarketPrice(item.ticker);
-			// Only use market price if we have it, otherwise don't include in calculation
-			if (marketPrice > 0) {
-				return sum + (item.quantity * marketPrice);
-			}
-		}
-		return sum;
-	}, 0);
 
-	// Calculate scaled total value from scaled quantities for display
+	// Calculate scaled total value from scaled quantities + remaining cash for display
 	const scaledTotalValue = useMemo(() => {
-		if (!isPrivacyEnabled) return totalValue;
+		if (!isPrivacyEnabled) return totalValue + remainingCash;
 		
-		const targetDeposit = 100_000_000; // 100M VND
-		// If deposit = 0, auto-calculate from current portfolio value
-		const actualDeposit = deposit > 0 ? deposit : totalValue;
-		const scaleFactor = actualDeposit > 0 ? targetDeposit / actualDeposit : 1;
+		const targetTotal = 100_000_000; // 100M VND
+		// Calculate actual total portfolio value (stocks + cash)
+		const actualTotal = totalValue + remainingCash;
+		const scaleFactor = actualTotal > 0 ? targetTotal / actualTotal : 1;
 		
-		return items.reduce((sum, item) => {
+		const scaledStockValue = items.reduce((sum, item) => {
 			if (item.quantity > 0) {
 				// Use current market price for scaling calculation
 				const marketPrice = getCurrentMarketPrice(item.ticker);
@@ -169,7 +179,10 @@ export function SharePortfolioDialog({
 			}
 			return sum;
 		}, 0);
-	}, [items, deposit, isPrivacyEnabled, totalValue, tickerData]);
+		
+		// Add scaled remaining cash
+		return scaledStockValue + (remainingCash * scaleFactor);
+	}, [items, deposit, remainingCash, isPrivacyEnabled, totalValue, tickerData]);
 
 	return (
 		<Dialog>

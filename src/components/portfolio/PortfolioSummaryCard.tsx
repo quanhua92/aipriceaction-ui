@@ -34,6 +34,7 @@ import {
 interface PortfolioSummaryCardProps {
 	items: PortfolioItem[];
 	deposit: number;
+	remainingCash?: number;
 	showPrivacy: boolean;
 	onTogglePrivacy: (show: boolean) => void;
 	manualDeposit?: boolean;
@@ -57,6 +58,7 @@ const COLORS = [
 export function PortfolioSummaryCard({
 	items,
 	deposit,
+	remainingCash = 0,
 	showPrivacy,
 	onTogglePrivacy,
 	manualDeposit = false,
@@ -121,6 +123,9 @@ export function PortfolioSummaryCard({
 		return { investments, currentMarketValue, chartData, totalCostBasis };
 	}, [items, tickerData]);
 
+	// Total portfolio value includes stocks + remaining cash
+	const totalPortfolioValue = currentMarketValue + remainingCash;
+	
 	const profitLoss = currentMarketValue - totalCostBasis;
 	const profitLossPercentage = totalCostBasis > 0 ? ((profitLoss / totalCostBasis) * 100) : 0;
 
@@ -222,14 +227,14 @@ export function PortfolioSummaryCard({
 				<div className="px-6 mb-3 space-y-2">
 					<div className="text-center">
 						<div className="text-2xl md:text-3xl font-bold text-green-600">
-							{displayValue(currentMarketValue)}
+							{displayValue(totalPortfolioValue)}
 						</div>
 						<div className="text-muted-foreground text-xs">{t("portfolio.totalValue")}</div>
 					</div>
 					<div className="grid grid-cols-3 gap-2 text-xs">
 						<div className="text-center">
 							<span className="text-muted-foreground block">{t("portfolio.totalAssets")}</span>
-							<div className="font-medium text-sm">{displayValue(currentMarketValue)}</div>
+							<div className="font-medium text-sm">{displayValue(totalPortfolioValue)}</div>
 						</div>
 						<div className="text-center">
 							<span className="text-muted-foreground block">{t("portfolio.totalDeposit")}</span>
@@ -534,13 +539,13 @@ export function PortfolioSummaryCard({
 														name: t("portfolio.equityValue"),
 														value: currentMarketValue,
 														color: "#10B981",
-														percentage: deposit > 0 ? ((currentMarketValue / deposit) * 100).toFixed(1) : "0"
+														percentage: totalPortfolioValue > 0 ? ((currentMarketValue / totalPortfolioValue) * 100).toFixed(1) : "0"
 													},
 													{
 														name: t("portfolio.cashRemaining"),
-														value: Math.max(0, deposit - totalCostBasis),
+														value: remainingCash,
 														color: "#6B7280",
-														percentage: deposit > 0 ? (((deposit - totalCostBasis) / deposit) * 100).toFixed(1) : "0"
+														percentage: totalPortfolioValue > 0 ? ((remainingCash / totalPortfolioValue) * 100).toFixed(1) : "0"
 													}
 												]}
 												cx="50%"
@@ -605,7 +610,7 @@ export function PortfolioSummaryCard({
 										<div className="text-right">
 											<span className="text-xs font-medium text-gray-900">{displayValue(currentMarketValue)}</span>
 											<span className="ml-1 text-xs text-gray-500">
-												{deposit > 0 ? ((currentMarketValue / deposit) * 100).toFixed(1) : "0"}%
+												{totalPortfolioValue > 0 ? ((currentMarketValue / totalPortfolioValue) * 100).toFixed(1) : "0"}%
 											</span>
 										</div>
 									</div>
@@ -615,9 +620,9 @@ export function PortfolioSummaryCard({
 											<span className="text-xs font-medium text-gray-700">{t("portfolio.cashRemaining")}</span>
 										</div>
 										<div className="text-right">
-											<span className="text-xs font-medium text-gray-900">{displayValue(Math.max(0, deposit - totalCostBasis))}</span>
+											<span className="text-xs font-medium text-gray-900">{displayValue(remainingCash)}</span>
 											<span className="ml-1 text-xs text-gray-500">
-												{deposit > 0 ? (((deposit - totalCostBasis) / deposit) * 100).toFixed(1) : "0"}%
+												{totalPortfolioValue > 0 ? ((remainingCash / totalPortfolioValue) * 100).toFixed(1) : "0"}%
 											</span>
 										</div>
 									</div>
