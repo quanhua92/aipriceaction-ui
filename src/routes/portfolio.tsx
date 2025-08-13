@@ -225,7 +225,7 @@ function PortfolioPage() {
 							<Target className="h-8 w-8" />
 							{t("portfolio.title")}
 						</h1>
-						<p className="text-muted-foreground">{t("portfolio.subtitle")}</p>
+						<p className="text-muted-foreground">{t("portfolio.subtitle", { count: 0 })}</p>
 					</div>
 
 					<Card className="max-w-2xl mx-auto">
