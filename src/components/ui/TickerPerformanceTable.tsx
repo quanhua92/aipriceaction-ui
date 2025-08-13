@@ -108,13 +108,13 @@ export function TickerPerformanceTable({
 					break;
 				
 				case 'daily':
-					aValue = a.dailyChange?.changePercent ?? -Infinity;
-					bValue = b.dailyChange?.changePercent ?? -Infinity;
+					aValue = a.dailyChange?.changePercent ?? Number.NEGATIVE_INFINITY;
+					bValue = b.dailyChange?.changePercent ?? Number.NEGATIVE_INFINITY;
 					break;
 				
 				case 'range':
-					aValue = a.rangeChange?.changePercent ?? -Infinity;
-					bValue = b.rangeChange?.changePercent ?? -Infinity;
+					aValue = a.rangeChange?.changePercent ?? Number.NEGATIVE_INFINITY;
+					bValue = b.rangeChange?.changePercent ?? Number.NEGATIVE_INFINITY;
 					break;
 					
 				default:

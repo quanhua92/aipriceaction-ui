@@ -146,11 +146,11 @@ export function parseCsvData(csvText: string): StockDataPoint[] {
 			ticker,
 			time,
 			date,
-			open: parseFloat(open) * priceScale,
-			high: parseFloat(high) * priceScale,
-			low: parseFloat(low) * priceScale,
-			close: parseFloat(close) * priceScale,
-			volume: parseInt(volume, 10),
+			open: Number.parseFloat(open) * priceScale,
+			high: Number.parseFloat(high) * priceScale,
+			low: Number.parseFloat(low) * priceScale,
+			close: Number.parseFloat(close) * priceScale,
+			volume: Number.parseInt(volume, 10),
 		};
 	});
 }
@@ -247,7 +247,7 @@ export function createDateRangeConfig(
 
 export function sampleData(
 	data: StockDataPoint[],
-	maxPoints: number = 1000,
+	maxPoints = 1000,
 ): StockDataPoint[] {
 	if (data.length <= maxPoints) return data;
 
@@ -442,7 +442,7 @@ export function calculateSectorPerformance(
 
 export function getTopPerformingTickers(
 	allSectorData: Record<string, Record<string, StockDataPoint[]>>,
-	limit: number = 10,
+	limit = 10,
 ): TickerPerformance[] {
 	const allPerformances: TickerPerformance[] = [];
 	
@@ -613,7 +613,7 @@ export function calculateVariance(returns: number[]): number {
 }
 
 // Calculate Sharpe ratio
-export function calculateSharpeRatio(returns: number[], riskFreeRate: number = 0.03): number {
+export function calculateSharpeRatio(returns: number[], riskFreeRate = 0.03): number {
 	if (returns.length === 0) return 0;
 	
 	const annualizedReturn = (returns.reduce((a, b) => a + b, 0) / returns.length) * 252;
@@ -801,7 +801,7 @@ export function calculateStockMetrics(
 	stockData: StockDataPoint[],
 	benchmarkData: StockDataPoint[],
 	ticker: string,
-	portfolioWeight: number = 0
+	portfolioWeight = 0
 ): StockPerformanceMetrics {
 	const stockReturns = calculateDailyReturns(stockData);
 	const benchmarkReturns = calculateDailyReturns(benchmarkData);

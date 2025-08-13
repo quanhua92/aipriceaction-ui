@@ -183,8 +183,8 @@ export function SimpleCandlestickChart({
 	];
 
 	const handleAxisUpdate = () => {
-		const newMin = tempAxis.min ? parseFloat(tempAxis.min) : undefined;
-		const newMax = tempAxis.max ? parseFloat(tempAxis.max) : undefined;
+		const newMin = tempAxis.min ? Number.parseFloat(tempAxis.min) : undefined;
+		const newMax = tempAxis.max ? Number.parseFloat(tempAxis.max) : undefined;
 		
 		setCustomAxis({
 			min: newMin,

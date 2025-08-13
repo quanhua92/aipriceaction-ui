@@ -37,8 +37,8 @@ export function decodePortfolioItems(dataString: string): PortfolioItem[] {
 				const [ticker, quantityStr, priceStr] = item.split('-');
 				return {
 					ticker,
-					quantity: parseFloat(quantityStr) || 0,
-					price: parseFloat(priceStr) || 0,
+					quantity: Number.parseFloat(quantityStr) || 0,
+					price: Number.parseFloat(priceStr) || 0,
 				};
 			}).filter(item => item.ticker);
 		} else {
@@ -47,8 +47,8 @@ export function decodePortfolioItems(dataString: string): PortfolioItem[] {
 				const [ticker, quantityStr, priceStr] = item.split(',');
 				return {
 					ticker,
-					quantity: parseFloat(quantityStr) || 0,
-					price: parseFloat(priceStr) || 0,
+					quantity: Number.parseFloat(quantityStr) || 0,
+					price: Number.parseFloat(priceStr) || 0,
 				};
 			}).filter(item => item.ticker);
 		}
@@ -111,7 +111,7 @@ export function formatVND(amount: number): string {
  * Formats number with thousand separators for input display
  */
 export function formatNumber(value: number | string): string {
-	const num = typeof value === 'string' ? parseFloat(value) || 0 : value;
+	const num = typeof value === 'string' ? Number.parseFloat(value) || 0 : value;
 	if (num === 0) return '';
 	return new Intl.NumberFormat('vi-VN').format(num);
 }
@@ -143,7 +143,7 @@ export function parseFormattedNumber(value: string): number {
 	if (!value || value.trim() === '') return 0;
 	// Remove thousand separators and other non-numeric characters except decimal point
 	const cleaned = value.replace(/[^\d.-]/g, '');
-	const num = parseFloat(cleaned) || 0;
+	const num = Number.parseFloat(cleaned) || 0;
 	return Math.max(0, num); // Ensure non-negative
 }
 
@@ -373,7 +373,7 @@ export function calculatePortfolioDiversification(items: PortfolioItem[]): {
 /**
  * Calculate portfolio performance metrics
  */
-export function calculatePortfolioMetrics(items: PortfolioItem[], deposit: number = 0): {
+export function calculatePortfolioMetrics(items: PortfolioItem[], deposit = 0): {
 	totalValue: number;
 	totalInvestment: number;
 	unrealizedPnL: number;
@@ -419,7 +419,7 @@ export function calculatePortfolioMetrics(items: PortfolioItem[], deposit: numbe
 export function scalePortfolioForPrivacy(
 	items: PortfolioItem[], 
 	_deposit: number, 
-	targetDeposit: number = 100_000_000
+	targetDeposit = 100_000_000
 ): { scaledItems: PortfolioItem[], scaledDeposit: number, scaleFactor: number } {
 	const totalValue = calculatePortfolioValue(items);
 	const scaleFactor = totalValue > 0 ? targetDeposit / totalValue : 1;
@@ -442,7 +442,7 @@ export function scalePortfolioForPrivacy(
  */
 export function debounce<T extends (...args: any[]) => any>(
 	func: T,
-	delay: number = 300
+	delay = 300
 ): (...args: Parameters<T>) => void {
 	let timeoutId: NodeJS.Timeout;
 	return (...args: Parameters<T>) => {
@@ -598,7 +598,7 @@ export function getTickerSuggestions(input: string): string[] {
 /**
  * Get smart suggestions for price input
  */
-export function getPriceSuggestions(ticker: string, input: string = ''): number[] {
+export function getPriceSuggestions(ticker: string, input = ''): number[] {
 	const memory = loadInputMemory();
 	const upperTicker = ticker.toUpperCase();
 	
@@ -624,7 +624,7 @@ export function getPriceSuggestions(ticker: string, input: string = ''): number[
 /**
  * Get smart suggestions for quantity input
  */
-export function getQuantitySuggestions(input: string = ''): number[] {
+export function getQuantitySuggestions(input = ''): number[] {
 	const memory = loadInputMemory();
 	
 	// If there's input, try to suggest relevant multiples

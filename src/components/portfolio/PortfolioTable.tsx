@@ -34,6 +34,7 @@ interface PortfolioTableProps {
 	manualDeposit: boolean;
 	onUpdateDeposit?: (deposit: number) => void;
 	onToggleManualDeposit?: (manual: boolean) => void;
+	showPrivacy?: boolean;
 }
 
 export function PortfolioTable({
@@ -45,6 +46,7 @@ export function PortfolioTable({
 	manualDeposit,
 	onUpdateDeposit,
 	onToggleManualDeposit,
+	showPrivacy = false,
 }: PortfolioTableProps) {
 	const { t } = useTranslation();
 	const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
@@ -112,6 +114,14 @@ export function PortfolioTable({
 		return value > 0 ? value.toString() : '';
 	};
 
+	// Privacy-aware display function
+	const displayValue = (value: number) => {
+		if (showPrivacy) {
+			return "●●●●●";
+		}
+		return formatVND(value);
+	};
+
 	return (
 		<Card className="w-full">
 			<CardHeader>
@@ -175,7 +185,7 @@ export function PortfolioTable({
 									) : (
 										<>
 											<span className="text-sm text-muted-foreground">{t("portfolio.currentDeposit")}:</span>
-											<span className="font-medium">{formatVND(deposit)}</span>
+											<span className="font-medium">{displayValue(deposit)}</span>
 											<Button size="sm" variant="outline" onClick={() => setEditingDeposit(true)}>
 												Edit
 											</Button>
@@ -287,7 +297,7 @@ export function PortfolioTable({
 												</span>
 												<div className="text-right">
 													<div className="font-semibold text-green-600">
-														{formatVND(value)}
+														{displayValue(value)}
 													</div>
 												</div>
 											</div>
@@ -388,7 +398,7 @@ export function PortfolioTable({
 											</TableCell>
 											<TableCell className="text-right">
 												<span className={`font-semibold ${value > 0 ? 'text-green-600' : 'text-muted-foreground'}`}>
-													{value > 0 ? formatVND(value) : '—'}
+													{value > 0 ? displayValue(value) : '—'}
 												</span>
 											</TableCell>
 											<TableCell>

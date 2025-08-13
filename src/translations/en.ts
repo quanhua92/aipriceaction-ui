@@ -189,7 +189,7 @@ export const en = {
     costBasis: "Cost Basis",
     totalDeposit: "Total Deposit",
     totalAssets: "Total Assets",
-    totalCapital: "Total Capital",
+    totalCapital: "Total Deposit",
     overview: "Overview",
     allocation: "Allocation",
     marketValue: "Market Value",

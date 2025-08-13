@@ -86,7 +86,7 @@ export function PanicDayTable({
 
 		// Apply year filter
 		if (filterYear !== 'all') {
-			const year = parseInt(filterYear);
+			const year = Number.parseInt(filterYear);
 			filtered = filtered.filter(panic => new Date(panic.date).getFullYear() === year);
 		}
 

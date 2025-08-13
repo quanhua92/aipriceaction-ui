@@ -218,7 +218,7 @@ export function PortfolioSummaryCard({
 							<div className="font-medium text-sm">{displayValue(currentMarketValue)}</div>
 						</div>
 						<div className="text-center">
-							<span className="text-muted-foreground block">{t("portfolio.totalCapital")}</span>
+							<span className="text-muted-foreground block">{t("portfolio.totalDeposit")}</span>
 							<div className="font-medium text-sm">{displayValue(deposit)}</div>
 						</div>
 						<div className="text-center">

@@ -196,8 +196,8 @@ export function CandlestickChart({
 	const volumeDomain = [0, maxVolume * 5]; // Scale volume to be much smaller visually
 
 	const handleAxisUpdate = () => {
-		const newMin = tempAxis.min ? parseFloat(tempAxis.min) : undefined;
-		const newMax = tempAxis.max ? parseFloat(tempAxis.max) : undefined;
+		const newMin = tempAxis.min ? Number.parseFloat(tempAxis.min) : undefined;
+		const newMax = tempAxis.max ? Number.parseFloat(tempAxis.max) : undefined;
 		
 		setCustomAxis({
 			min: newMin,

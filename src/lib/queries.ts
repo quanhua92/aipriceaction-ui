@@ -20,7 +20,7 @@ export function useTickerGroups() {
 export function useTickerData(
 	ticker: string,
 	dateRangeConfig: DateRangeConfig = { range: "ALL" },
-	maxPoints: number = 1000,
+	maxPoints = 1000,
 ) {
 	return useQuery({
 		queryKey: ["ticker-data", ticker, dateRangeConfig, maxPoints],
@@ -41,7 +41,7 @@ export function useTickerData(
 export function useMultipleTickerData(
 	tickers: string[],
 	dateRangeConfig: DateRangeConfig = { range: "ALL" },
-	maxPoints: number = 500,
+	maxPoints = 500,
 ) {
 	return useQuery({
 		queryKey: ["multiple-ticker-data", tickers, dateRangeConfig, maxPoints],

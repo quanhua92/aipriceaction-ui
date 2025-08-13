@@ -16,7 +16,6 @@ import { useTranslation } from "@/hooks/useTranslation";
 import {
 	type PortfolioItem,
 	encodePortfolioItems,
-	scalePortfolioForPrivacy,
 	formatVND,
 } from "@/lib/portfolio-utils";
 
@@ -25,6 +24,7 @@ interface SharePortfolioDialogProps {
 	deposit: number;
 	currentUrl: string;
 	manualDeposit?: boolean;
+	tickerData?: Record<string, any[]>;
 }
 
 export function SharePortfolioDialog({
@@ -32,6 +32,7 @@ export function SharePortfolioDialog({
 	deposit,
 	currentUrl,
 	manualDeposit = false,
+	tickerData,
 }: SharePortfolioDialogProps) {
 	const { t } = useTranslation();
 	const [isPrivacyEnabled, setIsPrivacyEnabled] = useState(true);
@@ -44,23 +45,21 @@ export function SharePortfolioDialog({
 		let shareDeposit = deposit;
 
 		if (isPrivacyEnabled) {
-			if (manualDeposit) {
-				// For manual deposit: scale to 100M and adjust stock prices to maintain profit ratio
-				const targetDeposit = 100_000_000; // 100M VND
-				const scaleFactor = targetDeposit / deposit;
-				
-				shareItems = items.map(item => ({
-					...item,
-					// Scale stock prices to maintain the same profit/loss ratio
-					price: item.price * scaleFactor,
-				}));
-				shareDeposit = targetDeposit;
-			} else {
-				// For auto deposit: use standard privacy scaling (scales quantities, keeps prices)
-				const scaled = scalePortfolioForPrivacy(items, deposit);
-				shareItems = scaled.scaledItems;
-				shareDeposit = scaled.scaledDeposit;
-			}
+			// Scale quantities to make deposit = 100M
+			const targetDeposit = 100_000_000; // 100M VND
+			
+			// If deposit = 0, auto-calculate from current portfolio value
+			const actualDeposit = deposit > 0 ? deposit : totalValue;
+			const scaleFactor = actualDeposit > 0 ? targetDeposit / actualDeposit : 1;
+			
+			shareItems = items.map(item => ({
+				...item,
+				// Scale quantities only, keep original prices
+				quantity: item.quantity * scaleFactor,
+				price: item.price, // Keep original price
+			}));
+			
+			shareDeposit = targetDeposit;
 		}
 
 		const encodedTickers = encodePortfolioItems(shareItems);
@@ -96,18 +95,64 @@ export function SharePortfolioDialog({
 	};
 
 	const privacyTargetAmount = 100_000_000; // 100M VND
+	
+	// Helper function to get current market price for a ticker
+	const getCurrentMarketPrice = (ticker: string): number => {
+		if (!tickerData || !tickerData[ticker] || tickerData[ticker].length === 0) {
+			return 0; // No market data available
+		}
+		const latestData = tickerData[ticker][tickerData[ticker].length - 1];
+		return latestData.close || 0;
+	};
+	
+	// Check if we have market data for all tickers
+	const hasAllMarketData = items.every(item => {
+		if (item.quantity === 0) return true; // Skip watch list items
+		return getCurrentMarketPrice(item.ticker) > 0;
+	});
+	
+	// Calculate total value using current market prices (like PortfolioSummaryCard)
 	const totalValue = items.reduce((sum, item) => {
-		if (item.quantity > 0 && item.price > 0) {
-			return sum + (item.quantity * item.price);
+		if (item.quantity > 0) {
+			const marketPrice = getCurrentMarketPrice(item.ticker);
+			// Only use market price if we have it, otherwise don't include in calculation
+			if (marketPrice > 0) {
+				return sum + (item.quantity * marketPrice);
+			}
 		}
 		return sum;
 	}, 0);
 
+	// Calculate scaled total value from scaled quantities for display
+	const scaledTotalValue = useMemo(() => {
+		if (!isPrivacyEnabled) return totalValue;
+		
+		const targetDeposit = 100_000_000; // 100M VND
+		// If deposit = 0, auto-calculate from current portfolio value
+		const actualDeposit = deposit > 0 ? deposit : totalValue;
+		const scaleFactor = actualDeposit > 0 ? targetDeposit / actualDeposit : 1;
+		
+		return items.reduce((sum, item) => {
+			if (item.quantity > 0) {
+				// Use current market price for scaling calculation
+				const marketPrice = getCurrentMarketPrice(item.ticker);
+				// Only use market price if we have it
+				if (marketPrice > 0) {
+					return sum + (item.quantity * scaleFactor * marketPrice);
+				}
+			}
+			return sum;
+		}, 0);
+	}, [items, deposit, isPrivacyEnabled, totalValue, tickerData]);
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline" className="flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
-					<Share2 className="h-4 w-4" />
+				<Button 
+					size="lg"
+					className="flex items-center gap-3 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-0"
+				>
+					<Share2 className="h-5 w-5" />
 					{t("portfolio.share")}
 				</Button>
 			</DialogTrigger>
@@ -241,20 +286,28 @@ export function SharePortfolioDialog({
 								</div>
 								<div className="bg-background rounded-lg p-3 text-center col-span-2">
 									<div className="text-lg font-bold text-blue-600">
-										{isPrivacyEnabled 
-											? (manualDeposit ? formatVND((totalValue / deposit) * 100_000_000) : formatVND(privacyTargetAmount))
-											: formatVND(totalValue)
-										}
+										{hasAllMarketData ? formatVND(scaledTotalValue) : (
+											<div className="flex items-center justify-center gap-2">
+												<div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+												<span className="text-sm text-muted-foreground">Loading...</span>
+											</div>
+										)}
 									</div>
 									<div className="text-xs text-muted-foreground">{t("portfolio.totalValue")}</div>
 								</div>
 								{deposit > 0 && (
 									<div className="bg-background rounded-lg p-3 text-center col-span-2">
 										<div className="text-base font-semibold text-gray-700">
-											{isPrivacyEnabled 
-												? (manualDeposit ? formatVND(100_000_000) : formatVND(privacyTargetAmount))
-												: formatVND(deposit)
-											}
+											{hasAllMarketData ? (
+												isPrivacyEnabled 
+													? formatVND(100_000_000) // Target deposit
+													: formatVND(deposit)
+											) : (
+												<div className="flex items-center justify-center gap-2">
+													<div className="w-3 h-3 border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
+													<span className="text-sm text-muted-foreground">Loading...</span>
+												</div>
+											)}
 										</div>
 										<div className="text-xs text-muted-foreground">{t("portfolio.deposit")}</div>
 									</div>

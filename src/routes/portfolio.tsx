@@ -49,7 +49,7 @@ export const Route = createFileRoute("/portfolio")({
 			deposit: typeof search.deposit === 'number' 
 				? search.deposit 
 				: typeof search.deposit === 'string' 
-					? parseFloat(search.deposit) || 0
+					? Number.parseFloat(search.deposit) || 0
 					: 0,
 			manualDeposit: search.manualDeposit === 'true' || search.manualDeposit === true,
 			share: search.share === 'true' || search.share === true,
@@ -364,6 +364,7 @@ function PortfolioPage() {
 				manualDeposit={manualDeposit}
 				onUpdateDeposit={updateDeposit}
 				onToggleManualDeposit={toggleManualDeposit}
+				showPrivacy={showPrivacy}
 			/>
 
 			{/* Portfolio Summary Card - Screenshot friendly */}
@@ -384,6 +385,7 @@ function PortfolioPage() {
 					deposit={actualDeposit}
 					currentUrl={window.location.href}
 					manualDeposit={manualDeposit}
+					tickerData={tickerData}
 				/>
 			</div>
 
