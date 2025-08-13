@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MultiTickerSearch } from "@/components/ui/TickerSearch";
+import { MultiTickerSearch, TickerSearch } from "@/components/ui/TickerSearch";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useMultipleTickerData } from "@/lib/queries";
 import { useVPAData } from "@/hooks/useVPAData";
@@ -127,7 +127,9 @@ function AskPage() {
 
 	// Build contexts
 	const singleTickerContext = useMemo(() => {
-		if (!singleTickerData) return "";
+		if (!defaultTicker || !singleTickerData || !Array.isArray(singleTickerData) || singleTickerData.length === 0) {
+			return "";
+		}
 		return buildSingleTickerContext(
 			defaultTicker, 
 			singleTickerData, 
@@ -146,6 +148,12 @@ function AskPage() {
 
 		return buildMultipleTickersContext(tickersData);
 	}, [selectedTickers, multipleTickerData, vpaQueries]);
+
+	// Handle single ticker change
+	const handleSingleTickerChange = (newTicker: string) => {
+		// Force tab=single and update ticker param
+		updateSearchParams({ ticker: newTicker, tab: "single" });
+	};
 
 	// Handle tickers change for multi tab
 	const handleTickersChange = (newTickers: string[]) => {
@@ -247,14 +255,28 @@ function AskPage() {
 								)}
 							</CardTitle>
 						</CardHeader>
-						<CardContent>
+						<CardContent className="space-y-4">
+							{/* Ticker Search */}
+							<div>
+								<label className="text-sm font-medium mb-2 block">
+									{t("askAI.singleTicker")}
+								</label>
+								<TickerSearch
+									value={defaultTicker || ""}
+									onSelect={handleSingleTickerChange}
+									placeholder={t("askAI.searchTickersPlaceholder")}
+									className="w-full"
+								/>
+							</div>
+
+							{/* Data Status */}
 							{!singleTickerContext ? (
 								<p className="text-sm text-muted-foreground">
-									{t("askAI.loadingData")}
+									{defaultTicker ? t("askAI.loadingData") : t("askAI.noTickerSelected")}
 								</p>
 							) : (
 								<p className="text-sm text-green-600">
-									{t("askAI.dataReady")} ({singleTickerData?.length || 0} {t("askAI.dataPoints")})
+									{t("askAI.dataReady")} ({singleTickerData?.length ?? 0} {t("askAI.dataPoints")})
 								</p>
 							)}
 						</CardContent>
