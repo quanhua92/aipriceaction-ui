@@ -388,75 +388,190 @@ function AskPage() {
 				<p className="text-xs text-muted-foreground text-center">
 					{t("askAI.howToUse")}
 				</p>
-				
-				{/* Configuration Section */}
-				<div className="mt-4">
-					<Button
-						variant="ghost"
-						size="sm"
-						onClick={() => setShowConfig(!showConfig)}
-						className="mx-auto flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-					>
-						<Settings className="h-4 w-4" />
-						Configuration
-						{showConfig ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-					</Button>
-					
-					{showConfig && (
-						<Card className="mt-4 max-w-md mx-auto">
-							<CardHeader className="pb-4">
-								<CardTitle className="text-lg flex items-center gap-2">
-									<Settings className="h-5 w-5" />
-									Context Configuration
-								</CardTitle>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="space-y-2">
-									<Label htmlFor="chart-context-days" className="text-sm font-medium">
-										Chart context days (0 = no chart data)
-									</Label>
-									<Input
-										id="chart-context-days"
-										type="number"
-										min="0"
-										max="1000"
-										value={chartContextDays}
-										onChange={(e) => setChartContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
-										className="w-full"
-										placeholder="10"
-									/>
-									<p className="text-xs text-muted-foreground">
-										Number of recent trading days to include in chart context
-									</p>
-								</div>
-								
-								<div className="space-y-2">
-									<Label htmlFor="vpa-context-days" className="text-sm font-medium">
-										VPA context days (0 = no VPA data)
-									</Label>
-									<Input
-										id="vpa-context-days"
-										type="number"
-										min="0"
-										max="1000"
-										value={vpaContextDays}
-										onChange={(e) => setVpaContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
-										className="w-full"
-										placeholder="5"
-									/>
-									<p className="text-xs text-muted-foreground">
-										Number of recent VPA entries to include in context
-									</p>
-								</div>
-								
-								<div className="pt-2 text-xs text-muted-foreground">
-									<p>💾 Settings are automatically saved to browser storage</p>
-								</div>
-							</CardContent>
-						</Card>
-					)}
-				</div>
 			</div>
+
+			{/* Configuration Section */}
+			<div className="mt-4">
+				<Button
+					variant="ghost"
+					size="sm"
+					onClick={() => setShowConfig(!showConfig)}
+					className="mx-auto flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+				>
+					<Settings className="h-4 w-4" />
+					Configuration
+					{showConfig ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+				</Button>
+				
+				{showConfig && (
+					<Card className="mt-4 max-w-md mx-auto">
+						<CardHeader className="pb-4">
+							<CardTitle className="text-lg flex items-center gap-2">
+								<Settings className="h-5 w-5" />
+								Context Configuration
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-4">
+							<div className="space-y-2">
+								<Label htmlFor="chart-context-days" className="text-sm font-medium">
+									Chart context days (0 = no chart data)
+								</Label>
+								<Input
+									id="chart-context-days"
+									type="number"
+									min="0"
+									max="1000"
+									value={chartContextDays}
+									onChange={(e) => setChartContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
+									className="w-full"
+									placeholder="10"
+								/>
+								<p className="text-xs text-muted-foreground">
+									Number of recent trading days to include in chart context
+								</p>
+							</div>
+							
+							<div className="space-y-2">
+								<Label htmlFor="vpa-context-days" className="text-sm font-medium">
+									VPA context days (0 = no VPA data)
+								</Label>
+								<Input
+									id="vpa-context-days"
+									type="number"
+									min="0"
+									max="1000"
+									value={vpaContextDays}
+									onChange={(e) => setVpaContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
+									className="w-full"
+									placeholder="5"
+								/>
+								<p className="text-xs text-muted-foreground">
+									Number of recent VPA entries to include in context
+								</p>
+							</div>
+							
+							<div className="pt-2 text-xs text-muted-foreground">
+								<p>💾 Settings are automatically saved to browser storage</p>
+							</div>
+						</CardContent>
+					</Card>
+				)}
+			</div>
+
+			{/* Tabs */}
+			<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "single" | "multi")} className="w-full">
+				<TabsList className="grid w-full grid-cols-2 mb-6">
+					<TabsTrigger value="single" className="flex items-center gap-2 data-[state=active]:text-green-600">
+						<Brain className="h-4 w-4" />
+						{t("askAI.singleTicker")}
+					</TabsTrigger>
+					<TabsTrigger value="multi" className="flex items-center gap-2 data-[state=active]:text-green-600">
+						<Brain className="h-4 w-4" />
+						{t("askAI.multipleTickers")}
+					</TabsTrigger>
+				</TabsList>
+
+				<TabsContent value="single" className="space-y-6">
+					<Card>
+						<CardHeader>
+							<CardTitle className="text-lg flex items-center gap-2">
+								{t("askAI.analyzingTicker")}
+								{defaultTicker && (
+									<Badge variant="secondary" className="font-mono">
+										{defaultTicker}
+									</Badge>
+								)}
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-4">
+							{/* Ticker Search */}
+							<div>
+								<label className="text-sm font-medium mb-2 block">
+									{t("askAI.singleTicker")}
+								</label>
+								<TickerSearch
+									value={defaultTicker || ""}
+									onSelect={handleSingleTickerChange}
+									placeholder={t("askAI.searchTickersPlaceholder")}
+									className="w-full"
+								/>
+							</div>
+
+							{/* Data Status */}
+							{!singleTickerContext ? (
+								<p className="text-sm text-muted-foreground">
+									{defaultTicker ? t("askAI.loadingData") : t("askAI.noTickerSelected")}
+								</p>
+							) : (
+								<p className="text-sm text-green-600">
+									{t("askAI.dataReady")} ({singleTickerData?.length ?? 0} {t("askAI.dataPoints")})
+								</p>
+							)}
+						</CardContent>
+					</Card>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+						{singleTemplates.map(template => renderTemplateCard(template, singleTickerContext))}
+					</div>
+				</TabsContent>
+
+				<TabsContent value="multi" className="space-y-6">
+					<Card>
+						<CardHeader>
+							<CardTitle className="text-lg flex items-center gap-2">
+								{t("askAI.selectTickers")}
+								{selectedTickers.length > 0 && (
+									<Badge variant="secondary">
+										{selectedTickers.length} {t("askAI.selected")}
+									</Badge>
+								)}
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<MultiTickerSearch
+								selectedTickers={selectedTickers}
+								onTickersChange={handleTickersChange}
+								placeholder={t("askAI.searchTickersPlaceholder")}
+								className="w-full mb-4"
+								persistOpenState={true}
+							/>
+							{selectedTickers.length > 0 && (
+								<div>
+									{multipleTickersContext ? (
+										<p className="text-sm text-green-600">
+											{t("askAI.dataReady")} ({selectedTickers.length} {t("askAI.tickers")})
+										</p>
+									) : (
+										<p className="text-sm text-muted-foreground">
+											{t("askAI.loadingData")}
+										</p>
+									)}
+								</div>
+							)}
+						</CardContent>
+					</Card>
+
+					{selectedTickers.length === 0 ? (
+						<div className="flex items-center justify-center py-20">
+							<div className="text-center space-y-3">
+								<Brain className="h-16 w-16 text-green-600 mx-auto" />
+								<div>
+									<p className="text-xl font-medium text-foreground">
+										{t("askAI.noTickersSelected")}
+									</p>
+									<p className="text-sm text-muted-foreground">
+										{t("askAI.useSearchAbove")}
+									</p>
+								</div>
+							</div>
+						</div>
+					) : (
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+							{multiTemplates.map(template => renderTemplateCard(template, multipleTickersContext))}
+						</div>
+					)}
+				</TabsContent>
+			</Tabs>
 		</div>
 	);
 }
