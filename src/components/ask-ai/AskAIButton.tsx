@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Brain } from "lucide-react";
-import { useState } from "react";
-import { AskAIDialog } from "./AskAIDialog";
+import { Link } from "@tanstack/react-router";
 
 interface AskAIButtonProps {
 	ticker?: string;
@@ -21,29 +20,25 @@ export function AskAIButton({
 	defaultTab = "single",
 	children,
 }: AskAIButtonProps) {
-	const [open, setOpen] = useState(false);
 	const { t } = useTranslation();
 
 	const buttonSize = size === "sm" ? "sm" : size === "lg" ? "lg" : "default";
 
+	// Build search params
+	const searchParams: Record<string, string> = {};
+	if (ticker) searchParams.ticker = ticker;
+	if (defaultTab !== "single") searchParams.tab = defaultTab;
+
 	return (
-		<>
+		<Link to="/ask" search={searchParams}>
 			<Button
 				variant={variant}
 				size={buttonSize}
-				onClick={() => setOpen(true)}
 				className={`bg-green-600 hover:bg-green-700 text-white ${className || ""}`}
 			>
 				<Brain className="h-4 w-4 mr-1" />
 				{children || t("askAI.askAI")}
 			</Button>
-
-			<AskAIDialog
-				open={open}
-				onOpenChange={setOpen}
-				defaultTicker={ticker}
-				defaultTab={defaultTab}
-			/>
-		</>
+		</Link>
 	);
 }
