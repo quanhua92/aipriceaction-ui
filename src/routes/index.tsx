@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { TrendingUp, Search, Grid3X3, Building2, DollarSign, AlertTriangle, Target } from "lucide-react";
+import { TrendingUp, Search, Grid3X3, Building2, DollarSign, AlertTriangle, Target, Brain } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CandlestickChart } from "@/components/charts";
@@ -346,15 +346,26 @@ function Dashboard() {
 
 				{/* Quick Navigation - 2 rows, 3 columns */}
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+					<Link to="/ask">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+							<CardContent className="flex items-center gap-3 p-4 h-full">
+								<Brain className="h-8 w-8 text-primary" />
+								<div>
+									<p className="font-semibold">{t("askAI.askAI")}</p>
+									<p className="text-sm text-muted-foreground">
+										AI-powered stock analysis
+									</p>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
+
 					<Link to="/panic">
 						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
 							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<AlertTriangle className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("nav.panicAnalysis")}</p>
-									<p className="text-sm text-muted-foreground">
-										{t("home.marketRiskMonitoring")}
-									</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -366,9 +377,6 @@ function Dashboard() {
 								<Target className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("nav.portfolio")}</p>
-									<p className="text-sm text-muted-foreground">
-										{t("portfolio.subtitle")}
-									</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -412,34 +420,6 @@ function Dashboard() {
 							</CardContent>
 						</Card>
 					</Link>
-
-					<Card className="h-full">
-						<CardContent className="flex items-center gap-3 p-4 h-full">
-							<TrendingUp className="h-8 w-8 text-primary" />
-							<div>
-								<p className="font-semibold">{t("home.vnIndex")}</p>
-								<p className="text-sm text-muted-foreground">
-									{latestPrice && (
-										<span
-											className={
-												dailyChange && dailyChange.changePercent >= 0
-													? "text-green-600"
-													: "text-red-600"
-											}
-										>
-											{latestPrice.close.toLocaleString()}
-											{dailyChange && (
-												<span className="ml-1">
-													({dailyChange.changePercent > 0 ? "+" : ""}
-													{dailyChange.changePercent.toFixed(2)}%)
-												</span>
-											)}
-										</span>
-									)}
-								</p>
-							</div>
-						</CardContent>
-					</Card>
 				</div>
 			</div>
 
@@ -626,9 +606,6 @@ function Dashboard() {
 			<div>
 				<div className="flex items-center justify-between mb-4">
 					<h2 className="text-xl font-semibold">{t("home.topPerformers")}</h2>
-					<p className="text-sm text-muted-foreground">
-						{t("home.majorSectors")}
-					</p>
 				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 					{/* Daily Gainers/Losers */}
