@@ -28,8 +28,21 @@ const router = createRouter({
 	},
 	defaultPreload: "intent",
 	scrollRestoration: true,
+	scrollRestorationBehavior: 'instant',
 	defaultStructuralSharing: true,
 	defaultPreloadStaleTime: 0,
+	
+	// Custom logic for when to preserve scroll position
+	getScrollRestorationKey: (location) => {
+		// Preserve scroll position for multi-ticker pages
+		const multiTickerPages = ['/ask', '/compare', '/ticker/', '/panic/analyze'];
+		
+		if (multiTickerPages.some(page => location.pathname.startsWith(page))) {
+			return location.pathname;
+		}
+		
+		return location.state.__TSR_key!;
+	},
 });
 
 // Register the router instance for type safety
