@@ -29,6 +29,7 @@ import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerGroups, useMultipleTickerData } from "@/lib/queries";
 import { VPAButton } from "@/components/vpa";
+import { AskAIButton } from "@/components/ask-ai";
 import {
 	getTickersBySector,
 	calculatePriceChange,
@@ -447,6 +448,10 @@ function SectorPage() {
 												ticker={item.ticker}
 												variant="badge"
 												mode="popover"
+											/>
+											<AskAIButton 
+												ticker={item.ticker}
+												size="sm"
 											/>
 										</div>
 									</TableCell>

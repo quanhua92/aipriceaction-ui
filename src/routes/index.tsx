@@ -9,6 +9,7 @@ import { TickerSearch } from "@/components/ui/TickerSearch";
 import { useTickerData, useTickerGroups, useSectorData } from "@/lib/queries";
 import { useTranslation } from "@/hooks/useTranslation";
 import { VPAButton } from "@/components/vpa";
+import { AskAIButton } from "@/components/ask-ai";
 import { PrePanicWarningWidget } from "@/components/panic";
 import { 
 	calculatePriceChange, 
@@ -214,12 +215,18 @@ function TopPerformers({
 											</p>
 										</div>
 									</div>
-									{/* VPA Button */}
-									<VPAButton 
-										ticker={performer.ticker}
-										variant="badge"
-										mode="popover"
-									/>
+									{/* Action Buttons */}
+									<div className="flex items-center gap-2">
+										<VPAButton 
+											ticker={performer.ticker}
+											variant="badge"
+											mode="popover"
+										/>
+										<AskAIButton 
+											ticker={performer.ticker}
+											size="sm"
+										/>
+									</div>
 								</div>
 							</div>
 						);

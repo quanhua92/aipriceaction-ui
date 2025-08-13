@@ -9,6 +9,7 @@ import {
 	ChartCandlestick,
 	BarChart3,
 	X,
+	Brain,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { CandlestickChart, ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { VPACard } from "@/components/vpa";
+import { AskAIButton } from "@/components/ask-ai";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useTickerGroups, useMultipleTickerData } from "@/lib/queries";
 import {
@@ -309,7 +311,32 @@ function TickerPage() {
 
 			{/* Charts */}
 			<div className="space-y-6">
-				{/* VPA Analysis - moved to top */}
+				{/* Ask AI Section */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Brain className="h-5 w-5 text-green-600" />
+							{t("askAI.title")}
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="space-y-4">
+							<p className="text-muted-foreground">
+								{t("askAI.description", { symbol })}
+							</p>
+							<AskAIButton 
+								ticker={symbol}
+								variant="default"
+								size="lg"
+								className="w-full md:w-auto"
+							>
+								{t("askAI.askAI")} {t("askAI.aboutTicker", { symbol })}
+							</AskAIButton>
+						</div>
+					</CardContent>
+				</Card>
+
+				{/* VPA Analysis */}
 				<VPACard 
 					ticker={symbol}
 					title={`${t("tickers.volumePriceAnalysis")} - ${symbol}`}
@@ -644,6 +671,7 @@ function TickerPage() {
 					</div>
 				</CardContent>
 			</Card>
+
 		</div>
 	);
 }

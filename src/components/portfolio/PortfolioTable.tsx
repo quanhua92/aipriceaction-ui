@@ -7,6 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
 	Table,
 	TableBody,
 	TableCell,
@@ -15,6 +26,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { TickerSearch } from "@/components/ui/TickerSearch";
+import { AskAIButton } from "@/components/ask-ai";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
 	type PortfolioItem,
@@ -377,14 +389,35 @@ export function PortfolioTable({
 												</div>
 											</div>
 										</div>
-										<Button
-											size="sm"
-											variant="ghost"
-											onClick={() => onRemoveItem(item.ticker)}
-											className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
-										>
-											<Trash2 className="h-4 w-4" />
-										</Button>
+										<AlertDialog>
+											<AlertDialogTrigger asChild>
+												<Button
+													size="sm"
+													variant="outline"
+													className="text-red-500 hover:text-red-700 border-red-200 hover:border-red-300"
+												>
+													<Trash2 className="h-4 w-4 mr-1" />
+													{t("common.delete")}
+												</Button>
+											</AlertDialogTrigger>
+											<AlertDialogContent>
+												<AlertDialogHeader>
+													<AlertDialogTitle>{t("common.confirmDelete")}</AlertDialogTitle>
+													<AlertDialogDescription>
+														{t("portfolio.confirmRemoveTicker", { ticker: item.ticker })}
+													</AlertDialogDescription>
+												</AlertDialogHeader>
+												<AlertDialogFooter>
+													<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+													<AlertDialogAction 
+														onClick={() => onRemoveItem(item.ticker)}
+														className="bg-red-600 hover:bg-red-700"
+													>
+														{t("common.delete")}
+													</AlertDialogAction>
+												</AlertDialogFooter>
+											</AlertDialogContent>
+										</AlertDialog>
 									</div>
 
 									{/* Input Fields */}
@@ -537,14 +570,41 @@ export function PortfolioTable({
 												</span>
 											</TableCell>
 											<TableCell>
-												<Button
-													size="sm"
-													variant="ghost"
-													onClick={() => onRemoveItem(item.ticker)}
-													className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
-												>
-													<Trash2 className="h-4 w-4" />
-												</Button>
+												<div className="flex items-center gap-1">
+													<AskAIButton 
+														ticker={item.ticker}
+														size="sm"
+													/>
+													<AlertDialog>
+														<AlertDialogTrigger asChild>
+															<Button
+																size="sm"
+																variant="outline"
+																className="text-red-500 hover:text-red-700 border-red-200 hover:border-red-300"
+															>
+																<Trash2 className="h-4 w-4 mr-1" />
+																{t("common.delete")}
+															</Button>
+														</AlertDialogTrigger>
+														<AlertDialogContent>
+															<AlertDialogHeader>
+																<AlertDialogTitle>{t("common.confirmDelete")}</AlertDialogTitle>
+																<AlertDialogDescription>
+																	{t("portfolio.confirmRemoveTicker", { ticker: item.ticker })}
+																</AlertDialogDescription>
+															</AlertDialogHeader>
+															<AlertDialogFooter>
+																<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+																<AlertDialogAction 
+																	onClick={() => onRemoveItem(item.ticker)}
+																	className="bg-red-600 hover:bg-red-700"
+																>
+																	{t("common.delete")}
+																</AlertDialogAction>
+															</AlertDialogFooter>
+														</AlertDialogContent>
+													</AlertDialog>
+												</div>
 											</TableCell>
 										</TableRow>
 									);

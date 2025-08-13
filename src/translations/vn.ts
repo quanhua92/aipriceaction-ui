@@ -42,6 +42,8 @@ export const vn = {
     edit: "Chỉnh sửa",
     copy: "Sao chép",
     copied: "Đã sao chép",
+    delete: "Xóa",
+    confirmDelete: "Xác nhận xóa",
   },
 
   // Home/Dashboard
@@ -213,6 +215,7 @@ export const vn = {
     sharedPortfolioDescriptionManual: "Danh mục này đã được điều chỉnh tỷ lệ để bảo mật. Số tiền vốn đã được điều chỉnh thành 100 triệu VND trong khi vẫn duy trì cùng tỷ lệ lãi/lỗ và tỷ lệ tiền mặt.",
     sharedPortfolioDescriptionAuto: "Danh mục này đã được điều chỉnh tỷ lệ để bảo mật. Số lượng cổ phiếu đã được điều chỉnh để đạt tổng giá trị 100 triệu VND trong khi giữ nguyên giá gốc.",
     actualValuesNotShown: "💡 Lưu ý: Đây không phải là số tiền đầu tư thực tế, nhưng tỷ lệ và hiệu suất là chính xác.",
+    confirmRemoveTicker: "Bạn có chắc chắn muốn xóa {ticker} khỏi danh mục đầu tư của mình? Hành động này không thể hoàn tác.",
   },
 
   // Portfolio Metrics
@@ -951,5 +954,30 @@ export const vn = {
       rebalancing: "Cân nhắc cân bằng lại định kỳ để duy trì phân bổ tài sản mong muốn.",
       longTerm: "Tập trung vào hiệu suất dài hạn thay vì biến động ngắn hạn.",
     },
+  },
+
+  // Ask AI Feature
+  askAI: {
+    title: "Hỏi AI",
+    askAI: "Hỏi AI",
+    singleTicker: "Mã Đơn",
+    multipleTickers: "Nhiều Mã",
+    analyzingTicker: "Đang Phân Tích Mã:",
+    selectTickers: "Chọn Mã Để Phân Tích",
+    copy: "Sao Chép",
+    copied: "Đã Sao Chép!",
+    noTickerSelected: "Chưa chọn mã để phân tích",
+    loadingData: "Đang tải dữ liệu...",
+    dataReady: "Dữ liệu sẵn sàng phân tích",
+    dataPoints: "điểm dữ liệu",
+    selected: "đã chọn",
+    tickers: "mã cổ phiếu",
+    noTickersSelected: "Chưa chọn mã nào",
+    useSearchAbove: "Sử dụng tìm kiếm ở trên để thêm mã phân tích",
+    searchTickersPlaceholder: "Thêm mã để phân tích...",
+    promptCopiedMessage: "Câu hỏi đã được sao chép, hãy trò chuyện với AI chatbot của bạn",
+    howToUse: "Sao chép bất kỳ mẫu nào để nhận phân tích AI với đầy đủ ngữ cảnh thị trường và dữ liệu VPA",
+    description: "Nhận phân tích AI cho {symbol} với đầy đủ ngữ cảnh thị trường, phân tích kỹ thuật và thông tin VPA.",
+    aboutTicker: "về {symbol}",
   },
 } as const;

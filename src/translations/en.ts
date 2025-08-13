@@ -42,6 +42,8 @@ export const en = {
     edit: "Edit",
     copy: "Copy",
     copied: "Copied",
+    delete: "Delete",
+    confirmDelete: "Confirm Delete",
   },
 
   // Home/Dashboard
@@ -213,6 +215,7 @@ export const en = {
     sharedPortfolioDescriptionManual: "This portfolio has been scaled for privacy. The deposit amount has been adjusted to 100M VND while maintaining the same profit/loss ratios and cash percentages.",
     sharedPortfolioDescriptionAuto: "This portfolio has been scaled for privacy. Stock quantities have been adjusted to reach 100M VND total value while keeping original prices.",
     actualValuesNotShown: "💡 Tip: These are not the actual investment amounts, but the proportions and performance are accurate.",
+    confirmRemoveTicker: "Are you sure you want to remove {ticker} from your portfolio? This action cannot be undone.",
   },
 
   // Portfolio Metrics
@@ -951,5 +954,30 @@ export const en = {
       rebalancing: "Consider periodic rebalancing to maintain your desired asset allocation.",
       longTerm: "Focus on long-term performance rather than short-term fluctuations.",
     },
+  },
+
+  // Ask AI Feature
+  askAI: {
+    title: "Ask AI",
+    askAI: "Ask AI",
+    singleTicker: "Single Ticker",
+    multipleTickers: "Multiple Tickers",
+    analyzingTicker: "Analyzing Ticker:",
+    selectTickers: "Select Tickers to Analyze",
+    copy: "Copy",
+    copied: "Copied!",
+    noTickerSelected: "No ticker selected for analysis",
+    loadingData: "Loading data...",
+    dataReady: "Data ready for analysis",
+    dataPoints: "data points",
+    selected: "selected",
+    tickers: "tickers",
+    noTickersSelected: "No tickers selected",
+    useSearchAbove: "Use the search above to add tickers for analysis",
+    searchTickersPlaceholder: "Add tickers to analyze...",
+    promptCopiedMessage: "Prompt copied to clipboard, now chat with your AI chatbot",
+    howToUse: "Copy any template to get AI analysis with full market context and VPA data",
+    description: "Get AI-powered analysis for {symbol} with complete market context, technical analysis, and VPA insights.",
+    aboutTicker: "about {symbol}",
   },
 } as const;
