@@ -310,7 +310,8 @@ export async function loadTickerGroups(): Promise<TickerGroup> {
 	}
 }
 
-export function getAllTickers(tickerGroups: TickerGroup): string[] {
+export function getAllTickers(tickerGroups: TickerGroup | null | undefined): string[] {
+	if (!tickerGroups) return ["VNINDEX"];
 	const allTickers = Object.values(tickerGroups).flat();
 	// Include VNINDEX as it's not a stock but has chartable data
 	return ["VNINDEX", ...allTickers];
