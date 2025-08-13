@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { createFileRoute, useSearch, Link } from "@tanstack/react-router";
+import { createFileRoute, useSearch, Link, useNavigate } from "@tanstack/react-router";
 import { Brain, Copy, Check, ArrowLeft } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ import { multipleTickerTemplatesVN } from "@/data/ask-ai-templates-multi.vn";
 
 interface SearchParams {
 	ticker?: string;
+	tickers?: string[];
 	tab?: "single" | "multi";
 }
 
@@ -32,6 +33,7 @@ export const Route = createFileRoute("/ask")({
 	validateSearch: (search: Record<string, unknown>): SearchParams => {
 		return {
 			ticker: search.ticker as string,
+			tickers: Array.isArray(search.tickers) ? (search.tickers as string[]) : [],
 			tab: (search.tab as "single" | "multi") || "single"
 		};
 	}
@@ -43,12 +45,18 @@ interface CopyState {
 
 function AskPage() {
 	const { t, language } = useTranslation();
-	const { ticker: urlTicker, tab: defaultTab } = useSearch({ from: "/ask" });
+	const navigate = useNavigate({ from: Route.fullPath });
+	const { ticker: urlTicker, tickers: urlTickers = [], tab: defaultTab } = useSearch({ from: "/ask" });
 	const defaultTicker = urlTicker || "VNINDEX";
 	const [activeTab, setActiveTab] = useState(defaultTab);
 	
-	// Initialize selectedTickers with VNINDEX and defaultTicker when page loads
+	// Initialize selectedTickers from URL tickers or with defaults
 	const [selectedTickers, setSelectedTickers] = useState<string[]>(() => {
+		// If tickers from URL, use those
+		if (urlTickers.length > 0) {
+			return urlTickers;
+		}
+		// Otherwise use default logic
 		const initialTickers: string[] = [];
 		if (defaultTicker !== "VNINDEX") {
 			initialTickers.push(defaultTicker);
@@ -59,15 +67,28 @@ function AskPage() {
 	
 	const [copyStates, setCopyStates] = useState<CopyState>({});
 
-	// Reset selectedTickers when defaultTicker changes
+	// Update search params function
+	const updateSearchParams = (updates: Partial<SearchParams>) => {
+		navigate({
+			search: (prev) => ({ ...prev, ...updates }),
+		});
+	};
+
+	// Reset selectedTickers when URL params change
 	useEffect(() => {
-		const initialTickers: string[] = [];
-		if (defaultTicker !== "VNINDEX") {
-			initialTickers.push(defaultTicker);
+		// If tickers from URL, use those
+		if (urlTickers.length > 0) {
+			setSelectedTickers(urlTickers);
+		} else {
+			// Otherwise use default logic
+			const initialTickers: string[] = [];
+			if (defaultTicker !== "VNINDEX") {
+				initialTickers.push(defaultTicker);
+			}
+			initialTickers.push("VNINDEX");
+			setSelectedTickers(initialTickers);
 		}
-		initialTickers.push("VNINDEX");
-		setSelectedTickers(initialTickers);
-	}, [defaultTicker]);
+	}, [urlTickers, defaultTicker]);
 
 	// Get templates based on language
 	const singleTemplates = useMemo(() => {
@@ -122,6 +143,12 @@ function AskPage() {
 
 		return buildMultipleTickersContext(tickersData);
 	}, [selectedTickers, multipleTickerData, vpaQueries]);
+
+	// Handle tickers change for multi tab
+	const handleTickersChange = (newTickers: string[]) => {
+		setSelectedTickers(newTickers);
+		updateSearchParams({ tickers: newTickers });
+	};
 
 	const renderTemplateCard = (template: AskAITemplate, context: string) => {
 		const isCopied = copyStates[template.id];
@@ -249,7 +276,7 @@ function AskPage() {
 						<CardContent>
 							<MultiTickerSearch
 								selectedTickers={selectedTickers}
-								onTickersChange={setSelectedTickers}
+								onTickersChange={handleTickersChange}
 								placeholder={t("askAI.searchTickersPlaceholder")}
 								className="w-full mb-4"
 							/>

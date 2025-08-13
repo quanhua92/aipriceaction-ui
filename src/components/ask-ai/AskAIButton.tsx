@@ -5,6 +5,7 @@ import { Link } from "@tanstack/react-router";
 
 interface AskAIButtonProps {
 	ticker?: string;
+	tickers?: string[];
 	variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
 	size?: "sm" | "md" | "lg";
 	className?: string;
@@ -14,6 +15,7 @@ interface AskAIButtonProps {
 
 export function AskAIButton({
 	ticker,
+	tickers,
 	variant = "default",
 	size = "sm",
 	className,
@@ -25,8 +27,9 @@ export function AskAIButton({
 	const buttonSize = size === "sm" ? "sm" : size === "lg" ? "lg" : "default";
 
 	// Build search params
-	const searchParams: Record<string, string> = {};
+	const searchParams: Record<string, any> = {};
 	if (ticker) searchParams.ticker = ticker;
+	if (tickers && tickers.length > 0) searchParams.tickers = tickers;
 	if (defaultTab !== "single") searchParams.tab = defaultTab;
 
 	return (
