@@ -84,7 +84,7 @@ export function PortfolioSummaryCard({
 		return latestData.close || 0;
 	};
 
-	const { investments, currentMarketValue, chartData } = useMemo(() => {
+	const { investments, currentMarketValue, chartData, totalCostBasis } = useMemo(() => {
 		const investments = items.filter(item => !isWatchListItem(item));
 		
 		// Calculate current market value using real prices when available
@@ -92,6 +92,11 @@ export function PortfolioSummaryCard({
 			const marketPrice = getCurrentMarketPrice(item.ticker);
 			const currentValue = marketPrice > 0 ? item.quantity * marketPrice : calculateInvestmentValue(item);
 			return sum + currentValue;
+		}, 0);
+
+		// Calculate total cost basis (money actually spent on stocks)
+		const totalCostBasis = investments.reduce((sum, item) => {
+			return sum + (item.quantity * item.price);
 		}, 0);
 
 		const chartData = investments
@@ -108,11 +113,11 @@ export function PortfolioSummaryCard({
 			.filter(item => item.value > 0)
 			.sort((a, b) => b.value - a.value);
 
-		return { investments, currentMarketValue, chartData };
+		return { investments, currentMarketValue, chartData, totalCostBasis };
 	}, [items, tickerData]);
 
-	const profitLoss = currentMarketValue - deposit;
-	const profitLossPercentage = deposit > 0 ? ((profitLoss / deposit) * 100) : 0;
+	const profitLoss = currentMarketValue - totalCostBasis;
+	const profitLossPercentage = totalCostBasis > 0 ? ((profitLoss / totalCostBasis) * 100) : 0;
 
 	const displayValue = (value: number) => {
 		if (showPrivacy) {
@@ -521,9 +526,9 @@ export function PortfolioSummaryCard({
 													},
 													{
 														name: t("portfolio.cashRemaining"),
-														value: Math.max(0, deposit - currentMarketValue),
+														value: Math.max(0, deposit - totalCostBasis),
 														color: "#6B7280",
-														percentage: deposit > 0 ? (((deposit - currentMarketValue) / deposit) * 100).toFixed(1) : "0"
+														percentage: deposit > 0 ? (((deposit - totalCostBasis) / deposit) * 100).toFixed(1) : "0"
 													}
 												]}
 												cx="50%"
@@ -598,9 +603,9 @@ export function PortfolioSummaryCard({
 											<span className="font-medium text-gray-900">{t("portfolio.cashRemaining")}</span>
 										</div>
 										<div className="text-right">
-											<span className="font-medium text-gray-900">{displayValue(Math.max(0, deposit - currentMarketValue))}</span>
+											<span className="font-medium text-gray-900">{displayValue(Math.max(0, deposit - totalCostBasis))}</span>
 											<span className="ml-2 text-gray-600">
-												{deposit > 0 ? (((deposit - currentMarketValue) / deposit) * 100).toFixed(1) : "0"}%
+												{deposit > 0 ? (((deposit - totalCostBasis) / deposit) * 100).toFixed(1) : "0"}%
 											</span>
 										</div>
 									</div>
