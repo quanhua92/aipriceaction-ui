@@ -26,7 +26,6 @@ interface SearchParams {
 	ticker?: string;
 	tickers?: string[];
 	tab?: "single" | "multi";
-	isMulti?: boolean;
 }
 
 export const Route = createFileRoute("/ask")({
@@ -35,8 +34,7 @@ export const Route = createFileRoute("/ask")({
 		return {
 			ticker: search.ticker as string,
 			tickers: Array.isArray(search.tickers) ? (search.tickers as string[]) : [],
-			tab: (search.tab as "single" | "multi") || "single",
-			isMulti: search.isMulti === "true" || search.isMulti === true
+			tab: (search.tab as "single" | "multi") || "single"
 		};
 	}
 });
@@ -48,12 +46,9 @@ interface CopyState {
 function AskPage() {
 	const { t, language } = useTranslation();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { ticker: urlTicker, tickers: urlTickers = [], tab: defaultTab, isMulti } = useSearch({ from: "/ask" });
+	const { ticker: urlTicker, tickers: urlTickers = [], tab: defaultTab } = useSearch({ from: "/ask" });
 	const defaultTicker = urlTicker || "VNINDEX";
-	
-	// If isMulti is true, force multi tab
-	const initialTab = isMulti ? "multi" : defaultTab;
-	const [activeTab, setActiveTab] = useState(initialTab);
+	const [activeTab, setActiveTab] = useState(defaultTab);
 	
 	// Initialize selectedTickers from URL tickers or with defaults
 	const [selectedTickers, setSelectedTickers] = useState<string[]>(() => {
@@ -81,9 +76,8 @@ function AskPage() {
 
 	// Reset selectedTickers and activeTab when URL params change
 	useEffect(() => {
-		// Handle tab switching based on isMulti
-		const newTab = isMulti ? "multi" : defaultTab;
-		setActiveTab(newTab);
+		// Set active tab from URL parameter
+		setActiveTab(defaultTab);
 		
 		// If tickers from URL, use those
 		if (urlTickers.length > 0) {
@@ -97,7 +91,7 @@ function AskPage() {
 			initialTickers.push("VNINDEX");
 			setSelectedTickers(initialTickers);
 		}
-	}, [urlTickers, defaultTicker, isMulti, defaultTab]);
+	}, [urlTickers, defaultTicker, defaultTab]);
 
 	// Get templates based on language
 	const singleTemplates = useMemo(() => {
@@ -156,8 +150,8 @@ function AskPage() {
 	// Handle tickers change for multi tab
 	const handleTickersChange = (newTickers: string[]) => {
 		setSelectedTickers(newTickers);
-		// Set isMulti=true to ensure we stay on multi tab after navigation
-		updateSearchParams({ tickers: newTickers, isMulti: true, tab: "multi" });
+		// Force tab=multi to ensure we stay on multi tab after navigation
+		updateSearchParams({ tickers: newTickers, tab: "multi" });
 	};
 
 	const renderTemplateCard = (template: AskAITemplate, context: string) => {
