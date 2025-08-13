@@ -344,6 +344,12 @@ export const vn = {
     loadingComparisonData: "Đang tải dữ liệu biểu đồ {ticker}...",
     noDataAvailableForTicker: "Không có dữ liệu cho {ticker}",
     tryDifferentTimeRangeForTicker: "Thử khoảng thời gian khác hoặc kiểm tra mã cổ phiếu có đúng không.",
+    addTickersToCompare: "Thêm mã CK để so sánh",
+    clickButtonToSearch: "Nhấp vào nút bên dưới để tìm kiếm và thêm mã CK",
+    clickHereToSearch: "🔍 Nhấp vào đây để tìm mã CK...",
+    selectedCount: "{count}/7 đã chọn",
+    noTickersSelectedForComparison: "Chưa chọn mã CK nào để so sánh",
+    useSearchButtonAbove: "Sử dụng nút tìm kiếm ở trên để thêm mã CK và so sánh hiệu suất với {symbol}",
   },
 
   // Time Ranges

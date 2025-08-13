@@ -77,14 +77,14 @@ export function TickerSearch({
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
-					variant="ghost"
+					variant="outline"
 					role="combobox"
 					aria-expanded={open}
-					className={`w-full justify-start hover:bg-transparent h-auto p-0 font-normal ${className}`}
+					className={`w-full justify-start h-10 px-3 py-2 font-normal border-2 border-dashed hover:border-solid hover:bg-muted/50 transition-all ${className}`}
 				>
-					<div className="flex items-center gap-2 min-w-0">
-						<Search className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
-						<span className="truncate text-muted-foreground">
+					<div className="flex items-center gap-2 min-w-0 w-full">
+						<Search className="h-4 w-4 flex-shrink-0 text-primary" />
+						<span className="truncate text-foreground">
 							{value || placeholder}
 						</span>
 					</div>

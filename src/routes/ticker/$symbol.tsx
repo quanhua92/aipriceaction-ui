@@ -488,14 +488,22 @@ function TickerPage() {
 					<CardContent className="space-y-4">
 						{/* Ticker Selection */}
 						<div>
-							<label className="text-sm font-medium mb-2 block">
-								{t("tickers.searchAndSelectTickers", { symbol })}
-							</label>
+							<div className="flex items-center justify-between mb-3">
+								<div>
+									<h4 className="text-sm font-medium">{t("tickers.addTickersToCompare")}</h4>
+									<p className="text-xs text-muted-foreground">{t("tickers.clickButtonToSearch")}</p>
+								</div>
+								{comparisonTickers.length > 0 && (
+									<Badge variant="secondary" className="text-xs">
+										{t("tickers.selectedCount", { count: comparisonTickers.length })}
+									</Badge>
+								)}
+							</div>
 							<MultiTickerSearch
 								selectedTickers={comparisonTickers}
 								onTickersChange={handleTickersChange}
 								maxSelection={7}
-								placeholder="Search tickers to compare..."
+								placeholder={t("tickers.clickHereToSearch")}
 								className="w-full"
 							/>
 						</div>
@@ -600,13 +608,18 @@ function TickerPage() {
 							</div>
 						) : (
 							<div className="h-[400px] flex items-center justify-center">
-								<div className="text-center space-y-2">
-									<p className="text-muted-foreground">
-										{t("tickers.searchAndSelectTickers", { symbol })}
-									</p>
-									<p className="text-sm text-muted-foreground">
-										{t("tickers.useSearchAbove")}
-									</p>
+								<div className="text-center space-y-3">
+									<div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center">
+										<BarChart3 className="h-8 w-8 text-muted-foreground" />
+									</div>
+									<div>
+										<p className="font-medium text-foreground">
+											{t("tickers.noTickersSelectedForComparison")}
+										</p>
+										<p className="text-sm text-muted-foreground">
+											{t("tickers.useSearchButtonAbove", { symbol })}
+										</p>
+									</div>
 								</div>
 							</div>
 						)}

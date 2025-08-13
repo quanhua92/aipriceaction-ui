@@ -344,6 +344,12 @@ export const en = {
     loadingComparisonData: "Loading {ticker} chart data...",
     noDataAvailableForTicker: "No data available for {ticker}",
     tryDifferentTimeRangeForTicker: "Try a different time range or check if the ticker symbol is correct.",
+    addTickersToCompare: "Add Tickers to Compare",
+    clickButtonToSearch: "Click the button below to search and add tickers",
+    clickHereToSearch: "🔍 Click here to search tickers...",
+    selectedCount: "{count}/7 selected",
+    noTickersSelectedForComparison: "No tickers selected for comparison",
+    useSearchButtonAbove: "Use the search button above to add tickers and compare their performance with {symbol}",
   },
 
   // Time Ranges
