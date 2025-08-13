@@ -63,7 +63,7 @@ export function SharePortfolioDialog({
 		}
 
 		const encodedTickers = encodePortfolioItems(shareItems);
-		const url = new URL(currentUrl, window.location.origin);
+		const url = new URL(currentUrl);
 		
 		// Clear existing params and set new ones
 		url.search = '';
@@ -86,11 +86,37 @@ export function SharePortfolioDialog({
 
 	const handleCopy = async () => {
 		try {
-			await navigator.clipboard.writeText(shareableUrl);
-			setCopied(true);
-			setTimeout(() => setCopied(false), 2000);
+			// Try modern clipboard API first
+			if (navigator.clipboard && window.isSecureContext) {
+				await navigator.clipboard.writeText(shareableUrl);
+				setCopied(true);
+				setTimeout(() => setCopied(false), 2000);
+				return;
+			}
+			
+			// Fallback for older browsers or non-secure contexts
+			const textArea = document.createElement('textarea');
+			textArea.value = shareableUrl;
+			textArea.style.position = 'fixed';
+			textArea.style.left = '-999999px';
+			textArea.style.top = '-999999px';
+			document.body.appendChild(textArea);
+			textArea.focus();
+			textArea.select();
+			
+			const successful = document.execCommand('copy');
+			document.body.removeChild(textArea);
+			
+			if (successful) {
+				setCopied(true);
+				setTimeout(() => setCopied(false), 2000);
+			} else {
+				throw new Error('Fallback copy failed');
+			}
 		} catch (error) {
 			console.error('Failed to copy to clipboard:', error);
+			// Show error to user
+			alert('Failed to copy URL. Please copy it manually from the input field.');
 		}
 	};
 
