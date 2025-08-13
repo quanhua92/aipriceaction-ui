@@ -17,6 +17,7 @@ import { CandlestickChart, ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { VPACard } from "@/components/vpa";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useTickerGroups, useMultipleTickerData } from "@/lib/queries";
 import {
 	calculatePriceChange,
@@ -49,6 +50,7 @@ function TickerPage() {
 	const { symbol } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const { range = "3M", startDate, endDate } = Route.useSearch();
+	const { t } = useTranslation();
 	
 	// State for ticker comparison
 	const [comparisonTickers, setComparisonTickers] = useState<string[]>([]);
@@ -132,15 +134,15 @@ function TickerPage() {
 					<CardContent className="flex items-center justify-center h-64">
 						<div className="text-center space-y-4">
 							<p className="text-red-600 font-semibold">
-								Failed to load data for {symbol}
+								{t("tickers.tickerNotFound", { symbol })}
 							</p>
 							<p className="text-muted-foreground text-sm">
 								{error instanceof Error
 									? error.message
-									: "Unknown error occurred"}
+									: t("errors.failedToLoad")}
 							</p>
 							<Link to="/tickers">
-								<Button variant="outline">Back to Tickers</Button>
+								<Button variant="outline">{t("common.back")} {t("nav.tickers")}</Button>
 							</Link>
 						</div>
 					</CardContent>
@@ -175,7 +177,7 @@ function TickerPage() {
 							)}
 							{latestPrice && (
 								<div className="text-sm text-muted-foreground">
-									Last updated: {format(latestPrice.date, "MMM dd, yyyy")}
+									{t("tickers.lastUpdated")}: {format(latestPrice.date, "MMM dd, yyyy")}
 								</div>
 							)}
 						</div>
@@ -218,7 +220,7 @@ function TickerPage() {
 							</div>
 							<div>
 								<p className="text-sm font-medium text-muted-foreground">
-									Current Price
+									{t("tickers.currentPrice")}
 								</p>
 								<p className="text-2xl font-bold">
 									{formatPrice(latestPrice.close)}
@@ -240,14 +242,14 @@ function TickerPage() {
 							</div>
 							<div>
 								<p className="text-sm font-medium text-muted-foreground">
-									Change
+									{t("common.change")}
 								</p>
 								{/* Daily Change */}
 								{dailyChange && (
 									<p
 										className={`text-sm font-medium ${dailyChange.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}
 									>
-										Daily: {dailyChange.changePercent > 0 ? "+" : ""}
+										{t("common.daily")}: {dailyChange.changePercent > 0 ? "+" : ""}
 										{formatPrice(dailyChange.change)}
 										{" "}({dailyChange.changePercent > 0 ? "+" : ""}
 										{dailyChange.changePercent.toFixed(2)}%)
@@ -275,7 +277,7 @@ function TickerPage() {
 							</div>
 							<div>
 								<p className="text-sm font-medium text-muted-foreground">
-									Volume
+									{t("common.volume")}
 								</p>
 								<p className="text-lg font-semibold">
 									{formatVolume(latestPrice.volume)}
@@ -291,7 +293,7 @@ function TickerPage() {
 							</div>
 							<div>
 								<p className="text-sm font-medium text-muted-foreground">
-									Data Range
+									{t("tickers.dataRange")}
 								</p>
 								<p className="text-lg font-semibold">
 									{dateRangeConfig.range === "CUSTOM"
@@ -314,7 +316,7 @@ function TickerPage() {
 				{/* VPA Analysis - moved to top */}
 				<VPACard 
 					ticker={symbol}
-					title={`Volume Price Analysis - ${symbol}`}
+					title={`${t("tickers.volumePriceAnalysis")} - ${symbol}`}
 					defaultExpanded={false}
 					showViewButton={true}
 				/>
@@ -323,14 +325,14 @@ function TickerPage() {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<ChartCandlestick className="h-5 w-5" />
-							Price & Volume Chart
+							{t("tickers.priceVolumeChart")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						{isLoading ? (
 							<div className="h-[400px] flex items-center justify-center">
 								<div className="text-muted-foreground">
-									Loading chart data...
+									{t("tickers.loadingChartData")}
 								</div>
 							</div>
 						) : tickerData && tickerData.length > 0 ? (
@@ -341,11 +343,10 @@ function TickerPage() {
 							<div className="h-[400px] flex items-center justify-center">
 								<div className="text-center space-y-4">
 									<p className="text-muted-foreground">
-										No data available for {symbol}
+										{t("tickers.noDataAvailable", { symbol })}
 									</p>
 									<p className="text-sm text-muted-foreground">
-										Try selecting a different time range or check if the ticker
-										symbol is correct.
+										{t("tickers.tryDifferentTimeRange")}
 									</p>
 								</div>
 							</div>
@@ -360,9 +361,9 @@ function TickerPage() {
 							<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 								<CardTitle className="flex items-center gap-2">
 									<ChartCandlestick className="h-5 w-5" />
-									Price & Volume Chart Comparison
+									{t("tickers.priceVolumeChartComparison")}
 									<Badge variant="secondary" className="text-xs">
-										{comparisonTickers.length} chart{comparisonTickers.length > 1 ? 's' : ''}
+										{t("tickers.chartsCount", { count: comparisonTickers.length })}
 									</Badge>
 								</CardTitle>
 								<Button
@@ -372,7 +373,7 @@ function TickerPage() {
 									className="text-xs"
 								>
 									<X className="h-4 w-4 mr-1" />
-									Clear All Charts
+									{t("tickers.clearAllCharts")}
 								</Button>
 							</div>
 						</CardHeader>
@@ -428,7 +429,7 @@ function TickerPage() {
 									{comparisonLoading ? (
 										<div className="h-[400px] flex items-center justify-center">
 											<div className="text-muted-foreground">
-												Loading {ticker} chart data...
+												{t("tickers.loadingComparisonData", { ticker })}
 											</div>
 										</div>
 									) : comparisonData && comparisonData[ticker] && comparisonData[ticker].length > 0 ? (
@@ -443,10 +444,10 @@ function TickerPage() {
 										<div className="h-[400px] flex items-center justify-center">
 											<div className="text-center space-y-2">
 												<p className="text-muted-foreground">
-													No data available for {ticker}
+													{t("tickers.noDataAvailableForTicker", { ticker })}
 												</p>
 												<p className="text-sm text-muted-foreground">
-													Try a different time range or check if the ticker symbol is correct.
+													{t("tickers.tryDifferentTimeRangeForTicker")}
 												</p>
 											</div>
 										</div>
@@ -463,10 +464,10 @@ function TickerPage() {
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 							<CardTitle className="flex items-center gap-2">
 								<BarChart3 className="h-5 w-5" />
-								Performance Comparison
+								{t("tickers.performanceComparison")}
 								{comparisonTickers.length > 0 && (
 									<Badge variant="secondary" className="text-xs">
-										{comparisonTickers.length + 1} selected
+										{comparisonTickers.length + 1} {t("tickers.selected")}
 									</Badge>
 								)}
 							</CardTitle>
@@ -479,7 +480,7 @@ function TickerPage() {
 									className="text-xs"
 								>
 									<X className="h-4 w-4 mr-1" />
-									Clear All
+									{t("common.clearAll")}
 								</Button>
 							</div>
 						</div>
@@ -488,7 +489,7 @@ function TickerPage() {
 						{/* Ticker Selection */}
 						<div>
 							<label className="text-sm font-medium mb-2 block">
-								Search and select tickers to compare with {symbol}
+								{t("tickers.searchAndSelectTickers", { symbol })}
 							</label>
 							<MultiTickerSearch
 								selectedTickers={comparisonTickers}
@@ -504,7 +505,7 @@ function TickerPage() {
 						{comparisonLoading ? (
 							<div className="h-[400px] flex items-center justify-center">
 								<div className="text-muted-foreground">
-									Loading comparison data...
+									{t("loading.comparisonData")}
 								</div>
 							</div>
 						) : comparisonTickers.length > 0 ? (
@@ -582,10 +583,10 @@ function TickerPage() {
 							<div className="h-[400px] flex items-center justify-center">
 								<div className="text-center space-y-2">
 									<p className="text-muted-foreground">
-										Select tickers to compare with {symbol}
+										{t("tickers.searchAndSelectTickers", { symbol })}
 									</p>
 									<p className="text-sm text-muted-foreground">
-										Use the search above to add comparison tickers
+										{t("tickers.useSearchAbove")}
 									</p>
 								</div>
 							</div>
@@ -598,20 +599,20 @@ function TickerPage() {
 			{/* Additional Actions */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Related Actions</CardTitle>
+					<CardTitle>{t("tickers.relatedActions")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="flex flex-wrap gap-3">
 						{sector && (
 							<Link to="/sector/$sectorName" params={{ sectorName: sector }}>
-								<Button variant="outline">View {sectorLabel} Sector</Button>
+								<Button variant="outline">{t("tickers.viewSector", { sector: sectorLabel })}</Button>
 							</Link>
 						)}
 						<Link
 							to="/compare"
 							search={{ tickers: [symbol, "VNINDEX"] }}
 						>
-							<Button variant="outline">Compare with VN-Index</Button>
+							<Button variant="outline">{t("tickers.compareWithVnIndex")}</Button>
 						</Link>
 					</div>
 				</CardContent>
