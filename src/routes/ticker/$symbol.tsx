@@ -33,6 +33,7 @@ interface TickerPageSearch {
 	range?: TimeRange;
 	startDate?: string;
 	endDate?: string;
+	compare?: string[];
 }
 
 export const Route = createFileRoute("/ticker/$symbol")({
@@ -41,6 +42,7 @@ export const Route = createFileRoute("/ticker/$symbol")({
 			range: (search.range as TimeRange) || "3M",
 			startDate: search.startDate as string,
 			endDate: search.endDate as string,
+			compare: Array.isArray(search.compare) ? (search.compare as string[]) : [],
 		};
 	},
 	component: TickerPage,
@@ -49,11 +51,11 @@ export const Route = createFileRoute("/ticker/$symbol")({
 function TickerPage() {
 	const { symbol } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { range = "3M", startDate, endDate } = Route.useSearch();
+	const { range = "3M", startDate, endDate, compare = [] } = Route.useSearch();
 	const { t } = useTranslation();
 	
-	// State for ticker comparison
-	const [comparisonTickers, setComparisonTickers] = useState<string[]>([]);
+	// State for ticker comparison - initialize from URL params
+	const [comparisonTickers, setComparisonTickers] = useState<string[]>(compare);
 
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
@@ -77,14 +79,18 @@ function TickerPage() {
 	// Helper functions for comparison tickers
 	const handleTickersChange = (newTickers: string[]) => {
 		setComparisonTickers(newTickers);
+		updateSearchParams({ compare: newTickers });
 	};
 
 	const removeComparisonTicker = (tickerToRemove: string) => {
-		setComparisonTickers(prev => prev.filter(t => t !== tickerToRemove));
+		const updatedTickers = comparisonTickers.filter(t => t !== tickerToRemove);
+		setComparisonTickers(updatedTickers);
+		updateSearchParams({ compare: updatedTickers });
 	};
 
 	const clearAllComparisons = () => {
 		setComparisonTickers([]);
+		updateSearchParams({ compare: [] });
 	};
 
 	// Chart colors for comparison
