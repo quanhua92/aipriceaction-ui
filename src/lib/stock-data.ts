@@ -1,3 +1,5 @@
+import { parseVietnamDate, formatVietnamDate, isDateAfterOrEqual, isDateBeforeOrEqual } from './date-utils';
+
 export interface StockDataPoint {
 	ticker: string;
 	time: string;
@@ -135,9 +137,8 @@ export function parseCsvData(csvText: string): StockDataPoint[] {
 	return lines.slice(1).map((line) => {
 		const [ticker, time, open, high, low, close, volume] = line.split(",");
 		
-		// Parse date in YYYY-MM-DD format and treat it as local time
-		const [year, month, day] = time.split("-").map(Number);
-		const date = new Date(year, month - 1, day); // month is 0-indexed
+		// Parse date using Vietnam timezone utilities
+		const date = parseVietnamDate(time);
 
 		// Scale prices by 1000 for stock tickers (VND), but not for VNINDEX (points)
 		const priceScale = ticker === "VNINDEX" ? 1 : 1000;
@@ -162,8 +163,9 @@ export function filterDataByTimeRange(
 	if (range === "ALL") return data;
 	if (range === "CUSTOM") return data; // Custom filtering handled separately
 
+	// Use Vietnam timezone for current date
 	const now = new Date();
-	const cutoffDate = new Date();
+	const cutoffDate = new Date(now);
 
 	switch (range) {
 		case "1M":
@@ -183,7 +185,7 @@ export function filterDataByTimeRange(
 			break;
 	}
 
-	return data.filter((point) => point.date >= cutoffDate);
+	return data.filter((point) => isDateAfterOrEqual(point.date, cutoffDate));
 }
 
 export function filterDataByDateRange(
@@ -197,14 +199,19 @@ export function filterDataByDateRange(
 	const { startDate, endDate } = config;
 	
 	return data.filter((point) => {
-		if (startDate && point.date < startDate) return false;
-		if (endDate && point.date > endDate) return false;
+		if (startDate && !isDateAfterOrEqual(point.date, startDate)) return false;
+		if (endDate && !isDateBeforeOrEqual(point.date, endDate)) return false;
 		return true;
 	});
 }
 
 export function parseDateString(dateStr: string): Date | null {
 	try {
+		// Use Vietnam date parsing for consistency
+		if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+			return parseVietnamDate(dateStr);
+		}
+		// Fallback for other formats
 		const date = new Date(dateStr);
 		return isNaN(date.getTime()) ? null : date;
 	} catch {
@@ -214,7 +221,7 @@ export function parseDateString(dateStr: string): Date | null {
 
 export function formatDateForUrl(date: Date | undefined): string {
 	if (!date) return '';
-	return date.toISOString().split('T')[0]; // YYYY-MM-DD format
+	return formatVietnamDate(date); // YYYY-MM-DD format in Vietnam timezone
 }
 
 export function getDataDateBounds(data: StockDataPoint[]): DateRange {

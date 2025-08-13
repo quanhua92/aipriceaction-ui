@@ -53,7 +53,6 @@ export function TickerSearch({
 	useEffect(() => {
 		if (persistOpenState && typeof window !== 'undefined') {
 			localStorage.setItem(STORAGE_KEY, open.toString());
-			console.log(`TickerSearch: Saved open state to localStorage: ${open}`);
 		}
 	}, [open, persistOpenState]);
 

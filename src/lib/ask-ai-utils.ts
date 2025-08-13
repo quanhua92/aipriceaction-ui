@@ -1,4 +1,5 @@
 import type { StockDataPoint } from "./stock-data";
+import { formatVietnamDate } from "./date-utils";
 
 export interface AskAITemplate {
 	id: string;
@@ -18,35 +19,12 @@ export function formatChartContext(ticker: string, data: StockDataPoint[]): stri
 		return `${ticker}: No chart data available`;
 	}
 
-	// DEBUG: Log all data points to understand date structure
-	console.log(`=== DEBUG ${ticker} CHART CONTEXT ===`);
-	console.log(`Total data points: ${data.length}`);
-	console.log(`First point:`, data[0]);
-	console.log(`Last point:`, data[data.length - 1]);
-	console.log(`Last 3 points dates:`, data.slice(-3).map(p => ({ 
-		date: p.date, 
-		dateType: typeof p.date,
-		dateInstance: p.date instanceof Date,
-		close: p.close 
-	})));
-
 	// Get last 10 trading days for comprehensive context
 	const recentData = data.slice(-10);
 	
-	// DEBUG: Log recent data details
-	console.log(`Recent data (last ${recentData.length}):`, recentData.map(p => ({
-		date: p.date,
-		dateFormatted: p.date instanceof Date ? p.date.toISOString().split('T')[0] : p.date,
-		close: p.close
-	})));
-
 	const contextLines = recentData.map((point, index) => {
-		const dateStr = point.date instanceof Date 
-			? point.date.toISOString().split('T')[0]
-			: point.date;
-		
-		// DEBUG: Log each point being processed
-		console.log(`Processing point ${index}: date=${point.date}, formatted=${dateStr}, close=${point.close}`);
+		// Use Vietnam timezone formatting for consistency
+		const dateStr = formatVietnamDate(point.date);
 		
 		// Calculate daily change if not the first point
 		let changeStr = "";
@@ -57,13 +35,8 @@ export function formatChartContext(ticker: string, data: StockDataPoint[]): stri
 			changeStr = `, Change=${change > 0 ? '+' : ''}${change.toFixed(2)} (${changePercent > 0 ? '+' : ''}${changePercent.toFixed(2)}%)`;
 		}
 		
-		const contextLine = `${ticker}: Date=${dateStr}, Open=${point.open}, High=${point.high}, Low=${point.low}, Close=${point.close}, Volume=${point.volume.toLocaleString()}${changeStr}`;
-		console.log(`Generated context line: ${contextLine}`);
-		
-		return contextLine;
+		return `${ticker}: Date=${dateStr}, Open=${point.open}, High=${point.high}, Low=${point.low}, Close=${point.close}, Volume=${point.volume.toLocaleString()}${changeStr}`;
 	});
-
-	console.log(`=== END DEBUG ${ticker} ===`);
 	return `# Last 10 Trading Days OHLCV Data\n${contextLines.join('\n')}`;
 }
 
