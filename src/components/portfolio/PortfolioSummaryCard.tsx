@@ -401,7 +401,7 @@ export function PortfolioSummaryCard({
 												<TableHead className="font-semibold text-right text-gray-700">{t("portfolio.buyPrice")}</TableHead>
 												<TableHead className="font-semibold text-right text-gray-700">{t("portfolio.marketPrice")}</TableHead>
 												<TableHead className="font-semibold text-right text-gray-700">{t("portfolio.profitPercent")}</TableHead>
-												<TableHead className="font-semibold text-right text-gray-700">{t("portfolio.costBasis")}</TableHead>
+												{!showPrivacy && <TableHead className="font-semibold text-right text-gray-700">{t("portfolio.costBasis")}</TableHead>}
 												{!showPrivacy && <TableHead className="font-semibold text-right text-gray-700">{t("portfolio.volume")}</TableHead>}
 												{!showPrivacy && <TableHead className="font-semibold text-right text-gray-700">{t("portfolio.profitPrice")}</TableHead>}
 											</TableRow>
@@ -422,7 +422,9 @@ export function PortfolioSummaryCard({
 														<TableCell className={`text-right font-medium ${profitPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
 															{profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(2)}%
 														</TableCell>
-														<TableCell className="text-right text-gray-700">{formatVND(costBasis * volume)}</TableCell>
+														{!showPrivacy && (
+															<TableCell className="text-right text-gray-700">{formatVND(costBasis * volume)}</TableCell>
+														)}
 														{!showPrivacy && (
 															<TableCell className="text-right text-gray-700">{formatNumber(volume)}</TableCell>
 														)}
