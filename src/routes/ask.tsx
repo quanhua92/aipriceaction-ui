@@ -43,13 +43,14 @@ interface CopyState {
 
 function AskPage() {
 	const { t, language } = useTranslation();
-	const { ticker: defaultTicker = "", tab: defaultTab } = useSearch({ from: "/ask" });
+	const { ticker: urlTicker, tab: defaultTab } = useSearch({ from: "/ask" });
+	const defaultTicker = urlTicker || "VNINDEX";
 	const [activeTab, setActiveTab] = useState(defaultTab);
 	
 	// Initialize selectedTickers with VNINDEX and defaultTicker when page loads
 	const [selectedTickers, setSelectedTickers] = useState<string[]>(() => {
 		const initialTickers: string[] = [];
-		if (defaultTicker && defaultTicker !== "VNINDEX") {
+		if (defaultTicker !== "VNINDEX") {
 			initialTickers.push(defaultTicker);
 		}
 		initialTickers.push("VNINDEX");
@@ -61,7 +62,7 @@ function AskPage() {
 	// Reset selectedTickers when defaultTicker changes
 	useEffect(() => {
 		const initialTickers: string[] = [];
-		if (defaultTicker && defaultTicker !== "VNINDEX") {
+		if (defaultTicker !== "VNINDEX") {
 			initialTickers.push(defaultTicker);
 		}
 		initialTickers.push("VNINDEX");
@@ -102,7 +103,7 @@ function AskPage() {
 
 	// Build contexts
 	const singleTickerContext = useMemo(() => {
-		if (!defaultTicker || !singleTickerData) return "";
+		if (!singleTickerData) return "";
 		return buildSingleTickerContext(
 			defaultTicker, 
 			singleTickerData, 
@@ -216,11 +217,7 @@ function AskPage() {
 							</CardTitle>
 						</CardHeader>
 						<CardContent>
-							{!defaultTicker ? (
-								<p className="text-sm text-muted-foreground">
-									{t("askAI.noTickerSelected")}
-								</p>
-							) : !singleTickerContext ? (
+							{!singleTickerContext ? (
 								<p className="text-sm text-muted-foreground">
 									{t("askAI.loadingData")}
 								</p>

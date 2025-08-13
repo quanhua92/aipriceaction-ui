@@ -11,6 +11,7 @@ import {
 	X,
 	Languages,
 	AlertTriangle,
+	Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -26,6 +27,11 @@ export default function Header() {
 			to: "/",
 			icon: BarChart3,
 			label: t("nav.dashboard"),
+		},
+		{
+			to: "/ask",
+			icon: Brain,
+			label: t("askAI.askAI"),
 		},
 		{
 			to: "/panic",
