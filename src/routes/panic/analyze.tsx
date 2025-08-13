@@ -1426,10 +1426,10 @@ function PanicAnalyzeDetail() {
 								<div>
 									<CardTitle className="flex items-center gap-2">
 										<LineChart className="h-5 w-5" />
-										Market Chart Analysis
+										{t('panic.marketChartAnalysis')}
 									</CardTitle>
 									<CardDescription>
-										6-month view: 3 months before and after panic day
+										{t('panic.sixMonthView')}
 									</CardDescription>
 								</div>
 								<DateRangeSelector
@@ -1449,25 +1449,28 @@ function PanicAnalyzeDetail() {
 									</div>
 								</div>
 							) : vnindexData && vnindexData.length > 0 ? (
-								<div className="h-[400px] w-full">
-									<ChartSuspense
-										fallbackTitle="Loading Market Chart"
-										fallbackDescription="Preparing VN-Index chart data..."
-										height="400px"
-										chartType="candlestick"
-									>
-										<CandlestickChart
-											data={vnindexData}
-											height={400}
-											showCard={false}
-										/>
-									</ChartSuspense>
+								<>
+									<div className="h-[400px] w-full">
+										<ChartSuspense
+											fallbackTitle="Loading Market Chart"
+											fallbackDescription="Preparing VN-Index chart data..."
+											height="400px"
+											chartType="candlestick"
+										>
+											<CandlestickChart
+												data={vnindexData}
+												height={400}
+												showCard={false}
+											/>
+										</ChartSuspense>
+									</div>
 									{/* Panic day marker */}
 									<div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
 										<div className="w-3 h-3 bg-red-600 rounded-full"></div>
-										<span>Panic Day: {new Date(date).toLocaleDateString('vi-VN')}</span>
+										<span>{t('panic.panicDay')}: {new Date(date).toLocaleDateString('vi-VN')}</span>
 									</div>
-								</div>
+								</>
+							
 							) : (
 								<div className="h-[400px] flex items-center justify-center">
 									<Alert>
@@ -1480,6 +1483,180 @@ function PanicAnalyzeDetail() {
 							)}
 						</CardContent>
 					</Card>
+
+					{/* Selected Tickers Performance Chart */}
+					{tickers.length > 0 && (
+						<Card>
+							<CardHeader>
+								<CardTitle className="flex items-center gap-2">
+									<div className="w-4 h-4 bg-indigo-500 rounded"></div>
+									{t('panic.selectedTickersPerformance')}
+								</CardTitle>
+								<CardDescription>
+									{t('panic.selectedTickersPerformanceDesc')}
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<div className="h-[300px]">
+									{tickerData && tickers.length > 0 ? (() => {
+										// Create dynamic color palette for unlimited tickers
+										const generateColors = (count: number) => {
+											const baseColors = [
+												"#3B82F6", "#10B981", "#F59E0B", "#EF4444", 
+												"#8B5CF6", "#06B6D4", "#F97316", "#84CC16",
+												"#EC4899", "#14B8A6", "#F43F5E", "#A855F7",
+												"#EAB308", "#22C55E", "#F97316", "#06B6D4"
+											];
+											
+											// For more than base colors, generate additional colors
+											if (count <= baseColors.length) {
+												return baseColors.slice(0, count);
+											}
+											
+											const colors = [...baseColors];
+											const remaining = count - baseColors.length;
+											
+											// Generate additional colors using HSL
+											for (let i = 0; i < remaining; i++) {
+												const hue = (360 / remaining) * i;
+												const saturation = 70 + (i % 3) * 10; // 70%, 80%, 90%
+												const lightness = 45 + (i % 2) * 10;  // 45%, 55%
+												colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+											}
+											
+											return colors;
+										};
+
+										const allTickers = ['VNINDEX', ...tickers];
+										const dynamicColors = generateColors(allTickers.length);
+										
+										// Create color mapping
+										const colorMapping: Record<string, string> = {};
+										allTickers.forEach((ticker, index) => {
+											colorMapping[ticker] = dynamicColors[index];
+										});
+										
+										// Create stroke width mapping - VNINDEX is thicker
+										const strokeWidths: Record<string, number> = {};
+										allTickers.forEach(ticker => {
+											strokeWidths[ticker] = ticker === 'VNINDEX' ? 3 : 1.5;
+										});
+										
+										return (
+											<ChartSuspense
+												fallbackTitle="Loading Selected Tickers"
+												fallbackDescription="Preparing selected tickers performance chart..."
+												height="300px"
+												chartType="comparison"
+											>
+												<ComparisonChart
+													data={(() => {
+														// Normalize data for comparison - convert to percentage change from first data point
+														const normalizedData: any[] = [];
+
+														if (tickerData && allTickers.length > 0) {
+															const maxLength = Math.max(
+																...allTickers.map(
+																	(ticker) => tickerData[ticker]?.length || 0,
+																),
+															);
+
+															for (let i = 0; i < maxLength; i++) {
+																const dataPoint: any = { time: "", date: null };
+
+																allTickers.forEach((ticker) => {
+																	const data = tickerData[ticker] || [];
+																	if (data[i] && data[0]) {
+																		const changePercent =
+																			((data[i].close - data[0].close) /
+																				data[0].close) *
+																			100;
+																		dataPoint[ticker] = changePercent;
+																		if (!dataPoint.time) {
+																			dataPoint.time = data[i].time;
+																			dataPoint.date = data[i].date;
+																		}
+																	}
+																});
+
+																if (dataPoint.time) {
+																	normalizedData.push(dataPoint);
+																}
+															}
+														}
+
+														return normalizedData;
+													})()}
+													tickers={allTickers}
+													colors={Object.values(colorMapping)}
+													strokeWidths={strokeWidths}
+													height={300}
+												/>
+											</ChartSuspense>
+										);
+									})() : tickerLoading ? (
+										<div className="h-[300px] flex items-center justify-center">
+											<div className="text-muted-foreground">Loading selected tickers...</div>
+										</div>
+									) : (
+										<div className="h-[300px] flex items-center justify-center">
+											<div className="text-muted-foreground">No data available for selected tickers</div>
+										</div>
+									)}
+								</div>
+								<div className="mt-4">
+									{(() => {
+										if (tickers.length === 0) return null;
+										
+										const allTickers = ['VNINDEX', ...tickers];
+										
+										// Generate the same dynamic colors
+										const generateColors = (count: number) => {
+											const baseColors = [
+												"#3B82F6", "#10B981", "#F59E0B", "#EF4444", 
+												"#8B5CF6", "#06B6D4", "#F97316", "#84CC16",
+												"#EC4899", "#14B8A6", "#F43F5E", "#A855F7",
+												"#EAB308", "#22C55E", "#F97316", "#06B6D4"
+											];
+											
+											if (count <= baseColors.length) {
+												return baseColors.slice(0, count);
+											}
+											
+											const colors = [...baseColors];
+											const remaining = count - baseColors.length;
+											
+											for (let i = 0; i < remaining; i++) {
+												const hue = (360 / remaining) * i;
+												const saturation = 70 + (i % 3) * 10;
+												const lightness = 45 + (i % 2) * 10;
+												colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+											}
+											
+											return colors;
+										};
+
+										const dynamicColors = generateColors(allTickers.length);
+										
+										return (
+											<div className="flex flex-wrap gap-2">
+												{allTickers.map((ticker, index) => (
+													<Badge
+														key={ticker}
+														variant="outline"
+														className={`text-xs ${ticker === 'VNINDEX' ? 'font-bold' : ''}`}
+														style={{ borderColor: dynamicColors[index], color: dynamicColors[index] }}
+													>
+														{ticker}
+													</Badge>
+												))}
+											</div>
+										);
+									})()}
+								</div>
+							</CardContent>
+						</Card>
+					)}
 
 					{/* Sector Performance Charts - Vertical Stack */}
 					<div className="space-y-6">

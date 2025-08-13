@@ -683,6 +683,8 @@ export const vn = {
     // Chart Analysis
     marketChartAnalysis: "Phân tích Biểu đồ Thị trường",
     sixMonthView: "Góc nhìn 6 tháng: 3 tháng trước và sau ngày hoảng loạn",
+    selectedTickersPerformance: "Hiệu suất Mã cổ phiếu đã chọn",
+    selectedTickersPerformanceDesc: "So sánh hiệu suất của các mã cổ phiếu được chọn thủ công từ So sánh Biểu đồ",
     loadingChartData: "Đang tải dữ liệu biểu đồ...",
     panicDay: "Ngày Hoảng loạn",
     noChartDataAvailable: "Không có dữ liệu biểu đồ cho khoảng thời gian này. Hãy thử điều chỉnh khoảng thời gian hoặc kiểm tra xem dữ liệu thị trường có tồn tại cho giai đoạn này không.",

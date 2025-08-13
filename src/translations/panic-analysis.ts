@@ -122,7 +122,11 @@ export const panicTranslations = {
 			comprehensiveScan: '14-Day Comprehensive Scan',
 			comprehensiveScanDesc: 'Significant drops (≥2%) detected in 14-day pre-panic period',
 			prePanicTradingAdvice: 'Pre-Panic Trading Advice',
-			prePanicTradingAdviceDesc: 'Risk management recommendations based on pre-panic signals'
+			prePanicTradingAdviceDesc: 'Risk management recommendations based on pre-panic signals',
+			marketChartAnalysis: 'Market Chart Analysis',
+			marketChartAnalysisDesc: '6-month view: 3 months before and after panic day',
+			selectedTickersPerformance: 'Selected Tickers Performance',
+			selectedTickersPerformanceDesc: 'Performance comparison of manually selected tickers from Compare Charts'
 		},
 		
 		// Recovery metrics
@@ -289,7 +293,11 @@ export const panicTranslations = {
 			comprehensiveScan: 'Quét Toàn Diện 14 Ngày',
 			comprehensiveScanDesc: 'Phát hiện các đợt giảm đáng kể (≥2%) trong giai đoạn 14 ngày trước panic',
 			prePanicTradingAdvice: 'Lời Khuyên Giao Dịch Trước Panic',
-			prePanicTradingAdviceDesc: 'Khuyến nghị quản lý rủi ro dựa trên tín hiệu trước panic'
+			prePanicTradingAdviceDesc: 'Khuyến nghị quản lý rủi ro dựa trên tín hiệu trước panic',
+			marketChartAnalysis: 'Phân Tích Biểu Đồ Thị Trường',
+			marketChartAnalysisDesc: 'Góc nhìn 6 tháng: 3 tháng trước và sau ngày panic',
+			selectedTickersPerformance: 'Hiệu Suất Mã Cổ Phiếu Đã Chọn',
+			selectedTickersPerformanceDesc: 'So sánh hiệu suất của các mã cổ phiếu được chọn thủ công từ So Sánh Biểu Đồ'
 		},
 		
 		// Các chỉ số phục hồi

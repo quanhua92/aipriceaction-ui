@@ -683,6 +683,8 @@ export const en = {
     // Chart Analysis
     marketChartAnalysis: "Market Chart Analysis",
     sixMonthView: "6-month view: 3 months before and after panic day",
+    selectedTickersPerformance: "Selected Tickers Performance",
+    selectedTickersPerformanceDesc: "Performance comparison of manually selected tickers from Compare Charts",
     loadingChartData: "Loading chart data...",
     panicDay: "Panic Day",
     noChartDataAvailable: "No chart data available for this date range. Try adjusting the date range or check if market data exists for this period.",
