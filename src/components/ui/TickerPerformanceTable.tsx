@@ -148,15 +148,15 @@ export function TickerPerformanceTable({
 
 	return (
 		<Card>
-			<CardHeader>
+			<CardHeader className="pb-3">
 				<CardTitle className="text-lg flex items-center gap-2">
 					<BarChart3 className="h-5 w-5" />
 					{title}
 				</CardTitle>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="pt-0">
 				{/* Sortable Headers */}
-				<div className="grid grid-cols-5 gap-4 p-3 border-b mb-4">
+				<div className="grid gap-4 px-3 py-2 border-b mb-3" style={{ gridTemplateColumns: '80px 1fr 1fr 1fr 1fr' }}>
 					<Button
 						variant="ghost"
 						size="sm"
@@ -195,7 +195,7 @@ export function TickerPerformanceTable({
 				</div>
 
 				{/* Table Rows */}
-				<div className="space-y-2">
+				<div className="space-y-1">
 					{processedTickers.map((tickerInfo) => {
 						const { ticker, currentPrice, dailyChange, rangeChange, data } = tickerInfo;
 						
@@ -204,7 +204,7 @@ export function TickerPerformanceTable({
 						const hasData = data.length > 0;
 
 						return (
-							<div key={ticker} className="grid grid-cols-5 gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors border items-center">
+							<div key={ticker} className="grid gap-4 p-2 rounded-lg hover:bg-muted/50 transition-colors border items-center" style={{ gridTemplateColumns: '80px 1fr 1fr 1fr 1fr' }}>
 									{/* Ticker Column */}
 									<div>
 										<Link to="/ticker/$symbol" params={{ symbol: ticker }} className="hover:underline">
