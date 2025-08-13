@@ -77,6 +77,9 @@ function TickerPage() {
 		setComparisonTickers(newTickers);
 	};
 
+	const removeComparisonTicker = (tickerToRemove: string) => {
+		setComparisonTickers(prev => prev.filter(t => t !== tickerToRemove));
+	};
 
 	const clearAllComparisons = () => {
 		setComparisonTickers([]);
@@ -325,17 +328,17 @@ function TickerPage() {
 					</CardHeader>
 					<CardContent>
 						{isLoading ? (
-							<div className="h-[500px] flex items-center justify-center">
+							<div className="h-[400px] flex items-center justify-center">
 								<div className="text-muted-foreground">
 									Loading chart data...
 								</div>
 							</div>
 						) : tickerData && tickerData.length > 0 ? (
 							<div className="space-y-4">
-								<CandlestickChart data={tickerData} height={500} showCard={false} />
+								<CandlestickChart data={tickerData} height={400} showCard={false} />
 							</div>
 						) : (
-							<div className="h-[500px] flex items-center justify-center">
+							<div className="h-[400px] flex items-center justify-center">
 								<div className="text-center space-y-4">
 									<p className="text-muted-foreground">
 										No data available for {symbol}
@@ -349,6 +352,110 @@ function TickerPage() {
 						)}
 					</CardContent>
 				</Card>
+
+				{/* Price & Volume Chart Comparison */}
+				{comparisonTickers.length > 0 && (
+					<Card>
+						<CardHeader>
+							<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+								<CardTitle className="flex items-center gap-2">
+									<ChartCandlestick className="h-5 w-5" />
+									Price & Volume Chart Comparison
+									<Badge variant="secondary" className="text-xs">
+										{comparisonTickers.length} chart{comparisonTickers.length > 1 ? 's' : ''}
+									</Badge>
+								</CardTitle>
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={clearAllComparisons}
+									className="text-xs"
+								>
+									<X className="h-4 w-4 mr-1" />
+									Clear All Charts
+								</Button>
+							</div>
+						</CardHeader>
+						<CardContent className="space-y-8">
+							{comparisonTickers.map((ticker) => (
+								<div key={ticker} className="space-y-4">
+									{/* Ticker Header */}
+									<div className="flex items-center justify-between">
+										<div className="flex items-center gap-3">
+											<h3 className="text-xl font-semibold flex items-center gap-2">
+												<ChartCandlestick className="h-5 w-5" />
+												{ticker}
+											</h3>
+											{sector && findTickerSector(tickerGroups || {}, ticker) && (
+												<Badge variant="outline" className="text-xs">
+													{findTickerSector(tickerGroups || {}, ticker)?.replace(/_/g, " ")}
+												</Badge>
+											)}
+										</div>
+										<div className="flex items-center gap-3">
+											{comparisonData && comparisonData[ticker] && comparisonData[ticker].length > 0 && (() => {
+												const data = comparisonData[ticker];
+												const latestPrice = getLatestPrice(data);
+												const priceChange = calculatePriceChange(data);
+												
+												return (
+													<div className="text-right">
+														{latestPrice && (
+															<div className="font-semibold text-lg">
+																{formatPrice(latestPrice.close)}
+															</div>
+														)}
+														{priceChange && (
+															<div className={`text-sm ${priceChange.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+																{priceChange.changePercent > 0 ? '+' : ''}{priceChange.changePercent.toFixed(2)}%
+															</div>
+														)}
+													</div>
+												);
+											})()}
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() => removeComparisonTicker(ticker)}
+												className="h-8 w-8 p-0 hover:bg-red-100"
+											>
+												<X className="h-4 w-4" />
+											</Button>
+										</div>
+									</div>
+
+									{/* Full Width Chart */}
+									{comparisonLoading ? (
+										<div className="h-[400px] flex items-center justify-center">
+											<div className="text-muted-foreground">
+												Loading {ticker} chart data...
+											</div>
+										</div>
+									) : comparisonData && comparisonData[ticker] && comparisonData[ticker].length > 0 ? (
+										<div className="space-y-4">
+											<CandlestickChart 
+												data={comparisonData[ticker]} 
+												height={400} 
+												showCard={false} 
+											/>
+										</div>
+									) : (
+										<div className="h-[400px] flex items-center justify-center">
+											<div className="text-center space-y-2">
+												<p className="text-muted-foreground">
+													No data available for {ticker}
+												</p>
+												<p className="text-sm text-muted-foreground">
+													Try a different time range or check if the ticker symbol is correct.
+												</p>
+											</div>
+										</div>
+									)}
+								</div>
+							))}
+						</CardContent>
+					</Card>
+				)}
 
 				{/* Performance Comparison */}
 				<Card>
