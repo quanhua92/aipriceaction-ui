@@ -224,7 +224,7 @@ export function PortfolioSummaryCard({
 				) : (
 					<>
 				{/* Portfolio Summary Stats - Compact */}
-				<div className="px-6 mb-3 space-y-2">
+				<div className="px-3 mb-3 space-y-2">
 					<div className="text-center">
 						<div className="text-2xl md:text-3xl font-bold text-green-600">
 							{displayValue(totalPortfolioValue)}
@@ -250,7 +250,7 @@ export function PortfolioSummaryCard({
 				</div>
 
 				{/* Unified Tab Interface for All Devices */}
-				<div className="px-6">
+				<div className="px-3">
 					<Tabs defaultValue="overview" className="w-full">
 						<TabsList className="grid w-full grid-cols-2">
 							<TabsTrigger value="overview">{t("portfolio.overview")}</TabsTrigger>

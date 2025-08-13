@@ -332,9 +332,9 @@ export function PortfolioTable({
 					)}
 				</CardTitle>
 			</CardHeader>
-			<CardContent className="px-0">
+			<CardContent className="p-4 md:px-0 md:pt-0">
 				{/* Mobile Layout: Card-based */}
-				<div className="block md:hidden px-4 space-y-4">
+				<div className="block md:hidden space-y-4">
 					{items.length === 0 ? (
 						<div className="text-center py-12">
 							<div className="flex flex-col items-center gap-4">
