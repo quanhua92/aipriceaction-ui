@@ -8,7 +8,6 @@ import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
 import { useTickerData, useTickerGroups, useSectorData } from "@/lib/queries";
 import { useTranslation } from "@/hooks/useTranslation";
-import { VPAButton } from "@/components/vpa";
 import { AskAIButton } from "@/components/ask-ai";
 import { PrePanicWarningWidget } from "@/components/panic";
 import { 
@@ -170,14 +169,14 @@ function TopPerformers({
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className="space-y-3">
+				<div className="space-y-4">
 					{performers.slice(0, 10).map((performer, index) => {
 						const dailyPerf = dailyPerformanceMap[performer.ticker];
 						const isDailyPositive = dailyPerf?.changePercent >= 0;
 						const isRangePositive = performer.changePercent >= 0;
 						
 						return (
-							<div key={performer.ticker} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors border">
+							<div key={performer.ticker} className="flex items-center justify-between p-4 rounded-lg hover:bg-muted/50 transition-colors border">
 								<div className="flex items-center gap-3">
 									<div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium">
 										{index + 1}
@@ -196,8 +195,8 @@ function TopPerformers({
 										</p>
 									</div>
 								</div>
-								<div className="flex items-center gap-3">
-									<div className="grid grid-cols-2 gap-4 items-center">
+								<div className="flex items-center gap-4 sm:gap-6">
+									<div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 items-center">
 										{/* Daily Performance */}
 										{dailyPerf && (
 											<div className="text-center">
@@ -215,18 +214,11 @@ function TopPerformers({
 											</p>
 										</div>
 									</div>
-									{/* Action Buttons */}
-									<div className="flex items-center gap-2">
-										<VPAButton 
-											ticker={performer.ticker}
-											variant="badge"
-											mode="popover"
-										/>
-										<AskAIButton 
-											ticker={performer.ticker}
-											size="sm"
-										/>
-									</div>
+									{/* Ask AI Button */}
+									<AskAIButton 
+										ticker={performer.ticker}
+										size="sm"
+									/>
 								</div>
 							</div>
 						);

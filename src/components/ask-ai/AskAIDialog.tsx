@@ -168,7 +168,14 @@ export function AskAIDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-none w-[95vw] max-h-none h-[95vh] flex flex-col" style={{ maxWidth: '95vw', width: '95vw', maxHeight: '95vh', height: '95vh' }}>
+			<DialogContent className="max-w-none w-[95vw] sm:w-[90vw] max-h-[85vh] sm:max-h-[90vh] md:max-h-[95vh] flex flex-col overflow-hidden"
+				style={{ 
+					maxWidth: '95vw', 
+					width: '95vw', 
+					maxHeight: '85vh', 
+					height: 'auto'
+				}}
+			>
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
 						<Brain className="h-5 w-5 text-green-600" />
