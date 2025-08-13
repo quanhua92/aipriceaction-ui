@@ -168,12 +168,11 @@ export function AskAIDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-none w-[95vw] sm:w-[90vw] max-h-[85vh] sm:max-h-[90vh] md:max-h-[95vh] flex flex-col overflow-hidden"
+			<DialogContent className="max-w-none w-[95vw] sm:w-[90vw] max-h-[85vh] sm:max-h-[90vh] md:max-h-[95vh] flex flex-col"
 				style={{ 
 					maxWidth: '95vw', 
 					width: '95vw', 
-					maxHeight: '85vh', 
-					height: 'auto'
+					maxHeight: '85vh'
 				}}
 			>
 				<DialogHeader>
@@ -188,7 +187,7 @@ export function AskAIDialog({
 					</div>
 				</DialogHeader>
 
-				<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "single" | "multi")} className="flex-1 flex flex-col">
+				<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "single" | "multi")} className="flex-1 flex flex-col min-h-0">
 					<TabsList className="grid w-full grid-cols-2 mb-4">
 						<TabsTrigger value="single" className="flex items-center gap-2 data-[state=active]:text-green-600">
 							<Brain className="h-4 w-4" />
@@ -200,7 +199,7 @@ export function AskAIDialog({
 						</TabsTrigger>
 					</TabsList>
 
-					<TabsContent value="single" className="flex-1 flex flex-col mt-0">
+					<TabsContent value="single" className="flex-1 flex flex-col mt-0 min-h-0">
 						<Card className="mb-4">
 							<CardHeader className="pb-3">
 								<CardTitle className="text-sm flex items-center gap-2">
@@ -229,8 +228,8 @@ export function AskAIDialog({
 							</CardContent>
 						</Card>
 
-						<ScrollArea className="flex-1">
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+						<ScrollArea className="flex-1 min-h-0">
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 p-1">
 								{singleTemplates.map(template => renderTemplateCard(template, singleTickerContext))}
 							</div>
 						</ScrollArea>
@@ -271,7 +270,7 @@ export function AskAIDialog({
 							</CardContent>
 						</Card>
 
-						<ScrollArea className="flex-1">
+						<ScrollArea className="flex-1 min-h-0">
 							{selectedTickers.length === 0 ? (
 								<div className="flex items-center justify-center h-64">
 									<div className="text-center space-y-3">
@@ -287,7 +286,7 @@ export function AskAIDialog({
 									</div>
 								</div>
 							) : (
-								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 p-1">
 									{multiTemplates.map(template => renderTemplateCard(template, multipleTickersContext))}
 								</div>
 							)}
