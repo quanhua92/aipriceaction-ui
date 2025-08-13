@@ -979,5 +979,6 @@ export const vn = {
     howToUse: "Sao chép bất kỳ mẫu nào để nhận phân tích AI với đầy đủ ngữ cảnh thị trường và dữ liệu VPA",
     description: "Nhận phân tích AI cho {symbol} với đầy đủ ngữ cảnh thị trường, phân tích kỹ thuật và thông tin VPA.",
     aboutTicker: "về {symbol}",
+    instructions: "Hướng dẫn sử dụng: Nhấp 'Sao Chép' trên bất kỳ mẫu nào bên dưới, sau đó dán vào AI chatbot ưa thích của bạn (ChatGPT, Gemini, Claude, v.v.) để phân tích chi tiết.",
   },
 } as const;

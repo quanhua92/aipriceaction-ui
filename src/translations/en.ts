@@ -979,5 +979,6 @@ export const en = {
     howToUse: "Copy any template to get AI analysis with full market context and VPA data",
     description: "Get AI-powered analysis for {symbol} with complete market context, technical analysis, and VPA insights.",
     aboutTicker: "about {symbol}",
+    instructions: "How to use: Click 'Copy' on any template below, then paste into your preferred AI chatbot (ChatGPT, Gemini, Claude, etc.) for detailed analysis.",
   },
 } as const;

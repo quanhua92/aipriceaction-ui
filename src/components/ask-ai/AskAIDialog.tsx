@@ -174,6 +174,11 @@ export function AskAIDialog({
 						<Brain className="h-5 w-5 text-green-600" />
 						{t("askAI.title")}
 					</DialogTitle>
+					<div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
+						<p className="text-sm text-blue-800">
+							{t("askAI.instructions")}
+						</p>
+					</div>
 				</DialogHeader>
 
 				<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "single" | "multi")} className="flex-1 flex flex-col">
