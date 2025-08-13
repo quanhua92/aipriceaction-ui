@@ -555,6 +555,7 @@ function PanicAnalyzeDetail() {
 							maxSelection={50}
 							placeholder={t("compare.searchPlaceholder")}
 							className="w-full"
+							persistOpenState={true}
 						/>
 					</div>
 

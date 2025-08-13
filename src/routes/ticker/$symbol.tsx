@@ -527,6 +527,7 @@ function TickerPage() {
 								onTickersChange={handleTickersChange}
 								placeholder={t("tickers.clickHereToSearch")}
 								className="w-full"
+								persistOpenState={true}
 							/>
 						</div>
 

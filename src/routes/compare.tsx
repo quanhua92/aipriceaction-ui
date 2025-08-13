@@ -164,6 +164,7 @@ function ComparePage() {
 							maxSelection={100}
 							placeholder={t("compare.searchPlaceholder")}
 							className="w-full"
+							persistOpenState={true}
 						/>
 					</div>
 
