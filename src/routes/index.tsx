@@ -464,7 +464,7 @@ function Dashboard() {
 				{/* VN-Index Chart */}
 				<div className="lg:col-span-2">
 					<Card>
-						<CardHeader className="p-3 md:p-6">
+						<CardHeader>
 							<CardTitle className="flex items-center gap-2 text-sm md:text-base">
 								<TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
 								{t("home.vnIndex")} {t("home.marketOverview")}
