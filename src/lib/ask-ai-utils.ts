@@ -1,5 +1,4 @@
 import type { StockDataPoint } from "./stock-data";
-import { formatVietnamDate } from "./date-utils";
 
 export interface AskAITemplate {
 	id: string;
@@ -23,8 +22,8 @@ export function formatChartContext(ticker: string, data: StockDataPoint[]): stri
 	const recentData = data.slice(-10);
 	
 	const contextLines = recentData.map((point, index) => {
-		// Use Vietnam timezone formatting for consistency
-		const dateStr = formatVietnamDate(point.date);
+		// Use the time string directly (already in YYYY-MM-DD format)
+		const dateStr = point.time;
 		
 		// Calculate daily change if not the first point
 		let changeStr = "";
