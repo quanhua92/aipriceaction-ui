@@ -541,31 +541,50 @@ function TickerPage() {
 											};
 
 											if (allTickerData && allTickers.length > 0) {
-												const maxLength = Math.max(
-													...allTickers.map(
-														(ticker) => allTickerData[ticker]?.length || 0,
-													),
+												// First, find the common date range for all tickers
+												const tickerWithData = allTickers.filter(ticker => {
+													const data = allTickerData[ticker];
+													return data && data.length > 0;
+												});
+
+												if (tickerWithData.length === 0) return [];
+
+												// Find the shortest data array to ensure all tickers have data for each point
+												const minLength = Math.min(
+													...tickerWithData.map(ticker => allTickerData[ticker]?.length || 0)
 												);
 
-												for (let i = 0; i < maxLength; i++) {
-													const dataPoint: any = { time: "", date: null };
+												// Calculate baseline prices (first data point for each ticker)
+												const baselinePrices: Record<string, number> = {};
+												tickerWithData.forEach(ticker => {
+													const data = allTickerData[ticker];
+													if (data && data[0]) {
+														baselinePrices[ticker] = data[0].close;
+													}
+												});
 
-													allTickers.slice(0, 8).forEach((ticker) => {
+												// Build normalized data using the common length
+												for (let i = 0; i < minLength; i++) {
+													const dataPoint: any = { time: "", date: null };
+													let hasValidData = false;
+
+													tickerWithData.forEach(ticker => {
 														const data = allTickerData[ticker] || [];
-														if (data[i] && data[0]) {
+														if (data[i] && baselinePrices[ticker]) {
 															const changePercent =
-																((data[i].close - data[0].close) /
-																	data[0].close) *
+																((data[i].close - baselinePrices[ticker]) /
+																	baselinePrices[ticker]) *
 																100;
 															dataPoint[ticker] = changePercent;
 															if (!dataPoint.time) {
 																dataPoint.time = data[i].time;
 																dataPoint.date = data[i].date;
 															}
+															hasValidData = true;
 														}
 													});
 
-													if (dataPoint.time) {
+													if (hasValidData && dataPoint.time) {
 														normalizedData.push(dataPoint);
 													}
 												}
