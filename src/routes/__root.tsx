@@ -1,5 +1,6 @@
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Analytics } from "@vercel/analytics/react";
 
 import Header from "../components/Header";
 import { FpsMonitor } from "../components/ui/FpsMonitor";
@@ -24,6 +25,9 @@ function AppContent() {
 		<>
 			<Header />
 			<Outlet />
+			
+			{/* Analytics */}
+			<Analytics />
 			
 			{/* Development Tools */}
 			<TanStackRouterDevtools />
