@@ -28,7 +28,6 @@ import { ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerGroups, useMultipleTickerData } from "@/lib/queries";
-import { VPAButton } from "@/components/vpa";
 import { AskAIButton } from "@/components/ask-ai";
 import {
 	getTickersBySector,
@@ -444,11 +443,6 @@ function SectorPage() {
 													{t("common.view")}
 												</Button>
 											</Link>
-											<VPAButton 
-												ticker={item.ticker}
-												variant="badge"
-												mode="popover"
-											/>
 											<AskAIButton 
 												ticker={item.ticker}
 												size="sm"

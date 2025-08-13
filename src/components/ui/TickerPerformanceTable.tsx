@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import { Table, BarChart3, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { VPAButton } from "@/components/vpa";
 import { AskAIButton } from "@/components/ask-ai";
 import { calculatePriceChange, calculateRangeChange } from "@/lib/stock-data";
 
@@ -157,7 +156,7 @@ export function TickerPerformanceTable({
 			</CardHeader>
 			<CardContent>
 				{/* Sortable Headers */}
-				<div className="grid grid-cols-6 gap-4 p-3 border-b mb-4">
+				<div className="grid grid-cols-5 gap-4 p-3 border-b mb-4">
 					<Button
 						variant="ghost"
 						size="sm"
@@ -191,9 +190,6 @@ export function TickerPerformanceTable({
 						{timeRange} {getSortIcon('range')}
 					</Button>
 					<div className="flex justify-center">
-						<span className="text-sm font-medium text-muted-foreground">VPA</span>
-					</div>
-					<div className="flex justify-center">
 						<span className="text-sm font-medium text-muted-foreground">Ask AI</span>
 					</div>
 				</div>
@@ -208,7 +204,7 @@ export function TickerPerformanceTable({
 						const hasData = data.length > 0;
 
 						return (
-							<div key={ticker} className="grid grid-cols-6 gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors border items-center">
+							<div key={ticker} className="grid grid-cols-5 gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors border items-center">
 									{/* Ticker Column */}
 									<div>
 										<Link to="/ticker/$symbol" params={{ symbol: ticker }} className="hover:underline">
@@ -254,16 +250,7 @@ export function TickerPerformanceTable({
 										)}
 									</div>
 									
-									{/* VPA Column */}
-									<div className="flex justify-center">
-										<VPAButton 
-											ticker={ticker}
-											variant="badge"
-											mode="popover"
-										/>
-									</div>
-									
-									{/* Ask AI Column */}
+									{/* Ask AI Column - Now has more space */}
 									<div className="flex justify-center">
 										<AskAIButton 
 											ticker={ticker}
