@@ -177,14 +177,16 @@ function TopPerformers({
 						
 						return (
 							<div key={performer.ticker} className="flex items-center justify-between p-4 rounded-lg hover:bg-muted/50 transition-colors border">
-								<div className="flex items-center gap-3">
+								<Link 
+									to="/ticker/$symbol" 
+									params={{ symbol: performer.ticker }} 
+									className="flex items-center gap-3 flex-1 hover:bg-primary/5 rounded-md p-2 -m-2 transition-colors"
+								>
 									<div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium">
 										{index + 1}
 									</div>
 									<div>
-										<Link to="/ticker/$symbol" params={{ symbol: performer.ticker }} className="hover:underline">
-											<p className="font-medium text-sm cursor-pointer">{performer.ticker}</p>
-										</Link>
+										<p className="font-medium text-sm text-foreground hover:text-primary transition-colors">{performer.ticker}</p>
 										<p className="text-xs text-muted-foreground">
 											{new Intl.NumberFormat("vi-VN", {
 												style: "currency",
@@ -194,7 +196,7 @@ function TopPerformers({
 											}).format(performer.currentPrice)}
 										</p>
 									</div>
-								</div>
+								</Link>
 								<div className="flex items-center gap-4 sm:gap-6">
 									<div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 items-center">
 										{/* Daily Performance */}
