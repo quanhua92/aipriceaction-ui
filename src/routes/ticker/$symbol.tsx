@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import {
 	ArrowLeft,
 	TrendingUp,
@@ -6,14 +7,17 @@ import {
 	Volume2,
 	Calendar,
 	ChartCandlestick,
+	BarChart3,
+	X,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CandlestickChart } from "@/components/charts";
+import { CandlestickChart, ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
+import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { VPACard } from "@/components/vpa";
-import { useTickerData, useTickerGroups } from "@/lib/queries";
+import { useTickerData, useTickerGroups, useMultipleTickerData } from "@/lib/queries";
 import {
 	calculatePriceChange,
 	calculateRangeChange,
@@ -45,18 +49,50 @@ function TickerPage() {
 	const { symbol } = Route.useParams();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const { range = "3M", startDate, endDate } = Route.useSearch();
+	
+	// State for ticker comparison
+	const [comparisonTickers, setComparisonTickers] = useState<string[]>([]);
 
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
 
 	const { data: tickerData, isLoading, error } = useTickerData(symbol, dateRangeConfig);
 	const { data: tickerGroups } = useTickerGroups();
+	
+	// Get data for comparison tickers
+	const { data: comparisonData, isLoading: comparisonLoading } = useMultipleTickerData(
+		comparisonTickers,
+		dateRangeConfig,
+		300
+	);
 
 	const updateSearchParams = (updates: Partial<TickerPageSearch>) => {
 		navigate({
 			search: (prev) => ({ ...prev, ...updates }),
 		});
 	};
+
+	// Helper functions for comparison tickers
+	const handleTickersChange = (newTickers: string[]) => {
+		setComparisonTickers(newTickers);
+	};
+
+
+	const clearAllComparisons = () => {
+		setComparisonTickers([]);
+	};
+
+	// Chart colors for comparison
+	const chartColors = [
+		"#3B82F6", // blue-500
+		"#10B981", // emerald-500
+		"#F59E0B", // amber-500
+		"#EF4444", // red-500
+		"#8B5CF6", // violet-500
+		"#06B6D4", // cyan-500
+		"#F97316", // orange-500
+		"#84CC16", // lime-500
+	];
 
 	const dailyChange = tickerData ? calculatePriceChange(tickerData) : null;
 	const rangeChange = tickerData ? calculateRangeChange(tickerData) : null;
@@ -272,6 +308,14 @@ function TickerPage() {
 
 			{/* Charts */}
 			<div className="space-y-6">
+				{/* VPA Analysis - moved to top */}
+				<VPACard 
+					ticker={symbol}
+					title={`Volume Price Analysis - ${symbol}`}
+					defaultExpanded={false}
+					showViewButton={true}
+				/>
+
 				<Card>
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
@@ -306,13 +350,141 @@ function TickerPage() {
 					</CardContent>
 				</Card>
 
-				{/* VPA Analysis */}
-				<VPACard 
-					ticker={symbol}
-					title={`Volume Price Analysis - ${symbol}`}
-					defaultExpanded={false}
-					showViewButton={true}
-				/>
+				{/* Performance Comparison */}
+				<Card>
+					<CardHeader>
+						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+							<CardTitle className="flex items-center gap-2">
+								<BarChart3 className="h-5 w-5" />
+								Performance Comparison
+								{comparisonTickers.length > 0 && (
+									<Badge variant="secondary" className="text-xs">
+										{comparisonTickers.length + 1} selected
+									</Badge>
+								)}
+							</CardTitle>
+							<div className="flex flex-col md:flex-row md:items-center gap-2">
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={clearAllComparisons}
+									disabled={comparisonTickers.length === 0}
+									className="text-xs"
+								>
+									<X className="h-4 w-4 mr-1" />
+									Clear All
+								</Button>
+							</div>
+						</div>
+					</CardHeader>
+					<CardContent className="space-y-4">
+						{/* Ticker Selection */}
+						<div>
+							<label className="text-sm font-medium mb-2 block">
+								Search and select tickers to compare with {symbol}
+							</label>
+							<MultiTickerSearch
+								selectedTickers={comparisonTickers}
+								onTickersChange={handleTickersChange}
+								maxSelection={7}
+								placeholder="Search tickers to compare..."
+								className="w-full"
+							/>
+						</div>
+
+
+						{/* Comparison Chart */}
+						{comparisonLoading ? (
+							<div className="h-[400px] flex items-center justify-center">
+								<div className="text-muted-foreground">
+									Loading comparison data...
+								</div>
+							</div>
+						) : comparisonTickers.length > 0 ? (
+							<div className="space-y-4">
+								{/* Chart Legend */}
+								<div className="flex flex-wrap gap-2">
+									{[symbol, ...comparisonTickers].slice(0, 8).map((ticker, index) => (
+										<Badge
+											key={ticker}
+											variant="outline"
+											className="flex items-center gap-1"
+											style={{ borderColor: chartColors[index] }}
+										>
+											<div
+												className="w-3 h-3 rounded-full"
+												style={{ backgroundColor: chartColors[index] }}
+											/>
+											{ticker}
+										</Badge>
+									))}
+								</div>
+
+								{/* Normalized Comparison Chart */}
+								<div className="h-[400px]">
+									<ComparisonChart
+										data={(() => {
+											// Normalize data for comparison - convert to percentage change from first data point
+											const normalizedData: any[] = [];
+											const allTickers = [symbol, ...comparisonTickers];
+											const allTickerData = {
+												[symbol]: tickerData,
+												...comparisonData
+											};
+
+											if (allTickerData && allTickers.length > 0) {
+												const maxLength = Math.max(
+													...allTickers.map(
+														(ticker) => allTickerData[ticker]?.length || 0,
+													),
+												);
+
+												for (let i = 0; i < maxLength; i++) {
+													const dataPoint: any = { time: "", date: null };
+
+													allTickers.slice(0, 8).forEach((ticker) => {
+														const data = allTickerData[ticker] || [];
+														if (data[i] && data[0]) {
+															const changePercent =
+																((data[i].close - data[0].close) /
+																	data[0].close) *
+																100;
+															dataPoint[ticker] = changePercent;
+															if (!dataPoint.time) {
+																dataPoint.time = data[i].time;
+																dataPoint.date = data[i].date;
+															}
+														}
+													});
+
+													if (dataPoint.time) {
+														normalizedData.push(dataPoint);
+													}
+												}
+											}
+
+											return normalizedData;
+										})()}
+										tickers={[symbol, ...comparisonTickers].slice(0, 8)}
+										colors={chartColors}
+										height={400}
+									/>
+								</div>
+							</div>
+						) : (
+							<div className="h-[400px] flex items-center justify-center">
+								<div className="text-center space-y-2">
+									<p className="text-muted-foreground">
+										Select tickers to compare with {symbol}
+									</p>
+									<p className="text-sm text-muted-foreground">
+										Use the search above to add comparison tickers
+									</p>
+								</div>
+							</div>
+						)}
+					</CardContent>
+				</Card>
 
 			</div>
 
