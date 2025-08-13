@@ -287,7 +287,7 @@ export function PortfolioSummaryCard({
 								<div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
 								{/* Header */}
 								<div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
-									<div className="grid grid-cols-4 gap-2 text-xs font-medium text-gray-600">
+									<div className="grid grid-cols-[auto_1fr_1fr_1.5fr] gap-2 text-xs font-medium text-gray-600">
 										<div>{t("portfolio.ticker")}</div>
 										<div className="text-center">{t("portfolio.volume")}</div>
 										<div className="text-center">
@@ -312,7 +312,7 @@ export function PortfolioSummaryCard({
 
 										return (
 											<div key={item.ticker} className="px-3 py-2 hover:bg-gray-50 transition-colors">
-												<div className="grid grid-cols-4 gap-2 items-center">
+												<div className="grid grid-cols-[auto_1fr_1fr_1.5fr] gap-2 items-center">
 													{/* Ticker */}
 													<div className="font-semibold text-gray-900 text-sm">{item.ticker}</div>
 													

@@ -253,7 +253,7 @@ export function PortfolioTable({
 							</div>
 							
 							{manualDeposit && (
-								<div className="flex items-center gap-2 flex-1">
+								<div className="flex items-center gap-2 min-w-0 sm:flex-1">
 									{editingDeposit ? (
 										<>
 											<Input
@@ -261,7 +261,7 @@ export function PortfolioTable({
 												inputMode="numeric"
 												value={depositValue}
 												onChange={(e) => setDepositValue(e.target.value)}
-												className="flex-1 text-right font-medium"
+												className="w-32 sm:flex-1 text-right font-medium"
 												placeholder={t("portfolio.enterDeposit")}
 												autoFocus
 											/>
@@ -299,7 +299,7 @@ export function PortfolioTable({
 								</div>
 							</div>
 							
-							<div className="flex items-center gap-2 flex-1">
+							<div className="flex items-center gap-2 min-w-0 sm:flex-1">
 								{editingRemainingCash ? (
 									<>
 										<Input
@@ -307,7 +307,7 @@ export function PortfolioTable({
 											inputMode="numeric"
 											value={remainingCashValue}
 											onChange={(e) => setRemainingCashValue(e.target.value)}
-											className="flex-1 text-right font-medium"
+											className="w-32 sm:flex-1 text-right font-medium"
 											placeholder={t("portfolio.enterRemainingCash")}
 											autoFocus
 										/>
