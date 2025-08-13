@@ -31,8 +31,10 @@ interface PortfolioTableProps {
 	onRemoveItem: (ticker: string) => void;
 	onAddItem: (ticker: string) => void;
 	deposit: number;
+	remainingCash?: number;
 	manualDeposit: boolean;
 	onUpdateDeposit?: (deposit: number) => void;
+	onUpdateRemainingCash?: (remainingCash: number) => void;
 	onToggleManualDeposit?: (manual: boolean) => void;
 	showPrivacy?: boolean;
 }
@@ -43,8 +45,10 @@ export function PortfolioTable({
 	onRemoveItem,
 	onAddItem,
 	deposit,
+	remainingCash = 0,
 	manualDeposit,
 	onUpdateDeposit,
+	onUpdateRemainingCash,
 	onToggleManualDeposit,
 	showPrivacy = false,
 }: PortfolioTableProps) {
@@ -54,6 +58,8 @@ export function PortfolioTable({
 	const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 	const [editingDeposit, setEditingDeposit] = useState(false);
 	const [depositValue, setDepositValue] = useState(deposit.toString());
+	const [editingRemainingCash, setEditingRemainingCash] = useState(false);
+	const [remainingCashValue, setRemainingCashValue] = useState(remainingCash.toString());
 
 	// Update depositValue when deposit prop changes (but not when editing)
 	useEffect(() => {
@@ -61,6 +67,13 @@ export function PortfolioTable({
 			setDepositValue(deposit.toString());
 		}
 	}, [deposit, editingDeposit]);
+
+	// Update remainingCashValue when remainingCash prop changes (but not when editing)
+	useEffect(() => {
+		if (!editingRemainingCash) {
+			setRemainingCashValue(remainingCash.toString());
+		}
+	}, [remainingCash, editingRemainingCash]);
 
 	// Simple input change - direct state update only
 	const handleInputChange = (ticker: string, field: 'price' | 'quantity', value: string) => {
@@ -82,20 +95,49 @@ export function PortfolioTable({
 		setEditingDeposit(false);
 	};
 
+	const handleRemainingCashSubmit = () => {
+		if (onUpdateRemainingCash) {
+			const newRemainingCash = parseFormattedNumber(remainingCashValue);
+			onUpdateRemainingCash(newRemainingCash);
+		}
+		setEditingRemainingCash(false);
+	};
+
+	const handleRemainingCashCancel = () => {
+		setRemainingCashValue(remainingCash.toString());
+		setEditingRemainingCash(false);
+	};
+
 	// Save all changes at once
 	const handleSaveAll = () => {
+		// Group changes by ticker to handle multiple field changes for the same ticker
+		const tickerUpdates: { [ticker: string]: { quantity?: number; price?: number } } = {};
+		
+		// Collect all changes by ticker
 		Object.entries(localValues).forEach(([key, value]) => {
 			const [ticker, field] = key.split('-');
-			const item = items.find(item => item.ticker === ticker);
-			if (!item) return;
-
 			const numValue = parseFormattedNumber(value);
 			
-			if (field === 'price') {
-				onUpdateItem(ticker, item.quantity, numValue);
-			} else if (field === 'quantity') {
-				onUpdateItem(ticker, numValue, item.price);
+			if (!tickerUpdates[ticker]) {
+				tickerUpdates[ticker] = {};
 			}
+			
+			if (field === 'price') {
+				tickerUpdates[ticker].price = numValue;
+			} else if (field === 'quantity') {
+				tickerUpdates[ticker].quantity = numValue;
+			}
+		});
+		
+		// Apply updates for each ticker with final values
+		Object.entries(tickerUpdates).forEach(([ticker, updates]) => {
+			const item = items.find(item => item.ticker === ticker);
+			if (!item) return;
+			
+			const finalQuantity = updates.quantity !== undefined ? updates.quantity : item.quantity;
+			const finalPrice = updates.price !== undefined ? updates.price : item.price;
+			
+			onUpdateItem(ticker, finalQuantity, finalPrice);
 		});
 		
 		setLocalValues({});
@@ -122,9 +164,51 @@ export function PortfolioTable({
 		return formatVND(value);
 	};
 
+	// Check if a field has been modified
+	const isFieldModified = (ticker: string, field: 'price' | 'quantity') => {
+		const key = `${ticker}-${field}`;
+		return localValues[key] !== undefined;
+	};
+
+	// Get input className with modification indicators
+	const getInputClassName = (ticker: string, field: 'price' | 'quantity', baseClass: string) => {
+		const isModified = isFieldModified(ticker, field);
+		return `${baseClass} transition-all duration-200 ${
+			isModified 
+				? 'border-orange-400 bg-orange-50 ring-2 ring-orange-200 font-semibold' 
+				: 'border-input'
+		}`;
+	};
+
 	return (
-		<Card className="w-full">
+		<Card className={`w-full transition-all duration-300 ${
+			hasUnsavedChanges 
+				? 'border-orange-300 bg-orange-50/30 shadow-lg ring-2 ring-orange-200' 
+				: 'border-border'
+		}`}>
 			<CardHeader>
+				{/* Unsaved Changes Indicator */}
+				{hasUnsavedChanges && (
+					<div className="mb-4 p-3 bg-orange-100 border border-orange-300 rounded-lg flex items-center gap-3">
+						<div className="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></div>
+						<div>
+							<p className="text-sm font-semibold text-orange-800">
+								{t("portfolio.unsavedChanges")}
+							</p>
+							<p className="text-xs text-orange-600">
+								{t("portfolio.unsavedChangesDescription")}
+							</p>
+						</div>
+						<Button 
+							onClick={handleSaveAll}
+							size="sm"
+							className="ml-auto bg-orange-600 hover:bg-orange-700 text-white animate-pulse"
+						>
+							<Save className="h-3 w-3 mr-1" />
+							{t("portfolio.saveNow")}
+						</Button>
+					</div>
+				)}
 				<CardTitle className="flex flex-col gap-4">
 					<div className="flex items-center gap-2">
 						<div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -193,6 +277,51 @@ export function PortfolioTable({
 									)}
 								</div>
 							)}
+						</div>
+					)}
+
+					{/* Remaining Cash Section */}
+					{onUpdateRemainingCash && (
+						<div className="flex flex-col sm:flex-row gap-4 p-4 bg-blue-50/50 rounded-lg border border-blue-200 mt-4">
+							<div className="flex items-center gap-3">
+								<div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
+									<DollarSign className="h-4 w-4 text-blue-600" />
+								</div>
+								<div>
+									<Label className="text-sm font-medium text-blue-800">{t("portfolio.remainingCash")}</Label>
+									<p className="text-xs text-blue-600">{t("portfolio.remainingCashDescription")}</p>
+								</div>
+							</div>
+							
+							<div className="flex items-center gap-2 flex-1">
+								{editingRemainingCash ? (
+									<>
+										<Input
+											type="text"
+											inputMode="numeric"
+											value={remainingCashValue}
+											onChange={(e) => setRemainingCashValue(e.target.value)}
+											className="flex-1 text-right font-medium"
+											placeholder={t("portfolio.enterRemainingCash")}
+											autoFocus
+										/>
+										<Button size="sm" onClick={handleRemainingCashSubmit} className="bg-green-600 hover:bg-green-700 text-white">
+											<Save className="h-4 w-4" />
+										</Button>
+										<Button size="sm" variant="outline" onClick={handleRemainingCashCancel}>
+											Cancel
+										</Button>
+									</>
+								) : (
+									<>
+										<span className="text-sm text-muted-foreground">{t("portfolio.currentRemainingCash")}:</span>
+										<span className="font-medium">{showPrivacy ? "●●●●●" : formatVND(remainingCash)}</span>
+										<Button size="sm" variant="outline" onClick={() => setEditingRemainingCash(true)}>
+											Edit
+										</Button>
+									</>
+								)}
+							</div>
 						</div>
 					)}
 				</CardTitle>
@@ -267,7 +396,7 @@ export function PortfolioTable({
 												value={getCurrentValue(item.ticker, 'price')}
 												onChange={(e) => handleInputChange(item.ticker, 'price', e.target.value)}
 												placeholder="0"
-												className="text-right"
+												className={getInputClassName(item.ticker, 'price', 'text-right')}
 											/>
 										</div>
 										<div>
@@ -283,7 +412,7 @@ export function PortfolioTable({
 												value={getCurrentValue(item.ticker, 'quantity')}
 												onChange={(e) => handleInputChange(item.ticker, 'quantity', e.target.value)}
 												placeholder="0"
-												className="text-right"
+												className={getInputClassName(item.ticker, 'quantity', 'text-right')}
 											/>
 										</div>
 									</div>
@@ -380,7 +509,7 @@ export function PortfolioTable({
 													value={getCurrentValue(item.ticker, 'price')}
 													onChange={(e) => handleInputChange(item.ticker, 'price', e.target.value)}
 													placeholder="0"
-													className="w-full text-right"
+													className={getInputClassName(item.ticker, 'price', 'w-full text-right')}
 												/>
 											</TableCell>
 											<TableCell>
@@ -393,7 +522,7 @@ export function PortfolioTable({
 													value={getCurrentValue(item.ticker, 'quantity')}
 													onChange={(e) => handleInputChange(item.ticker, 'quantity', e.target.value)}
 													placeholder="0"
-													className="w-full text-right"
+													className={getInputClassName(item.ticker, 'quantity', 'w-full text-right')}
 												/>
 											</TableCell>
 											<TableCell className="text-right">
@@ -422,9 +551,16 @@ export function PortfolioTable({
 				{/* Save Button at bottom */}
 				{hasUnsavedChanges && (
 					<div className="px-4 pb-4">
-						<Button onClick={handleSaveAll} className="w-full flex items-center justify-center gap-2">
-							<Save className="h-4 w-4" />
-							{t("portfolio.save")}
+						<Button 
+							onClick={handleSaveAll} 
+							className={`w-full flex items-center justify-center gap-2 transition-all duration-300 ${
+								hasUnsavedChanges 
+									? 'bg-orange-600 hover:bg-orange-700 text-white shadow-lg ring-2 ring-orange-300 animate-pulse' 
+									: 'bg-primary hover:bg-primary/90'
+							}`}
+						>
+							<Save className={`h-4 w-4 ${hasUnsavedChanges ? 'animate-bounce' : ''}`} />
+							{hasUnsavedChanges ? t("portfolio.saveChanges") : t("portfolio.save")}
 						</Button>
 					</div>
 				)}

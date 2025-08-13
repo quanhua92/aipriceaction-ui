@@ -7,6 +7,7 @@ export interface PortfolioItem {
 export interface PortfolioData {
 	items: PortfolioItem[];
 	deposit: number;
+	remainingCash?: number; // Cash not invested in stocks (optional for backward compatibility)
 }
 
 /**

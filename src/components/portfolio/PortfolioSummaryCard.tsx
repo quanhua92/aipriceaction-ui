@@ -84,6 +84,11 @@ export function PortfolioSummaryCard({
 		return latestData.close || 0;
 	};
 
+	// Check if we have market data for all tickers
+	const hasAllMarketData = items.filter(item => !isWatchListItem(item)).every(item => {
+		return getCurrentMarketPrice(item.ticker) > 0;
+	});
+
 	const { investments, currentMarketValue, chartData, totalCostBasis } = useMemo(() => {
 		const investments = items.filter(item => !isWatchListItem(item));
 		
@@ -204,6 +209,15 @@ export function PortfolioSummaryCard({
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="px-0">
+				{!hasAllMarketData ? (
+					<div className="flex items-center justify-center py-12">
+						<div className="flex items-center gap-3">
+							<div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+							<span className="text-lg text-muted-foreground">Loading market data...</span>
+						</div>
+					</div>
+				) : (
+					<>
 				{/* Portfolio Summary Stats - Compact */}
 				<div className="px-6 mb-3 space-y-2">
 					<div className="text-center">
@@ -230,8 +244,8 @@ export function PortfolioSummaryCard({
 					</div>
 				</div>
 
-				{/* Mobile: Tabs, Desktop: Side by Side */}
-				<div className="block lg:hidden px-6">
+				{/* Unified Tab Interface for All Devices */}
+				<div className="px-6">
 					<Tabs defaultValue="overview" className="w-full">
 						<TabsList className="grid w-full grid-cols-2">
 							<TabsTrigger value="overview">{t("portfolio.overview")}</TabsTrigger>
@@ -613,205 +627,8 @@ export function PortfolioSummaryCard({
 					</Tabs>
 				</div>
 
-				{/* Desktop: Side by Side */}
-				<div className="hidden lg:grid lg:grid-cols-2 lg:gap-4 px-6">
-					{/* Left: Overview Table with Toggle */}
-					<div className="space-y-3">
-						{/* Toggle View Mode */}
-						<div className="flex justify-end">
-							<div className="bg-gray-100 rounded-lg p-1 flex gap-1">
-								<Button
-									size="sm"
-									variant={viewMode === 'card' ? 'default' : 'ghost'}
-									className="px-3 py-1 h-8"
-									onClick={() => setViewMode('card')}
-								>
-									<LayoutGrid className="h-4 w-4 mr-1" />
-									Card
-								</Button>
-								<Button
-									size="sm"
-									variant={viewMode === 'table' ? 'default' : 'ghost'}
-									className="px-3 py-1 h-8"
-									onClick={() => setViewMode('table')}
-								>
-									<TableProperties className="h-4 w-4 mr-1" />
-									Table
-								</Button>
-							</div>
-						</div>
-
-						{viewMode === 'card' ? (
-							/* Card-style Overview Table */
-							<div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-						<div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-							<h3 className="font-semibold text-gray-800">{t("portfolio.overview")}</h3>
-						</div>
-						
-						{/* Compact Header */}
-						<div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
-							<div className="grid grid-cols-4 gap-2 text-xs font-medium text-gray-600">
-								<div>{t("portfolio.ticker")}</div>
-								<div className="text-center">{t("portfolio.volume")}</div>
-								<div className="text-center">
-									<div>{t("portfolio.marketPrice")}</div>
-									<div>{t("portfolio.buyPrice")}</div>
-								</div>
-								<div className="text-center">
-									<div>{t("portfolio.profitPercent")}</div>
-									<div>{t("portfolio.profitPrice")}</div>
-								</div>
-							</div>
-						</div>
-						
-						{/* Card Rows - Compact */}
-						<div className="divide-y divide-gray-100">
-							{investments.map((item) => {
-								const marketPrice = getCurrentMarketPrice(item.ticker) || item.price; // Use real market price or fallback to buy price
-								const costBasis = item.price; // Cost basis (buy price)
-								const profitPrice = (marketPrice - costBasis) * item.quantity; // Profit in VND
-								const profitPercent = costBasis > 0 ? ((marketPrice - costBasis) / costBasis) * 100 : 0; // Profit percentage
-								const volume = item.quantity; // Volume/Quantity
-
-								return (
-									<div key={item.ticker} className="px-4 py-3 hover:bg-gray-50 transition-colors">
-										<div className="grid grid-cols-4 gap-2 items-center text-sm">
-											{/* Ticker */}
-											<div className="font-semibold text-gray-900">{item.ticker}</div>
-											
-											{/* Volume */}
-											<div className="text-center">
-												{showPrivacy ? (
-													<span className="text-gray-400">●●●</span>
-												) : (
-													<span className="font-medium">{formatNumber(volume)}</span>
-												)}
-											</div>
-											
-											{/* Market Price / Buy Price */}
-											<div className="text-center space-y-0.5">
-												<div className="font-medium text-gray-900 text-xs">{formatVND(marketPrice)}</div>
-												<div className="text-xs text-gray-500">{formatVND(costBasis)}</div>
-											</div>
-											
-											{/* Profit % / Profit VND */}
-											<div className="text-center space-y-0.5">
-												<div className={`font-semibold text-xs ${profitPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-													{profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(2)}%
-												</div>
-												{!showPrivacy && (
-													<div className={`text-xs font-medium ${profitPrice >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-														{profitPrice >= 0 ? '+' : ''}{formatVND(Math.abs(profitPrice))}
-													</div>
-												)}
-												{showPrivacy && (
-													<div className="text-xs text-gray-400">●●●</div>
-												)}
-											</div>
-										</div>
-									</div>
-								);
-							})}
-						</div>
-					</div>
-					) : (
-						/* Traditional Table View */
-						<div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-							<div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-								<h3 className="font-semibold text-gray-800">{t("portfolio.overview")}</h3>
-							</div>
-							<Table>
-								<TableHeader>
-									<TableRow className="hover:bg-transparent border-gray-200">
-										<TableHead className="font-semibold text-xs text-gray-700">{t("portfolio.ticker")}</TableHead>
-										<TableHead className="font-semibold text-xs text-right text-gray-700">{t("portfolio.buyPrice")}</TableHead>
-										<TableHead className="font-semibold text-xs text-right text-gray-700">{t("portfolio.profitPercent")}</TableHead>
-										<TableHead className="font-semibold text-xs text-right text-gray-700">{t("portfolio.costBasis")}</TableHead>
-										{!showPrivacy && <TableHead className="font-semibold text-xs text-right text-gray-700">{t("portfolio.volume")}</TableHead>}
-										{!showPrivacy && <TableHead className="font-semibold text-xs text-right text-gray-700">{t("portfolio.profitPrice")}</TableHead>}
-									</TableRow>
-								</TableHeader>
-								<TableBody>
-									{investments.map((item) => {
-										const marketPrice = getCurrentMarketPrice(item.ticker) || item.price; // Use real market price or fallback to buy price
-										const costBasis = item.price; // Cost basis (buy price)
-										const profitPrice = (marketPrice - costBasis) * item.quantity; // Profit in VND
-										const profitPercent = costBasis > 0 ? ((marketPrice - costBasis) / costBasis) * 100 : 0; // Profit percentage
-										const volume = item.quantity; // Volume/Quantity
-
-										return (
-											<TableRow key={item.ticker} className="hover:bg-gray-50 border-gray-100">
-												<TableCell className="font-medium text-sm text-gray-900">{item.ticker}</TableCell>
-												<TableCell className="text-right text-sm text-gray-700">{formatVND(costBasis)}</TableCell>
-												<TableCell className={`text-right font-medium text-sm ${profitPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-													{profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(2)}%
-												</TableCell>
-												<TableCell className="text-right text-sm text-gray-700">{formatVND(costBasis * volume)}</TableCell>
-												{!showPrivacy && (
-													<TableCell className="text-right text-sm text-gray-700">{formatNumber(volume)}</TableCell>
-												)}
-												{!showPrivacy && (
-													<TableCell className={`text-right font-medium text-sm ${profitPrice >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-														{profitPrice >= 0 ? '+' : ''}{formatVND(Math.abs(profitPrice))}
-													</TableCell>
-												)}
-											</TableRow>
-										);
-									})}
-								</TableBody>
-							</Table>
-						</div>
-					)}
-					</div>
-
-					{/* Right: Allocation Chart */}
-					<div className="bg-white rounded-lg border border-gray-200 p-3">
-						<div className="bg-gray-50 px-3 py-2 -mx-3 -mt-3 mb-3 border-b border-gray-200">
-							<h3 className="font-semibold text-gray-800 text-sm">{t("portfolio.allocation")}</h3>
-						</div>
-						{chartData.length > 0 && (
-							<div>
-								<div className="h-32">
-									<ResponsiveContainer width="100%" height="100%">
-										<RechartsPieChart>
-											<Pie
-												data={chartData}
-												cx="50%"
-												cy="50%"
-												labelLine={false}
-												label={renderCustomLabel}
-												outerRadius="70%"
-												innerRadius="30%"
-												fill="#8884d8"
-												dataKey="value"
-												stroke="white"
-												strokeWidth={2}
-											>
-												{chartData.map((entry, index) => (
-													<Cell key={`cell-${index}`} fill={entry.color} />
-												))}
-											</Pie>
-											<Tooltip content={<CustomTooltip />} />
-										</RechartsPieChart>
-									</ResponsiveContainer>
-								</div>
-								<div className="mt-3 space-y-1">
-									{chartData.slice(0, 5).map((item) => (
-										<div key={item.name} className="flex justify-between items-center text-sm">
-											<div className="flex items-center gap-2">
-												<div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-												<span className="font-medium text-gray-900">{item.name}</span>
-											</div>
-											<span className="text-gray-600">
-												{item.percentage}%
-											</span>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-					</div>
-				</div>
+					</>
+				)}
 			</CardContent>
 		</Card>
 	);

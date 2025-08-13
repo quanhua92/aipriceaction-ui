@@ -35,6 +35,7 @@ import {
 interface PortfolioPageSearch {
 	tickers?: string;
 	deposit?: number;
+	remainingCash?: number;
 	manualDeposit?: boolean;
 	share?: boolean;
 	range?: TimeRange;
@@ -51,6 +52,11 @@ export const Route = createFileRoute("/portfolio")({
 				: typeof search.deposit === 'string' 
 					? Number.parseFloat(search.deposit) || 0
 					: 0,
+			remainingCash: typeof search.remainingCash === 'number' 
+				? search.remainingCash 
+				: typeof search.remainingCash === 'string' 
+					? Number.parseFloat(search.remainingCash) || 0
+					: 0,
 			manualDeposit: search.manualDeposit === 'true' || search.manualDeposit === true,
 			share: search.share === 'true' || search.share === true,
 			range: (search.range as TimeRange) || "3M",
@@ -64,7 +70,7 @@ export const Route = createFileRoute("/portfolio")({
 function PortfolioPage() {
 	const { t } = useTranslation();
 	const navigate = useNavigate({ from: Route.fullPath });
-	const { tickers: tickersString = "", deposit = 0, manualDeposit = false, share = false, range = "3M", startDate, endDate } = Route.useSearch();
+	const { tickers: tickersString = "", deposit = 0, remainingCash = 0, manualDeposit = false, share = false, range = "3M", startDate, endDate } = Route.useSearch();
 
 	// Parse portfolio items from URL
 	const portfolioItems = useMemo(() => 
@@ -135,6 +141,11 @@ function PortfolioPage() {
 			deposit: newDeposit, 
 			manualDeposit: true 
 		});
+	}, [updateSearchParams]);
+
+	// Update remaining cash in URL
+	const updateRemainingCash = useCallback((newRemainingCash: number) => {
+		updateSearchParams({ remainingCash: newRemainingCash });
 	}, [updateSearchParams]);
 
 	// Toggle manual deposit mode
@@ -361,8 +372,10 @@ function PortfolioPage() {
 				onRemoveItem={handleRemoveItem}
 				onAddItem={handleAddItem}
 				deposit={actualDeposit}
+				remainingCash={remainingCash}
 				manualDeposit={manualDeposit}
 				onUpdateDeposit={updateDeposit}
+				onUpdateRemainingCash={updateRemainingCash}
 				onToggleManualDeposit={toggleManualDeposit}
 				showPrivacy={showPrivacy}
 			/>
