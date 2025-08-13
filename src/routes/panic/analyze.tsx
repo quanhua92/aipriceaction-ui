@@ -1530,10 +1530,14 @@ function PanicAnalyzeDetail() {
 										const allTickers = ['VNINDEX', ...tickers];
 										const dynamicColors = generateColors(allTickers.length);
 										
-										// Create color mapping
+										// Create color mapping with VNINDEX always red
 										const colorMapping: Record<string, string> = {};
 										allTickers.forEach((ticker, index) => {
-											colorMapping[ticker] = dynamicColors[index];
+											if (ticker === 'VNINDEX') {
+												colorMapping[ticker] = '#EF4444'; // Always red for VNINDEX
+											} else {
+												colorMapping[ticker] = dynamicColors[index];
+											}
 										});
 										
 										// Create stroke width mapping - VNINDEX is thicker
