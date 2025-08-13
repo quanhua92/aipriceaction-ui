@@ -69,12 +69,11 @@ export function SharePortfolioDialog({
 		let shareRemainingCash = remainingCash;
 
 		if (isPrivacyEnabled) {
-			// Scale quantities to make total portfolio = 100M
-			const targetTotal = 100_000_000; // 100M VND
+			// Scale deposit to 100M and maintain the same P&L ratio
+			const targetDeposit = 100_000_000; // 100M VND
 			
-			// Calculate actual total portfolio value (stocks + cash)
-			const actualTotal = totalValue + remainingCash;
-			const scaleFactor = actualTotal > 0 ? targetTotal / actualTotal : 1;
+			// Calculate scale factor based on deposit
+			const scaleFactor = deposit > 0 ? targetDeposit / deposit : 1;
 			
 			shareItems = items.map(item => ({
 				...item,
@@ -86,8 +85,8 @@ export function SharePortfolioDialog({
 			// Scale remaining cash proportionally
 			shareRemainingCash = remainingCash * scaleFactor;
 			
-			// Keep deposit proportional to the scaled portfolio
-			shareDeposit = deposit * scaleFactor;
+			// Set deposit to target amount
+			shareDeposit = targetDeposit;
 		}
 
 		const encodedTickers = encodePortfolioItems(shareItems);
@@ -163,10 +162,8 @@ export function SharePortfolioDialog({
 	const scaledTotalValue = useMemo(() => {
 		if (!isPrivacyEnabled) return totalValue + remainingCash;
 		
-		const targetTotal = 100_000_000; // 100M VND
-		// Calculate actual total portfolio value (stocks + cash)
-		const actualTotal = totalValue + remainingCash;
-		const scaleFactor = actualTotal > 0 ? targetTotal / actualTotal : 1;
+		// Scale factor based on deposit to 100M
+		const scaleFactor = deposit > 0 ? 100_000_000 / deposit : 1;
 		
 		const scaledStockValue = items.reduce((sum, item) => {
 			if (item.quantity > 0) {
@@ -245,13 +242,11 @@ export function SharePortfolioDialog({
 									: t("portfolio.privacyDisabledDescription")
 								}
 							</p>
-							{isPrivacyEnabled && totalValue > 0 && (
+							{isPrivacyEnabled && deposit > 0 && (
 								<div className="mt-2 pt-2 border-t border-amber-300/50">
 									<div className="text-xs opacity-80">
 										<strong>{t("portfolio.scalingFactor")}:</strong> {
-											manualDeposit 
-												? `${(100_000_000 / deposit).toFixed(2)}x (${t("portfolio.depositScaled")})`
-												: `${(privacyTargetAmount / totalValue).toFixed(2)}x (${t("portfolio.quantityScaled")})`
+											`${(100_000_000 / deposit).toFixed(2)}x (${t("portfolio.depositScaled")})`
 										}
 									</div>
 								</div>

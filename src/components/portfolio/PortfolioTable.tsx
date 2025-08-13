@@ -153,6 +153,12 @@ export function PortfolioTable({
 		const item = items.find(item => item.ticker === ticker);
 		if (!item) return '';
 		const value = field === 'price' ? item.price : item.quantity;
+		
+		// Format quantity to 3 decimal places for display, keep price as-is
+		if (field === 'quantity' && value > 0) {
+			return value.toFixed(3).replace(/\.?0+$/, ''); // Remove trailing zeros
+		}
+		
 		return value > 0 ? value.toString() : '';
 	};
 
