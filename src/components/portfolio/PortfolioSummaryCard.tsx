@@ -461,12 +461,12 @@ export function PortfolioSummaryCard({
 							)}
 						</TabsContent>
 						
-						<TabsContent value="allocation" className="mt-4 space-y-4">
+						<TabsContent value="allocation" className="mt-2 space-y-2">
 							{/* Stock Allocation Chart */}
 							{chartData.length > 0 && (
-								<div className="bg-white rounded-lg border border-gray-200 p-4">
-									<h4 className="font-semibold text-gray-800 mb-3">{t("portfolio.stockAllocation")}</h4>
-									<div className="h-48">
+								<div className="bg-white rounded-lg border border-gray-200 p-2">
+									<h4 className="font-medium text-gray-700 mb-1 text-xs text-center">{t("portfolio.stockAllocation")}</h4>
+									<div className="h-44">
 										<ResponsiveContainer width="100%" height="100%">
 											<RechartsPieChart>
 												<Pie
@@ -475,12 +475,12 @@ export function PortfolioSummaryCard({
 													cy="50%"
 													labelLine={false}
 													label={renderCustomLabel}
-													outerRadius="70%"
-													innerRadius="30%"
+													outerRadius="85%"
+													innerRadius="35%"
 													fill="#8884d8"
 													dataKey="value"
 													stroke="white"
-													strokeWidth={2}
+													strokeWidth={1}
 												>
 													{chartData.map((entry, index) => (
 														<Cell key={`cell-${index}`} fill={entry.color} />
@@ -490,19 +490,17 @@ export function PortfolioSummaryCard({
 											</RechartsPieChart>
 										</ResponsiveContainer>
 									</div>
-									{/* Allocation Table */}
-									<div className="mt-4 space-y-3">
+									{/* Compact Legend */}
+									<div className="mt-1 grid grid-cols-1 gap-1">
 										{chartData.map((item) => (
 											<div key={item.name} className="flex justify-between items-center">
-												<div className="flex items-center gap-3">
-													<div className="w-4 h-4 rounded-full" style={{ backgroundColor: item.color }}></div>
-													<span className="font-medium text-gray-900">{item.name}</span>
+												<div className="flex items-center gap-2">
+													<div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+													<span className="text-xs font-medium text-gray-700">{item.name}</span>
 												</div>
 												<div className="text-right">
-													<span className="font-medium text-gray-900">{displayValue(item.value)}</span>
-													<span className="ml-2 text-gray-600">
-														{item.percentage}%
-													</span>
+													<span className="text-xs font-medium text-gray-900">{displayValue(item.value)}</span>
+													<span className="ml-1 text-xs text-gray-500">{item.percentage}%</span>
 												</div>
 											</div>
 										))}
@@ -511,9 +509,9 @@ export function PortfolioSummaryCard({
 							)}
 
 							{/* Cash vs Equity Chart */}
-							<div className="bg-white rounded-lg border border-gray-200 p-4">
-								<h4 className="font-semibold text-gray-800 mb-3">{t("portfolio.cashEquityRatio")}</h4>
-								<div className="h-48">
+							<div className="bg-white rounded-lg border border-gray-200 p-2">
+								<h4 className="font-medium text-gray-700 mb-1 text-xs text-center">{t("portfolio.cashEquityRatio")}</h4>
+								<div className="h-44">
 									<ResponsiveContainer width="100%" height="100%">
 										<RechartsPieChart>
 											<Pie
@@ -550,18 +548,18 @@ export function PortfolioSummaryCard({
 															fill="white" 
 															textAnchor={x > cx ? 'start' : 'end'} 
 															dominantBaseline="central"
-															className="text-xs font-medium"
+															className="text-sm font-bold"
 														>
 															{`${(percent * 100).toFixed(0)}%`}
 														</text>
 													);
 												}}
-												outerRadius="70%"
-												innerRadius="30%"
+												outerRadius="85%"
+												innerRadius="35%"
 												fill="#8884d8"
 												dataKey="value"
 												stroke="white"
-												strokeWidth={2}
+												strokeWidth={1}
 											>
 												<Cell fill="#10B981" />
 												<Cell fill="#6B7280" />
@@ -570,9 +568,9 @@ export function PortfolioSummaryCard({
 												if (active && payload && payload.length) {
 													const data = payload[0].payload;
 													return (
-														<div className="bg-background border rounded-lg p-3 shadow-lg">
-															<p className="font-medium">{data.name}</p>
-															<p className="text-sm text-muted-foreground">
+														<div className="bg-background border rounded-lg p-2 shadow-lg">
+															<p className="text-xs font-medium">{data.name}</p>
+															<p className="text-xs text-muted-foreground">
 																{displayValue(data.value)} ({data.percentage}%)
 															</p>
 														</div>
@@ -583,28 +581,28 @@ export function PortfolioSummaryCard({
 										</RechartsPieChart>
 									</ResponsiveContainer>
 								</div>
-								{/* Cash vs Equity Summary */}
-								<div className="mt-4 space-y-3">
+								{/* Compact Legend */}
+								<div className="mt-1 grid grid-cols-1 gap-1">
 									<div className="flex justify-between items-center">
-										<div className="flex items-center gap-3">
-											<div className="w-4 h-4 rounded-full bg-green-500"></div>
-											<span className="font-medium text-gray-900">{t("portfolio.equityValue")}</span>
+										<div className="flex items-center gap-2">
+											<div className="w-3 h-3 rounded-full bg-green-500"></div>
+											<span className="text-xs font-medium text-gray-700">{t("portfolio.equityValue")}</span>
 										</div>
 										<div className="text-right">
-											<span className="font-medium text-gray-900">{displayValue(currentMarketValue)}</span>
-											<span className="ml-2 text-gray-600">
+											<span className="text-xs font-medium text-gray-900">{displayValue(currentMarketValue)}</span>
+											<span className="ml-1 text-xs text-gray-500">
 												{deposit > 0 ? ((currentMarketValue / deposit) * 100).toFixed(1) : "0"}%
 											</span>
 										</div>
 									</div>
 									<div className="flex justify-between items-center">
-										<div className="flex items-center gap-3">
-											<div className="w-4 h-4 rounded-full bg-gray-500"></div>
-											<span className="font-medium text-gray-900">{t("portfolio.cashRemaining")}</span>
+										<div className="flex items-center gap-2">
+											<div className="w-3 h-3 rounded-full bg-gray-500"></div>
+											<span className="text-xs font-medium text-gray-700">{t("portfolio.cashRemaining")}</span>
 										</div>
 										<div className="text-right">
-											<span className="font-medium text-gray-900">{displayValue(Math.max(0, deposit - totalCostBasis))}</span>
-											<span className="ml-2 text-gray-600">
+											<span className="text-xs font-medium text-gray-900">{displayValue(Math.max(0, deposit - totalCostBasis))}</span>
+											<span className="ml-1 text-xs text-gray-500">
 												{deposit > 0 ? (((deposit - totalCostBasis) / deposit) * 100).toFixed(1) : "0"}%
 											</span>
 										</div>
@@ -616,7 +614,7 @@ export function PortfolioSummaryCard({
 				</div>
 
 				{/* Desktop: Side by Side */}
-				<div className="hidden lg:grid lg:grid-cols-2 lg:gap-6 px-6">
+				<div className="hidden lg:grid lg:grid-cols-2 lg:gap-4 px-6">
 					{/* Left: Overview Table with Toggle */}
 					<div className="space-y-3">
 						{/* Toggle View Mode */}
@@ -767,13 +765,13 @@ export function PortfolioSummaryCard({
 					</div>
 
 					{/* Right: Allocation Chart */}
-					<div className="bg-white rounded-lg border border-gray-200 p-4">
-						<div className="bg-gray-50 px-4 py-3 -mx-4 -mt-4 mb-4 border-b border-gray-200">
-							<h3 className="font-semibold text-gray-800">{t("portfolio.allocation")}</h3>
+					<div className="bg-white rounded-lg border border-gray-200 p-3">
+						<div className="bg-gray-50 px-3 py-2 -mx-3 -mt-3 mb-3 border-b border-gray-200">
+							<h3 className="font-semibold text-gray-800 text-sm">{t("portfolio.allocation")}</h3>
 						</div>
 						{chartData.length > 0 && (
 							<div>
-								<div className="h-48">
+								<div className="h-32">
 									<ResponsiveContainer width="100%" height="100%">
 										<RechartsPieChart>
 											<Pie
@@ -797,7 +795,7 @@ export function PortfolioSummaryCard({
 										</RechartsPieChart>
 									</ResponsiveContainer>
 								</div>
-								<div className="mt-4 space-y-2">
+								<div className="mt-3 space-y-1">
 									{chartData.slice(0, 5).map((item) => (
 										<div key={item.name} className="flex justify-between items-center text-sm">
 											<div className="flex items-center gap-2">
