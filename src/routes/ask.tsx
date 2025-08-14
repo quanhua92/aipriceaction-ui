@@ -315,6 +315,134 @@ function AskPage() {
 				</p>
 			</div>
 
+			{/* Configuration Section */}
+			<div className="mb-6">
+				<Button
+					variant="ghost"
+					size="sm"
+					onClick={() => setShowConfig(!showConfig)}
+					className="mx-auto flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+				>
+					<Settings className="h-4 w-4" />
+					Configuration
+					{showConfig ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+				</Button>
+				
+				{showConfig && (
+					<Card className="mt-4 max-w-full md:max-w-md mx-auto">
+						<CardHeader className="pb-4">
+							<CardTitle className="text-lg flex items-center gap-2">
+								<Settings className="h-5 w-5" />
+								Context Configuration
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-4">
+							<div className="space-y-2">
+								<Label htmlFor="chart-context-days" className="text-sm font-medium">
+									Chart context days (0 = no chart data)
+								</Label>
+								<Input
+									id="chart-context-days"
+									type="number"
+									min="0"
+									max="1000"
+									value={chartContextDays}
+									onChange={(e) => setChartContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
+									className="w-full"
+									placeholder="10"
+								/>
+								<p className="text-xs text-muted-foreground">
+									Number of recent trading days to include in chart context
+								</p>
+							</div>
+							
+							<div className="space-y-2">
+								<Label htmlFor="vpa-context-days" className="text-sm font-medium">
+									VPA context days (0 = no VPA data)
+								</Label>
+								<Input
+									id="vpa-context-days"
+									type="number"
+									min="0"
+									max="1000"
+									value={vpaContextDays}
+									onChange={(e) => setVpaContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
+									className="w-full"
+									placeholder="5"
+								/>
+								<p className="text-xs text-muted-foreground">
+									Number of recent VPA entries to include in context
+								</p>
+							</div>
+							
+							{/* Company Context Settings */}
+							<div className="space-y-3">
+								<Label className="text-sm font-medium">
+									{t("askAI.companyContextConfig")}
+								</Label>
+								
+								<div className="space-y-3">
+									<div className="flex items-start space-x-3">
+										<Checkbox
+											id="include-basic-info"
+											checked={includeBasicInfo}
+											onCheckedChange={setIncludeBasicInfo}
+											className="mt-0.5"
+										/>
+										<div className="flex-1">
+											<Label htmlFor="include-basic-info" className="text-sm font-medium cursor-pointer">
+												{t("askAI.includeBasicInfo")}
+											</Label>
+											<p className="text-xs text-muted-foreground">
+												{t("askAI.includeBasicInfoDesc")}
+											</p>
+										</div>
+									</div>
+									
+									<div className="flex items-start space-x-3">
+										<Checkbox
+											id="include-financial-ratios"
+											checked={includeFinancialRatios}
+											onCheckedChange={setIncludeFinancialRatios}
+											className="mt-0.5"
+										/>
+										<div className="flex-1">
+											<Label htmlFor="include-financial-ratios" className="text-sm font-medium cursor-pointer">
+												{t("askAI.includeFinancialRatios")}
+											</Label>
+											<p className="text-xs text-muted-foreground">
+												{t("askAI.includeFinancialRatiosDesc")}
+											</p>
+										</div>
+									</div>
+									
+									<div className="flex items-start space-x-3">
+										<Checkbox
+											id="include-description"
+											checked={includeDescription}
+											onCheckedChange={setIncludeDescription}
+											className="mt-0.5"
+										/>
+										<div className="flex-1">
+											<Label htmlFor="include-description" className="text-sm font-medium cursor-pointer">
+												{t("askAI.includeDescription")}
+											</Label>
+											<p className="text-xs text-muted-foreground">
+												{t("askAI.includeDescriptionDesc")}
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div className="pt-2 text-xs text-muted-foreground">
+								<p>💾 Settings are automatically saved to browser storage</p>
+							</div>
+						</CardContent>
+					</Card>
+				)}
+			</div>
+
 			{/* Tabs */}
 			<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "single" | "multi")} className="w-full">
 				<TabsList className="grid w-full grid-cols-2 mb-6">
@@ -435,134 +563,6 @@ function AskPage() {
 				<p className="text-xs text-muted-foreground text-center">
 					{t("askAI.howToUse")}
 				</p>
-			</div>
-
-			{/* Configuration Section */}
-			<div className="mt-4">
-				<Button
-					variant="ghost"
-					size="sm"
-					onClick={() => setShowConfig(!showConfig)}
-					className="mx-auto flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-				>
-					<Settings className="h-4 w-4" />
-					Configuration
-					{showConfig ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-				</Button>
-				
-				{showConfig && (
-					<Card className="mt-4 max-w-md mx-auto">
-						<CardHeader className="pb-4">
-							<CardTitle className="text-lg flex items-center gap-2">
-								<Settings className="h-5 w-5" />
-								Context Configuration
-							</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-4">
-							<div className="space-y-2">
-								<Label htmlFor="chart-context-days" className="text-sm font-medium">
-									Chart context days (0 = no chart data)
-								</Label>
-								<Input
-									id="chart-context-days"
-									type="number"
-									min="0"
-									max="1000"
-									value={chartContextDays}
-									onChange={(e) => setChartContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
-									className="w-full"
-									placeholder="10"
-								/>
-								<p className="text-xs text-muted-foreground">
-									Number of recent trading days to include in chart context
-								</p>
-							</div>
-							
-							<div className="space-y-2">
-								<Label htmlFor="vpa-context-days" className="text-sm font-medium">
-									VPA context days (0 = no VPA data)
-								</Label>
-								<Input
-									id="vpa-context-days"
-									type="number"
-									min="0"
-									max="1000"
-									value={vpaContextDays}
-									onChange={(e) => setVpaContextDays(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
-									className="w-full"
-									placeholder="5"
-								/>
-								<p className="text-xs text-muted-foreground">
-									Number of recent VPA entries to include in context
-								</p>
-							</div>
-							
-							{/* Company Context Settings */}
-							<div className="space-y-3">
-								<Label className="text-sm font-medium">
-									{t("askAI.companyContextConfig")}
-								</Label>
-								
-								<div className="space-y-3">
-									<div className="flex items-start space-x-3">
-										<Checkbox
-											id="include-basic-info"
-											checked={includeBasicInfo}
-											onCheckedChange={setIncludeBasicInfo}
-											className="mt-0.5"
-										/>
-										<div className="flex-1">
-											<Label htmlFor="include-basic-info" className="text-sm font-medium cursor-pointer">
-												{t("askAI.includeBasicInfo")}
-											</Label>
-											<p className="text-xs text-muted-foreground">
-												{t("askAI.includeBasicInfoDesc")}
-											</p>
-										</div>
-									</div>
-									
-									<div className="flex items-start space-x-3">
-										<Checkbox
-											id="include-financial-ratios"
-											checked={includeFinancialRatios}
-											onCheckedChange={setIncludeFinancialRatios}
-											className="mt-0.5"
-										/>
-										<div className="flex-1">
-											<Label htmlFor="include-financial-ratios" className="text-sm font-medium cursor-pointer">
-												{t("askAI.includeFinancialRatios")}
-											</Label>
-											<p className="text-xs text-muted-foreground">
-												{t("askAI.includeFinancialRatiosDesc")}
-											</p>
-										</div>
-									</div>
-									
-									<div className="flex items-start space-x-3">
-										<Checkbox
-											id="include-description"
-											checked={includeDescription}
-											onCheckedChange={setIncludeDescription}
-											className="mt-0.5"
-										/>
-										<div className="flex-1">
-											<Label htmlFor="include-description" className="text-sm font-medium cursor-pointer">
-												{t("askAI.includeDescription")}
-											</Label>
-											<p className="text-xs text-muted-foreground">
-												{t("askAI.includeDescriptionDesc")}
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<div className="pt-2 text-xs text-muted-foreground">
-								<p>💾 Settings are automatically saved to browser storage</p>
-							</div>
-						</CardContent>
-					</Card>
-				)}
 			</div>
 		</div>
 	);
