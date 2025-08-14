@@ -1,5 +1,6 @@
-import { useMemo, useState, useEffect } from "react";
-import { PieChart, Eye, EyeOff, Edit3, TableProperties, TrendingUp, TrendingDown, Calendar, BarChart3, List, CreditCard } from "lucide-react";
+import { useMemo, useState, useEffect, useRef } from "react";
+import html2canvas from "html2canvas";
+import { PieChart, Eye, EyeOff, Edit3, TableProperties, TrendingUp, TrendingDown, Calendar, BarChart3, List, CreditCard, Camera } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -71,6 +72,7 @@ export function PortfolioSummaryCard({
 	const [depositValue, setDepositValue] = useState(deposit.toString());
 	const [viewMode, setViewMode] = useState<'compact' | 'table' | 'card'>('compact');
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState("2W");
+	const cardRef = useRef<HTMLDivElement>(null);
 
 	// Update depositValue when deposit prop changes (but not when editing)
 	useEffect(() => {
@@ -151,6 +153,155 @@ export function PortfolioSummaryCard({
 		setEditingDeposit(false);
 	};
 
+	const handleScreenshot = async () => {
+		console.log('📸 Screenshot button clicked');
+		console.log('🌐 Current URL:', window.location.href);
+		console.log('📱 User Agent:', navigator.userAgent);
+		
+		if (!cardRef.current) {
+			console.error('❌ cardRef.current is null');
+			return;
+		}
+		
+		console.log('✅ Card ref found, dimensions:', {
+			width: cardRef.current.scrollWidth,
+			height: cardRef.current.scrollHeight,
+			offsetWidth: cardRef.current.offsetWidth,
+			offsetHeight: cardRef.current.offsetHeight
+		});
+		
+		try {
+			console.log('🔄 Starting html2canvas...');
+			const canvas = await html2canvas(cardRef.current, {
+				backgroundColor: '#ffffff',
+				scale: 2, // Higher resolution
+				useCORS: true,
+				allowTaint: true,
+				height: cardRef.current.scrollHeight,
+				width: cardRef.current.scrollWidth,
+				logging: true, // Enable html2canvas logging
+				ignoreElements: (element) => {
+					// Skip elements that might cause issues
+					return element.tagName === 'SCRIPT' || 
+						   element.tagName === 'STYLE' ||
+						   element.tagName === 'LINK' ||
+						   (element as HTMLElement).hasAttribute?.('data-ignore-screenshot');
+				},
+				onclone: (clonedDoc) => {
+					// Create comprehensive CSS reset to avoid oklch parsing issues
+					const style = clonedDoc.createElement('style');
+					style.textContent = `
+						/* Complete CSS reset to avoid oklch parsing */
+						*, *::before, *::after {
+							all: unset !important;
+							display: revert !important;
+							box-sizing: border-box !important;
+						}
+						
+						/* Basic layout styles */
+						.grid { display: grid !important; }
+						.flex { display: flex !important; }
+						.inline-flex { display: inline-flex !important; }
+						.block { display: block !important; }
+						.inline-block { display: inline-block !important; }
+						.hidden { display: none !important; }
+						
+						/* Safe color palette */
+						body, div, span, p, h1, h2, h3, h4, h5, h6 {
+							color: #000000 !important;
+							background-color: transparent !important;
+						}
+						
+						/* Card styles */
+						[class*="Card"], [class*="card"] {
+							background-color: #ffffff !important;
+							border: 1px solid #e5e7eb !important;
+							border-radius: 8px !important;
+							padding: 16px !important;
+						}
+						
+						/* Button styles */
+						button {
+							background-color: #f3f4f6 !important;
+							border: 1px solid #d1d5db !important;
+							border-radius: 6px !important;
+							padding: 8px 12px !important;
+							color: #111827 !important;
+						}
+						
+						/* Text colors */
+						.text-green-600, [class*="green"] { color: #16a34a !important; }
+						.text-red-600, [class*="red"] { color: #dc2626 !important; }
+						.text-blue-600, [class*="blue"] { color: #2563eb !important; }
+						.text-gray-600, [class*="gray"] { color: #4b5563 !important; }
+						.text-purple-600, [class*="purple"] { color: #9333ea !important; }
+						
+						/* Background colors */
+						.bg-gray-50 { background-color: #f9fafb !important; }
+						.bg-white { background-color: #ffffff !important; }
+						.bg-green-50 { background-color: #f0fdf4 !important; }
+						.bg-blue-50 { background-color: #eff6ff !important; }
+						
+						/* Remove any potential oklch references */
+						[style*="oklch"] { 
+							color: #000000 !important; 
+							background-color: #ffffff !important; 
+						}
+					`;
+					clonedDoc.head.appendChild(style);
+					
+					// Remove all existing stylesheets to prevent oklch parsing
+					const links = clonedDoc.querySelectorAll('link[rel="stylesheet"]');
+					links.forEach(link => link.remove());
+					
+					const styles = clonedDoc.querySelectorAll('style');
+					styles.forEach(style => {
+						if (style !== clonedDoc.head.lastElementChild) {
+							style.remove();
+						}
+					});
+				},
+			});
+			
+			console.log('✅ html2canvas completed, canvas size:', {
+				width: canvas.width,
+				height: canvas.height
+			});
+			
+			// Create download link
+			const timestamp = new Date().toISOString().split('T')[0];
+			const filename = `portfolio-summary-${timestamp}.png`;
+			console.log('💾 Creating download link with filename:', filename);
+			
+			const link = document.createElement('a');
+			link.download = filename;
+			link.href = canvas.toDataURL('image/png');
+			
+			console.log('🔗 Download link created, href length:', link.href.length);
+			
+			// Trigger download
+			document.body.appendChild(link);
+			console.log('📎 Link added to DOM');
+			
+			link.click();
+			console.log('🖱️ Link clicked');
+			
+			document.body.removeChild(link);
+			console.log('🗑️ Link removed from DOM');
+			console.log('✅ Screenshot process completed successfully!');
+			
+		} catch (error) {
+			console.error('❌ Screenshot failed:', error);
+			if (error instanceof Error) {
+				console.error('Error details:', {
+					name: error.name,
+					message: error.message,
+					stack: error.stack
+				});
+			}
+		}
+	};
+
 	const CustomTooltip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
 			const data = payload[0].payload;
@@ -190,7 +341,8 @@ export function PortfolioSummaryCard({
 	};
 
 	return (
-		<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20 border-2 border-dashed border-muted/30">
+		<div ref={cardRef}>
+			<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20 border-2 border-dashed border-muted/30">
 			<CardHeader>
 				<CardTitle className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
@@ -202,16 +354,26 @@ export function PortfolioSummaryCard({
 							<p className="text-xs text-muted-foreground hidden sm:block">{t("portfolio.screenshotOptimized")}</p>
 						</div>
 					</div>
-					<div className="flex items-center gap-2 bg-background/50 rounded-full px-3 py-1 border">
-						<Switch
-							id="privacy-toggle"
-							checked={showPrivacy}
-							onCheckedChange={onTogglePrivacy}
-						/>
-						<Label htmlFor="privacy-toggle" className="text-xs flex items-center gap-1 cursor-pointer">
-							{showPrivacy ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
-							{t("portfolio.privacy")}
-						</Label>
+					<div className="flex items-center gap-2">
+						<button
+							onClick={handleScreenshot}
+							className="flex items-center gap-1 bg-background/50 rounded-full px-3 py-1 border hover:bg-background/80 transition-colors"
+							title={t("common.screenshot")}
+						>
+							<Camera className="h-3 w-3" />
+							<span className="text-xs hidden sm:inline">{t("common.screenshot")}</span>
+						</button>
+						<div className="flex items-center gap-2 bg-background/50 rounded-full px-3 py-1 border">
+							<Switch
+								id="privacy-toggle"
+								checked={showPrivacy}
+								onCheckedChange={onTogglePrivacy}
+							/>
+							<Label htmlFor="privacy-toggle" className="text-xs flex items-center gap-1 cursor-pointer">
+								{showPrivacy ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+								{t("portfolio.privacy")}
+							</Label>
+						</div>
 					</div>
 				</CardTitle>
 			</CardHeader>
@@ -1030,6 +1192,7 @@ export function PortfolioSummaryCard({
 					</>
 				)}
 			</CardContent>
-		</Card>
+			</Card>
+		</div>
 	);
 }
