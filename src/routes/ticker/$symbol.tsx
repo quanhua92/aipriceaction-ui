@@ -317,6 +317,31 @@ function TickerPage() {
 
 			{/* Charts */}
 			<div className="space-y-6">
+				{/* Ask AI Section */}
+				<Card>
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2">
+							<Brain className="h-5 w-5 text-green-600" />
+							{t("askAI.title")}
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="space-y-4">
+							<p className="text-muted-foreground">
+								{t("askAI.description", { symbol })}
+							</p>
+							<AskAIButton 
+								ticker={symbol}
+								variant="default"
+								size="lg"
+								className="w-full md:w-auto"
+							>
+								{t("askAI.askAI")} {t("askAI.aboutTicker", { symbol })}
+							</AskAIButton>
+						</div>
+					</CardContent>
+				</Card>
+
 				{/* Company & Financial Info Tabs */}
 				<Card>
 					<Tabs defaultValue="company" className="w-full">
@@ -557,31 +582,6 @@ function TickerPage() {
 							)}
 						</TabsContent>
 					</Tabs>
-				</Card>
-
-				{/* Ask AI Section */}
-				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<Brain className="h-5 w-5 text-green-600" />
-							{t("askAI.title")}
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="space-y-4">
-							<p className="text-muted-foreground">
-								{t("askAI.description", { symbol })}
-							</p>
-							<AskAIButton 
-								ticker={symbol}
-								variant="default"
-								size="lg"
-								className="w-full md:w-auto"
-							>
-								{t("askAI.askAI")} {t("askAI.aboutTicker", { symbol })}
-							</AskAIButton>
-						</div>
-					</CardContent>
 				</Card>
 
 				{/* VPA Analysis */}
