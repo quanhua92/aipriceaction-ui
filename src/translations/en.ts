@@ -283,6 +283,46 @@ export const en = {
     percentageChange: "Percentage change from start date",
   },
 
+  // Company Info
+  companyInfo: {
+    title: "Company Info",
+    profile: "Company Profile",
+    shareholders: "Major Shareholders",
+    officers: "Key Officers",
+    founded: "Founded",
+    industry: "Industry",
+    exchange: "Exchange",
+    marketCap: "Market Cap",
+    outstandingShares: "Outstanding Shares",
+    currentPrice: "Current Price",
+    shareholderName: "Shareholder",
+    ownership: "Ownership",
+    position: "Position",
+    name: "Name",
+    loadingCompanyInfo: "Loading company information...",
+    noCompanyInfo: "No company information available",
+  },
+
+  // Financial Info
+  financialInfo: {
+    balanceSheet: "Balance Sheet",
+    incomeStatement: "Income Statement",
+    year: "Year",
+    quarter: "Quarter",
+    revenue: "Revenue",
+    netProfit: "Net Profit",
+    grossMargin: "Gross Margin",
+    netMargin: "Net Margin",
+    assets: "Assets",
+    liabilities: "Liabilities",
+    equity: "Equity",
+    loadingFinancialInfo: "Loading financial information...",
+    noFinancialInfo: "No financial information available",
+    quarterly: "Quarterly",
+    yearly: "Yearly",
+    latest: "Latest",
+  },
+
   // Sectors
   sectors: {
     totalSectors: "Total Sectors",

@@ -283,6 +283,46 @@ export const vn = {
     percentageChange: "Phần trăm thay đổi từ ngày bắt đầu",
   },
 
+  // Company Info
+  companyInfo: {
+    title: "Thông tin công ty",
+    profile: "Hồ sơ công ty",
+    shareholders: "Cổ đông lớn",
+    officers: "Lãnh đạo chủ chốt",
+    founded: "Thành lập",
+    industry: "Ngành",
+    exchange: "Sàn giao dịch",
+    marketCap: "Vốn hóa thị trường",
+    outstandingShares: "Cổ phiếu lưu hành",
+    currentPrice: "Giá hiện tại",
+    shareholderName: "Cổ đông",
+    ownership: "Sở hữu",
+    position: "Chức vụ",
+    name: "Họ tên",
+    loadingCompanyInfo: "Đang tải thông tin công ty...",
+    noCompanyInfo: "Không có thông tin công ty",
+  },
+
+  // Financial Info
+  financialInfo: {
+    balanceSheet: "Bảng cân đối kế toán",
+    incomeStatement: "Báo cáo kết quả kinh doanh",
+    year: "Năm",
+    quarter: "Quý",
+    revenue: "Doanh thu",
+    netProfit: "Lợi nhuận ròng",
+    grossMargin: "Biên lợi nhuận gộp",
+    netMargin: "Biên lợi nhuận ròng",
+    assets: "Tài sản",
+    liabilities: "Nợ phải trả",
+    equity: "Vốn chủ sở hữu",
+    loadingFinancialInfo: "Đang tải thông tin tài chính...",
+    noFinancialInfo: "Không có thông tin tài chính",
+    quarterly: "Theo quý",
+    yearly: "Theo năm",
+    latest: "Mới nhất",
+  },
+
   // Sectors
   sectors: {
     totalSectors: "Tổng số ngành",

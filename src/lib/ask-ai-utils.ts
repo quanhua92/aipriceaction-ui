@@ -1,4 +1,5 @@
 import type { StockDataPoint } from "./stock-data";
+import type { TickerAIData } from "./company-data";
 
 export interface AskAITemplate {
 	id: string;
@@ -10,6 +11,7 @@ export interface AskAIContextData {
 	ticker: string;
 	chartContext: string;
 	vpaContext: string;
+	tickerContext: string;
 }
 
 // Format chart data to context string
@@ -72,19 +74,94 @@ export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: n
 	return `${ticker} VPA:\n${prefixedVPA.join('\n')}`;
 }
 
+// Format Ticker AI data to context string
+export function formatTickerAIContext(ticker: string, tickerAIData?: TickerAIData): string {
+	if (!tickerAIData) {
+		return `${ticker}: No AI-optimized data available`;
+	}
+
+	const contextLines = [];
+	
+	// Basic company information
+	if (tickerAIData.exchange) {
+		contextLines.push(`${ticker}: Exchange=${tickerAIData.exchange}`);
+	}
+	if (tickerAIData.industry) {
+		contextLines.push(`${ticker}: Industry=${tickerAIData.industry}`);
+	}
+	if (tickerAIData.founded) {
+		contextLines.push(`${ticker}: Founded=${tickerAIData.founded}`);
+	}
+
+	// Market metrics
+	if (tickerAIData.marketCap) {
+		contextLines.push(`${ticker}: MarketCap=${tickerAIData.marketCap.toLocaleString()}`);
+	}
+	if (tickerAIData.currentPrice) {
+		contextLines.push(`${ticker}: CurrentPrice=${tickerAIData.currentPrice.toLocaleString()}`);
+	}
+	if (tickerAIData.outstandingShares) {
+		contextLines.push(`${ticker}: OutstandingShares=${tickerAIData.outstandingShares.toLocaleString()}`);
+	}
+
+	// Financial metrics
+	if (tickerAIData.revenue) {
+		contextLines.push(`${ticker}: Revenue=${tickerAIData.revenue.toLocaleString()}`);
+	}
+	if (tickerAIData.netIncome) {
+		contextLines.push(`${ticker}: NetIncome=${tickerAIData.netIncome.toLocaleString()}`);
+	}
+
+	// Financial ratios
+	if (tickerAIData.peRatio) {
+		contextLines.push(`${ticker}: PE_Ratio=${tickerAIData.peRatio}`);
+	}
+	if (tickerAIData.pbRatio) {
+		contextLines.push(`${ticker}: PB_Ratio=${tickerAIData.pbRatio}`);
+	}
+	if (tickerAIData.roe) {
+		contextLines.push(`${ticker}: ROE=${tickerAIData.roe}%`);
+	}
+	if (tickerAIData.roa) {
+		contextLines.push(`${ticker}: ROA=${tickerAIData.roa}%`);
+	}
+	if (tickerAIData.debtToEquity) {
+		contextLines.push(`${ticker}: DebtToEquity=${tickerAIData.debtToEquity}`);
+	}
+	if (tickerAIData.currentRatio) {
+		contextLines.push(`${ticker}: CurrentRatio=${tickerAIData.currentRatio}`);
+	}
+	if (tickerAIData.grossMargin) {
+		contextLines.push(`${ticker}: GrossMargin=${tickerAIData.grossMargin}%`);
+	}
+	if (tickerAIData.netMargin) {
+		contextLines.push(`${ticker}: NetMargin=${tickerAIData.netMargin}%`);
+	}
+
+	// Company description
+	if (tickerAIData.description) {
+		contextLines.push(`${ticker}: Description=${tickerAIData.description}`);
+	}
+
+	return contextLines.length > 0 ? contextLines.join('\n') : `${ticker}: No AI data available`;
+}
+
 // Build complete context for single ticker
 export function buildSingleTickerContext(
 	ticker: string, 
 	chartData: StockDataPoint[], 
 	vpaContent?: string,
+	tickerAIData?: TickerAIData,
 	chartContextDays: number = 10,
 	vpaContextDays: number = 5
 ): string {
 	const chartContext = formatChartContext(ticker, chartData, chartContextDays);
 	const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
+	const tickerContext = formatTickerAIContext(ticker, tickerAIData);
 	
 	// Filter out empty contexts
 	const contexts = [];
+	if (tickerContext) contexts.push(`# Company Context\n${tickerContext}`);
 	if (chartContext) contexts.push(`# Chart Context\n${chartContext}`);
 	if (vpaContext) contexts.push(`# Volume Price Action Context\n${vpaContext}`);
 	
@@ -97,16 +174,19 @@ export function buildMultipleTickersContext(
 		ticker: string;
 		chartData: StockDataPoint[];
 		vpaContent?: string;
+		tickerAIData?: TickerAIData;
 	}>,
 	chartContextDays: number = 10,
 	vpaContextDays: number = 5
 ): string {
-	const contexts = tickersData.map(({ ticker, chartData, vpaContent }) => {
+	const contexts = tickersData.map(({ ticker, chartData, vpaContent, tickerAIData }) => {
 		const chartContext = formatChartContext(ticker, chartData, chartContextDays);
 		const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
+		const tickerContext = formatTickerAIContext(ticker, tickerAIData);
 		
 		// Filter out empty contexts
 		const tickerContexts = [];
+		if (tickerContext) tickerContexts.push(`# Company Context\n${tickerContext}`);
 		if (chartContext) tickerContexts.push(`# Chart Context\n${chartContext}`);
 		if (vpaContext) tickerContexts.push(`# Volume Price Action Context\n${vpaContext}`);
 		

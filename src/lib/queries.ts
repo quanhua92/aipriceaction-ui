@@ -7,6 +7,11 @@ import {
 	type StockDataPoint,
 	type DateRangeConfig,
 } from "./stock-data";
+import {
+	fetchCompanyInfo,
+	fetchFinancialInfo,
+	fetchTickerAIData,
+} from "./company-data";
 
 export function useTickerGroups() {
 	return useQuery({
@@ -77,5 +82,44 @@ export function useSectorData(
 	const sectorTickers = tickerGroups?.[sector] || [];
 
 	return useMultipleTickerData(sectorTickers, dateRangeConfig);
+}
+
+// Company info query hook
+export function useCompanyInfo(ticker: string) {
+	return useQuery({
+		queryKey: ["company-info", ticker],
+		queryFn: () => fetchCompanyInfo(ticker),
+		enabled: !!ticker,
+		staleTime: 1000 * 60 * 60, // 1 hour (company info doesn't change often)
+		gcTime: 1000 * 60 * 60 * 24, // 24 hours
+		retry: 2,
+		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+	});
+}
+
+// Financial info query hook
+export function useFinancialInfo(ticker: string) {
+	return useQuery({
+		queryKey: ["financial-info", ticker],
+		queryFn: () => fetchFinancialInfo(ticker),
+		enabled: !!ticker,
+		staleTime: 1000 * 60 * 60, // 1 hour (financial data doesn't change often)
+		gcTime: 1000 * 60 * 60 * 24, // 24 hours
+		retry: 2,
+		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+	});
+}
+
+// Ticker AI data query hook
+export function useTickerAIData(ticker: string) {
+	return useQuery({
+		queryKey: ["ticker-ai-data", ticker],
+		queryFn: () => fetchTickerAIData(ticker),
+		enabled: !!ticker,
+		staleTime: 1000 * 60 * 30, // 30 minutes
+		gcTime: 1000 * 60 * 60, // 1 hour
+		retry: 2,
+		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+	});
 }
 

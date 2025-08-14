@@ -14,13 +14,15 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CandlestickChart, ComparisonChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { VPACard } from "@/components/vpa";
 import { AskAIButton } from "@/components/ask-ai";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useTickerData, useTickerGroups, useMultipleTickerData } from "@/lib/queries";
+import { useTickerData, useTickerGroups, useMultipleTickerData, useCompanyInfo, useFinancialInfo } from "@/lib/queries";
+import { formatFinancialValue, formatPercentage, formatCurrency } from "@/lib/company-data";
 import {
 	calculatePriceChange,
 	calculateRangeChange,
@@ -65,6 +67,10 @@ function TickerPage() {
 
 	const { data: tickerData, isLoading, error } = useTickerData(symbol, dateRangeConfig);
 	const { data: tickerGroups } = useTickerGroups();
+	
+	// Fetch company and financial data
+	const { data: companyInfo, isLoading: companyLoading } = useCompanyInfo(symbol);
+	const { data: financialInfo, isLoading: financialLoading } = useFinancialInfo(symbol);
 	
 	// Get data for comparison tickers
 	const { data: comparisonData, isLoading: comparisonLoading } = useMultipleTickerData(
@@ -311,6 +317,248 @@ function TickerPage() {
 
 			{/* Charts */}
 			<div className="space-y-6">
+				{/* Company & Financial Info Tabs */}
+				<Card>
+					<Tabs defaultValue="company" className="w-full">
+						<TabsList className="grid w-full grid-cols-3">
+							<TabsTrigger value="company">{t("companyInfo.title")}</TabsTrigger>
+							<TabsTrigger value="balance-sheet">{t("financialInfo.balanceSheet")}</TabsTrigger>
+							<TabsTrigger value="income-statement">{t("financialInfo.incomeStatement")}</TabsTrigger>
+						</TabsList>
+						
+						<TabsContent value="company" className="mt-6">
+							{companyLoading ? (
+								<div className="flex items-center justify-center py-8">
+									<div className="text-muted-foreground">
+										{t("companyInfo.loadingCompanyInfo")}
+									</div>
+								</div>
+							) : companyInfo ? (
+								<div className="space-y-6">
+									{/* Company Profile */}
+									<div>
+										<h3 className="text-lg font-semibold mb-3">{t("companyInfo.profile")}</h3>
+										<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+											{companyInfo.exchange && (
+												<div>
+													<p className="text-sm font-medium text-muted-foreground">{t("companyInfo.exchange")}</p>
+													<p className="text-sm">{companyInfo.exchange}</p>
+												</div>
+											)}
+											{companyInfo.industry && (
+												<div>
+													<p className="text-sm font-medium text-muted-foreground">{t("companyInfo.industry")}</p>
+													<p className="text-sm">{companyInfo.industry}</p>
+												</div>
+											)}
+											{companyInfo.founded && (
+												<div>
+													<p className="text-sm font-medium text-muted-foreground">{t("companyInfo.founded")}</p>
+													<p className="text-sm">{companyInfo.founded}</p>
+												</div>
+											)}
+											{companyInfo.marketCap > 0 && (
+												<div>
+													<p className="text-sm font-medium text-muted-foreground">{t("companyInfo.marketCap")}</p>
+													<p className="text-sm">{formatCurrency(companyInfo.marketCap)}</p>
+												</div>
+											)}
+											{companyInfo.outstandingShares > 0 && (
+												<div>
+													<p className="text-sm font-medium text-muted-foreground">{t("companyInfo.outstandingShares")}</p>
+													<p className="text-sm">{formatFinancialValue(companyInfo.outstandingShares)}</p>
+												</div>
+											)}
+											{companyInfo.currentPrice > 0 && (
+												<div>
+													<p className="text-sm font-medium text-muted-foreground">{t("companyInfo.currentPrice")}</p>
+													<p className="text-sm">{formatCurrency(companyInfo.currentPrice)}</p>
+												</div>
+											)}
+										</div>
+										{companyInfo.description && (
+											<div className="mt-4">
+												<p className="text-sm text-muted-foreground">{companyInfo.description}</p>
+											</div>
+										)}
+									</div>
+
+									{/* Key Ratios */}
+									{(companyInfo.peRatio > 0 || companyInfo.pbRatio > 0 || companyInfo.roe > 0) && (
+										<div>
+											<h3 className="text-lg font-semibold mb-3">Key Financial Ratios</h3>
+											<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+												{companyInfo.peRatio > 0 && (
+													<div>
+														<p className="text-sm font-medium text-muted-foreground">P/E Ratio</p>
+														<p className="text-sm">{companyInfo.peRatio.toFixed(2)}</p>
+													</div>
+												)}
+												{companyInfo.pbRatio > 0 && (
+													<div>
+														<p className="text-sm font-medium text-muted-foreground">P/B Ratio</p>
+														<p className="text-sm">{companyInfo.pbRatio.toFixed(2)}</p>
+													</div>
+												)}
+												{companyInfo.roe > 0 && (
+													<div>
+														<p className="text-sm font-medium text-muted-foreground">ROE</p>
+														<p className="text-sm">{formatPercentage(companyInfo.roe)}</p>
+													</div>
+												)}
+												{companyInfo.roa > 0 && (
+													<div>
+														<p className="text-sm font-medium text-muted-foreground">ROA</p>
+														<p className="text-sm">{formatPercentage(companyInfo.roa)}</p>
+													</div>
+												)}
+												{companyInfo.debtToEquity > 0 && (
+													<div>
+														<p className="text-sm font-medium text-muted-foreground">Debt/Equity</p>
+														<p className="text-sm">{companyInfo.debtToEquity.toFixed(2)}</p>
+													</div>
+												)}
+												{companyInfo.currentRatio > 0 && (
+													<div>
+														<p className="text-sm font-medium text-muted-foreground">Current Ratio</p>
+														<p className="text-sm">{companyInfo.currentRatio.toFixed(2)}</p>
+													</div>
+												)}
+											</div>
+										</div>
+									)}
+
+									{/* Major Shareholders */}
+									{companyInfo.shareholders && companyInfo.shareholders.length > 0 && (
+										<div>
+											<h3 className="text-lg font-semibold mb-3">{t("companyInfo.shareholders")}</h3>
+											<div className="space-y-2">
+												{companyInfo.shareholders.map((shareholder, index) => (
+													<div key={index} className="flex justify-between items-center py-2 border-b border-muted">
+														<span className="text-sm">{shareholder.name}</span>
+														<span className="text-sm font-medium">{formatPercentage(shareholder.ownership)}</span>
+													</div>
+												))}
+											</div>
+										</div>
+									)}
+
+									{/* Key Officers */}
+									{companyInfo.officers && companyInfo.officers.length > 0 && (
+										<div>
+											<h3 className="text-lg font-semibold mb-3">{t("companyInfo.officers")}</h3>
+											<div className="space-y-2">
+												{companyInfo.officers.map((officer, index) => (
+													<div key={index} className="flex justify-between items-center py-2 border-b border-muted">
+														<span className="text-sm">{officer.name}</span>
+														<span className="text-sm text-muted-foreground">{officer.position}</span>
+													</div>
+												))}
+											</div>
+										</div>
+									)}
+								</div>
+							) : (
+								<div className="flex items-center justify-center py-8">
+									<div className="text-center space-y-2">
+										<p className="text-muted-foreground">{t("companyInfo.noCompanyInfo")}</p>
+									</div>
+								</div>
+							)}
+						</TabsContent>
+						
+						<TabsContent value="balance-sheet" className="mt-6">
+							{financialLoading ? (
+								<div className="flex items-center justify-center py-8">
+									<div className="text-muted-foreground">
+										{t("financialInfo.loadingFinancialInfo")}
+									</div>
+								</div>
+							) : financialInfo?.balance_sheet && financialInfo.balance_sheet.length > 0 ? (
+								<div className="space-y-4">
+									<h3 className="text-lg font-semibold">{t("financialInfo.balanceSheet")}</h3>
+									<div className="overflow-x-auto">
+										<table className="w-full text-sm">
+											<thead>
+												<tr className="border-b">
+													<th className="text-left py-2">{t("financialInfo.year")}</th>
+													<th className="text-left py-2">{t("financialInfo.quarter")}</th>
+													<th className="text-left py-2">{t("financialInfo.assets")}</th>
+													<th className="text-left py-2">{t("financialInfo.liabilities")}</th>
+													<th className="text-left py-2">{t("financialInfo.equity")}</th>
+												</tr>
+											</thead>
+											<tbody>
+												{financialInfo.balance_sheet.slice(-10).map((item, index) => (
+													<tr key={index} className="border-b">
+														<td className="py-2">{item.year}</td>
+														<td className="py-2">Q{item.report_length}</td>
+														<td className="py-2">{formatFinancialValue(item.BSA || 0)}</td>
+														<td className="py-2">{formatFinancialValue(item.BSB || 0)}</td>
+														<td className="py-2">{formatFinancialValue(item.BSC || 0)}</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							) : (
+								<div className="flex items-center justify-center py-8">
+									<div className="text-center space-y-2">
+										<p className="text-muted-foreground">{t("financialInfo.noFinancialInfo")}</p>
+									</div>
+								</div>
+							)}
+						</TabsContent>
+						
+						<TabsContent value="income-statement" className="mt-6">
+							{financialLoading ? (
+								<div className="flex items-center justify-center py-8">
+									<div className="text-muted-foreground">
+										{t("financialInfo.loadingFinancialInfo")}
+									</div>
+								</div>
+							) : financialInfo?.income_statement && financialInfo.income_statement.length > 0 ? (
+								<div className="space-y-4">
+									<h3 className="text-lg font-semibold">{t("financialInfo.incomeStatement")}</h3>
+									<div className="overflow-x-auto">
+										<table className="w-full text-sm">
+											<thead>
+												<tr className="border-b">
+													<th className="text-left py-2">{t("financialInfo.year")}</th>
+													<th className="text-left py-2">{t("financialInfo.quarter")}</th>
+													<th className="text-left py-2">{t("financialInfo.revenue")}</th>
+													<th className="text-left py-2">{t("financialInfo.netProfit")}</th>
+													<th className="text-left py-2">{t("financialInfo.grossMargin")}</th>
+													<th className="text-left py-2">{t("financialInfo.netMargin")}</th>
+												</tr>
+											</thead>
+											<tbody>
+												{financialInfo.income_statement.slice(-10).map((item, index) => (
+													<tr key={index} className="border-b">
+														<td className="py-2">{item.year}</td>
+														<td className="py-2">Q{item.report_length}</td>
+														<td className="py-2">{formatFinancialValue(item.ISA1 || 0)}</td>
+														<td className="py-2">{formatFinancialValue(item.ISA22 || 0)}</td>
+														<td className="py-2">{formatPercentage(((item.ISA1 - item.ISA2) / item.ISA1 * 100) || 0)}</td>
+														<td className="py-2">{formatPercentage((item.ISA22 / item.ISA1 * 100) || 0)}</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							) : (
+								<div className="flex items-center justify-center py-8">
+									<div className="text-center space-y-2">
+										<p className="text-muted-foreground">{t("financialInfo.noFinancialInfo")}</p>
+									</div>
+								</div>
+							)}
+						</TabsContent>
+					</Tabs>
+				</Card>
+
 				{/* Ask AI Section */}
 				<Card>
 					<CardHeader>

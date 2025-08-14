@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MultiTickerSearch, TickerSearch } from "@/components/ui/TickerSearch";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useTickerData, useMultipleTickerData } from "@/lib/queries";
+import { useTickerData, useMultipleTickerData, useTickerAIData } from "@/lib/queries";
 import { useVPAData } from "@/hooks/useVPAData";
 import { 
 	buildSingleTickerContext, 
@@ -128,6 +128,7 @@ function AskPage() {
 	const dateRangeConfig = useMemo(() => createDateRangeConfig("3M"), []);
 	const { data: singleTickerData } = useTickerData(defaultTicker, dateRangeConfig);
 	const { data: singleVPAData } = useVPAData(defaultTicker, !!defaultTicker);
+	const { data: singleTickerAIData } = useTickerAIData(defaultTicker);
 
 	// Data fetching for multiple tickers (only when on multi tab)
 	const multiTickersForFetch = activeTab === "multi" ? selectedTickers : [];
@@ -145,6 +146,20 @@ function AskPage() {
 		useVPAData(activeTab === "multi" && selectedTickers[7] ? selectedTickers[7] : ''),
 		useVPAData(activeTab === "multi" && selectedTickers[8] ? selectedTickers[8] : ''),
 		useVPAData(activeTab === "multi" && selectedTickers[9] ? selectedTickers[9] : ''),
+	];
+
+	// Ticker AI data for multi tab (fixed number of hooks to avoid violations)
+	const tickerAIQueries = [
+		useTickerAIData(activeTab === "multi" && selectedTickers[0] ? selectedTickers[0] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[1] ? selectedTickers[1] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[2] ? selectedTickers[2] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[3] ? selectedTickers[3] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[4] ? selectedTickers[4] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[5] ? selectedTickers[5] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[6] ? selectedTickers[6] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[7] ? selectedTickers[7] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[8] ? selectedTickers[8] : ''),
+		useTickerAIData(activeTab === "multi" && selectedTickers[9] ? selectedTickers[9] : ''),
 	];
 
 	// Handle copy with visual feedback
@@ -170,10 +185,11 @@ function AskPage() {
 			defaultTicker, 
 			singleTickerData, 
 			singleVPAData?.content,
+			singleTickerAIData,
 			chartContextDays,
 			vpaContextDays
 		);
-	}, [defaultTicker, singleTickerData, singleVPAData, chartContextDays, vpaContextDays]);
+	}, [defaultTicker, singleTickerData, singleVPAData, singleTickerAIData, chartContextDays, vpaContextDays]);
 
 	const multipleTickersContext = useMemo(() => {
 		if (activeTab !== "multi" || selectedTickers.length === 0 || !multipleTickerData) return "";
@@ -181,11 +197,12 @@ function AskPage() {
 		const tickersData = selectedTickers.map((ticker, index) => ({
 			ticker,
 			chartData: multipleTickerData[ticker] || [],
-			vpaContent: vpaQueries[index]?.data?.content
+			vpaContent: vpaQueries[index]?.data?.content,
+			tickerAIData: tickerAIQueries[index]?.data
 		}));
 
 		return buildMultipleTickersContext(tickersData, chartContextDays, vpaContextDays);
-	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries, chartContextDays, vpaContextDays]);
+	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries, tickerAIQueries, chartContextDays, vpaContextDays]);
 
 	// Handle single ticker change
 	const handleSingleTickerChange = (newTicker: string) => {
