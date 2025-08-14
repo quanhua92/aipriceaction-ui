@@ -129,6 +129,7 @@ export const en = {
     openInCompare: "Open in Compare",
     performanceOverview: "Performance Overview", 
     stocksPerformance: "Portfolio Stocks Performance",
+    individualStocksComparison: "Individual Stocks vs VN-Index Comparison",
     riskAdjustedPerformance: "Risk-Adjusted Performance",
     performanceAttribution: "Performance Attribution",
     diversificationAnalysis: "Diversification Analysis",
@@ -195,6 +196,7 @@ export const en = {
     totalCapital: "Total Deposit",
     overview: "Overview",
     allocation: "Allocation",
+    performance: "Performance",
     marketValue: "Market Value",
     manualDeposit: "Manual Deposit",
     currentDeposit: "Current Deposit",
@@ -204,6 +206,17 @@ export const en = {
     equityValue: "Equity Value",
     cashRemaining: "Cash Remaining",
     remainingCash: "Remaining Cash",
+    
+    // Performance Tab
+    performanceTab: {
+      dailyChange: "Daily Change",
+      totalReturn: "Total Return", 
+      bestPerformer: "Best Performer",
+      worstPerformer: "Worst Performer",
+      vsVnindex: "All Stocks vs VN-Index",
+      portfolioVsVnindex: "Portfolio vs VN-Index",
+      noDataAvailable: "No performance data available",
+    },
     remainingCashDescription: "Cash not invested in stocks",
     currentRemainingCash: "Current Remaining Cash",
     enterRemainingCash: "Enter remaining cash amount",

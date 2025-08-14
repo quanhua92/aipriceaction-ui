@@ -195,6 +195,7 @@ export const vn = {
     totalCapital: "Tổng vốn",
     overview: "Tổng quan",
     allocation: "Phân bổ",
+    performance: "Hiệu suất",
     marketValue: "Giá trị thị trường",
     manualDeposit: "Vốn thủ công",
     currentDeposit: "Vốn hiện tại",
@@ -204,6 +205,17 @@ export const vn = {
     equityValue: "Giá trị cổ phiếu",
     cashRemaining: "Tiền mặt còn lại",
     remainingCash: "Tiền mặt còn lại",
+    
+    // Performance Tab
+    performanceTab: {
+      dailyChange: "Thay đổi hàng ngày",
+      totalReturn: "Lợi nhuận tổng", 
+      bestPerformer: "Cổ phiếu tốt nhất",
+      worstPerformer: "Cổ phiếu tệ nhất",
+      vsVnindex: "Tất cả cổ phiếu vs VN-Index",
+      portfolioVsVnindex: "Danh mục vs VN-Index",
+      noDataAvailable: "Không có dữ liệu hiệu suất",
+    },
     remainingCashDescription: "Tiền chưa đầu tư vào cổ phiếu",
     currentRemainingCash: "Tiền mặt còn lại hiện tại",
     enterRemainingCash: "Nhập số tiền mặt còn lại",

@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useTranslation } from "@/hooks/useTranslation";
 import { PieChart, BarChart3, ExternalLink, Target, Brain } from "lucide-react";
+import { ComparisonChart } from "@/components/charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
@@ -584,6 +585,129 @@ function PortfolioPage() {
 						isLoading={isLoading}
 						title={t("portfolio.stocksPerformance")}
 					/>
+
+					{/* All Stocks vs VN-Index Comparison */}
+					<Card>
+						<CardHeader>
+							<CardTitle className="flex items-center gap-2">
+								<BarChart3 className="h-5 w-5" />
+								{t("portfolio.performanceTab.vsVnindex")}
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							{(() => {
+								// Prepare comparison data for all tickers vs VNINDEX
+								const allTickersData = investments.map(item => item.ticker);
+								const vnindexData = tickerData?.["VNINDEX"];
+								
+								if (!vnindexData || vnindexData.length === 0) {
+									return (
+										<div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+											<div className="text-sm text-gray-500">{t("portfolio.performanceTab.noDataAvailable")}</div>
+										</div>
+									);
+								}
+
+								// Build consolidated chart data
+								const chartData = [];
+								const vnindexBaseline = vnindexData[0]?.close || 0;
+								
+								if (vnindexBaseline === 0) {
+									return (
+										<div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+											<div className="text-sm text-gray-500">{t("portfolio.performanceTab.noDataAvailable")}</div>
+										</div>
+									);
+								}
+
+								// Calculate the minimum length across all data sets
+								const allDataSets = allTickersData.map(ticker => tickerData?.[ticker]).filter(Boolean);
+								const minLength = Math.min(vnindexData.length, ...allDataSets.map(data => data.length));
+
+								// Get baselines for all tickers
+								const baselines: Record<string, number> = {};
+								baselines["VNINDEX"] = vnindexBaseline;
+								allTickersData.forEach(ticker => {
+									const data = tickerData?.[ticker];
+									if (data && data[0]) {
+										baselines[ticker] = data[0].close;
+									}
+								});
+
+								for (let i = 0; i < minLength; i++) {
+									const dataPoint: Record<string, any> = {
+										time: vnindexData[i]?.time,
+										date: vnindexData[i]?.date,
+									};
+
+									// Add VNINDEX data
+									const vnindexPoint = vnindexData[i];
+									if (vnindexPoint && baselines["VNINDEX"]) {
+										dataPoint["VNINDEX"] = ((vnindexPoint.close - baselines["VNINDEX"]) / baselines["VNINDEX"]) * 100;
+									}
+
+									// Add each ticker data
+									allTickersData.forEach(ticker => {
+										const tickerDataArray = tickerData?.[ticker];
+										if (tickerDataArray && tickerDataArray[i] && baselines[ticker]) {
+											const tickerPoint = tickerDataArray[i];
+											dataPoint[ticker] = ((tickerPoint.close - baselines[ticker]) / baselines[ticker]) * 100;
+										}
+									});
+
+									chartData.push(dataPoint);
+								}
+
+								// Prepare colors - VNINDEX is bold red, others are random colors
+								const colors = ["#EF4444"]; // VNINDEX - bold red
+								const tickerColors = [
+									"#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", 
+									"#06B6D4", "#F97316", "#84CC16", "#EC4899", 
+									"#6366F1", "#14B8A6"
+								];
+								
+								allTickersData.forEach((_, index) => {
+									colors.push(tickerColors[index % tickerColors.length]);
+								});
+
+								// Prepare stroke widths - VNINDEX is bold (3px), others are normal (2px)
+								const strokeWidths: Record<string, number> = { "VNINDEX": 3 };
+								allTickersData.forEach(ticker => {
+									strokeWidths[ticker] = 2;
+								});
+
+								const allTickers = ["VNINDEX", ...allTickersData];
+
+								return (
+									<div className="space-y-4">
+										{/* Legend */}
+										<div className="flex flex-wrap gap-2 text-sm">
+											{allTickers.map((ticker, index) => (
+												<div key={ticker} className="flex items-center gap-2">
+													<div 
+														className="w-4 h-4 rounded-full" 
+														style={{ backgroundColor: colors[index] }}
+													></div>
+													<span className={ticker === "VNINDEX" ? "font-bold text-red-600" : ""}>{ticker}</span>
+												</div>
+											))}
+										</div>
+										
+										{/* Chart */}
+										<div className="h-80">
+											<ComparisonChart
+												data={chartData}
+												tickers={allTickers}
+												colors={colors}
+												strokeWidths={strokeWidths}
+												height={320}
+											/>
+										</div>
+									</div>
+								);
+							})()}
+						</CardContent>
+					</Card>
 
 					{/* Risk Analysis */}
 					<RiskAnalysis
