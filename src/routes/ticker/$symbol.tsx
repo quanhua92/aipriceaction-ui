@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-	ArrowLeft,
 	TrendingUp,
 	TrendingDown,
 	Volume2,
@@ -171,12 +170,6 @@ function TickerPage() {
 			{/* Header */}
 			<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 				<div className="flex items-center gap-2 md:gap-4">
-					<Link to="/tickers">
-						<Button variant="ghost" size="sm">
-							<ArrowLeft className="h-4 w-4 mr-1" />
-							<span className="hidden sm:inline">Back</span>
-						</Button>
-					</Link>
 					<div>
 						<h1 className="text-2xl md:text-3xl font-bold font-mono">{symbol}</h1>
 						{companyInfo?.companyName && (
@@ -500,7 +493,7 @@ function TickerPage() {
 														{isCompanyExpanded ? (
 															<>
 																<ChevronUp className="h-4 w-4 mr-2" />
-																Show Less
+																{t("financialInfo.showLess")}
 															</>
 														) : (
 															<>
@@ -537,7 +530,7 @@ function TickerPage() {
 														{isCompanyExpanded ? (
 															<>
 																<ChevronUp className="h-4 w-4 mr-2" />
-																Show Less
+																{t("financialInfo.showLess")}
 															</>
 														) : (
 															<>
@@ -587,7 +580,7 @@ function TickerPage() {
 											return (
 												<>
 													<div className="bg-blue-50 p-4 rounded-lg">
-														<h4 className="font-medium text-blue-900">Total Assets</h4>
+														<h4 className="font-medium text-blue-900">{t("financialInfo.totalAssets")}</h4>
 														<p className="text-2xl font-bold text-blue-700">
 															{formatFinancialValue(latestData.BSA1 || 0)}
 														</p>
@@ -596,21 +589,21 @@ function TickerPage() {
 														</p>
 													</div>
 													<div className="bg-red-50 p-4 rounded-lg">
-														<h4 className="font-medium text-red-900">Total Liabilities</h4>
+														<h4 className="font-medium text-red-900">{t("financialInfo.totalLiabilities")}</h4>
 														<p className="text-2xl font-bold text-red-700">
 															{formatFinancialValue(latestData.BSA53 || 0)}
 														</p>
 														<p className="text-xs text-red-600">
-															{((latestData.BSA53 || 0) / (latestData.BSA1 || 1) * 100).toFixed(1)}% of assets
+															{((latestData.BSA53 || 0) / (latestData.BSA1 || 1) * 100).toFixed(1)}% {t("financialInfo.ofAssets")}
 														</p>
 													</div>
 													<div className="bg-green-50 p-4 rounded-lg">
-														<h4 className="font-medium text-green-900">Total Equity</h4>
+														<h4 className="font-medium text-green-900">{t("financialInfo.totalEquity")}</h4>
 														<p className="text-2xl font-bold text-green-700">
 															{formatFinancialValue(latestData.BSA46 || 0)}
 														</p>
 														<p className="text-xs text-green-600">
-															{((latestData.BSA46 || 0) / (latestData.BSA1 || 1) * 100).toFixed(1)}% of assets
+															{((latestData.BSA46 || 0) / (latestData.BSA1 || 1) * 100).toFixed(1)}% {t("financialInfo.ofAssets")}
 														</p>
 													</div>
 												</>
@@ -623,13 +616,13 @@ function TickerPage() {
 										<table className="w-full text-sm">
 											<thead>
 												<tr className="border-b">
-													<th className="text-left py-2 font-semibold">Period</th>
-													<th className="text-right py-2 font-semibold">Cash & Equivalents</th>
-													<th className="text-right py-2 font-semibold">Current Assets</th>
-													<th className="text-right py-2 font-semibold">Total Assets</th>
-													<th className="text-right py-2 font-semibold">Current Liabilities</th>
-													<th className="text-right py-2 font-semibold">Total Liabilities</th>
-													<th className="text-right py-2 font-semibold">Total Equity</th>
+													<th className="text-left py-2 font-semibold">{t("financialInfo.period")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.cashAndEquivalents")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.currentAssets")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.totalAssets")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.currentLiabilities")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.totalLiabilities")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.totalEquity")}</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -690,12 +683,12 @@ function TickerPage() {
 														{isBalanceSheetExpanded ? (
 															<>
 																<ChevronUp className="h-4 w-4 mr-2" />
-																Show Less
+																{t("financialInfo.showLess")}
 															</>
 														) : (
 															<>
 																<ChevronDown className="h-4 w-4 mr-2" />
-																Show More ({totalItems - 5} more periods)
+																{t("financialInfo.showMorePeriods", { count: totalItems - 5 })}
 															</>
 														)}
 													</Button>
@@ -741,7 +734,7 @@ function TickerPage() {
 											return (
 												<>
 													<div className="bg-blue-50 p-4 rounded-lg">
-														<h4 className="font-medium text-blue-900">Total Revenue</h4>
+														<h4 className="font-medium text-blue-900">{t("financialInfo.totalRevenue")}</h4>
 														<p className="text-2xl font-bold text-blue-700">
 															{formatFinancialValue(latestData.ISA1 || latestData.revenue || 0)}
 														</p>
@@ -750,30 +743,30 @@ function TickerPage() {
 														</p>
 													</div>
 													<div className="bg-purple-50 p-4 rounded-lg">
-														<h4 className="font-medium text-purple-900">Gross Profit</h4>
+														<h4 className="font-medium text-purple-900">{t("financialInfo.grossProfit")}</h4>
 														<p className="text-2xl font-bold text-purple-700">
 															{formatFinancialValue(latestData.ISA5 || 0)}
 														</p>
 														<p className="text-xs text-purple-600">
-															Margin: {formatPercentage((latestData.grossMargin * 100) || ((latestData.ISA5 || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
+															{t("financialInfo.margin")}: {formatPercentage((latestData.grossMargin * 100) || ((latestData.ISA5 || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
 														</p>
 													</div>
 													<div className="bg-orange-50 p-4 rounded-lg">
-														<h4 className="font-medium text-orange-900">Operating Income</h4>
+														<h4 className="font-medium text-orange-900">{t("financialInfo.operatingIncome")}</h4>
 														<p className="text-2xl font-bold text-orange-700">
 															{formatFinancialValue(latestData.ISA11 || latestData.ISA16 || 0)}
 														</p>
 														<p className="text-xs text-orange-600">
-															Margin: {formatPercentage(((latestData.ISA11 || latestData.ISA16 || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
+															{t("financialInfo.margin")}: {formatPercentage(((latestData.ISA11 || latestData.ISA16 || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
 														</p>
 													</div>
 													<div className="bg-green-50 p-4 rounded-lg">
-														<h4 className="font-medium text-green-900">Net Income</h4>
+														<h4 className="font-medium text-green-900">{t("financialInfo.netIncome")}</h4>
 														<p className="text-2xl font-bold text-green-700">
 															{formatFinancialValue(latestData.ISA20 || latestData.netProfit || 0)}
 														</p>
 														<p className="text-xs text-green-600">
-															Margin: {formatPercentage((latestData.netProfitMargin * 100) || ((latestData.ISA20 || latestData.netProfit || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
+															{t("financialInfo.margin")}: {formatPercentage((latestData.netProfitMargin * 100) || ((latestData.ISA20 || latestData.netProfit || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
 														</p>
 													</div>
 												</>
@@ -786,14 +779,14 @@ function TickerPage() {
 										<table className="w-full text-sm">
 											<thead>
 												<tr className="border-b">
-													<th className="text-left py-2 font-semibold">Period</th>
-													<th className="text-right py-2 font-semibold">Revenue</th>
-													<th className="text-right py-2 font-semibold">Cost of Sales</th>
-													<th className="text-right py-2 font-semibold">Gross Profit</th>
-													<th className="text-right py-2 font-semibold">Operating Expenses</th>
-													<th className="text-right py-2 font-semibold">Operating Income</th>
-													<th className="text-right py-2 font-semibold">Net Income</th>
-													<th className="text-right py-2 font-semibold">Net Margin</th>
+													<th className="text-left py-2 font-semibold">{t("financialInfo.period")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.revenue")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.costOfSales")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.grossProfit")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.operatingExpenses")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.operatingIncome")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.netIncome")}</th>
+													<th className="text-right py-2 font-semibold">{t("financialInfo.netMarginLabel")}</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -860,12 +853,12 @@ function TickerPage() {
 														{isIncomeStatementExpanded ? (
 															<>
 																<ChevronUp className="h-4 w-4 mr-2" />
-																Show Less
+																{t("financialInfo.showLess")}
 															</>
 														) : (
 															<>
 																<ChevronDown className="h-4 w-4 mr-2" />
-																Show More ({totalItems - 5} more periods)
+																{t("financialInfo.showMorePeriods", { count: totalItems - 5 })}
 															</>
 														)}
 													</Button>
