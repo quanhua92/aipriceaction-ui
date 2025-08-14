@@ -497,9 +497,21 @@ function AskPage() {
 									{defaultTicker ? t("askAI.loadingData") : t("askAI.noTickerSelected")}
 								</p>
 							) : (
-								<p className="text-sm text-green-600">
-									{t("askAI.dataReady")} ({singleTickerData?.length ?? 0} {t("askAI.dataPoints")})
-								</p>
+								<div className="space-y-2">
+									<p className="text-sm text-green-600">
+										{t("askAI.dataReady")} ({singleTickerData?.length ?? 0} {t("askAI.dataPoints")})
+									</p>
+									{defaultTicker && (
+										<div className="flex items-center gap-2">
+											<span className="text-xs text-muted-foreground">Quick access:</span>
+											<Link to="/ticker/$symbol" params={{ symbol: defaultTicker }}>
+												<Button variant="outline" size="sm" className="h-6 px-2 text-xs">
+													{defaultTicker}
+												</Button>
+											</Link>
+										</div>
+									)}
+								</div>
 							)}
 						</CardContent>
 					</Card>
@@ -530,11 +542,23 @@ function AskPage() {
 								persistOpenState={true}
 							/>
 							{selectedTickers.length > 0 && (
-								<div>
+								<div className="space-y-3">
 									{multipleTickersContext ? (
-										<p className="text-sm text-green-600">
-											{t("askAI.dataReady")} ({selectedTickers.length} {t("askAI.tickers")})
-										</p>
+										<div className="space-y-2">
+											<p className="text-sm text-green-600">
+												{t("askAI.dataReady")} ({selectedTickers.length} {t("askAI.tickers")})
+											</p>
+											<div className="flex items-center gap-2 flex-wrap">
+												<span className="text-xs text-muted-foreground">Quick access:</span>
+												{selectedTickers.map((ticker) => (
+													<Link key={ticker} to="/ticker/$symbol" params={{ symbol: ticker }}>
+														<Button variant="outline" size="sm" className="h-6 px-2 text-xs">
+															{ticker}
+														</Button>
+													</Link>
+												))}
+											</div>
+										</div>
 									) : (
 										<p className="text-sm text-muted-foreground">
 											{t("askAI.loadingData")}
