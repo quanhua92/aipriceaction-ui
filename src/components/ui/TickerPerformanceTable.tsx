@@ -155,8 +155,10 @@ export function TickerPerformanceTable({
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="pt-0">
-				{/* Sortable Headers */}
-				<div className="grid gap-4 px-3 py-2 border-b mb-3" style={{ gridTemplateColumns: '80px 1fr 1fr 1fr 1fr' }}>
+				{/* Desktop Table View - Hidden on mobile */}
+				<div className="hidden sm:block">
+					{/* Sortable Headers */}
+					<div className="grid gap-4 px-3 py-2 border-b mb-3" style={{ gridTemplateColumns: '80px 1fr 1fr 1fr 1fr' }}>
 					<Button
 						variant="ghost"
 						size="sm"
@@ -261,7 +263,115 @@ export function TickerPerformanceTable({
 						);
 					})}
 				</div>
-			</CardContent>
+			</div>
+
+			{/* Mobile Card View - Visible only on mobile */}
+			<div className="sm:hidden space-y-3">
+				{/* Sorting Controls for Mobile */}
+				<div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+					<Button
+						variant={sortBy === 'ticker' ? 'default' : 'outline'}
+						size="sm"
+						onClick={() => handleSort('ticker')}
+						className="whitespace-nowrap"
+					>
+						Ticker {getSortIcon('ticker')}
+					</Button>
+					<Button
+						variant={sortBy === 'price' ? 'default' : 'outline'}
+						size="sm"
+						onClick={() => handleSort('price')}
+						className="whitespace-nowrap"
+					>
+						Price {getSortIcon('price')}
+					</Button>
+					<Button
+						variant={sortBy === 'daily' ? 'default' : 'outline'}
+						size="sm"
+						onClick={() => handleSort('daily')}
+						className="whitespace-nowrap"
+					>
+						Daily {getSortIcon('daily')}
+					</Button>
+					<Button
+						variant={sortBy === 'range' ? 'default' : 'outline'}
+						size="sm"
+						onClick={() => handleSort('range')}
+						className="whitespace-nowrap"
+					>
+						{timeRange} {getSortIcon('range')}
+					</Button>
+				</div>
+
+				{/* Mobile Cards */}
+				{processedTickers.map((tickerInfo) => {
+					const { ticker, currentPrice, dailyChange, rangeChange, data } = tickerInfo;
+					
+					const isDailyPositive = dailyChange?.changePercent ? dailyChange.changePercent >= 0 : false;
+					const isRangePositive = rangeChange?.changePercent ? rangeChange.changePercent >= 0 : false;
+					const hasData = data.length > 0;
+
+					return (
+						<div key={ticker} className="bg-white rounded-lg border border-gray-200 p-4">
+							{/* Header with Ticker and Ask AI */}
+							<div className="flex items-center justify-between mb-3">
+								<Link to="/ticker/$symbol" params={{ symbol: ticker }} className="hover:underline">
+									<h3 className="font-bold text-lg text-gray-900 cursor-pointer">{ticker}</h3>
+								</Link>
+								<AskAIButton 
+									ticker={ticker}
+									size="sm"
+								/>
+							</div>
+
+							{/* Performance Grid */}
+							<div className="grid grid-cols-3 gap-3 text-sm">
+								{/* Current Price */}
+								<div className="text-center">
+									<span className="text-gray-600 block mb-1">Price</span>
+									<p className="font-medium">
+										{hasData ? (
+											new Intl.NumberFormat("vi-VN", {
+												style: "currency",
+												currency: "VND",
+												minimumFractionDigits: 0,
+												maximumFractionDigits: 0,
+											}).format(currentPrice)
+										) : (
+											<span className="text-muted-foreground">No data</span>
+										)}
+									</p>
+								</div>
+
+								{/* Daily Performance */}
+								<div className="text-center">
+									<span className="text-gray-600 block mb-1">Daily</span>
+									{hasData && dailyChange ? (
+										<p className={`font-semibold ${isDailyPositive ? "text-green-600" : "text-red-600"}`}>
+											{isDailyPositive ? "+" : ""}{dailyChange.changePercent.toFixed(2)}%
+										</p>
+									) : (
+										<p className="text-muted-foreground">--</p>
+									)}
+								</div>
+
+								{/* Range Performance */}
+								<div className="text-center">
+									<span className="text-gray-600 block mb-1">{timeRange}</span>
+									{hasData && rangeChange ? (
+										<p className={`font-bold ${isRangePositive ? "text-green-600" : "text-red-600"}`}>
+											{isRangePositive ? "+" : ""}{rangeChange.changePercent.toFixed(2)}%
+										</p>
+									) : (
+										<p className="text-muted-foreground">--</p>
+									)}
+								</div>
+							</div>
+						</div>
+					);
+				})}
+			</div>
+		</CardContent>
 		</Card>
 	);
 }
