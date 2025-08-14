@@ -355,7 +355,7 @@ export const en = {
     allSectors: "All Sectors",
     byTicker: "By Ticker",
     bySector: "By Sector",
-    stocksFound: "{count, plural, one {# Stock} other {# Stocks}} Found",
+    stocksFound: "Found {count} stocks",
     noTickersFound: "No tickers found matching your criteria",
     sector: "Sector",
     chart: "Chart",
