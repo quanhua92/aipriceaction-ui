@@ -108,8 +108,14 @@ export async function fetchCompanyInfo(ticker: string): Promise<CompanyInfo> {
 			website: data.website,
 			address: data.address,
 			phone: data.phone,
-			shareholders: data.shareholders || data.major_shareholders || [],
-			officers: data.officers || data.key_officers || [],
+			shareholders: (data.shareholders || data.major_shareholders || []).map((sh: any) => ({
+				name: sh.shareholder_name || sh.name,
+				ownership: sh.shareholder_percent || sh.ownership
+			})),
+			officers: (data.officers || data.key_officers || []).map((off: any) => ({
+				name: off.officer_name || off.name,
+				position: off.officer_position || off.position
+			})),
 		};
 	} catch (error) {
 		console.error(`Error fetching company info for ${ticker}:`, error);
@@ -127,7 +133,10 @@ export async function fetchFinancialInfo(ticker: string): Promise<FinancialInfo>
 			throw new Error(`Failed to fetch financial info for ${ticker}: ${response.status}`);
 		}
 		
-		const data = await response.json();
+		// Get the response text and handle NaN values before parsing
+		const responseText = await response.text();
+		const sanitizedText = responseText.replace(/:\s*NaN/g, ': null');
+		const data = JSON.parse(sanitizedText);
 		
 		return {
 			symbol: ticker,

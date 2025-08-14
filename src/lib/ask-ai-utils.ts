@@ -75,71 +75,77 @@ export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: n
 }
 
 // Format Ticker AI data to context string
-export function formatTickerAIContext(ticker: string, tickerAIData?: TickerAIData): string {
+export function formatTickerAIContext(
+	ticker: string, 
+	tickerAIData?: TickerAIData,
+	includeBasicInfo: boolean = true,
+	includeFinancialRatios: boolean = true,
+	includeDescription: boolean = true
+): string {
 	if (!tickerAIData) {
 		return `${ticker}: No AI-optimized data available`;
 	}
 
 	const contextLines = [];
 	
-	// Basic company information
-	if (tickerAIData.exchange) {
-		contextLines.push(`${ticker}: Exchange=${tickerAIData.exchange}`);
-	}
-	if (tickerAIData.industry) {
-		contextLines.push(`${ticker}: Industry=${tickerAIData.industry}`);
-	}
-	if (tickerAIData.founded) {
-		contextLines.push(`${ticker}: Founded=${tickerAIData.founded}`);
-	}
-
-	// Market metrics
-	if (tickerAIData.marketCap) {
-		contextLines.push(`${ticker}: MarketCap=${tickerAIData.marketCap.toLocaleString()}`);
-	}
-	if (tickerAIData.currentPrice) {
-		contextLines.push(`${ticker}: CurrentPrice=${tickerAIData.currentPrice.toLocaleString()}`);
-	}
-	if (tickerAIData.outstandingShares) {
-		contextLines.push(`${ticker}: OutstandingShares=${tickerAIData.outstandingShares.toLocaleString()}`);
-	}
-
-	// Financial metrics
-	if (tickerAIData.revenue) {
-		contextLines.push(`${ticker}: Revenue=${tickerAIData.revenue.toLocaleString()}`);
-	}
-	if (tickerAIData.netIncome) {
-		contextLines.push(`${ticker}: NetIncome=${tickerAIData.netIncome.toLocaleString()}`);
+	// Basic company information (controlled by includeBasicInfo)
+	if (includeBasicInfo) {
+		if (tickerAIData.exchange) {
+			contextLines.push(`${ticker}: Exchange=${tickerAIData.exchange}`);
+		}
+		if (tickerAIData.industry) {
+			contextLines.push(`${ticker}: Industry=${tickerAIData.industry}`);
+		}
+		if (tickerAIData.founded) {
+			contextLines.push(`${ticker}: Founded=${tickerAIData.founded}`);
+		}
+		if (tickerAIData.marketCap) {
+			contextLines.push(`${ticker}: MarketCap=${tickerAIData.marketCap.toLocaleString()}`);
+		}
+		if (tickerAIData.currentPrice) {
+			contextLines.push(`${ticker}: CurrentPrice=${tickerAIData.currentPrice.toLocaleString()}`);
+		}
+		if (tickerAIData.outstandingShares) {
+			contextLines.push(`${ticker}: OutstandingShares=${tickerAIData.outstandingShares.toLocaleString()}`);
+		}
+		if (tickerAIData.revenue) {
+			contextLines.push(`${ticker}: Revenue=${tickerAIData.revenue.toLocaleString()}`);
+		}
+		if (tickerAIData.netIncome) {
+			contextLines.push(`${ticker}: NetIncome=${tickerAIData.netIncome.toLocaleString()}`);
+		}
 	}
 
-	// Financial ratios
-	if (tickerAIData.peRatio) {
-		contextLines.push(`${ticker}: PE_Ratio=${tickerAIData.peRatio}`);
-	}
-	if (tickerAIData.pbRatio) {
-		contextLines.push(`${ticker}: PB_Ratio=${tickerAIData.pbRatio}`);
-	}
-	if (tickerAIData.roe) {
-		contextLines.push(`${ticker}: ROE=${tickerAIData.roe}%`);
-	}
-	if (tickerAIData.roa) {
-		contextLines.push(`${ticker}: ROA=${tickerAIData.roa}%`);
-	}
-	if (tickerAIData.debtToEquity) {
-		contextLines.push(`${ticker}: DebtToEquity=${tickerAIData.debtToEquity}`);
-	}
-	if (tickerAIData.currentRatio) {
-		contextLines.push(`${ticker}: CurrentRatio=${tickerAIData.currentRatio}`);
-	}
-	if (tickerAIData.grossMargin) {
-		contextLines.push(`${ticker}: GrossMargin=${tickerAIData.grossMargin}%`);
-	}
-	if (tickerAIData.netMargin) {
-		contextLines.push(`${ticker}: NetMargin=${tickerAIData.netMargin}%`);
+	// Financial ratios (controlled by includeFinancialRatios)
+	if (includeFinancialRatios) {
+		if (tickerAIData.peRatio) {
+			contextLines.push(`${ticker}: PE_Ratio=${tickerAIData.peRatio}`);
+		}
+		if (tickerAIData.pbRatio) {
+			contextLines.push(`${ticker}: PB_Ratio=${tickerAIData.pbRatio}`);
+		}
+		if (tickerAIData.roe) {
+			contextLines.push(`${ticker}: ROE=${tickerAIData.roe}%`);
+		}
+		if (tickerAIData.roa) {
+			contextLines.push(`${ticker}: ROA=${tickerAIData.roa}%`);
+		}
+		if (tickerAIData.debtToEquity) {
+			contextLines.push(`${ticker}: DebtToEquity=${tickerAIData.debtToEquity}`);
+		}
+		if (tickerAIData.currentRatio) {
+			contextLines.push(`${ticker}: CurrentRatio=${tickerAIData.currentRatio}`);
+		}
+		if (tickerAIData.grossMargin) {
+			contextLines.push(`${ticker}: GrossMargin=${tickerAIData.grossMargin}%`);
+		}
+		if (tickerAIData.netMargin) {
+			contextLines.push(`${ticker}: NetMargin=${tickerAIData.netMargin}%`);
+		}
 	}
 
-	// Company description
-	if (tickerAIData.description) {
+	// Company description (controlled by includeDescription)
+	if (includeDescription && tickerAIData.description) {
 		contextLines.push(`${ticker}: Description=${tickerAIData.description}`);
 	}
 
@@ -153,11 +159,14 @@ export function buildSingleTickerContext(
 	vpaContent?: string,
 	tickerAIData?: TickerAIData,
 	chartContextDays: number = 10,
-	vpaContextDays: number = 5
+	vpaContextDays: number = 5,
+	includeBasicInfo: boolean = true,
+	includeFinancialRatios: boolean = true,
+	includeDescription: boolean = true
 ): string {
 	const chartContext = formatChartContext(ticker, chartData, chartContextDays);
 	const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
-	const tickerContext = formatTickerAIContext(ticker, tickerAIData);
+	const tickerContext = formatTickerAIContext(ticker, tickerAIData, includeBasicInfo, includeFinancialRatios, includeDescription);
 	
 	// Filter out empty contexts
 	const contexts = [];
@@ -177,12 +186,15 @@ export function buildMultipleTickersContext(
 		tickerAIData?: TickerAIData;
 	}>,
 	chartContextDays: number = 10,
-	vpaContextDays: number = 5
+	vpaContextDays: number = 5,
+	includeBasicInfo: boolean = true,
+	includeFinancialRatios: boolean = true,
+	includeDescription: boolean = true
 ): string {
 	const contexts = tickersData.map(({ ticker, chartData, vpaContent, tickerAIData }) => {
 		const chartContext = formatChartContext(ticker, chartData, chartContextDays);
 		const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
-		const tickerContext = formatTickerAIContext(ticker, tickerAIData);
+		const tickerContext = formatTickerAIContext(ticker, tickerAIData, includeBasicInfo, includeFinancialRatios, includeDescription);
 		
 		// Filter out empty contexts
 		const tickerContexts = [];

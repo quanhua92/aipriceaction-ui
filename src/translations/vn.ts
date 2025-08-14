@@ -1020,5 +1020,14 @@ export const vn = {
     description: "Nhận phân tích AI cho {symbol} với đầy đủ ngữ cảnh thị trường, phân tích kỹ thuật và thông tin VPA.",
     aboutTicker: "về {symbol}",
     instructions: "Hướng dẫn sử dụng: Nhấp 'Sao Chép' trên bất kỳ mẫu nào bên dưới, sau đó dán vào AI chatbot ưa thích của bạn (ChatGPT, Gemini, Claude, v.v.) để phân tích chi tiết.",
+    
+    // Company Context Configuration
+    companyContextConfig: "Cài đặt ngữ cảnh công ty",
+    includeBasicInfo: "Bao gồm thông tin cơ bản công ty",
+    includeBasicInfoDesc: "Sàn giao dịch, ngành, năm thành lập, vốn hóa",
+    includeFinancialRatios: "Bao gồm tỷ lệ tài chính",
+    includeFinancialRatiosDesc: "P/E, P/B, ROE, ROA, tỷ lệ nợ, biên lợi nhuận",
+    includeDescription: "Bao gồm mô tả công ty",
+    includeDescriptionDesc: "Mô tả kinh doanh và hồ sơ công ty",
   },
 } as const;

@@ -363,7 +363,7 @@ function TickerPage() {
 							</TabsTrigger>
 						</TabsList>
 						
-						<TabsContent value="company" className="mt-6">
+						<TabsContent value="company" className="mt-6 p-6">
 							{companyLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -504,7 +504,7 @@ function TickerPage() {
 							)}
 						</TabsContent>
 						
-						<TabsContent value="balance-sheet" className="mt-6">
+						<TabsContent value="balance-sheet" className="mt-6 p-6">
 							{financialLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -555,7 +555,7 @@ function TickerPage() {
 							)}
 						</TabsContent>
 						
-						<TabsContent value="income-statement" className="mt-6">
+						<TabsContent value="income-statement" className="mt-6 p-6">
 							{financialLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">

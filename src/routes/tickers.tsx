@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "@/hooks/useTranslation";
-import { VPAButton } from "@/components/vpa";
 import {
 	Select,
 	SelectContent,
@@ -239,11 +238,14 @@ function TickersPage() {
 																	{t("tickers.chart")}
 																</Button>
 															</Link>
-															<VPAButton 
-																ticker={ticker}
-																variant="badge"
-																mode="popover"
-															/>
+															<Link
+																to="/ask"
+																search={{ ticker }}
+															>
+																<Button variant="outline" size="sm">
+																	{t("common.askAI")}
+																</Button>
+															</Link>
 														</div>
 													</TableCell>
 												</TableRow>

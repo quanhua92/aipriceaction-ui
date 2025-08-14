@@ -354,7 +354,7 @@ export const en = {
     allSectors: "All Sectors",
     byTicker: "By Ticker",
     bySector: "By Sector",
-    stocksFound: "{count} Stock{count, plural, one {} other {s}} Found",
+    stocksFound: "{count, plural, one {# Stock} other {# Stocks}} Found",
     noTickersFound: "No tickers found matching your criteria",
     sector: "Sector",
     chart: "Chart",
@@ -1020,5 +1020,14 @@ export const en = {
     description: "Get AI-powered analysis for {symbol} with complete market context, technical analysis, and VPA insights.",
     aboutTicker: "about {symbol}",
     instructions: "How to use: Click 'Copy' on any template below, then paste into your preferred AI chatbot (ChatGPT, Gemini, Claude, etc.) for detailed analysis.",
+    
+    // Company Context Configuration
+    companyContextConfig: "Company Context Settings",
+    includeBasicInfo: "Include Basic Company Info",
+    includeBasicInfoDesc: "Exchange, industry, founding year, market cap",
+    includeFinancialRatios: "Include Financial Ratios",  
+    includeFinancialRatiosDesc: "P/E, P/B, ROE, ROA, debt ratios, margins",
+    includeDescription: "Include Company Description",
+    includeDescriptionDesc: "Business description and company profile",
   },
 } as const;

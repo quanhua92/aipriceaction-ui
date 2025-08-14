@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { MultiTickerSearch, TickerSearch } from "@/components/ui/TickerSearch";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useMultipleTickerData, useTickerAIData } from "@/lib/queries";
@@ -79,6 +80,20 @@ function AskPage() {
 		const saved = localStorage.getItem('askAI.vpaContextDays');
 		return saved ? parseInt(saved, 10) : 5;
 	});
+	
+	// Company context configuration states
+	const [includeBasicInfo, setIncludeBasicInfo] = useState(() => {
+		const saved = localStorage.getItem('askAI.includeBasicInfo');
+		return saved ? JSON.parse(saved) : true;
+	});
+	const [includeFinancialRatios, setIncludeFinancialRatios] = useState(() => {
+		const saved = localStorage.getItem('askAI.includeFinancialRatios');
+		return saved ? JSON.parse(saved) : true;
+	});
+	const [includeDescription, setIncludeDescription] = useState(() => {
+		const saved = localStorage.getItem('askAI.includeDescription');
+		return saved ? JSON.parse(saved) : true;
+	});
 
 	// Save settings to localStorage when changed
 	useEffect(() => {
@@ -88,6 +103,18 @@ function AskPage() {
 	useEffect(() => {
 		localStorage.setItem('askAI.vpaContextDays', vpaContextDays.toString());
 	}, [vpaContextDays]);
+
+	useEffect(() => {
+		localStorage.setItem('askAI.includeBasicInfo', JSON.stringify(includeBasicInfo));
+	}, [includeBasicInfo]);
+
+	useEffect(() => {
+		localStorage.setItem('askAI.includeFinancialRatios', JSON.stringify(includeFinancialRatios));
+	}, [includeFinancialRatios]);
+
+	useEffect(() => {
+		localStorage.setItem('askAI.includeDescription', JSON.stringify(includeDescription));
+	}, [includeDescription]);
 
 	// Update search params function
 	const updateSearchParams = (updates: Partial<SearchParams>) => {
@@ -187,9 +214,12 @@ function AskPage() {
 			singleVPAData?.content,
 			singleTickerAIData,
 			chartContextDays,
-			vpaContextDays
+			vpaContextDays,
+			includeBasicInfo,
+			includeFinancialRatios,
+			includeDescription
 		);
-	}, [defaultTicker, singleTickerData, singleVPAData, singleTickerAIData, chartContextDays, vpaContextDays]);
+	}, [defaultTicker, singleTickerData, singleVPAData, singleTickerAIData, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription]);
 
 	const multipleTickersContext = useMemo(() => {
 		if (activeTab !== "multi" || selectedTickers.length === 0 || !multipleTickerData) return "";
@@ -201,8 +231,8 @@ function AskPage() {
 			tickerAIData: tickerAIQueries[index]?.data
 		}));
 
-		return buildMultipleTickersContext(tickersData, chartContextDays, vpaContextDays);
-	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries, tickerAIQueries, chartContextDays, vpaContextDays]);
+		return buildMultipleTickersContext(tickersData, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription);
+	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries, tickerAIQueries, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription]);
 
 	// Handle single ticker change
 	const handleSingleTickerChange = (newTicker: string) => {
@@ -467,6 +497,66 @@ function AskPage() {
 								</p>
 							</div>
 							
+							{/* Company Context Settings */}
+							<div className="space-y-3">
+								<Label className="text-sm font-medium">
+									{t("askAI.companyContextConfig")}
+								</Label>
+								
+								<div className="space-y-3">
+									<div className="flex items-start space-x-3">
+										<Checkbox
+											id="include-basic-info"
+											checked={includeBasicInfo}
+											onCheckedChange={setIncludeBasicInfo}
+											className="mt-0.5"
+										/>
+										<div className="flex-1">
+											<Label htmlFor="include-basic-info" className="text-sm font-medium cursor-pointer">
+												{t("askAI.includeBasicInfo")}
+											</Label>
+											<p className="text-xs text-muted-foreground">
+												{t("askAI.includeBasicInfoDesc")}
+											</p>
+										</div>
+									</div>
+									
+									<div className="flex items-start space-x-3">
+										<Checkbox
+											id="include-financial-ratios"
+											checked={includeFinancialRatios}
+											onCheckedChange={setIncludeFinancialRatios}
+											className="mt-0.5"
+										/>
+										<div className="flex-1">
+											<Label htmlFor="include-financial-ratios" className="text-sm font-medium cursor-pointer">
+												{t("askAI.includeFinancialRatios")}
+											</Label>
+											<p className="text-xs text-muted-foreground">
+												{t("askAI.includeFinancialRatiosDesc")}
+											</p>
+										</div>
+									</div>
+									
+									<div className="flex items-start space-x-3">
+										<Checkbox
+											id="include-description"
+											checked={includeDescription}
+											onCheckedChange={setIncludeDescription}
+											className="mt-0.5"
+										/>
+										<div className="flex-1">
+											<Label htmlFor="include-description" className="text-sm font-medium cursor-pointer">
+												{t("askAI.includeDescription")}
+											</Label>
+											<p className="text-xs text-muted-foreground">
+												{t("askAI.includeDescriptionDesc")}
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							
 							<div className="pt-2 text-xs text-muted-foreground">
 								<p>💾 Settings are automatically saved to browser storage</p>
 							</div>
@@ -474,121 +564,6 @@ function AskPage() {
 					</Card>
 				)}
 			</div>
-
-			{/* Tabs */}
-			<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "single" | "multi")} className="w-full">
-				<TabsList className="grid w-full grid-cols-2 mb-6">
-					<TabsTrigger value="single" className="flex items-center gap-2 data-[state=active]:text-green-600">
-						<Brain className="h-4 w-4" />
-						{t("askAI.singleTicker")}
-					</TabsTrigger>
-					<TabsTrigger value="multi" className="flex items-center gap-2 data-[state=active]:text-green-600">
-						<Brain className="h-4 w-4" />
-						{t("askAI.multipleTickers")}
-					</TabsTrigger>
-				</TabsList>
-
-				<TabsContent value="single" className="space-y-6">
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-lg flex items-center gap-2">
-								{t("askAI.analyzingTicker")}
-								{defaultTicker && (
-									<Badge variant="secondary" className="font-mono">
-										{defaultTicker}
-									</Badge>
-								)}
-							</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-4">
-							{/* Ticker Search */}
-							<div>
-								<label className="text-sm font-medium mb-2 block">
-									{t("askAI.singleTicker")}
-								</label>
-								<TickerSearch
-									value={defaultTicker || ""}
-									onSelect={handleSingleTickerChange}
-									placeholder={t("askAI.searchTickersPlaceholder")}
-									className="w-full"
-								/>
-							</div>
-
-							{/* Data Status */}
-							{!singleTickerContext ? (
-								<p className="text-sm text-muted-foreground">
-									{defaultTicker ? t("askAI.loadingData") : t("askAI.noTickerSelected")}
-								</p>
-							) : (
-								<p className="text-sm text-green-600">
-									{t("askAI.dataReady")} ({singleTickerData?.length ?? 0} {t("askAI.dataPoints")})
-								</p>
-							)}
-						</CardContent>
-					</Card>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-						{singleTemplates.map(template => renderTemplateCard(template, singleTickerContext))}
-					</div>
-				</TabsContent>
-
-				<TabsContent value="multi" className="space-y-6">
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-lg flex items-center gap-2">
-								{t("askAI.selectTickers")}
-								{selectedTickers.length > 0 && (
-									<Badge variant="secondary">
-										{selectedTickers.length} {t("askAI.selected")}
-									</Badge>
-								)}
-							</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<MultiTickerSearch
-								selectedTickers={selectedTickers}
-								onTickersChange={handleTickersChange}
-								placeholder={t("askAI.searchTickersPlaceholder")}
-								className="w-full mb-4"
-								persistOpenState={true}
-							/>
-							{selectedTickers.length > 0 && (
-								<div>
-									{multipleTickersContext ? (
-										<p className="text-sm text-green-600">
-											{t("askAI.dataReady")} ({selectedTickers.length} {t("askAI.tickers")})
-										</p>
-									) : (
-										<p className="text-sm text-muted-foreground">
-											{t("askAI.loadingData")}
-										</p>
-									)}
-								</div>
-							)}
-						</CardContent>
-					</Card>
-
-					{selectedTickers.length === 0 ? (
-						<div className="flex items-center justify-center py-20">
-							<div className="text-center space-y-3">
-								<Brain className="h-16 w-16 text-green-600 mx-auto" />
-								<div>
-									<p className="text-xl font-medium text-foreground">
-										{t("askAI.noTickersSelected")}
-									</p>
-									<p className="text-sm text-muted-foreground">
-										{t("askAI.useSearchAbove")}
-									</p>
-								</div>
-							</div>
-						</div>
-					) : (
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-							{multiTemplates.map(template => renderTemplateCard(template, multipleTickersContext))}
-						</div>
-					)}
-				</TabsContent>
-			</Tabs>
 		</div>
 	);
 }
