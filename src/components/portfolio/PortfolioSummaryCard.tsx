@@ -188,17 +188,23 @@ export function PortfolioSummaryCard({
 						   (element as HTMLElement).hasAttribute?.('data-ignore-screenshot');
 				},
 				onclone: (clonedDoc) => {
-					// Create comprehensive CSS reset to avoid oklch parsing issues
+					// Fix oklch parsing issues while preserving layout and styling
 					const style = clonedDoc.createElement('style');
 					style.textContent = `
-						/* Complete CSS reset to avoid oklch parsing */
-						*, *::before, *::after {
-							all: unset !important;
-							display: revert !important;
-							box-sizing: border-box !important;
+						/* Fix oklch color parsing issues */
+						[style*="oklch"] { 
+							color: #000000 !important; 
+							background-color: #ffffff !important; 
 						}
 						
-						/* Basic layout styles */
+						/* Ensure root container has white background */
+						body { 
+							background-color: #ffffff !important; 
+							margin: 0 !important;
+							padding: 0 !important;
+						}
+						
+						/* Preserve essential layout properties */
 						.grid { display: grid !important; }
 						.flex { display: flex !important; }
 						.inline-flex { display: inline-flex !important; }
@@ -206,58 +212,65 @@ export function PortfolioSummaryCard({
 						.inline-block { display: inline-block !important; }
 						.hidden { display: none !important; }
 						
-						/* Safe color palette */
-						body, div, span, p, h1, h2, h3, h4, h5, h6 {
-							color: #000000 !important;
-							background-color: transparent !important;
-						}
+						/* Preserve spacing utilities */
+						.p-0 { padding: 0 !important; }
+						.p-1 { padding: 4px !important; }
+						.p-2 { padding: 8px !important; }
+						.p-3 { padding: 12px !important; }
+						.p-4 { padding: 16px !important; }
+						.p-6 { padding: 24px !important; }
+						.px-3 { padding-left: 12px !important; padding-right: 12px !important; }
+						.py-2 { padding-top: 8px !important; padding-bottom: 8px !important; }
+						.mb-1 { margin-bottom: 4px !important; }
+						.mb-2 { margin-bottom: 8px !important; }
+						.mb-3 { margin-bottom: 12px !important; }
+						.mb-4 { margin-bottom: 16px !important; }
+						.gap-2 { gap: 8px !important; }
+						.gap-3 { gap: 12px !important; }
 						
-						/* Card styles */
-						[class*="Card"], [class*="card"] {
-							background-color: #ffffff !important;
-							border: 1px solid #e5e7eb !important;
-							border-radius: 8px !important;
-							padding: 16px !important;
-						}
+						/* Preserve text utilities */
+						.text-xs { font-size: 12px !important; }
+						.text-sm { font-size: 14px !important; }
+						.text-lg { font-size: 18px !important; }
+						.text-xl { font-size: 20px !important; }
+						.font-medium { font-weight: 500 !important; }
+						.font-bold { font-weight: 700 !important; }
+						.text-center { text-align: center !important; }
+						.text-right { text-align: right !important; }
 						
-						/* Button styles */
-						button {
-							background-color: #f3f4f6 !important;
-							border: 1px solid #d1d5db !important;
-							border-radius: 6px !important;
-							padding: 8px 12px !important;
-							color: #111827 !important;
-						}
-						
-						/* Text colors */
-						.text-green-600, [class*="green"] { color: #16a34a !important; }
-						.text-red-600, [class*="red"] { color: #dc2626 !important; }
-						.text-blue-600, [class*="blue"] { color: #2563eb !important; }
-						.text-gray-600, [class*="gray"] { color: #4b5563 !important; }
-						.text-purple-600, [class*="purple"] { color: #9333ea !important; }
-						
-						/* Background colors */
-						.bg-gray-50 { background-color: #f9fafb !important; }
+						/* Preserve border and background utilities */
+						.rounded-lg { border-radius: 8px !important; }
+						.border { border-width: 1px !important; border-style: solid !important; border-color: #e5e7eb !important; }
 						.bg-white { background-color: #ffffff !important; }
+						.bg-gray-50 { background-color: #f9fafb !important; }
+						.bg-gray-100 { background-color: #f3f4f6 !important; }
 						.bg-green-50 { background-color: #f0fdf4 !important; }
 						.bg-blue-50 { background-color: #eff6ff !important; }
 						
-						/* Remove any potential oklch references */
-						[style*="oklch"] { 
-							color: #000000 !important; 
-							background-color: #ffffff !important; 
-						}
+						/* Preserve color utilities */
+						.text-gray-600 { color: #4b5563 !important; }
+						.text-gray-700 { color: #374151 !important; }
+						.text-gray-900 { color: #111827 !important; }
+						.text-green-600 { color: #16a34a !important; }
+						.text-red-600 { color: #dc2626 !important; }
+						.text-blue-600 { color: #2563eb !important; }
+						.text-purple-600 { color: #9333ea !important; }
+						.text-muted-foreground { color: #6b7280 !important; }
 					`;
 					clonedDoc.head.appendChild(style);
 					
-					// Remove all existing stylesheets to prevent oklch parsing
-					const links = clonedDoc.querySelectorAll('link[rel="stylesheet"]');
-					links.forEach(link => link.remove());
-					
-					const styles = clonedDoc.querySelectorAll('style');
-					styles.forEach(style => {
-						if (style !== clonedDoc.head.lastElementChild) {
-							style.remove();
+					// Only remove oklch-specific styles, preserve other stylesheets
+					const allStyles = clonedDoc.querySelectorAll('style, link[rel="stylesheet"]');
+					allStyles.forEach(styleElement => {
+						if (styleElement !== clonedDoc.head.lastElementChild) {
+							const content = styleElement.textContent || '';
+							if (content.includes('oklch')) {
+								// Remove the oklch properties but keep the element
+								if (styleElement.textContent) {
+									styleElement.textContent = content.replace(/color:\s*oklch\([^)]+\)/g, '');
+									styleElement.textContent = styleElement.textContent.replace(/background-color:\s*oklch\([^)]+\)/g, '');
+								}
+							}
 						}
 					});
 				},
