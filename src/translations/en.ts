@@ -1058,6 +1058,8 @@ export const en = {
     vpaContextDaysDesc: "Number of recent VPA entries to include in context",
     settingsAutoSaved: "💾 Settings are automatically saved to browser storage",
     quickAccess: "Quick access:",
+    quickChange: "Quick change:",
+    quickAdd: "Quick add:",
     
     // Company Context Configuration
     companyContextConfig: "Company Context Settings",

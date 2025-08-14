@@ -1058,6 +1058,8 @@ export const vn = {
     vpaContextDaysDesc: "Số mục VPA gần đây được bao gồm trong ngữ cảnh",
     settingsAutoSaved: "💾 Cài đặt được tự động lưu vào bộ nhớ trình duyệt",
     quickAccess: "Truy cập nhanh:",
+    quickChange: "Thay đổi nhanh:",
+    quickAdd: "Thêm nhanh:",
     
     // Company Context Configuration
     companyContextConfig: "Cài đặt ngữ cảnh công ty",

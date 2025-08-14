@@ -10,8 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MultiTickerSearch, TickerSearch } from "@/components/ui/TickerSearch";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useTickerData, useMultipleTickerData, useTickerAIData } from "@/lib/queries";
+import { useTickerData, useMultipleTickerData, useTickerAIData, useTickerGroups } from "@/lib/queries";
 import { useVPAData } from "@/hooks/useVPAData";
+import { findTickerSector, getTickersBySector } from "@/lib/stock-data";
 import { 
 	buildSingleTickerContext, 
 	buildMultipleTickersContext, 
@@ -69,6 +70,9 @@ function AskPage() {
 	});
 	
 	const [copyStates, setCopyStates] = useState<CopyState>({});
+	
+	// Ticker groups for same-sector suggestions
+	const { data: tickerGroups } = useTickerGroups();
 	
 	// Configuration states
 	const [showConfig, setShowConfig] = useState(false);
@@ -217,6 +221,18 @@ function AskPage() {
 		localStorage.removeItem('askAI.includeBasicInfo');
 		localStorage.removeItem('askAI.includeFinancialRatios');
 		localStorage.removeItem('askAI.includeDescription');
+	};
+
+	// Get same-sector tickers for quick actions
+	const getSameSectorTickers = (ticker: string): string[] => {
+		if (!tickerGroups || !ticker) return [];
+		
+		const sector = findTickerSector(tickerGroups, ticker);
+		if (!sector) return [];
+		
+		const sectorTickers = getTickersBySector(tickerGroups, sector);
+		// Return other tickers in the same sector (excluding the current ticker), limit to 4
+		return sectorTickers.filter(t => t !== ticker).slice(0, 4);
 	};
 
 	// Build contexts
@@ -528,6 +544,25 @@ function AskPage() {
 									<p className="text-sm text-green-600">
 										{t("askAI.dataReady")} ({singleTickerData?.length ?? 0} {t("askAI.dataPoints")})
 									</p>
+									
+									{/* Quick Change - Same Sector Tickers */}
+									{defaultTicker && getSameSectorTickers(defaultTicker).length > 0 && (
+										<div className="flex items-center gap-2 flex-wrap">
+											<span className="text-xs text-muted-foreground">{t("askAI.quickChange")}</span>
+											{getSameSectorTickers(defaultTicker).map((ticker) => (
+												<Button
+													key={ticker}
+													variant="outline"
+													size="sm"
+													onClick={() => handleSingleTickerChange(ticker)}
+													className="h-6 px-2 text-xs"
+												>
+													{ticker}
+												</Button>
+											))}
+										</div>
+									)}
+									
 									{defaultTicker && (
 										<div className="flex items-center gap-2">
 											<span className="text-xs text-muted-foreground">{t("askAI.quickAccess")}</span>
@@ -575,6 +610,32 @@ function AskPage() {
 											<p className="text-sm text-green-600">
 												{t("askAI.dataReady")} ({selectedTickers.length} {t("askAI.tickers")})
 											</p>
+											
+											{/* Quick Add - Same Sector Tickers */}
+											{(() => {
+												const allSameSectorTickers = selectedTickers.flatMap(ticker => getSameSectorTickers(ticker));
+												const uniqueSameSectorTickers = [...new Set(allSameSectorTickers)]
+													.filter(ticker => !selectedTickers.includes(ticker))
+													.slice(0, 6); // Limit to 6 suggestions
+												
+												return uniqueSameSectorTickers.length > 0 && (
+													<div className="flex items-center gap-2 flex-wrap">
+														<span className="text-xs text-muted-foreground">{t("askAI.quickAdd")}</span>
+														{uniqueSameSectorTickers.map((ticker) => (
+															<Button
+																key={ticker}
+																variant="outline"
+																size="sm"
+																onClick={() => handleTickersChange([...selectedTickers, ticker])}
+																className="h-6 px-2 text-xs"
+															>
+																{ticker}
+															</Button>
+														))}
+													</div>
+												);
+											})()}
+											
 											<div className="flex items-center gap-2 flex-wrap">
 												<span className="text-xs text-muted-foreground">{t("askAI.quickAccess")}</span>
 												{selectedTickers.map((ticker) => (
