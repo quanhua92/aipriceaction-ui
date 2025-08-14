@@ -167,6 +167,8 @@ export const en = {
     summary: "Portfolio Summary",
     privacy: "Privacy",
     profitLoss: "Profit/Loss",
+    gainLoss: "Gain/Loss",
+    returnPercent: "Return %",
     returns: "Returns",
     composition: "Portfolio Composition",
     investments: "Investments",

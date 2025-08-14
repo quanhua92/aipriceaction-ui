@@ -166,6 +166,8 @@ export const vn = {
     summary: "Tóm tắt danh mục",
     privacy: "Riêng tư",
     profitLoss: "Lãi/Lỗ",
+    gainLoss: "Lãi/Lỗ",
+    returnPercent: "Tỷ suất %",
     returns: "Tỷ suất sinh lời",
     composition: "Cơ cấu danh mục",
     investments: "Đầu tư",

@@ -1,6 +1,5 @@
-import { useMemo, useState, useEffect, useRef } from "react";
-import html2canvas from "html2canvas";
-import { PieChart, Eye, EyeOff, Edit3, TableProperties, TrendingUp, TrendingDown, Calendar, BarChart3, List, CreditCard, Camera } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
+import { PieChart, Eye, EyeOff, Edit3, TableProperties, TrendingUp, TrendingDown, Calendar, BarChart3, List, CreditCard } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -72,7 +71,6 @@ export function PortfolioSummaryCard({
 	const [depositValue, setDepositValue] = useState(deposit.toString());
 	const [viewMode, setViewMode] = useState<'compact' | 'table' | 'card'>('compact');
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState("2W");
-	const cardRef = useRef<HTMLDivElement>(null);
 
 	// Update depositValue when deposit prop changes (but not when editing)
 	useEffect(() => {
@@ -153,167 +151,6 @@ export function PortfolioSummaryCard({
 		setEditingDeposit(false);
 	};
 
-	const handleScreenshot = async () => {
-		console.log('📸 Screenshot button clicked');
-		console.log('🌐 Current URL:', window.location.href);
-		console.log('📱 User Agent:', navigator.userAgent);
-		
-		if (!cardRef.current) {
-			console.error('❌ cardRef.current is null');
-			return;
-		}
-		
-		console.log('✅ Card ref found, dimensions:', {
-			width: cardRef.current.scrollWidth,
-			height: cardRef.current.scrollHeight,
-			offsetWidth: cardRef.current.offsetWidth,
-			offsetHeight: cardRef.current.offsetHeight
-		});
-		
-		try {
-			console.log('🔄 Starting html2canvas...');
-			const canvas = await html2canvas(cardRef.current, {
-				backgroundColor: '#ffffff',
-				scale: 2, // Higher resolution
-				useCORS: true,
-				allowTaint: true,
-				height: cardRef.current.scrollHeight,
-				width: cardRef.current.scrollWidth,
-				logging: true, // Enable html2canvas logging
-				ignoreElements: (element) => {
-					// Skip elements that might cause issues
-					return element.tagName === 'SCRIPT' || 
-						   element.tagName === 'STYLE' ||
-						   element.tagName === 'LINK' ||
-						   (element as HTMLElement).hasAttribute?.('data-ignore-screenshot');
-				},
-				onclone: (clonedDoc) => {
-					// Fix oklch parsing issues while preserving layout and styling
-					const style = clonedDoc.createElement('style');
-					style.textContent = `
-						/* Fix oklch color parsing issues */
-						[style*="oklch"] { 
-							color: #000000 !important; 
-							background-color: #ffffff !important; 
-						}
-						
-						/* Ensure root container has white background */
-						body { 
-							background-color: #ffffff !important; 
-							margin: 0 !important;
-							padding: 0 !important;
-						}
-						
-						/* Preserve essential layout properties */
-						.grid { display: grid !important; }
-						.flex { display: flex !important; }
-						.inline-flex { display: inline-flex !important; }
-						.block { display: block !important; }
-						.inline-block { display: inline-block !important; }
-						.hidden { display: none !important; }
-						
-						/* Preserve spacing utilities */
-						.p-0 { padding: 0 !important; }
-						.p-1 { padding: 4px !important; }
-						.p-2 { padding: 8px !important; }
-						.p-3 { padding: 12px !important; }
-						.p-4 { padding: 16px !important; }
-						.p-6 { padding: 24px !important; }
-						.px-3 { padding-left: 12px !important; padding-right: 12px !important; }
-						.py-2 { padding-top: 8px !important; padding-bottom: 8px !important; }
-						.mb-1 { margin-bottom: 4px !important; }
-						.mb-2 { margin-bottom: 8px !important; }
-						.mb-3 { margin-bottom: 12px !important; }
-						.mb-4 { margin-bottom: 16px !important; }
-						.gap-2 { gap: 8px !important; }
-						.gap-3 { gap: 12px !important; }
-						
-						/* Preserve text utilities */
-						.text-xs { font-size: 12px !important; }
-						.text-sm { font-size: 14px !important; }
-						.text-lg { font-size: 18px !important; }
-						.text-xl { font-size: 20px !important; }
-						.font-medium { font-weight: 500 !important; }
-						.font-bold { font-weight: 700 !important; }
-						.text-center { text-align: center !important; }
-						.text-right { text-align: right !important; }
-						
-						/* Preserve border and background utilities */
-						.rounded-lg { border-radius: 8px !important; }
-						.border { border-width: 1px !important; border-style: solid !important; border-color: #e5e7eb !important; }
-						.bg-white { background-color: #ffffff !important; }
-						.bg-gray-50 { background-color: #f9fafb !important; }
-						.bg-gray-100 { background-color: #f3f4f6 !important; }
-						.bg-green-50 { background-color: #f0fdf4 !important; }
-						.bg-blue-50 { background-color: #eff6ff !important; }
-						
-						/* Preserve color utilities */
-						.text-gray-600 { color: #4b5563 !important; }
-						.text-gray-700 { color: #374151 !important; }
-						.text-gray-900 { color: #111827 !important; }
-						.text-green-600 { color: #16a34a !important; }
-						.text-red-600 { color: #dc2626 !important; }
-						.text-blue-600 { color: #2563eb !important; }
-						.text-purple-600 { color: #9333ea !important; }
-						.text-muted-foreground { color: #6b7280 !important; }
-					`;
-					clonedDoc.head.appendChild(style);
-					
-					// Only remove oklch-specific styles, preserve other stylesheets
-					const allStyles = clonedDoc.querySelectorAll('style, link[rel="stylesheet"]');
-					allStyles.forEach(styleElement => {
-						if (styleElement !== clonedDoc.head.lastElementChild) {
-							const content = styleElement.textContent || '';
-							if (content.includes('oklch')) {
-								// Remove the oklch properties but keep the element
-								if (styleElement.textContent) {
-									styleElement.textContent = content.replace(/color:\s*oklch\([^)]+\)/g, '');
-									styleElement.textContent = styleElement.textContent.replace(/background-color:\s*oklch\([^)]+\)/g, '');
-								}
-							}
-						}
-					});
-				},
-			});
-			
-			console.log('✅ html2canvas completed, canvas size:', {
-				width: canvas.width,
-				height: canvas.height
-			});
-			
-			// Create download link
-			const timestamp = new Date().toISOString().split('T')[0];
-			const filename = `portfolio-summary-${timestamp}.png`;
-			console.log('💾 Creating download link with filename:', filename);
-			
-			const link = document.createElement('a');
-			link.download = filename;
-			link.href = canvas.toDataURL('image/png');
-			
-			console.log('🔗 Download link created, href length:', link.href.length);
-			
-			// Trigger download
-			document.body.appendChild(link);
-			console.log('📎 Link added to DOM');
-			
-			link.click();
-			console.log('🖱️ Link clicked');
-			
-			document.body.removeChild(link);
-			console.log('🗑️ Link removed from DOM');
-			console.log('✅ Screenshot process completed successfully!');
-			
-		} catch (error) {
-			console.error('❌ Screenshot failed:', error);
-			if (error instanceof Error) {
-				console.error('Error details:', {
-					name: error.name,
-					message: error.message,
-					stack: error.stack
-				});
-			}
-		}
-	};
 
 	const CustomTooltip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
@@ -354,8 +191,7 @@ export function PortfolioSummaryCard({
 	};
 
 	return (
-		<div ref={cardRef}>
-			<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20 border-2 border-dashed border-muted/30">
+		<Card className="bg-gradient-to-br from-background via-blue-50/20 to-green-50/20 border-2 border-dashed border-muted/30">
 			<CardHeader>
 				<CardTitle className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
@@ -364,18 +200,9 @@ export function PortfolioSummaryCard({
 						</div>
 						<div>
 							<h2 className="text-lg font-bold">{t("portfolio.summary")}</h2>
-							<p className="text-xs text-muted-foreground hidden sm:block">{t("portfolio.screenshotOptimized")}</p>
 						</div>
 					</div>
 					<div className="flex items-center gap-2">
-						<button
-							onClick={handleScreenshot}
-							className="flex items-center gap-1 bg-background/50 rounded-full px-3 py-1 border hover:bg-background/80 transition-colors"
-							title={t("common.screenshot")}
-						>
-							<Camera className="h-3 w-3" />
-							<span className="text-xs hidden sm:inline">{t("common.screenshot")}</span>
-						</button>
 						<div className="flex items-center gap-2 bg-background/50 rounded-full px-3 py-1 border">
 							<Switch
 								id="privacy-toggle"
@@ -400,24 +227,39 @@ export function PortfolioSummaryCard({
 					</div>
 				) : (
 					<>
-				{/* Portfolio Summary Stats - 2x2 Grid */}
+				{/* Portfolio Summary Stats - Main 3 columns + Reference row */}
 				<div className="px-3 mb-3">
-					<div className="grid grid-cols-2 gap-3 text-xs">
-						<div className="text-center bg-gray-50 rounded-lg p-3">
-							<span className="text-muted-foreground block mb-1">{t("portfolio.totalAssets")}</span>
-							<div className="font-bold text-lg text-green-600">{displayValue(totalPortfolioValue)}</div>
-						</div>
-						<div className="text-center bg-gray-50 rounded-lg p-3">
-							<span className="text-muted-foreground block mb-1">{t("portfolio.totalDeposit")}</span>
-							<div className="font-bold text-lg text-blue-600">{displayValue(deposit)}</div>
+					{/* Main Portfolio Values - 3 columns */}
+					<div className="grid grid-cols-3 gap-3 text-xs mb-3">
+						<div className="text-center bg-green-50 rounded-lg p-3 border border-green-200">
+							<span className="text-muted-foreground block mb-1">{t("portfolio.equityValue")}</span>
+							<div className="font-bold text-lg text-green-600">{displayValue(currentMarketValue)}</div>
 						</div>
 						<div className="text-center bg-gray-50 rounded-lg p-3">
 							<span className="text-muted-foreground block mb-1">{t("portfolio.cashRemaining")}</span>
 							<div className="font-bold text-lg text-gray-600">{displayValue(remainingCash)}</div>
 						</div>
-						<div className="text-center bg-gray-50 rounded-lg p-3">
-							<span className="text-muted-foreground block mb-1">P&L</span>
-							<div className={`font-bold text-lg ${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+						<div className="text-center bg-blue-50 rounded-lg p-3 border border-blue-200">
+							<span className="text-muted-foreground block mb-1">{t("portfolio.totalAssets")}</span>
+							<div className="font-bold text-lg text-blue-600">{displayValue(totalPortfolioValue)}</div>
+						</div>
+					</div>
+					
+					{/* Reference Info - 3 columns */}
+					<div className="grid grid-cols-3 gap-3 text-xs">
+						<div className="text-center bg-gray-50 rounded-lg p-2">
+							<span className="text-muted-foreground block mb-1">{t("portfolio.totalDeposit")}</span>
+							<div className="font-medium text-sm text-gray-600">{displayValue(deposit)}</div>
+						</div>
+						<div className="text-center bg-gray-50 rounded-lg p-2">
+							<span className="text-muted-foreground block mb-1">{t("portfolio.gainLoss")}</span>
+							<div className={`font-semibold text-sm ${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+								{profitLoss >= 0 ? '+' : ''}{displayValue(Math.abs(profitLoss))}
+							</div>
+						</div>
+						<div className="text-center bg-gray-50 rounded-lg p-2">
+							<span className="text-muted-foreground block mb-1">{t("portfolio.returnPercent")}</span>
+							<div className={`font-semibold text-sm ${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
 								{profitLossPercentage >= 0 ? '+' : ''}{profitLossPercentage.toFixed(1)}%
 							</div>
 						</div>
@@ -1205,7 +1047,6 @@ export function PortfolioSummaryCard({
 					</>
 				)}
 			</CardContent>
-			</Card>
-		</div>
+		</Card>
 	);
 }
