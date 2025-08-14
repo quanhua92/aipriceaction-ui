@@ -180,10 +180,16 @@ export async function fetchTickerAIData(ticker: string): Promise<TickerAIData> {
 	}
 }
 
+// Helper function to check if a financial value should be displayed
+export function shouldDisplayFinancialValue(value: number | string): boolean {
+	const num = typeof value === 'string' ? parseFloat(value) : value;
+	return !isNaN(num) && num !== 0;
+}
+
 // Helper function to format financial values
 export function formatFinancialValue(value: number | string): string {
 	const num = typeof value === 'string' ? parseFloat(value) : value;
-	if (isNaN(num)) return 'N/A';
+	if (isNaN(num) || num === 0) return '';
 	
 	if (num >= 1000000000) {
 		return `${(num / 1000000000).toFixed(2)}B`;
@@ -200,7 +206,7 @@ export function formatFinancialValue(value: number | string): string {
 // Helper function to format percentage values
 export function formatPercentage(value: number | string): string {
 	const num = typeof value === 'string' ? parseFloat(value) : value;
-	if (isNaN(num)) return 'N/A';
+	if (isNaN(num) || num === 0) return '';
 	return `${num.toFixed(2)}%`;
 }
 

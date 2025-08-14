@@ -22,7 +22,7 @@ import { VPACard } from "@/components/vpa";
 import { AskAIButton } from "@/components/ask-ai";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useTickerGroups, useMultipleTickerData, useCompanyInfo, useFinancialInfo } from "@/lib/queries";
-import { formatFinancialValue, formatPercentage, formatCurrency } from "@/lib/company-data";
+import { formatFinancialValue, formatPercentage, formatCurrency, shouldDisplayFinancialValue } from "@/lib/company-data";
 import {
 	calculatePriceChange,
 	calculateRangeChange,
@@ -514,13 +514,20 @@ function TickerPage() {
 												</tr>
 											</thead>
 											<tbody>
-												{financialInfo.balance_sheet.slice(-10).map((item, index) => (
+												{financialInfo.balance_sheet
+													.slice(-10)
+													.filter(item => 
+														shouldDisplayFinancialValue(item.BSA96) || 
+														shouldDisplayFinancialValue(item.BSB96) || 
+														shouldDisplayFinancialValue(item.BSC96)
+													)
+													.map((item, index) => (
 													<tr key={index} className="border-b">
-														<td className="py-2">{item.year}</td>
-														<td className="py-2">Q{item.report_length}</td>
-														<td className="py-2">{formatFinancialValue(item.BSA || 0)}</td>
-														<td className="py-2">{formatFinancialValue(item.BSB || 0)}</td>
-														<td className="py-2">{formatFinancialValue(item.BSC || 0)}</td>
+														<td className="py-2">{item.yearReport || item.year}</td>
+														<td className="py-2">Q{item.lengthReport || item.report_length}</td>
+														<td className="py-2">{formatFinancialValue(item.BSA96 || 0)}</td>
+														<td className="py-2">{formatFinancialValue(item.BSB96 || 0)}</td>
+														<td className="py-2">{formatFinancialValue(item.BSC96 || 0)}</td>
 													</tr>
 												))}
 											</tbody>
@@ -559,14 +566,22 @@ function TickerPage() {
 												</tr>
 											</thead>
 											<tbody>
-												{financialInfo.income_statement.slice(-10).map((item, index) => (
+												{financialInfo.income_statement
+													.slice(-10)
+													.filter(item => 
+														shouldDisplayFinancialValue(item.revenue) || 
+														shouldDisplayFinancialValue(item.netProfit) || 
+														shouldDisplayFinancialValue(item.grossMargin) || 
+														shouldDisplayFinancialValue(item.netProfitMargin)
+													)
+													.map((item, index) => (
 													<tr key={index} className="border-b">
-														<td className="py-2">{item.year}</td>
-														<td className="py-2">Q{item.report_length}</td>
-														<td className="py-2">{formatFinancialValue(item.ISA1 || 0)}</td>
-														<td className="py-2">{formatFinancialValue(item.ISA22 || 0)}</td>
-														<td className="py-2">{formatPercentage(((item.ISA1 - item.ISA2) / item.ISA1 * 100) || 0)}</td>
-														<td className="py-2">{formatPercentage((item.ISA22 / item.ISA1 * 100) || 0)}</td>
+														<td className="py-2">{item.yearReport || item.year}</td>
+														<td className="py-2">Q{item.lengthReport || item.report_length}</td>
+														<td className="py-2">{formatFinancialValue(item.revenue || 0)}</td>
+														<td className="py-2">{formatFinancialValue(item.netProfit || 0)}</td>
+														<td className="py-2">{formatPercentage((item.grossMargin * 100) || 0)}</td>
+														<td className="py-2">{formatPercentage((item.netProfitMargin * 100) || 0)}</td>
 													</tr>
 												))}
 											</tbody>
