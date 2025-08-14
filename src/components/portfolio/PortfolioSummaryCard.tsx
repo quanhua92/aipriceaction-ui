@@ -249,7 +249,7 @@ export function PortfolioSummaryCard({
 									<span className="text-muted-foreground block mb-1 text-xs">
 										{t("portfolio.equityValue")}
 									</span>
-									<div className="font-bold text-sm sm:text-lg text-green-600">
+									<div className="font-bold text-xs sm:text-sm text-green-600">
 										{displayValue(currentMarketValue)}
 									</div>
 								</div>
@@ -257,7 +257,7 @@ export function PortfolioSummaryCard({
 									<span className="text-muted-foreground block mb-1 text-xs">
 										{t("portfolio.cashRemaining")}
 									</span>
-									<div className="font-bold text-sm sm:text-lg text-gray-600">
+									<div className="font-bold text-xs sm:text-sm text-gray-600">
 										{displayValue(remainingCash)}
 									</div>
 								</div>
@@ -265,7 +265,7 @@ export function PortfolioSummaryCard({
 									<span className="text-muted-foreground block mb-1 text-xs">
 										{t("portfolio.totalAssets")}
 									</span>
-									<div className="font-bold text-sm sm:text-lg text-blue-600">
+									<div className="font-bold text-xs sm:text-sm text-blue-600">
 										{displayValue(totalPortfolioValue)}
 									</div>
 								</div>
