@@ -50,7 +50,7 @@ export const vn = {
   // Home/Dashboard
   home: {
     title: "AIPriceAction: Thị trường Chứng khoán Việt Nam",
-    subtitle: "Phân tích thời gian thực và thông tin chi tiết về thị trường chứng khoán Việt Nam",
+    subtitle: "Thông tin đầu tư được hỗ trợ bởi AI và tối ưu hóa danh mục cho cổ phiếu Việt Nam",
     keySectorPerformance: "Hiệu suất ngành chính",
     topPerformers: "Cổ phiếu tốt nhất",
     topGainers: "Tăng mạnh nhất",

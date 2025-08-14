@@ -50,7 +50,7 @@ export const en = {
   // Home/Dashboard
   home: {
     title: "AIPriceAction: Vietnamese Stock Market",
-    subtitle: "Real-time analysis and insights for Vietnamese stock market",
+    subtitle: "AI-powered investment insights and portfolio optimization for Vietnamese stocks",
     keySectorPerformance: "Key Sector Performance",
     topPerformers: "Top Performers",
     topGainers: "Top Gainers",
