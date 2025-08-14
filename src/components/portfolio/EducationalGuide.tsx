@@ -194,7 +194,7 @@ export function EducationalGuide() {
 					{t("educationalGuide.subtitle")}
 				</p>
 			</CardHeader>
-			<CardContent className="space-y-6">
+			<CardContent className="p-3 md:p-6 space-y-6">
 				{/* Guide Sections */}
 				<div className="space-y-4">
 					{guideSections.map((section, sectionIndex) => (

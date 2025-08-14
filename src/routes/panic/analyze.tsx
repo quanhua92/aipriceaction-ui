@@ -543,7 +543,7 @@ function PanicAnalyzeDetail() {
 						{t("compare.subtitle")}
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="space-y-4">
+				<CardContent className="p-3 md:p-6 space-y-4">
 					{/* Ticker Selection */}
 					<div>
 						<label className="text-sm font-medium mb-2 block">
@@ -717,7 +717,7 @@ function PanicAnalyzeDetail() {
 								<CardTitle>{t("panic.sectorPerformanceBreakdown")}</CardTitle>
 								<CardDescription>{t("panic.individualSectorAnalysis")}</CardDescription>
 							</CardHeader>
-							<CardContent className="space-y-4">
+							<CardContent className="p-3 md:p-6 space-y-4">
 								<div className="space-y-3">
 									<div className="flex justify-between items-center p-3 border rounded">
 										<div>
@@ -779,7 +779,7 @@ function PanicAnalyzeDetail() {
 								<CardTitle>{t('panic.patternAnalysis')}</CardTitle>
 								<CardDescription>{t('panic.vietnameseMarketClassification')}</CardDescription>
 							</CardHeader>
-							<CardContent className="space-y-4">
+							<CardContent className="p-3 md:p-6 space-y-4">
 								<div className="p-4 bg-gray-50 rounded">
 									<div className="font-medium mb-2">{t("panic.classificationLogic")}</div>
 									<div className="text-sm text-gray-700 space-y-1">
@@ -881,7 +881,7 @@ function PanicAnalyzeDetail() {
 										{t('panic.riskManagementRecommendations')}
 									</CardDescription>
 								</CardHeader>
-								<CardContent className="space-y-4">
+								<CardContent className="p-3 md:p-6 space-y-4">
 									<Alert className={`${
 										prePanicAnalysis.strongestWarning === 'STRONG_WARNING' ? 'border-red-200 bg-red-50' :
 										prePanicAnalysis.strongestWarning === 'MODERATE_WARNING' ? 'border-orange-200 bg-orange-50' :
@@ -1327,7 +1327,7 @@ function PanicAnalyzeDetail() {
 										<CardTitle>Comprehensive Analysis</CardTitle>
 										<CardDescription>Raw analysis extracted from PANIC_ANALYSIS_WORKBOOK.md</CardDescription>
 									</CardHeader>
-									<CardContent className="space-y-6">
+									<CardContent className="p-3 md:p-6 space-y-6">
 										{/* Pre-Panic Analysis */}
 										<div>
 											<div className="font-semibold text-blue-700 mb-3 text-lg">PRE-PANIC ANALYSIS</div>
@@ -1367,7 +1367,7 @@ function PanicAnalyzeDetail() {
 									<CardTitle>Recovery Analysis</CardTitle>
 									<CardDescription>Post-panic stabilization and recovery patterns</CardDescription>
 								</CardHeader>
-								<CardContent className="space-y-4">
+								<CardContent className="p-3 md:p-6 space-y-4">
 									<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 										<div className="text-center p-4 border rounded">
 											<div className="text-2xl font-bold text-blue-600">

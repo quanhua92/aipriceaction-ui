@@ -140,7 +140,7 @@ function TopPerformers({
 						{title}
 					</CardTitle>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="p-3 md:p-6">
 					<div className="space-y-2">
 						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
 							<div key={i} className="animate-pulse">
@@ -168,7 +168,7 @@ function TopPerformers({
 					{title}
 				</CardTitle>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="p-3 md:p-6">
 				<div className="space-y-4">
 					{performers.slice(0, 10).map((performer, index) => {
 						const dailyPerf = dailyPerformanceMap[performer.ticker];
@@ -497,7 +497,7 @@ function Dashboard() {
 								</p>
 							</div>
 						</CardHeader>
-						<CardContent className="space-y-4">
+						<CardContent className="p-3 md:p-6 space-y-4">
 							{latestPrice && (
 								<>
 									<div>
@@ -575,7 +575,7 @@ function Dashboard() {
 							<CardHeader>
 								<CardTitle className="text-lg">{t("home.quickActions")}</CardTitle>
 							</CardHeader>
-							<CardContent className="space-y-2">
+							<CardContent className="p-3 md:p-6 space-y-2">
 								<Link to="/ticker/$symbol" params={{ symbol: "VNINDEX" }}>
 									<Button variant="outline" size="sm" className="w-full justify-start">
 										{t("common.view")} {t("home.vnIndex")} Details

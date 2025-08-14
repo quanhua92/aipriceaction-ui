@@ -126,7 +126,7 @@ export function TradingSignalsCard({
 				<CardDescription>{strategy.strategy}</CardDescription>
 			</CardHeader>
 
-			<CardContent className="space-y-6">
+			<CardContent className="p-3 md:p-6 space-y-6">
 				{/* Strategy Overview */}
 				<div className="grid grid-cols-2 gap-4 text-sm">
 					<div>

@@ -81,7 +81,7 @@ export function PrePanicWarningWidget({
 	if (error) {
 		return (
 			<Card className={cn("w-full", className)}>
-				<CardContent className="p-6">
+				<CardContent className="p-3 md:p-6">
 					<Alert>
 						<AlertTriangle className="h-4 w-4" />
 						<AlertDescription>

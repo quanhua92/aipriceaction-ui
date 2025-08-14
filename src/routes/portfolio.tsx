@@ -236,7 +236,7 @@ function PortfolioPage() {
 					</div>
 
 					<Card className="max-w-2xl mx-auto">
-						<CardContent className="p-8">
+						<CardContent className="p-4 md:p-8">
 							<div className="space-y-6">
 								<div>
 									<PieChart className="h-16 w-16 text-muted-foreground/40 mx-auto mb-4" />
@@ -391,7 +391,7 @@ function PortfolioPage() {
 			{/* Ask AI Box */}
 			{investments.length > 0 && (
 				<Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
-					<CardContent className="p-6">
+					<CardContent className="p-3 md:p-6">
 						<div className="flex items-center gap-4">
 							<div className="flex-shrink-0">
 								<div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -491,7 +491,7 @@ function PortfolioPage() {
 			{/* Portfolio Analysis Content */}
 			{error ? (
 				<Card className="border-red-200 bg-red-50">
-					<CardContent className="p-6 text-center">
+					<CardContent className="p-3 md:p-6 text-center">
 						<div className="space-y-4">
 							<div className="text-red-600">
 								<svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -540,7 +540,7 @@ function PortfolioPage() {
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 						{[1, 2, 3, 4].map((i) => (
 							<Card key={i}>
-								<CardContent className="p-6">
+								<CardContent className="p-3 md:p-6">
 									<div className="animate-pulse space-y-4">
 										<div className="h-4 bg-muted rounded w-1/2"></div>
 										<div className="h-32 bg-muted rounded"></div>
@@ -556,7 +556,7 @@ function PortfolioPage() {
 				</div>
 			) : (!tickerData || Object.keys(tickerData).length === 0) ? (
 				<Card className="border-yellow-200 bg-yellow-50">
-					<CardContent className="p-6 text-center">
+					<CardContent className="p-3 md:p-6 text-center">
 						<div className="space-y-4">
 							<div className="text-yellow-700">
 								<svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -326,7 +326,7 @@ function TickerPage() {
 			<div className="space-y-6">
 				{/* Ask AI Section */}
 				<Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
-					<CardContent className="p-6">
+					<CardContent className="p-3 md:p-6">
 						<div className="flex items-center gap-4">
 							<div className="flex-shrink-0">
 								<div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -372,7 +372,7 @@ function TickerPage() {
 					
 					<TabsContent value="company" className="mt-6">
 						<Card>
-							<CardContent className="p-6">
+							<CardContent className="p-3 md:p-6">
 							{companyLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -561,7 +561,7 @@ function TickerPage() {
 					
 					<TabsContent value="balance-sheet" className="mt-6">
 						<Card>
-							<CardContent className="p-6">
+							<CardContent className="p-3 md:p-6">
 							{financialLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -642,13 +642,13 @@ function TickerPage() {
 										<table className="w-full text-sm">
 											<thead>
 												<tr className="border-b">
-													<th className="text-left py-2 font-semibold">{t("financialInfo.period")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.cashAndEquivalents")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.currentAssets")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.totalAssets")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.currentLiabilities")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.totalLiabilities")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.totalEquity")}</th>
+													<th className="text-left py-2 px-3 font-semibold min-w-[100px]">{t("financialInfo.period")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.cashAndEquivalents")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.currentAssets")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.totalAssets")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.currentLiabilities")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.totalLiabilities")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.totalEquity")}</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -669,15 +669,15 @@ function TickerPage() {
 													
 													return displayData.map((item, index) => (
 														<tr key={index} className="border-b hover:bg-muted/50">
-															<td className="py-3 font-medium">
+															<td className="py-3 px-3 font-medium">
 																{item.yearReport || item.year} Q{item.lengthReport || item.report_length}
 															</td>
-															<td className="py-3 text-right">{formatFinancialValue(item.BSA2 || 0)}</td>
-															<td className="py-3 text-right">{formatFinancialValue(item.BSA5 || 0)}</td>
-															<td className="py-3 text-right font-semibold">{formatFinancialValue(item.BSA1 || 0)}</td>
-															<td className="py-3 text-right">{formatFinancialValue(item.BSA54 || 0)}</td>
-															<td className="py-3 text-right">{formatFinancialValue(item.BSA53 || 0)}</td>
-															<td className="py-3 text-right font-semibold text-green-700">{formatFinancialValue(item.BSA46 || 0)}</td>
+															<td className="py-3 px-3 text-right">{formatFinancialValue(item.BSA2 || 0)}</td>
+															<td className="py-3 px-3 text-right">{formatFinancialValue(item.BSA5 || 0)}</td>
+															<td className="py-3 px-3 text-right font-semibold">{formatFinancialValue(item.BSA1 || 0)}</td>
+															<td className="py-3 px-3 text-right">{formatFinancialValue(item.BSA54 || 0)}</td>
+															<td className="py-3 px-3 text-right">{formatFinancialValue(item.BSA53 || 0)}</td>
+															<td className="py-3 px-3 text-right font-semibold text-green-700">{formatFinancialValue(item.BSA46 || 0)}</td>
 														</tr>
 													));
 												})()}
@@ -737,7 +737,7 @@ function TickerPage() {
 					
 					<TabsContent value="income-statement" className="mt-6">
 						<Card>
-							<CardContent className="p-6">
+							<CardContent className="p-3 md:p-6">
 							{financialLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -828,14 +828,14 @@ function TickerPage() {
 										<table className="w-full text-sm">
 											<thead>
 												<tr className="border-b">
-													<th className="text-left py-2 font-semibold">{t("financialInfo.period")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.revenue")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.costOfSales")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.grossProfit")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.operatingExpenses")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.operatingIncome")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.netIncome")}</th>
-													<th className="text-right py-2 font-semibold">{t("financialInfo.netMarginLabel")}</th>
+													<th className="text-left py-2 px-3 font-semibold min-w-[100px]">{t("financialInfo.period")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.revenue")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.costOfSales")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.grossProfit")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[130px]">{t("financialInfo.operatingExpenses")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[130px]">{t("financialInfo.operatingIncome")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[120px]">{t("financialInfo.netIncome")}</th>
+													<th className="text-right py-2 px-3 font-semibold min-w-[100px]">{t("financialInfo.netMarginLabel")}</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -862,16 +862,16 @@ function TickerPage() {
 														
 														return (
 															<tr key={index} className="border-b hover:bg-muted/50">
-																<td className="py-3 font-medium">
+																<td className="py-3 px-3 font-medium">
 																	{item.yearReport || item.year} Q{item.lengthReport || item.report_length}
 																</td>
-																<td className="py-3 text-right font-semibold text-blue-700">{formatFinancialValue(revenue)}</td>
-																<td className="py-3 text-right text-red-600">{formatFinancialValue(Math.abs(costOfSales))}</td>
-																<td className="py-3 text-right font-semibold text-purple-700">{formatFinancialValue(grossProfit)}</td>
-																<td className="py-3 text-right text-red-600">{formatFinancialValue(Math.abs(operatingExpenses))}</td>
-																<td className="py-3 text-right font-semibold text-orange-700">{formatFinancialValue(operatingIncome)}</td>
-																<td className="py-3 text-right font-semibold text-green-700">{formatFinancialValue(netIncome)}</td>
-																<td className="py-3 text-right font-medium">{formatPercentage((netMargin * 100) || 0)}</td>
+																<td className="py-3 px-3 text-right font-semibold text-blue-700">{formatFinancialValue(revenue)}</td>
+																<td className="py-3 px-3 text-right text-red-600">{formatFinancialValue(Math.abs(costOfSales))}</td>
+																<td className="py-3 px-3 text-right font-semibold text-purple-700">{formatFinancialValue(grossProfit)}</td>
+																<td className="py-3 px-3 text-right text-red-600">{formatFinancialValue(Math.abs(operatingExpenses))}</td>
+																<td className="py-3 px-3 text-right font-semibold text-orange-700">{formatFinancialValue(operatingIncome)}</td>
+																<td className="py-3 px-3 text-right font-semibold text-green-700">{formatFinancialValue(netIncome)}</td>
+																<td className="py-3 px-3 text-right font-medium">{formatPercentage((netMargin * 100) || 0)}</td>
 															</tr>
 														);
 													});

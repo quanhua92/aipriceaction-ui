@@ -128,6 +128,38 @@ Charts are optimized with configurable data sampling:
 
 Demo files (prefixed with `demo`) can be safely deleted.
 
+## Mobile-First Responsive Design
+
+**CRITICAL: Always use responsive padding for mobile optimization**
+
+### Card Padding Rules
+- **Container cards**: Use `p-2 md:p-6` (pages like `container mx-auto`)
+- **Content cards**: Use `p-3 md:p-6` for CardContent
+- **Large feature cards**: Use `p-4 md:p-8` for prominent content areas
+- **Small utility cards**: Use `p-3` or `p-4` consistently
+
+### Examples
+```tsx
+// ✅ CORRECT - Mobile responsive
+<CardContent className="p-3 md:p-6">
+<div className="container mx-auto p-2 md:p-6">
+
+// ❌ WRONG - Too large on mobile  
+<CardContent className="p-6">
+<CardContent className="p-8">
+```
+
+### Table Responsive Design
+For horizontally scrollable tables, ensure adequate cell padding:
+```tsx
+// ✅ CORRECT
+<th className="text-right py-2 px-3 font-semibold min-w-[120px]">
+<td className="py-3 px-3 text-right">
+
+// ❌ WRONG - No horizontal padding
+<th className="text-right py-2 font-semibold">
+```
+
 ## important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.

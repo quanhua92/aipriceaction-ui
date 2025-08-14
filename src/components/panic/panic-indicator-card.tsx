@@ -69,7 +69,7 @@ export function PanicIndicatorCard({
 	
 	return (
 		<Card className={cn("w-full", className)}>
-			<CardContent className="p-6">
+			<CardContent className="p-3 md:p-6">
 				<div className="grid grid-cols-2 gap-6 min-h-[400px]">
 					{/* Left Column: VNINDEX - spans 2 rows */}
 					<div className="bg-gray-50 rounded-lg p-6 flex flex-col justify-center items-center">
