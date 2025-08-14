@@ -1,9 +1,8 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import {
 	PieChart,
 	Eye,
 	EyeOff,
-	Edit3,
 	TableProperties,
 	TrendingUp,
 	TrendingDown,
@@ -15,7 +14,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
 	Table,
@@ -41,7 +39,6 @@ import {
 	formatVND,
 	formatNumber,
 	isWatchListItem,
-	parseFormattedNumber,
 } from "@/lib/portfolio-utils";
 
 interface PortfolioSummaryCardProps {
@@ -50,8 +47,6 @@ interface PortfolioSummaryCardProps {
 	remainingCash?: number;
 	showPrivacy: boolean;
 	onTogglePrivacy: (show: boolean) => void;
-	manualDeposit?: boolean;
-	onUpdateDeposit?: (deposit: number) => void;
 	tickerData?: Record<string, any[]>; // Real market data for each ticker
 }
 
@@ -74,24 +69,13 @@ export function PortfolioSummaryCard({
 	remainingCash = 0,
 	showPrivacy,
 	onTogglePrivacy,
-	manualDeposit = false,
-	onUpdateDeposit,
 	tickerData,
 }: PortfolioSummaryCardProps) {
 	const { t } = useTranslation();
-	const [editingDeposit, setEditingDeposit] = useState(false);
-	const [depositValue, setDepositValue] = useState(deposit.toString());
 	const [viewMode, setViewMode] = useState<"compact" | "table" | "card">(
 		"compact",
 	);
 	const [selectedTimeFrame, setSelectedTimeFrame] = useState("2W");
-
-	// Update depositValue when deposit prop changes (but not when editing)
-	useEffect(() => {
-		if (!editingDeposit) {
-			setDepositValue(deposit.toString());
-		}
-	}, [deposit, editingDeposit]);
 
 	// Helper function to get current market price for a ticker
 	const getCurrentMarketPrice = (ticker: string): number => {
@@ -165,18 +149,6 @@ export function PortfolioSummaryCard({
 		return formatVND(value);
 	};
 
-	const handleDepositSubmit = () => {
-		if (onUpdateDeposit) {
-			const newDeposit = parseFormattedNumber(depositValue);
-			onUpdateDeposit(newDeposit);
-		}
-		setEditingDeposit(false);
-	};
-
-	const handleDepositCancel = () => {
-		setDepositValue(deposit.toString());
-		setEditingDeposit(false);
-	};
 
 	const CustomTooltip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
@@ -512,65 +484,6 @@ export function PortfolioSummaryCard({
 												</div>
 											</div>
 
-											{/* Deposit input at bottom */}
-											{onUpdateDeposit && (
-												<div className="border-t border-gray-200 p-2 bg-gray-50">
-													{editingDeposit ? (
-														<div className="flex items-center gap-2">
-															<span className="text-xs font-medium min-w-0">
-																{t("portfolio.totalDeposit")}:
-															</span>
-															<Input
-																type="text"
-																inputMode="numeric"
-																value={depositValue}
-																onChange={(e) =>
-																	setDepositValue(e.target.value)
-																}
-																className="flex-1 text-right font-medium bg-white text-xs h-8"
-																autoFocus
-															/>
-															<div className="flex gap-1">
-																<Button
-																	size="sm"
-																	className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-xs h-8"
-																	onClick={handleDepositSubmit}
-																>
-																	Save
-																</Button>
-																<Button
-																	size="sm"
-																	variant="outline"
-																	className="px-2 py-1 text-xs h-8"
-																	onClick={handleDepositCancel}
-																>
-																	Cancel
-																</Button>
-															</div>
-														</div>
-													) : (
-														<div className="flex items-center justify-between group">
-															<span className="text-xs font-medium text-gray-700">
-																{t("portfolio.totalDeposit")}{" "}
-																{!manualDeposit && "(auto)"}:
-															</span>
-															<div className="flex items-center gap-1">
-																<span className="font-medium text-gray-900 text-xs">
-																	{displayValue(deposit)}
-																</span>
-																<Button
-																	size="sm"
-																	variant="ghost"
-																	className="h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-																	onClick={() => setEditingDeposit(true)}
-																>
-																	<Edit3 className="h-2 w-2" />
-																</Button>
-															</div>
-														</div>
-													)}
-												</div>
-											)}
 										</div>
 									) : viewMode === "table" ? (
 										/* Traditional Table View */
@@ -688,10 +601,6 @@ export function PortfolioSummaryCard({
 												</div>
 											</div>
 
-											{/* Deposit input at bottom */}
-											{onUpdateDeposit && (
-												<div className="border-t border-gray-200 p-4 bg-gray-50"></div>
-											)}
 										</div>
 									) : (
 										/* Individual Card Grid Layout */

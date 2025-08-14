@@ -426,8 +426,6 @@ function PortfolioPage() {
 				remainingCash={remainingCash}
 				showPrivacy={showPrivacy}
 				onTogglePrivacy={setShowPrivacy}
-				manualDeposit={manualDeposit}
-				onUpdateDeposit={updateDeposit}
 				tickerData={tickerData}
 			/>
 
