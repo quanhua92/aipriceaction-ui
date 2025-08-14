@@ -143,7 +143,7 @@ function TickerPage() {
 
 	if (error) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="container mx-auto p-3 sm:p-6">
 				<Card>
 					<CardContent className="flex items-center justify-center h-64">
 						<div className="text-center space-y-4">

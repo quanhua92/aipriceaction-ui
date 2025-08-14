@@ -75,7 +75,7 @@ function PanicIndexPage() {
 
 	if (statsLoading) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="container mx-auto p-3 sm:p-6">
 				<div className="flex items-center justify-center h-64">
 					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
 				</div>

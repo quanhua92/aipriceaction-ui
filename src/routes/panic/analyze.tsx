@@ -352,7 +352,7 @@ function PanicAnalyzeDetail() {
 	// Don't proceed if no date - will redirect
 	if (!date) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="container mx-auto p-3 sm:p-6">
 				<div className="flex items-center justify-center h-64">
 					<div className="text-center">
 						<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -414,7 +414,7 @@ function PanicAnalyzeDetail() {
 
 	if (isLoading) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="container mx-auto p-3 sm:p-6">
 				<div className="flex items-center justify-center h-64">
 					<div className="text-center">
 						<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -427,7 +427,7 @@ function PanicAnalyzeDetail() {
 
 	if (error || !panicAnalysis) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="container mx-auto p-3 sm:p-6">
 				<Alert className="max-w-lg mx-auto">
 					<AlertTriangle className="h-4 w-4" />
 					<AlertDescription>
