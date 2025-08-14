@@ -107,7 +107,7 @@ function TickersPage() {
 
 	if (isLoading) {
 		return (
-			<div className="container mx-auto p-6">
+			<div className="container mx-auto p-3 sm:p-6">
 				<div className="flex items-center justify-center h-64">
 					<div className="text-muted-foreground">{t("loading.tickerData")}</div>
 				</div>
@@ -116,7 +116,7 @@ function TickersPage() {
 	}
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6">
 			<div>
 				<h1 className="text-3xl font-bold mb-2">{t("tickers.title")}</h1>
 				<p className="text-muted-foreground">
