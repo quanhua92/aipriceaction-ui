@@ -572,50 +572,110 @@ function TickerPage() {
 									</div>
 								</div>
 							) : financialInfo?.balance_sheet && financialInfo.balance_sheet.length > 0 ? (
-								<div className="space-y-4">
+								<div className="space-y-6">
 									<h3 className="text-lg font-semibold">{t("financialInfo.balanceSheet")}</h3>
+									
+									{/* Balance Sheet Summary */}
+									<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+										{(() => {
+											const latestData = financialInfo.balance_sheet
+												.filter(item => shouldDisplayFinancialValue(item.BSA1))
+												.sort((a, b) => (b.year || b.yearReport) - (a.year || a.yearReport))[0];
+											
+											if (!latestData) return null;
+											
+											return (
+												<>
+													<div className="bg-blue-50 p-4 rounded-lg">
+														<h4 className="font-medium text-blue-900">Total Assets</h4>
+														<p className="text-2xl font-bold text-blue-700">
+															{formatFinancialValue(latestData.BSA1 || 0)}
+														</p>
+														<p className="text-xs text-blue-600">
+															{latestData.yearReport || latestData.year} Q{latestData.lengthReport || latestData.report_length}
+														</p>
+													</div>
+													<div className="bg-red-50 p-4 rounded-lg">
+														<h4 className="font-medium text-red-900">Total Liabilities</h4>
+														<p className="text-2xl font-bold text-red-700">
+															{formatFinancialValue(latestData.BSA53 || 0)}
+														</p>
+														<p className="text-xs text-red-600">
+															{((latestData.BSA53 || 0) / (latestData.BSA1 || 1) * 100).toFixed(1)}% of assets
+														</p>
+													</div>
+													<div className="bg-green-50 p-4 rounded-lg">
+														<h4 className="font-medium text-green-900">Total Equity</h4>
+														<p className="text-2xl font-bold text-green-700">
+															{formatFinancialValue(latestData.BSA46 || 0)}
+														</p>
+														<p className="text-xs text-green-600">
+															{((latestData.BSA46 || 0) / (latestData.BSA1 || 1) * 100).toFixed(1)}% of assets
+														</p>
+													</div>
+												</>
+											);
+										})()}
+									</div>
+									
+									{/* Detailed Balance Sheet */}
 									<div className="overflow-x-auto">
 										<table className="w-full text-sm">
 											<thead>
 												<tr className="border-b">
-													<th className="text-left py-2">{t("financialInfo.year")}</th>
-													<th className="text-left py-2">{t("financialInfo.quarter")}</th>
-													<th className="text-left py-2">{t("financialInfo.assets")}</th>
-													<th className="text-left py-2">{t("financialInfo.liabilities")}</th>
-													<th className="text-left py-2">{t("financialInfo.equity")}</th>
+													<th className="text-left py-2 font-semibold">Period</th>
+													<th className="text-right py-2 font-semibold">Cash & Equivalents</th>
+													<th className="text-right py-2 font-semibold">Current Assets</th>
+													<th className="text-right py-2 font-semibold">Total Assets</th>
+													<th className="text-right py-2 font-semibold">Current Liabilities</th>
+													<th className="text-right py-2 font-semibold">Total Liabilities</th>
+													<th className="text-right py-2 font-semibold">Total Equity</th>
 												</tr>
 											</thead>
 											<tbody>
 												{(() => {
+													// Filter for items with meaningful data
 													const filteredData = financialInfo.balance_sheet
 														.filter(item => 
-															shouldDisplayFinancialValue(item.BSA96) || 
-															shouldDisplayFinancialValue(item.BSB96) || 
-															shouldDisplayFinancialValue(item.BSC96)
+															shouldDisplayFinancialValue(item.BSA1) || 
+															shouldDisplayFinancialValue(item.BSA2) ||
+															shouldDisplayFinancialValue(item.BSA5) ||
+															shouldDisplayFinancialValue(item.BSA46) ||
+															shouldDisplayFinancialValue(item.BSA53) ||
+															shouldDisplayFinancialValue(item.BSA54)
 														)
 														.sort((a, b) => (b.year || b.yearReport) - (a.year || a.yearReport));
 													
 													const displayData = isBalanceSheetExpanded ? filteredData : filteredData.slice(0, 5);
 													
 													return displayData.map((item, index) => (
-														<tr key={index} className="border-b">
-															<td className="py-2">{item.yearReport || item.year}</td>
-															<td className="py-2">Q{item.lengthReport || item.report_length}</td>
-															<td className="py-2">{formatFinancialValue(item.BSA96 || 0)}</td>
-															<td className="py-2">{formatFinancialValue(item.BSB96 || 0)}</td>
-															<td className="py-2">{formatFinancialValue(item.BSC96 || 0)}</td>
+														<tr key={index} className="border-b hover:bg-muted/50">
+															<td className="py-3 font-medium">
+																{item.yearReport || item.year} Q{item.lengthReport || item.report_length}
+															</td>
+															<td className="py-3 text-right">{formatFinancialValue(item.BSA2 || 0)}</td>
+															<td className="py-3 text-right">{formatFinancialValue(item.BSA5 || 0)}</td>
+															<td className="py-3 text-right font-semibold">{formatFinancialValue(item.BSA1 || 0)}</td>
+															<td className="py-3 text-right">{formatFinancialValue(item.BSA54 || 0)}</td>
+															<td className="py-3 text-right">{formatFinancialValue(item.BSA53 || 0)}</td>
+															<td className="py-3 text-right font-semibold text-green-700">{formatFinancialValue(item.BSA46 || 0)}</td>
 														</tr>
 													));
 												})()}
 											</tbody>
 										</table>
 									</div>
+									
+									{/* Show More/Less Button */}
 									{(() => {
 										const totalItems = financialInfo.balance_sheet
 											.filter(item => 
-												shouldDisplayFinancialValue(item.BSA96) || 
-												shouldDisplayFinancialValue(item.BSB96) || 
-												shouldDisplayFinancialValue(item.BSC96)
+												shouldDisplayFinancialValue(item.BSA1) || 
+												shouldDisplayFinancialValue(item.BSA2) ||
+												shouldDisplayFinancialValue(item.BSA5) ||
+												shouldDisplayFinancialValue(item.BSA46) ||
+												shouldDisplayFinancialValue(item.BSA53) ||
+												shouldDisplayFinancialValue(item.BSA54)
 											).length;
 										
 										if (totalItems > 5) {
@@ -635,7 +695,7 @@ function TickerPage() {
 														) : (
 															<>
 																<ChevronDown className="h-4 w-4 mr-2" />
-																Show More ({totalItems - 5} more)
+																Show More ({totalItems - 5} more periods)
 															</>
 														)}
 													</Button>
@@ -666,54 +726,126 @@ function TickerPage() {
 									</div>
 								</div>
 							) : financialInfo?.income_statement && financialInfo.income_statement.length > 0 ? (
-								<div className="space-y-4">
+								<div className="space-y-6">
 									<h3 className="text-lg font-semibold">{t("financialInfo.incomeStatement")}</h3>
+									
+									{/* Income Statement Summary */}
+									<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+										{(() => {
+											const latestData = financialInfo.income_statement
+												.filter(item => shouldDisplayFinancialValue(item.ISA1 || item.revenue))
+												.sort((a, b) => (b.year || b.yearReport) - (a.year || a.yearReport))[0];
+											
+											if (!latestData) return null;
+											
+											return (
+												<>
+													<div className="bg-blue-50 p-4 rounded-lg">
+														<h4 className="font-medium text-blue-900">Total Revenue</h4>
+														<p className="text-2xl font-bold text-blue-700">
+															{formatFinancialValue(latestData.ISA1 || latestData.revenue || 0)}
+														</p>
+														<p className="text-xs text-blue-600">
+															{latestData.yearReport || latestData.year} Q{latestData.lengthReport || latestData.report_length}
+														</p>
+													</div>
+													<div className="bg-purple-50 p-4 rounded-lg">
+														<h4 className="font-medium text-purple-900">Gross Profit</h4>
+														<p className="text-2xl font-bold text-purple-700">
+															{formatFinancialValue(latestData.ISA5 || 0)}
+														</p>
+														<p className="text-xs text-purple-600">
+															Margin: {formatPercentage((latestData.grossMargin * 100) || ((latestData.ISA5 || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
+														</p>
+													</div>
+													<div className="bg-orange-50 p-4 rounded-lg">
+														<h4 className="font-medium text-orange-900">Operating Income</h4>
+														<p className="text-2xl font-bold text-orange-700">
+															{formatFinancialValue(latestData.ISA11 || latestData.ISA16 || 0)}
+														</p>
+														<p className="text-xs text-orange-600">
+															Margin: {formatPercentage(((latestData.ISA11 || latestData.ISA16 || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
+														</p>
+													</div>
+													<div className="bg-green-50 p-4 rounded-lg">
+														<h4 className="font-medium text-green-900">Net Income</h4>
+														<p className="text-2xl font-bold text-green-700">
+															{formatFinancialValue(latestData.ISA20 || latestData.netProfit || 0)}
+														</p>
+														<p className="text-xs text-green-600">
+															Margin: {formatPercentage((latestData.netProfitMargin * 100) || ((latestData.ISA20 || latestData.netProfit || 0) / (latestData.ISA1 || latestData.revenue || 1) * 100))}
+														</p>
+													</div>
+												</>
+											);
+										})()}
+									</div>
+									
+									{/* Comprehensive Income Statement */}
 									<div className="overflow-x-auto">
 										<table className="w-full text-sm">
 											<thead>
 												<tr className="border-b">
-													<th className="text-left py-2">{t("financialInfo.year")}</th>
-													<th className="text-left py-2">{t("financialInfo.quarter")}</th>
-													<th className="text-left py-2">{t("financialInfo.revenue")}</th>
-													<th className="text-left py-2">{t("financialInfo.netProfit")}</th>
-													<th className="text-left py-2">{t("financialInfo.grossMargin")}</th>
-													<th className="text-left py-2">{t("financialInfo.netMargin")}</th>
+													<th className="text-left py-2 font-semibold">Period</th>
+													<th className="text-right py-2 font-semibold">Revenue</th>
+													<th className="text-right py-2 font-semibold">Cost of Sales</th>
+													<th className="text-right py-2 font-semibold">Gross Profit</th>
+													<th className="text-right py-2 font-semibold">Operating Expenses</th>
+													<th className="text-right py-2 font-semibold">Operating Income</th>
+													<th className="text-right py-2 font-semibold">Net Income</th>
+													<th className="text-right py-2 font-semibold">Net Margin</th>
 												</tr>
 											</thead>
 											<tbody>
 												{(() => {
 													const filteredData = financialInfo.income_statement
 														.filter(item => 
-															shouldDisplayFinancialValue(item.revenue) || 
-															shouldDisplayFinancialValue(item.netProfit) || 
-															shouldDisplayFinancialValue(item.grossMargin) || 
-															shouldDisplayFinancialValue(item.netProfitMargin)
+															shouldDisplayFinancialValue(item.ISA1 || item.revenue) || 
+															shouldDisplayFinancialValue(item.ISA5) ||
+															shouldDisplayFinancialValue(item.ISA11) ||
+															shouldDisplayFinancialValue(item.ISA20 || item.netProfit)
 														)
 														.sort((a, b) => (b.year || b.yearReport) - (a.year || a.yearReport));
 													
 													const displayData = isIncomeStatementExpanded ? filteredData : filteredData.slice(0, 5);
 													
-													return displayData.map((item, index) => (
-														<tr key={index} className="border-b">
-															<td className="py-2">{item.yearReport || item.year}</td>
-															<td className="py-2">Q{item.lengthReport || item.report_length}</td>
-															<td className="py-2">{formatFinancialValue(item.revenue || 0)}</td>
-															<td className="py-2">{formatFinancialValue(item.netProfit || 0)}</td>
-															<td className="py-2">{formatPercentage((item.grossMargin * 100) || 0)}</td>
-															<td className="py-2">{formatPercentage((item.netProfitMargin * 100) || 0)}</td>
-														</tr>
-													));
+													return displayData.map((item, index) => {
+														const revenue = item.ISA1 || item.revenue || 0;
+														const costOfSales = item.ISA4 || 0;
+														const grossProfit = item.ISA5 || 0;
+														const operatingExpenses = item.ISA19 || 0;
+														const operatingIncome = item.ISA11 || item.ISA16 || 0;
+														const netIncome = item.ISA20 || item.netProfit || 0;
+														const netMargin = item.netProfitMargin || (revenue > 0 ? (netIncome / revenue) : 0);
+														
+														return (
+															<tr key={index} className="border-b hover:bg-muted/50">
+																<td className="py-3 font-medium">
+																	{item.yearReport || item.year} Q{item.lengthReport || item.report_length}
+																</td>
+																<td className="py-3 text-right font-semibold text-blue-700">{formatFinancialValue(revenue)}</td>
+																<td className="py-3 text-right text-red-600">{formatFinancialValue(Math.abs(costOfSales))}</td>
+																<td className="py-3 text-right font-semibold text-purple-700">{formatFinancialValue(grossProfit)}</td>
+																<td className="py-3 text-right text-red-600">{formatFinancialValue(Math.abs(operatingExpenses))}</td>
+																<td className="py-3 text-right font-semibold text-orange-700">{formatFinancialValue(operatingIncome)}</td>
+																<td className="py-3 text-right font-semibold text-green-700">{formatFinancialValue(netIncome)}</td>
+																<td className="py-3 text-right font-medium">{formatPercentage((netMargin * 100) || 0)}</td>
+															</tr>
+														);
+													});
 												})()}
 											</tbody>
 										</table>
 									</div>
+									
+									{/* Show More/Less Button */}
 									{(() => {
 										const totalItems = financialInfo.income_statement
 											.filter(item => 
-												shouldDisplayFinancialValue(item.revenue) || 
-												shouldDisplayFinancialValue(item.netProfit) || 
-												shouldDisplayFinancialValue(item.grossMargin) || 
-												shouldDisplayFinancialValue(item.netProfitMargin)
+												shouldDisplayFinancialValue(item.ISA1 || item.revenue) || 
+												shouldDisplayFinancialValue(item.ISA5) ||
+												shouldDisplayFinancialValue(item.ISA11) ||
+												shouldDisplayFinancialValue(item.ISA20 || item.netProfit)
 											).length;
 										
 										if (totalItems > 5) {
@@ -733,7 +865,7 @@ function TickerPage() {
 														) : (
 															<>
 																<ChevronDown className="h-4 w-4 mr-2" />
-																Show More ({totalItems - 5} more)
+																Show More ({totalItems - 5} more periods)
 															</>
 														)}
 													</Button>
