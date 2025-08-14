@@ -225,8 +225,8 @@ function PortfolioPage() {
 
 	if (portfolioItems.length === 0) {
 		return (
-			<div className="container mx-auto p-6">
-				<div className="text-center space-y-6">
+			<div className="container mx-auto p-3 sm:p-6">
+				<div className="text-center space-y-4 sm:space-y-6">
 					<div>
 						<h1 className="text-3xl font-bold mb-2 flex items-center gap-2 justify-center">
 							<Target className="h-8 w-8" />
@@ -324,7 +324,7 @@ function PortfolioPage() {
 	}
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
+		<div className="container mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6">
 			{/* Header */}
 			<div>
 				<h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
