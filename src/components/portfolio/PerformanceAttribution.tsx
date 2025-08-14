@@ -224,9 +224,27 @@ export function PerformanceAttribution({
 							
 							return (
 								<div key={attribution.stock.ticker} className="border rounded-lg p-4">
-									<div className="flex items-center justify-between mb-3">
-										<div className="flex items-center gap-3">
-											<h4 className="font-semibold text-lg">{attribution.stock.ticker}</h4>
+									{/* Mobile Layout - Stack vertically */}
+									<div className="sm:hidden space-y-3">
+										{/* Header */}
+										<div className="flex items-center justify-between">
+											<div className="flex items-center gap-2">
+												<h4 className="font-semibold text-lg">{attribution.stock.ticker}</h4>
+												<VPAButton 
+													ticker={attribution.stock.ticker}
+													variant="icon"
+													mode="popover"
+												/>
+											</div>
+											<div className="text-right">
+												<p className={`text-lg font-bold ${getPerformanceColor(attribution.stock.totalReturn)}`}>
+													{attribution.stock.totalReturn >= 0 ? "+" : ""}{(attribution.stock.totalReturn * 100).toFixed(2)}%
+												</p>
+											</div>
+										</div>
+										
+										{/* Badges */}
+										<div className="flex gap-2 flex-wrap">
 											<Badge variant={badgeInfo.variant} className="flex items-center gap-1">
 												{IconComponent && <IconComponent className="h-3 w-3" />}
 												#{attribution.performanceRank}
@@ -234,22 +252,68 @@ export function PerformanceAttribution({
 											<Badge variant="outline">
 												{((1 / portfolioTickers.length) * 100).toFixed(1)}% {t("attribution.weight")}
 											</Badge>
-											<VPAButton 
-												ticker={attribution.stock.ticker}
-												variant="icon"
-												mode="popover"
-												className="ml-2"
-											/>
 										</div>
-										<div className="text-right">
-											<p className={`text-lg font-bold ${getPerformanceColor(attribution.stock.totalReturn)}`}>
-												{attribution.stock.totalReturn >= 0 ? "+" : ""}{(attribution.stock.totalReturn * 100).toFixed(2)}%
-											</p>
-											<p className="text-sm text-muted-foreground">{t("metrics.totalReturn")}</p>
+										
+										{/* Metrics - 2x2 grid on mobile */}
+										<div className="grid grid-cols-2 gap-3">
+											<div>
+												<p className="text-xs text-muted-foreground mb-1">{t("attribution.portfolioContribution")}</p>
+												<span className={`text-sm font-medium ${getPerformanceColor(attribution.weightedContribution)}`}>
+													{attribution.weightedContribution >= 0 ? "+" : ""}{(attribution.weightedContribution * 100).toFixed(2)}%
+												</span>
+											</div>
+											
+											<div>
+												<p className="text-xs text-muted-foreground mb-1">{t("attribution.vsBenchmark")}</p>
+												<span className={`text-sm font-medium ${getPerformanceColor(attribution.relativePerformance)}`}>
+													{attribution.relativePerformance >= 0 ? "+" : ""}{(attribution.relativePerformance * 100).toFixed(2)}%
+												</span>
+											</div>
+											
+											<div>
+												<p className="text-xs text-muted-foreground mb-1">{t("metrics.beta")}</p>
+												<span className="text-sm font-medium">
+													{attribution.stock.beta.toFixed(2)}
+												</span>
+											</div>
+											
+											<div>
+												<p className="text-xs text-muted-foreground mb-1">{t("metrics.volatility")}</p>
+												<span className="text-sm font-medium">
+													{(attribution.stock.volatility * 100).toFixed(1)}%
+												</span>
+											</div>
 										</div>
 									</div>
-									
-									<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+									{/* Desktop Layout - Original horizontal layout */}
+									<div className="hidden sm:block">
+										<div className="flex items-center justify-between mb-3">
+											<div className="flex items-center gap-3">
+												<h4 className="font-semibold text-lg">{attribution.stock.ticker}</h4>
+												<Badge variant={badgeInfo.variant} className="flex items-center gap-1">
+													{IconComponent && <IconComponent className="h-3 w-3" />}
+													#{attribution.performanceRank}
+												</Badge>
+												<Badge variant="outline">
+													{((1 / portfolioTickers.length) * 100).toFixed(1)}% {t("attribution.weight")}
+												</Badge>
+												<VPAButton 
+													ticker={attribution.stock.ticker}
+													variant="icon"
+													mode="popover"
+													className="ml-2"
+												/>
+											</div>
+											<div className="text-right">
+												<p className={`text-lg font-bold ${getPerformanceColor(attribution.stock.totalReturn)}`}>
+													{attribution.stock.totalReturn >= 0 ? "+" : ""}{(attribution.stock.totalReturn * 100).toFixed(2)}%
+												</p>
+												<p className="text-sm text-muted-foreground">{t("metrics.totalReturn")}</p>
+											</div>
+										</div>
+										
+										<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 										<div>
 											<p className="text-sm text-muted-foreground mb-1">{t("attribution.portfolioContribution")}</p>
 											<div className="flex items-center gap-2">
@@ -283,6 +347,7 @@ export function PerformanceAttribution({
 												{(attribution.stock.volatility * 100).toFixed(1)}%
 											</span>
 										</div>
+									</div>
 									</div>
 								</div>
 							);
