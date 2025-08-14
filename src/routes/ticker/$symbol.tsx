@@ -325,26 +325,30 @@ function TickerPage() {
 			{/* Charts */}
 			<div className="space-y-6">
 				{/* Ask AI Section */}
-				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<Brain className="h-5 w-5 text-green-600" />
-							{t("askAI.title")}
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="space-y-4">
-							<p className="text-muted-foreground">
-								{t("askAI.description", { symbol })}
-							</p>
-							<AskAIButton 
-								ticker={symbol}
-								variant="default"
-								size="lg"
-								className="w-full md:w-auto"
-							>
-								{t("askAI.askAI")} {t("askAI.aboutTicker", { symbol })}
-							</AskAIButton>
+				<Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+					<CardContent className="p-6">
+						<div className="flex items-center gap-4">
+							<div className="flex-shrink-0">
+								<div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+									<Brain className="h-6 w-6 text-green-600" />
+								</div>
+							</div>
+							<div className="flex-1">
+								<h3 className="text-lg font-semibold text-gray-900 mb-2">
+									{t("askAI.title")}
+								</h3>
+								<p className="text-sm text-gray-600 mb-4">
+									{t("askAI.description", { symbol })}
+								</p>
+								<AskAIButton 
+									ticker={symbol}
+									variant="default"
+									size="lg"
+									className="bg-green-600 hover:bg-green-700 text-white w-full md:w-auto"
+								>
+									{t("askAI.askAI")} {t("askAI.aboutTicker", { symbol })}
+								</AskAIButton>
+							</div>
 						</div>
 					</CardContent>
 				</Card>

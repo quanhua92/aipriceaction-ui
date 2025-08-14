@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { TickerSearch } from "@/components/ui/TickerSearch";
 import { TickerPerformanceTable } from "@/components/ui/TickerPerformanceTable";
+import { AskAIButton } from "@/components/ask-ai";
 // import { PrePanicWarningWidget } from "@/components/panic";
 import { useMultipleTickerData } from "@/lib/queries";
 import {
@@ -397,18 +398,14 @@ function PortfolioPage() {
 								<p className="text-sm text-gray-600 mb-4">
 									{t("portfolio.askAI.description")}
 								</p>
-								<Link
-									to="/ask"
-									search={{
-										tickers: ["VNINDEX", ...investments.map(item => item.ticker)],
-										tab: "multi"
-									}}
+								<AskAIButton 
+									tickers={["VNINDEX", ...investments.map(item => item.ticker)]}
+									variant="default"
+									size="md"
+									defaultTab="multi"
 								>
-									<Button className="bg-green-600 hover:bg-green-700 text-white">
-										<Brain className="h-4 w-4 mr-2" />
-										{t("portfolio.askAI.button")}
-									</Button>
-								</Link>
+									{t("portfolio.askAI.button")}
+								</AskAIButton>
 							</div>
 						</div>
 					</CardContent>
