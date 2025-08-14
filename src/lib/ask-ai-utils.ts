@@ -1,6 +1,30 @@
 import type { StockDataPoint } from "./stock-data";
 import type { TickerAIData } from "./company-data";
 
+// Helper function to clean HTML tags from text
+function cleanHtmlText(html: string): string {
+	if (!html) return '';
+	
+	// Remove HTML tags and decode HTML entities
+	return html
+		.replace(/<[^>]*>/g, '') // Remove HTML tags
+		.replace(/&nbsp;/g, ' ') // Replace non-breaking spaces
+		.replace(/&amp;/g, '&') // Replace encoded ampersands
+		.replace(/&lt;/g, '<') // Replace encoded less than
+		.replace(/&gt;/g, '>') // Replace encoded greater than
+		.replace(/&quot;/g, '"') // Replace encoded quotes
+		.replace(/&#39;/g, "'") // Replace encoded apostrophes
+		.replace(/&agrave;/g, 'à') // Vietnamese characters
+		.replace(/&aacute;/g, 'á')
+		.replace(/&eacute;/g, 'é')
+		.replace(/&iacute;/g, 'í')
+		.replace(/&ocirc;/g, 'ô')
+		.replace(/&uacute;/g, 'ú')
+		.replace(/&\w+;/g, '') // Remove other HTML entities
+		.replace(/\s+/g, ' ') // Replace multiple spaces with single space
+		.trim();
+}
+
 export interface AskAITemplate {
 	id: string;
 	title: string;
@@ -90,6 +114,9 @@ export function formatTickerAIContext(
 	
 	// Basic company information (controlled by includeBasicInfo)
 	if (includeBasicInfo) {
+		if (tickerAIData.companyName) {
+			contextLines.push(`${ticker}: CompanyName=${tickerAIData.companyName}`);
+		}
 		if (tickerAIData.exchange) {
 			contextLines.push(`${ticker}: Exchange=${tickerAIData.exchange}`);
 		}
@@ -146,7 +173,10 @@ export function formatTickerAIContext(
 
 	// Company description (controlled by includeDescription)
 	if (includeDescription && tickerAIData.description) {
-		contextLines.push(`${ticker}: Description=${tickerAIData.description}`);
+		const cleanDescription = cleanHtmlText(tickerAIData.description);
+		if (cleanDescription) {
+			contextLines.push(`${ticker}: Description=${cleanDescription}`);
+		}
 	}
 
 	return contextLines.length > 0 ? contextLines.join('\n') : `${ticker}: No AI data available`;
