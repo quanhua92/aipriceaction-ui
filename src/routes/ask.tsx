@@ -325,7 +325,7 @@ function AskPage() {
 						className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
 					>
 						<Settings className="h-4 w-4" />
-						Configuration
+						{t("askAI.configuration")}
 						{showConfig ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
 					</Button>
 				</div>
@@ -335,7 +335,7 @@ function AskPage() {
 						<CardHeader className="pb-4">
 							<CardTitle className="text-lg flex items-center gap-2">
 								<Settings className="h-5 w-5" />
-								Context Configuration
+								{t("askAI.contextConfiguration")}
 							</CardTitle>
 						</CardHeader>
 						<CardContent>
@@ -344,7 +344,7 @@ function AskPage() {
 								<div className="space-y-4">
 									<div className="space-y-2">
 										<Label htmlFor="chart-context-days" className="text-sm font-medium">
-											Chart context days (0 = no chart data)
+											{t("askAI.chartContextDays")}
 										</Label>
 										<Input
 											id="chart-context-days"
@@ -357,13 +357,13 @@ function AskPage() {
 											placeholder="10"
 										/>
 										<p className="text-xs text-muted-foreground">
-											Number of recent trading days to include in chart context
+											{t("askAI.chartContextDaysDesc")}
 										</p>
 									</div>
 									
 									<div className="space-y-2">
 										<Label htmlFor="vpa-context-days" className="text-sm font-medium">
-											VPA context days (0 = no VPA data)
+											{t("askAI.vpaContextDays")}
 										</Label>
 										<Input
 											id="vpa-context-days"
@@ -376,7 +376,7 @@ function AskPage() {
 											placeholder="5"
 										/>
 										<p className="text-xs text-muted-foreground">
-											Number of recent VPA entries to include in context
+											{t("askAI.vpaContextDaysDesc")}
 										</p>
 									</div>
 								</div>
@@ -443,7 +443,7 @@ function AskPage() {
 									</div>
 									
 									<div className="pt-2 text-xs text-muted-foreground">
-										<p>💾 Settings are automatically saved to browser storage</p>
+										<p>{t("askAI.settingsAutoSaved")}</p>
 									</div>
 								</div>
 							</div>

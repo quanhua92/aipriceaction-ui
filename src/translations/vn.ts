@@ -1022,6 +1022,15 @@ export const vn = {
     aboutTicker: "về {symbol}",
     instructions: "Hướng dẫn sử dụng: Nhấp 'Sao Chép' trên bất kỳ mẫu nào bên dưới, sau đó dán vào AI chatbot ưa thích của bạn (ChatGPT, Gemini, Claude, v.v.) để phân tích chi tiết.",
     
+    // Configuration
+    configuration: "Cấu hình",
+    contextConfiguration: "Cấu hình ngữ cảnh",
+    chartContextDays: "Số ngày ngữ cảnh biểu đồ (0 = không có dữ liệu biểu đồ)",
+    chartContextDaysDesc: "Số ngày giao dịch gần đây được bao gồm trong ngữ cảnh biểu đồ",
+    vpaContextDays: "Số ngày ngữ cảnh VPA (0 = không có dữ liệu VPA)",
+    vpaContextDaysDesc: "Số mục VPA gần đây được bao gồm trong ngữ cảnh",
+    settingsAutoSaved: "💾 Cài đặt được tự động lưu vào bộ nhớ trình duyệt",
+    
     // Company Context Configuration
     companyContextConfig: "Cài đặt ngữ cảnh công ty",
     includeBasicInfo: "Bao gồm thông tin cơ bản công ty",

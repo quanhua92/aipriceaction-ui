@@ -1022,6 +1022,15 @@ export const en = {
     aboutTicker: "about {symbol}",
     instructions: "How to use: Click 'Copy' on any template below, then paste into your preferred AI chatbot (ChatGPT, Gemini, Claude, etc.) for detailed analysis.",
     
+    // Configuration
+    configuration: "Configuration",
+    contextConfiguration: "Context Configuration",
+    chartContextDays: "Chart context days (0 = no chart data)",
+    chartContextDaysDesc: "Number of recent trading days to include in chart context",
+    vpaContextDays: "VPA context days (0 = no VPA data)",
+    vpaContextDaysDesc: "Number of recent VPA entries to include in context",
+    settingsAutoSaved: "💾 Settings are automatically saved to browser storage",
+    
     // Company Context Configuration
     companyContextConfig: "Company Context Settings",
     includeBasicInfo: "Include Basic Company Info",
