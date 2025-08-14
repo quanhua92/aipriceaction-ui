@@ -168,6 +168,8 @@ export const vn = {
     profitLoss: "Lãi/Lỗ",
     gainLoss: "Lãi/Lỗ",
     returnPercent: "Tỷ suất %",
+    costBasis: "Giá gốc",
+    marketValue: "Giá trị thị trường",
     returns: "Tỷ suất sinh lời",
     composition: "Cơ cấu danh mục",
     investments: "Đầu tư",
@@ -192,14 +194,12 @@ export const vn = {
     buyPrice: "Giá mua", 
     profitPercent: "Lãi %",
     profitPrice: "Lãi (VND)",
-    costBasis: "Giá vốn",
     totalDeposit: "Tổng vốn",
     totalAssets: "Tổng tài sản",
     totalCapital: "Tổng vốn",
     overview: "Tổng quan",
     allocation: "Phân bổ",
     performance: "Hiệu suất",
-    marketValue: "Giá trị thị trường",
     manualDeposit: "Vốn thủ công",
     currentDeposit: "Vốn hiện tại",
     enterDeposit: "Nhập số tiền vốn",
@@ -208,6 +208,8 @@ export const vn = {
     equityValue: "Giá trị cổ phiếu",
     cashRemaining: "Tiền mặt còn lại",
     remainingCash: "Tiền mặt còn lại",
+    totalCostBasis: "Tổng giá gốc",
+    totalEquityValue: "Tổng giá trị cổ phiếu",
     
     // Performance Tab
     performanceTab: {

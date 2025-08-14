@@ -169,6 +169,8 @@ export const en = {
     profitLoss: "Profit/Loss",
     gainLoss: "Gain/Loss",
     returnPercent: "Return %",
+    costBasis: "Cost Basis",
+    marketValue: "Market Value",
     returns: "Returns",
     composition: "Portfolio Composition",
     investments: "Investments",
@@ -193,14 +195,12 @@ export const en = {
     buyPrice: "Buy Price", 
     profitPercent: "Profit %",
     profitPrice: "Profit (VND)",
-    costBasis: "Cost Basis",
     totalDeposit: "Total Deposit",
     totalAssets: "Total Assets",
     totalCapital: "Total Deposit",
     overview: "Overview",
     allocation: "Allocation",
     performance: "Performance",
-    marketValue: "Market Value",
     manualDeposit: "Manual Deposit",
     currentDeposit: "Current Deposit",
     enterDeposit: "Enter deposit amount",
@@ -209,6 +209,8 @@ export const en = {
     equityValue: "Equity Value",
     cashRemaining: "Cash Remaining",
     remainingCash: "Remaining Cash",
+    totalCostBasis: "Total Cost Basis",
+    totalEquityValue: "Total Equity Value",
     
     // Performance Tab
     performanceTab: {
