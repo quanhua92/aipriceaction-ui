@@ -137,6 +137,11 @@ function PortfolioPage() {
 		updateSearchParams({ tickers: encoded });
 	}, [updateSearchParams]);
 
+	// Bulk update multiple portfolio items at once
+	const handleUpdateItems = useCallback((newItems: PortfolioItem[]) => {
+		updatePortfolioItems(newItems);
+	}, [updatePortfolioItems]);
+
 	// Update deposit in URL with manual flag
 	const updateDeposit = useCallback((newDeposit: number) => {
 		updateSearchParams({ 
@@ -371,6 +376,7 @@ function PortfolioPage() {
 			<PortfolioTable
 				items={portfolioItems}
 				onUpdateItem={handleUpdateItem}
+				onUpdateItems={handleUpdateItems}
 				onRemoveItem={handleRemoveItem}
 				onAddItem={handleAddItem}
 				deposit={actualDeposit}

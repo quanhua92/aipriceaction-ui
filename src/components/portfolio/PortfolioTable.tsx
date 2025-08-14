@@ -40,6 +40,7 @@ import {
 interface PortfolioTableProps {
 	items: PortfolioItem[];
 	onUpdateItem: (ticker: string, quantity: number, price: number) => void;
+	onUpdateItems?: (items: PortfolioItem[]) => void; // Bulk update for multiple changes
 	onRemoveItem: (ticker: string) => void;
 	onAddItem: (ticker: string) => void;
 	deposit: number;
@@ -54,6 +55,7 @@ interface PortfolioTableProps {
 export function PortfolioTable({
 	items,
 	onUpdateItem,
+	onUpdateItems,
 	onRemoveItem,
 	onAddItem,
 	deposit,
@@ -141,16 +143,33 @@ export function PortfolioTable({
 			}
 		});
 		
-		// Apply updates for each ticker with final values
-		Object.entries(tickerUpdates).forEach(([ticker, updates]) => {
-			const item = items.find(item => item.ticker === ticker);
-			if (!item) return;
+		// Apply all updates to items array at once
+		const updatedItems = items.map(item => {
+			const updates = tickerUpdates[item.ticker];
+			if (!updates) return item;
 			
 			const finalQuantity = updates.quantity !== undefined ? updates.quantity : item.quantity;
 			const finalPrice = updates.price !== undefined ? updates.price : item.price;
 			
-			onUpdateItem(ticker, finalQuantity, finalPrice);
+			return { ...item, quantity: finalQuantity, price: finalPrice };
 		});
+		
+		// Use bulk update if available, otherwise fall back to individual updates
+		if (onUpdateItems) {
+			// Bulk update - single URL update with all changes
+			onUpdateItems(updatedItems);
+		} else {
+			// Fallback to individual updates for backward compatibility
+			Object.entries(tickerUpdates).forEach(([ticker, updates]) => {
+				const item = items.find(item => item.ticker === ticker);
+				if (!item) return;
+				
+				const finalQuantity = updates.quantity !== undefined ? updates.quantity : item.quantity;
+				const finalPrice = updates.price !== undefined ? updates.price : item.price;
+				
+				onUpdateItem(ticker, finalQuantity, finalPrice);
+			});
+		}
 		
 		setLocalValues({});
 		setHasUnsavedChanges(false);
