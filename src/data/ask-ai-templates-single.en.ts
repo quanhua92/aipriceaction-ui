@@ -100,5 +100,90 @@ export const singleTickerTemplatesEN: AskAITemplate[] = [
 		id: "market-context",
 		title: "Market context analysis",
 		prompt: "How is the broader market context (VNINDEX trend, market sentiment, economic factors) affecting this ticker's price action? Should I consider macro factors?"
+	},
+	{
+		id: "profit-maximization",
+		title: "Profit maximization strategy",
+		prompt: "Based on all available data (chart, VPA, company fundamentals), what is the highest probability strategy to maximize profits from this ticker? Include optimal position sizing, entry timing, and profit-taking levels."
+	},
+	{
+		id: "risk-reward-ratio",
+		title: "Risk-reward ratio analysis",
+		prompt: "Calculate the risk-reward ratio for potential trades in this ticker. What is the best risk-reward setup available right now? Where should I place stops and targets for maximum profitability?"
+	},
+	{
+		id: "failure-prevention",
+		title: "Common trading failures to avoid",
+		prompt: "Based on this ticker's price action and VPA patterns, what are the most common trading mistakes that lead to losses? How can I avoid these failure points and protect my capital?"
+	},
+	{
+		id: "market-timing",
+		title: "Optimal market timing",
+		prompt: "When is the absolute best time to enter and exit this ticker? Analyze intraday patterns, weekly cycles, and seasonal trends to identify the highest probability timing windows."
+	},
+	{
+		id: "position-sizing",
+		title: "Position sizing for maximum safety",
+		prompt: "Given this ticker's volatility and my risk tolerance, what position size would maximize returns while protecting against catastrophic losses? Include Kelly criterion analysis if applicable."
+	},
+	{
+		id: "catalyst-analysis",
+		title: "Upcoming catalysts and events",
+		prompt: "What upcoming events, earnings, or market catalysts could significantly impact this ticker's price? How should I position myself to profit from these potential moves?"
+	},
+	{
+		id: "insider-smart-money",
+		title: "Smart money and insider activity",
+		prompt: "What does the volume and price action suggest about smart money, institutional, or insider activity? Are they accumulating or distributing? How can I align with smart money flow?"
+	},
+	{
+		id: "profit-protection",
+		title: "Profit protection strategy",
+		prompt: "If I'm already profitable in this position, what's the best strategy to protect and maximize these gains? Should I use trailing stops, partial profit-taking, or other techniques?"
+	},
+	{
+		id: "contrarian-opportunities",
+		title: "Contrarian opportunity analysis",
+		prompt: "Is there a contrarian play opportunity in this ticker? When everyone is bearish, is it time to be bullish (or vice versa)? Analyze sentiment vs. technical data for contrarian profits."
+	},
+	{
+		id: "dividend-income-analysis",
+		title: "Dividend and income potential",
+		prompt: "Analyze this ticker's dividend history and income potential. Is this suitable for income-focused strategies? What's the dividend safety and growth prospects?"
+	},
+	{
+		id: "options-strategies",
+		title: "Options trading opportunities",
+		prompt: "What options strategies would be most profitable for this ticker's current setup? Analyze covered calls, cash-secured puts, or more complex strategies based on volatility and direction."
+	},
+	{
+		id: "earnings-strategy",
+		title: "Earnings play strategy",
+		prompt: "How should I trade this ticker around earnings announcements? What's the historical earnings reaction pattern? Should I hold through earnings or close before?"
+	},
+	{
+		id: "capital-preservation",
+		title: "Capital preservation priority",
+		prompt: "If capital preservation is my top priority, how should I approach this ticker? What's the safest way to participate in potential upside while minimizing downside risk?"
+	},
+	{
+		id: "momentum-scalping",
+		title: "Momentum and scalping opportunities",
+		prompt: "What short-term momentum and scalping opportunities exist in this ticker? Identify the best intraday patterns and quick profit opportunities based on VPA analysis."
+	},
+	{
+		id: "swing-trading-setup",
+		title: "Swing trading optimization",
+		prompt: "What's the optimal swing trading setup for this ticker? Analyze the best holding periods, entry/exit patterns, and profit targets for swing trades based on historical patterns."
+	},
+	{
+		id: "value-trap-analysis",
+		title: "Value trap detection",
+		prompt: "Is this ticker a value trap or genuine opportunity? Analyze whether apparent cheapness is justified by fundamentals or if there are hidden risks that could lead to continued underperformance."
+	},
+	{
+		id: "recovery-potential",
+		title: "Recovery and turnaround potential",
+		prompt: "If this ticker has been declining, what's the recovery potential? Analyze whether this is a temporary setback or structural decline. What signals would indicate a successful turnaround?"
 	}
 ];

@@ -105,5 +105,105 @@ export const multipleTickerTemplatesVN: AskAITemplate[] = [
 		id: "rebalancing-strategy",
 		title: "Chiến lược tái cân bằng danh mục",
 		prompt: "Nếu tôi nắm giữ tất cả các mã này trong một danh mục, khi nào và như thế nào tôi nên tái cân bằng dựa trên hiệu suất tương đối và tín hiệu kỹ thuật của chúng?"
+	},
+	{
+		id: "profit-optimization-portfolio",
+		title: "Chiến lược danh mục tối đa hóa lợi nhuận",
+		prompt: "Thiết kế chiến lược tối đa hóa lợi nhuận tối ưu bằng cách sử dụng các mã này. Phân bổ, thời điểm vào lệnh và cách chốt lời nào sẽ tạo ra lợi nhuận cao nhất trong khi quản lý rủi ro?"
+	},
+	{
+		id: "capital-rotation-strategy",
+		title: "Tối ưu hóa luân chuyển vốn",
+		prompt: "Tôi nên luân chuyển vốn giữa các mã này như thế nào để tối đa hóa lợi nhuận? Mã nào nên nhận vốn trước, thứ hai, thứ ba? Khi nào tôi nên chuyển tiền từ mã này sang mã khác để có lợi nhuận tối ưu?"
+	},
+	{
+		id: "risk-parity-approach",
+		title: "Xây dựng danh mục cân bằng rủi ro",
+		prompt: "Xây dựng danh mục cân bằng rủi ro với các mã này trong đó mỗi mã đóng góp rủi ro bằng nhau. Trọng số nào đạt được điều này? So sánh với cách tiếp cận trọng số vốn hóa thị trường hoặc trọng số bằng nhau?"
+	},
+	{
+		id: "momentum-ranking-system",
+		title: "Hệ thống xếp hạng và luân chuyển momentum",
+		prompt: "Xếp hạng các mã này theo sức mạnh momentum và tạo hệ thống luân chuyển. Mã nào tôi nên tăng trọng số, giảm trọng số hoặc tránh hoàn toàn? Tôi nên đánh giá lại xếp hạng bao lâu một lần?"
+	},
+	{
+		id: "defensive-aggressive-split",
+		title: "Phân bổ phòng thủ vs tích cực",
+		prompt: "Chia các mã này thành nhóm phòng thủ và tích cực. Tôi nên phân bổ như thế nào giữa phòng thủ và tích cực dựa trên điều kiện thị trường hiện tại? Tỷ lệ nào tối ưu hóa lợi nhuận điều chỉnh rủi ro?"
+	},
+	{
+		id: "earnings-season-strategy",
+		title: "Chiến lược danh mục mùa kết quả kinh doanh",
+		prompt: "Tôi nên định vị danh mục này như thế nào xung quanh mùa kết quả kinh doanh? Mã nào giữ qua kết quả kinh doanh, mã nào bán trước và mã nào mua sau? Tối ưu hóa cho lợi nhuận liên quan đến kết quả kinh doanh."
+	},
+	{
+		id: "market-crash-protection",
+		title: "Chiến lược bảo vệ khỏi sụp đổ thị trường",
+		prompt: "Làm thế nào tôi có thể định vị danh mục này để thu lợi hoặc ít nhất bảo vệ khỏi sụp đổ thị trường? Mã nào cung cấp khả năng bảo vệ downside tốt nhất? Tôi có nên hedge hay chuyển sang tiền mặt?"
+	},
+	{
+		id: "sector-momentum-rotation",
+		title: "Chiến lược luân chuyển momentum ngành",
+		prompt: "Dựa trên đại diện ngành trong các mã này, tạo chiến lược luân chuyển ngành. Ngành nào đang tăng momentum và xứng đáng với phân bổ nhiều hơn? Ngành nào đang mất momentum?"
+	},
+	{
+		id: "volatility-harvesting",
+		title: "Cơ hội thu hoạch biến động",
+		prompt: "Làm thế nào tôi có thể thu hoạch biến động từ các mã này để có lợi nhuận bổ sung? Những kết hợp nào cung cấp cơ hội chênh lệch biến động hoặc hồi quy trung bình tốt nhất?"
+	},
+	{
+		id: "tax-optimization-strategy",
+		title: "Chiến lược giao dịch tối ưu thuế",
+		prompt: "Thiết kế cách tiếp cận tối ưu thuế để giao dịch các mã này. Khi nào thực hiện lời so với lỗ? Làm thế nào để tối ưu hóa cho xử lý lợi nhuận vốn dài hạn vs ngắn hạn?"
+	},
+	{
+		id: "liquidity-tiered-approach",
+		title: "Định cỡ vị thế theo tầng thanh khoản",
+		prompt: "Phân tầng các mã này theo thanh khoản và khuyến nghị cỡ vị thế tương ứng. Vị thế kém thanh khoản nên được định cỡ khác biệt như thế nào? Chiến lược phân bổ dựa trên thanh khoản tối ưu là gì?"
+	},
+	{
+		id: "crisis-opportunity-positioning",
+		title: "Định vị cơ hội khủng hoảng",
+		prompt: "Nếu xảy ra khủng hoảng thị trường, mã nào trong số này cung cấp cơ hội phục hồi tốt nhất? Tôi nên định vị như thế nào để có lợi nhuận tối đa trong thời kỳ thị trường rối loạn và phục hồi sau đó?"
+	},
+	{
+		id: "income-growth-balance",
+		title: "Tối ưu hóa thu nhập vs tăng trưởng",
+		prompt: "Cân bằng các mã này để có thu nhập vs tăng trưởng tối ưu. Phân bổ nào tối đa hóa tổng lợi nhuận (cổ tức + lãi vốn)? Điều này nên thay đổi như thế nào dựa trên chu kỳ thị trường?"
+	},
+	{
+		id: "correlation-arbitrage",
+		title: "Cơ hội chênh lệch tương quan",
+		prompt: "Xác định cơ hội chênh lệch tương quan giữa các mã này. Khi tương quan bị phá vỡ, tôi có thể thu lợi như thế nào? Cặp nào cung cấp tiềm năng chênh lệch thống kê tốt nhất?"
+	},
+	{
+		id: "market-leadership-rotation",
+		title: "Chiến lược luân chuyển dẫn đầu thị trường",
+		prompt: "Mã nào trong số này là nhà lãnh đạo thị trường vs kẻ theo sau? Tạo chiến lược luân chuyển từ nhà lãnh đạo sang kẻ theo sau và ngược lại. Thay đổi vai trò lãnh đạo thường xảy ra khi nào?"
+	},
+	{
+		id: "options-overlay-strategy",
+		title: "Chiến lược overlay quyền chọn để tăng lợi nhuận",
+		prompt: "Thiết kế chiến lược overlay quyền chọn cho danh mục cổ phiếu này. Mã nào tốt nhất cho covered call, protective put hoặc chiến lược collar? Có thể tạo ra bao nhiêu thu nhập bổ sung?"
+	},
+	{
+		id: "drawdown-minimization",
+		title: "Giảm thiểu sụt giảm tối đa",
+		prompt: "Cấu hình danh mục này để giảm thiểu sụt giảm tối đa trong khi duy trì tiềm năng lợi nhuận. Phân bổ và quy tắc giao dịch nào đạt được lợi nhuận điều chỉnh rủi ro tốt nhất?"
+	},
+	{
+		id: "multi-timeframe-strategy",
+		title: "Chiến lược phân bổ đa khung thời gian",
+		prompt: "Thiết kế các chiến lược phân bổ khác nhau cho các khung thời gian khác nhau: giao dịch trong ngày, swing trading và đầu tư dài hạn. Cỡ vị thế và chiến lược nên thay đổi như thế nào theo khung thời gian?"
+	},
+	{
+		id: "smart-rebalancing-triggers",
+		title: "Tín hiệu tái cân bằng thông minh",
+		prompt: "Tạo tín hiệu tái cân bằng thông minh ngoài tái cân bằng dựa trên lịch. Tín hiệu kỹ thuật, cơ bản hoặc điều kiện thị trường nào nên kích hoạt tái cân bằng để có hiệu quả tối đa?"
+	},
+	{
+		id: "concentration-vs-diversification",
+		title: "Tập trung tối ưu vs đa dạng hóa",
+		prompt: "Mức độ tập trung vs đa dạng hóa tối ưu với các mã này là gì? Tôi có nên tập trung vào 2-3 mã hoạt động tốt nhất hay phân bổ đều? Điều này thay đổi như thế nào với điều kiện thị trường?"
 	}
 ];

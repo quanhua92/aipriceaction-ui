@@ -105,5 +105,105 @@ export const multipleTickerTemplatesEN: AskAITemplate[] = [
 		id: "rebalancing-strategy",
 		title: "Portfolio rebalancing strategy",
 		prompt: "If I hold all these tickers in a portfolio, when and how should I rebalance based on their relative performance and technical signals?"
+	},
+	{
+		id: "profit-optimization-portfolio",
+		title: "Maximum profit portfolio strategy",
+		prompt: "Design the ultimate profit-maximizing strategy using these tickers. What allocation, entry timing, and profit-taking approach would generate the highest returns while managing risk?"
+	},
+	{
+		id: "capital-rotation-strategy",
+		title: "Capital rotation optimization",
+		prompt: "How should I rotate capital between these tickers to maximize gains? Which ticker should get capital first, second, third? When should I move money from one to another for optimal profits?"
+	},
+	{
+		id: "risk-parity-approach",
+		title: "Risk parity portfolio construction",
+		prompt: "Build a risk parity portfolio with these tickers where each contributes equal risk. What weightings achieve this? How does this compare to market cap weighted or equal weighted approaches?"
+	},
+	{
+		id: "momentum-ranking-system",
+		title: "Momentum ranking and rotation",
+		prompt: "Rank these tickers by momentum strength and create a rotation system. Which should I overweight, underweight, or avoid entirely? How often should I reassess rankings?"
+	},
+	{
+		id: "defensive-aggressive-split",
+		title: "Defensive vs aggressive allocation",
+		prompt: "Split these tickers into defensive and aggressive buckets. How should I allocate between defensive and aggressive based on current market conditions? What ratio optimizes risk-adjusted returns?"
+	},
+	{
+		id: "earnings-season-strategy",
+		title: "Earnings season portfolio strategy",
+		prompt: "How should I position this portfolio around earnings season? Which tickers to hold through earnings, which to sell before, and which to buy after? Optimize for earnings-related profits."
+	},
+	{
+		id: "market-crash-protection",
+		title: "Market crash protection strategy",
+		prompt: "How can I position this portfolio to profit or at least protect against a market crash? Which tickers provide the best downside protection? Should I hedge or go to cash?"
+	},
+	{
+		id: "sector-momentum-rotation",
+		title: "Sector momentum rotation strategy",
+		prompt: "Based on sector representation in these tickers, create a sector rotation strategy. Which sectors are gaining momentum and deserve more allocation? Which are losing momentum?"
+	},
+	{
+		id: "volatility-harvesting",
+		title: "Volatility harvesting opportunities",
+		prompt: "How can I harvest volatility from these tickers for additional profits? Which combinations offer the best volatility arbitrage or mean reversion opportunities?"
+	},
+	{
+		id: "tax-optimization-strategy",
+		title: "Tax-optimized trading strategy",
+		prompt: "Design a tax-optimized approach for trading these tickers. When to realize gains vs losses? How to optimize for long-term vs short-term capital gains treatment?"
+	},
+	{
+		id: "liquidity-tiered-approach",
+		title: "Liquidity-tiered position sizing",
+		prompt: "Tier these tickers by liquidity and recommend position sizes accordingly. How should illiquid positions be sized differently? What's the optimal liquidity-based allocation strategy?"
+	},
+	{
+		id: "crisis-opportunity-positioning",
+		title: "Crisis opportunity positioning",
+		prompt: "If a market crisis occurs, which of these tickers offer the best recovery opportunities? How should I position for maximum gains during market dislocations and subsequent recovery?"
+	},
+	{
+		id: "income-growth-balance",
+		title: "Income vs growth optimization",
+		prompt: "Balance these tickers for optimal income vs growth. What allocation maximizes total returns (dividends + capital gains)? How should this change based on market cycles?"
+	},
+	{
+		id: "correlation-arbitrage",
+		title: "Correlation arbitrage opportunities",
+		prompt: "Identify correlation arbitrage opportunities among these tickers. When correlations break down, how can I profit? What pairs offer the best statistical arbitrage potential?"
+	},
+	{
+		id: "market-leadership-rotation",
+		title: "Market leadership rotation strategy",
+		prompt: "Which of these tickers are market leaders vs laggards? Create a strategy to rotate from leaders to laggards and back. When do leadership changes typically occur?"
+	},
+	{
+		id: "options-overlay-strategy",
+		title: "Options overlay for enhanced returns",
+		prompt: "Design an options overlay strategy for this stock portfolio. Which tickers are best for covered calls, protective puts, or collar strategies? How much additional income can be generated?"
+	},
+	{
+		id: "drawdown-minimization",
+		title: "Maximum drawdown minimization",
+		prompt: "Configure this portfolio to minimize maximum drawdown while maintaining return potential. What allocation and trading rules achieve the best risk-adjusted returns?"
+	},
+	{
+		id: "multi-timeframe-strategy",
+		title: "Multi-timeframe allocation strategy",
+		prompt: "Design different allocation strategies for different timeframes: day trading, swing trading, and long-term investing. How should position sizes and strategies vary by timeframe?"
+	},
+	{
+		id: "smart-rebalancing-triggers",
+		title: "Smart rebalancing triggers",
+		prompt: "Create intelligent rebalancing triggers beyond calendar-based rebalancing. What technical, fundamental, or market condition signals should trigger rebalancing for maximum efficiency?"
+	},
+	{
+		id: "concentration-vs-diversification",
+		title: "Optimal concentration vs diversification",
+		prompt: "What's the optimal level of concentration vs diversification with these tickers? Should I focus on top 2-3 performers or spread equally? How does this change with market conditions?"
 	}
 ];
