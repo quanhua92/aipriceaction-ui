@@ -322,6 +322,29 @@ export const en = {
     quarterly: "Quarterly",
     yearly: "Yearly",
     latest: "Latest",
+    
+    // Balance Sheet detailed fields
+    totalAssets: "Total Assets",
+    totalLiabilities: "Total Liabilities", 
+    totalEquity: "Total Equity",
+    cashAndEquivalents: "Cash & Equivalents",
+    currentAssets: "Current Assets",
+    currentLiabilities: "Current Liabilities",
+    ofAssets: "of assets",
+    period: "Period",
+    showMorePeriods: "Show More ({count} more periods)",
+    showLess: "Show Less",
+    
+    // Income Statement detailed fields
+    totalRevenue: "Total Revenue",
+    grossProfit: "Gross Profit",
+    operatingIncome: "Operating Income",
+    netIncome: "Net Income",
+    costOfSales: "Cost of Sales",
+    operatingExpenses: "Operating Expenses",
+    netMarginLabel: "Net Margin",
+    margin: "Margin",
+    showMorePeriodsIncome: "Show More ({count} more periods)",
   },
 
   // Sectors
@@ -1030,6 +1053,7 @@ export const en = {
     vpaContextDays: "VPA context days (0 = no VPA data)",
     vpaContextDaysDesc: "Number of recent VPA entries to include in context",
     settingsAutoSaved: "💾 Settings are automatically saved to browser storage",
+    quickAccess: "Quick access:",
     
     // Company Context Configuration
     companyContextConfig: "Company Context Settings",

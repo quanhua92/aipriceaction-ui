@@ -503,7 +503,7 @@ function AskPage() {
 									</p>
 									{defaultTicker && (
 										<div className="flex items-center gap-2">
-											<span className="text-xs text-muted-foreground">Quick access:</span>
+											<span className="text-xs text-muted-foreground">{t("askAI.quickAccess")}</span>
 											<Link to="/ticker/$symbol" params={{ symbol: defaultTicker }}>
 												<Button variant="outline" size="sm" className="h-6 px-2 text-xs">
 													{defaultTicker}
@@ -549,7 +549,7 @@ function AskPage() {
 												{t("askAI.dataReady")} ({selectedTickers.length} {t("askAI.tickers")})
 											</p>
 											<div className="flex items-center gap-2 flex-wrap">
-												<span className="text-xs text-muted-foreground">Quick access:</span>
+												<span className="text-xs text-muted-foreground">{t("askAI.quickAccess")}</span>
 												{selectedTickers.map((ticker) => (
 													<Link key={ticker} to="/ticker/$symbol" params={{ symbol: ticker }}>
 														<Button variant="outline" size="sm" className="h-6 px-2 text-xs">

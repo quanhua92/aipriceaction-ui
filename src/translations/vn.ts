@@ -322,6 +322,29 @@ export const vn = {
     quarterly: "Theo quý",
     yearly: "Theo năm",
     latest: "Mới nhất",
+    
+    // Balance Sheet detailed fields
+    totalAssets: "Tổng tài sản",
+    totalLiabilities: "Tổng nợ phải trả",
+    totalEquity: "Tổng vốn chủ sở hữu",
+    cashAndEquivalents: "Tiền và tương đương tiền",
+    currentAssets: "Tài sản ngắn hạn",
+    currentLiabilities: "Nợ ngắn hạn",
+    ofAssets: "của tài sản",
+    period: "Kỳ",
+    showMorePeriods: "Xem thêm ({count} kỳ khác)",
+    showLess: "Thu gọn",
+    
+    // Income Statement detailed fields
+    totalRevenue: "Tổng doanh thu",
+    grossProfit: "Lợi nhuận gộp",
+    operatingIncome: "Lợi nhuận hoạt động",
+    netIncome: "Lợi nhuận ròng",
+    costOfSales: "Giá vốn hàng bán",
+    operatingExpenses: "Chi phí hoạt động",
+    netMarginLabel: "Biên lợi nhuận ròng",
+    margin: "Biên",
+    showMorePeriodsIncome: "Xem thêm ({count} kỳ khác)",
   },
 
   // Sectors
@@ -1030,6 +1053,7 @@ export const vn = {
     vpaContextDays: "Số ngày ngữ cảnh VPA (0 = không có dữ liệu VPA)",
     vpaContextDaysDesc: "Số mục VPA gần đây được bao gồm trong ngữ cảnh",
     settingsAutoSaved: "💾 Cài đặt được tự động lưu vào bộ nhớ trình duyệt",
+    quickAccess: "Truy cập nhanh:",
     
     // Company Context Configuration
     companyContextConfig: "Cài đặt ngữ cảnh công ty",
