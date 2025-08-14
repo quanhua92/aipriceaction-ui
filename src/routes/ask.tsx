@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { createFileRoute, useSearch, Link, useNavigate } from "@tanstack/react-router";
-import { Brain, Copy, Check, ArrowLeft, Settings, ChevronDown, ChevronUp, RotateCcw } from "lucide-react";
+import { Brain, Copy, Check, Settings, ChevronDown, ChevronUp, RotateCcw } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -327,17 +327,9 @@ function AskPage() {
 	return (
 		<div className="container mx-auto p-4 max-w-7xl">
 			{/* Header */}
-			<div className="flex items-center gap-4 mb-6">
-				<Link to="/">
-					<Button variant="ghost" size="sm">
-						<ArrowLeft className="h-4 w-4 mr-2" />
-						{t("common.back")}
-					</Button>
-				</Link>
-				<div className="flex items-center gap-2">
-					<Brain className="h-6 w-6 text-green-600" />
-					<h1 className="text-2xl font-bold">{t("askAI.title")}</h1>
-				</div>
+			<div className="flex items-center gap-2 mb-6">
+				<Brain className="h-6 w-6 text-green-600" />
+				<h1 className="text-2xl font-bold">{t("askAI.title")}</h1>
 			</div>
 
 			{/* Instructions */}
