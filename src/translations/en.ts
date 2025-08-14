@@ -44,6 +44,7 @@ export const en = {
     copied: "Copied",
     delete: "Delete",
     confirmDelete: "Confirm Delete",
+    askAI: "Ask AI",
   },
 
   // Home/Dashboard

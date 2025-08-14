@@ -44,6 +44,7 @@ export const vn = {
     copied: "Đã sao chép",
     delete: "Xóa",
     confirmDelete: "Xác nhận xóa",
+    askAI: "Hỏi AI",
   },
 
   // Home/Dashboard
