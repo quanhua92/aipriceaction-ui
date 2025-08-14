@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useTranslation } from "@/hooks/useTranslation";
-import { PieChart, BarChart3, ExternalLink, Target } from "lucide-react";
+import { PieChart, BarChart3, ExternalLink, Target, Brain } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
@@ -379,6 +379,41 @@ function PortfolioPage() {
 				onToggleManualDeposit={toggleManualDeposit}
 				showPrivacy={showPrivacy}
 			/>
+
+			{/* Ask AI Box */}
+			{investments.length > 0 && (
+				<Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+					<CardContent className="p-6">
+						<div className="flex items-center gap-4">
+							<div className="flex-shrink-0">
+								<div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+									<Brain className="h-6 w-6 text-green-600" />
+								</div>
+							</div>
+							<div className="flex-1">
+								<h3 className="text-lg font-semibold text-gray-900 mb-2">
+									{t("portfolio.askAI.title")}
+								</h3>
+								<p className="text-sm text-gray-600 mb-4">
+									{t("portfolio.askAI.description")}
+								</p>
+								<Link
+									to="/ask"
+									search={{
+										tickers: ["VNINDEX", ...investments.map(item => item.ticker)],
+										tab: "multi"
+									}}
+								>
+									<Button className="bg-green-600 hover:bg-green-700 text-white">
+										<Brain className="h-4 w-4 mr-2" />
+										{t("portfolio.askAI.button")}
+									</Button>
+								</Link>
+							</div>
+						</div>
+					</CardContent>
+				</Card>
+			)}
 
 			{/* Portfolio Summary Card - Screenshot friendly */}
 			<PortfolioSummaryCard

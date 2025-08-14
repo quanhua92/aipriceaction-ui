@@ -217,6 +217,13 @@ export const en = {
     sharedPortfolioDescriptionAuto: "This portfolio has been scaled for privacy. Stock quantities have been adjusted to reach 100M VND total value while keeping original prices.",
     actualValuesNotShown: "💡 Tip: These are not the actual investment amounts, but the proportions and performance are accurate.",
     confirmRemoveTicker: "Are you sure you want to remove {ticker} from your portfolio? This action cannot be undone.",
+    
+    // Ask AI integration
+    askAI: {
+      title: "Ask AI about your portfolio",
+      description: "Get intelligent insights about your portfolio performance, allocation, and optimization strategies using advanced AI analysis.",
+      button: "Analyze Portfolio"
+    }
   },
 
   // Portfolio Metrics

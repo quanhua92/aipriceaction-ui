@@ -217,6 +217,13 @@ export const vn = {
     sharedPortfolioDescriptionAuto: "Danh mục này đã được điều chỉnh tỷ lệ để bảo mật. Số lượng cổ phiếu đã được điều chỉnh để đạt tổng giá trị 100 triệu VND trong khi giữ nguyên giá gốc.",
     actualValuesNotShown: "💡 Lưu ý: Đây không phải là số tiền đầu tư thực tế, nhưng tỷ lệ và hiệu suất là chính xác.",
     confirmRemoveTicker: "Bạn có chắc chắn muốn xóa {ticker} khỏi danh mục đầu tư của mình? Hành động này không thể hoàn tác.",
+    
+    // Ask AI integration
+    askAI: {
+      title: "Hỏi AI về danh mục của bạn",
+      description: "Nhận những phân tích thông minh về hiệu suất danh mục, phân bổ và các chiến lược tối ưu hóa bằng cách sử dụng AI phân tích tiên tiến.",
+      button: "Phân tích danh mục"
+    }
   },
 
   // Portfolio Metrics
