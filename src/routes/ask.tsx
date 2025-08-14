@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { createFileRoute, useSearch, Link, useNavigate } from "@tanstack/react-router";
-import { Brain, Copy, Check, ArrowLeft, Settings, ChevronDown, ChevronUp } from "lucide-react";
+import { Brain, Copy, Check, ArrowLeft, Settings, ChevronDown, ChevronUp, RotateCcw } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -203,6 +203,22 @@ function AskPage() {
 		}
 	};
 
+	// Reset configuration to defaults
+	const handleResetConfiguration = () => {
+		setChartContextDays(10);
+		setVpaContextDays(5);
+		setIncludeBasicInfo(true);
+		setIncludeFinancialRatios(true);
+		setIncludeDescription(true);
+		
+		// Clear localStorage
+		localStorage.removeItem('askAI.chartContextDays');
+		localStorage.removeItem('askAI.vpaContextDays');
+		localStorage.removeItem('askAI.includeBasicInfo');
+		localStorage.removeItem('askAI.includeFinancialRatios');
+		localStorage.removeItem('askAI.includeDescription');
+	};
+
 	// Build contexts
 	const singleTickerContext = useMemo(() => {
 		if (!defaultTicker || !singleTickerData || !Array.isArray(singleTickerData) || singleTickerData.length === 0) {
@@ -333,10 +349,21 @@ function AskPage() {
 				{showConfig && (
 					<Card className="mt-4 w-full">
 						<CardHeader className="pb-4">
-							<CardTitle className="text-lg flex items-center gap-2">
-								<Settings className="h-5 w-5" />
-								{t("askAI.contextConfiguration")}
-							</CardTitle>
+							<div className="flex items-center justify-between">
+								<CardTitle className="text-lg flex items-center gap-2">
+									<Settings className="h-5 w-5" />
+									{t("askAI.contextConfiguration")}
+								</CardTitle>
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={handleResetConfiguration}
+									className="flex items-center gap-2 text-sm"
+								>
+									<RotateCcw className="h-4 w-4" />
+									{t("common.reset")}
+								</Button>
+							</div>
 						</CardHeader>
 						<CardContent>
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
