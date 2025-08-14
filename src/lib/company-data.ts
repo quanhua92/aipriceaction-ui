@@ -216,7 +216,10 @@ export function formatFinancialValue(value: number | string): string {
 export function formatPercentage(value: number | string): string {
 	const num = typeof value === 'string' ? parseFloat(value) : value;
 	if (isNaN(num) || num === 0) return '';
-	return `${num.toFixed(2)}%`;
+	
+	// Use higher precision for very small values
+	const precision = Math.abs(num) < 0.01 ? 6 : 2;
+	return `${num.toFixed(precision)}%`;
 }
 
 // Helper function to format currency (VND)
