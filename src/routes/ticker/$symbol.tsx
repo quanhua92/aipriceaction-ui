@@ -10,6 +10,9 @@ import {
 	BarChart3,
 	X,
 	Brain,
+	Building2,
+	FileText,
+	DollarSign,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -345,10 +348,19 @@ function TickerPage() {
 				{/* Company & Financial Info Tabs */}
 				<Card>
 					<Tabs defaultValue="company" className="w-full">
-						<TabsList className="grid w-full grid-cols-3">
-							<TabsTrigger value="company">{t("companyInfo.title")}</TabsTrigger>
-							<TabsTrigger value="balance-sheet">{t("financialInfo.balanceSheet")}</TabsTrigger>
-							<TabsTrigger value="income-statement">{t("financialInfo.incomeStatement")}</TabsTrigger>
+						<TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto">
+							<TabsTrigger value="company" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+								<Building2 className="h-3 w-3 md:h-4 md:w-4" />
+								<span className="text-xs md:text-sm">{t("companyInfo.title")}</span>
+							</TabsTrigger>
+							<TabsTrigger value="balance-sheet" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+								<FileText className="h-3 w-3 md:h-4 md:w-4" />
+								<span className="text-xs md:text-sm">{t("financialInfo.balanceSheet")}</span>
+							</TabsTrigger>
+							<TabsTrigger value="income-statement" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+								<DollarSign className="h-3 w-3 md:h-4 md:w-4" />
+								<span className="text-xs md:text-sm">{t("financialInfo.incomeStatement")}</span>
+							</TabsTrigger>
 						</TabsList>
 						
 						<TabsContent value="company" className="mt-6">
