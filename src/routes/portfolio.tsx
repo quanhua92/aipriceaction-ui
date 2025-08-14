@@ -698,13 +698,13 @@ function PortfolioPage() {
 										</div>
 										
 										{/* Chart */}
-										<div className="h-80">
+										<div className="h-64">
 											<ComparisonChart
 												data={chartData}
 												tickers={allTickers}
 												colors={colors}
 												strokeWidths={strokeWidths}
-												height={320}
+												height={256}
 											/>
 										</div>
 									</div>
