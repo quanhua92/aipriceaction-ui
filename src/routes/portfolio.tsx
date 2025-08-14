@@ -704,7 +704,7 @@ function PortfolioPage() {
 												tickers={allTickers}
 												colors={colors}
 												strokeWidths={strokeWidths}
-												height={192}
+												height={typeof window !== 'undefined' && window.innerWidth >= 640 ? 256 : 192}
 											/>
 										</div>
 									</div>
