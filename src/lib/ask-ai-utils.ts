@@ -2,7 +2,7 @@ import type { StockDataPoint } from "./stock-data";
 import type { TickerAIData } from "./company-data";
 
 // Helper function to clean HTML tags from text
-function cleanHtmlText(html: string): string {
+export function cleanHtmlText(html: string): string {
 	if (!html) return '';
 	
 	// Remove HTML tags and decode HTML entities

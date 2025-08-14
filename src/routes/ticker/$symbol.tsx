@@ -38,6 +38,7 @@ import {
 } from "@/lib/stock-data";
 import { format } from "date-fns";
 import { getColorForIndex } from "@/lib/chart-colors";
+import { cleanHtmlText } from "@/lib/ask-ai-utils";
 
 interface TickerPageSearch {
 	range?: TimeRange;
@@ -356,24 +357,25 @@ function TickerPage() {
 				</Card>
 
 				{/* Company & Financial Info Tabs */}
-				<Card>
-					<Tabs defaultValue="company" className="w-full">
-						<TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto">
-							<TabsTrigger value="company" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
-								<Building2 className="h-3 w-3 md:h-4 md:w-4" />
-								<span className="text-xs md:text-sm">{t("companyInfo.title")}</span>
-							</TabsTrigger>
-							<TabsTrigger value="balance-sheet" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
-								<FileText className="h-3 w-3 md:h-4 md:w-4" />
-								<span className="text-xs md:text-sm">{t("financialInfo.balanceSheet")}</span>
-							</TabsTrigger>
-							<TabsTrigger value="income-statement" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
-								<DollarSign className="h-3 w-3 md:h-4 md:w-4" />
-								<span className="text-xs md:text-sm">{t("financialInfo.incomeStatement")}</span>
-							</TabsTrigger>
-						</TabsList>
-						
-						<TabsContent value="company" className="mt-6 p-6">
+				<Tabs defaultValue="company" className="w-full">
+					<TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto">
+						<TabsTrigger value="company" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+							<Building2 className="h-3 w-3 md:h-4 md:w-4" />
+							<span className="text-xs md:text-sm">{t("companyInfo.title")}</span>
+						</TabsTrigger>
+						<TabsTrigger value="balance-sheet" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+							<FileText className="h-3 w-3 md:h-4 md:w-4" />
+							<span className="text-xs md:text-sm">{t("financialInfo.balanceSheet")}</span>
+						</TabsTrigger>
+						<TabsTrigger value="income-statement" className="flex items-center gap-1 md:gap-2 px-2 py-2 md:px-3">
+							<DollarSign className="h-3 w-3 md:h-4 md:w-4" />
+							<span className="text-xs md:text-sm">{t("financialInfo.incomeStatement")}</span>
+						</TabsTrigger>
+					</TabsList>
+					
+					<TabsContent value="company" className="mt-6">
+						<Card>
+							<CardContent className="p-6">
 							{companyLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -425,7 +427,7 @@ function TickerPage() {
 										</div>
 										{companyInfo.description && (
 											<div className="mt-4">
-												<p className="text-sm text-muted-foreground">{companyInfo.description}</p>
+												<p className="text-sm text-muted-foreground">{cleanHtmlText(companyInfo.description)}</p>
 											</div>
 										)}
 									</div>
@@ -556,9 +558,13 @@ function TickerPage() {
 									</div>
 								</div>
 							)}
-						</TabsContent>
-						
-						<TabsContent value="balance-sheet" className="mt-6 p-6">
+							</CardContent>
+						</Card>
+					</TabsContent>
+					
+					<TabsContent value="balance-sheet" className="mt-6">
+						<Card>
+							<CardContent className="p-6">
 							{financialLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -646,9 +652,13 @@ function TickerPage() {
 									</div>
 								</div>
 							)}
-						</TabsContent>
-						
-						<TabsContent value="income-statement" className="mt-6 p-6">
+							</CardContent>
+						</Card>
+					</TabsContent>
+					
+					<TabsContent value="income-statement" className="mt-6">
+						<Card>
+							<CardContent className="p-6">
 							{financialLoading ? (
 								<div className="flex items-center justify-center py-8">
 									<div className="text-muted-foreground">
@@ -740,9 +750,10 @@ function TickerPage() {
 									</div>
 								</div>
 							)}
-						</TabsContent>
-					</Tabs>
-				</Card>
+							</CardContent>
+						</Card>
+					</TabsContent>
+				</Tabs>
 
 				{/* VPA Analysis */}
 				<VPACard 
