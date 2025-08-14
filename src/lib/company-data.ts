@@ -1,6 +1,7 @@
 // Company data types and fetching functions
 export interface CompanyInfo {
 	symbol: string;
+	companyName?: string;
 	exchange: string;
 	industry: string;
 	marketCap: number;
@@ -8,6 +9,8 @@ export interface CompanyInfo {
 	outstandingShares: number;
 	revenue: number;
 	netIncome: number;
+	totalAssets: number;
+	shareholdersEquity: number;
 	peRatio: number;
 	pbRatio: number;
 	roe: number;
@@ -50,6 +53,7 @@ export interface FinancialInfo {
 
 export interface TickerAIData {
 	symbol: string;
+	companyName?: string;
 	exchange: string;
 	industry: string;
 	marketCap: number;
@@ -57,6 +61,8 @@ export interface TickerAIData {
 	outstandingShares: number;
 	revenue: number;
 	netIncome: number;
+	totalAssets: number;
+	shareholdersEquity: number;
 	peRatio: number;
 	pbRatio: number;
 	roe: number;
@@ -87,6 +93,7 @@ export async function fetchCompanyInfo(ticker: string): Promise<CompanyInfo> {
 		// Transform the raw data to our interface format
 		return {
 			symbol: data.symbol || ticker,
+			companyName: data.company_name || data.companyName,
 			exchange: data.exchange || "",
 			industry: data.industry || "",
 			marketCap: data.market_cap || data.marketCap || 0,
@@ -94,6 +101,8 @@ export async function fetchCompanyInfo(ticker: string): Promise<CompanyInfo> {
 			outstandingShares: data.outstanding_shares || data.outstandingShares || 0,
 			revenue: data.revenue || 0,
 			netIncome: data.net_income || data.netIncome || 0,
+			totalAssets: data.total_assets || data.totalAssets || 0,
+			shareholdersEquity: data.shareholders_equity || data.shareholdersEquity || 0,
 			peRatio: data.pe_ratio || data.peRatio || 0,
 			pbRatio: data.pb_ratio || data.pbRatio || 0,
 			roe: data.roe || 0,
@@ -102,8 +111,8 @@ export async function fetchCompanyInfo(ticker: string): Promise<CompanyInfo> {
 			currentRatio: data.current_ratio || data.currentRatio || 0,
 			grossMargin: data.gross_margin || data.grossMargin || 0,
 			netMargin: data.net_margin || data.netMargin || 0,
-			description: data.description || data.company_description,
-			founded: data.founded || data.founded_year,
+			description: data.description || data.company_description || data.company_profile,
+			founded: data.founded || data.founded_year || data.established_year,
 			employees: data.employees || data.employee_count,
 			website: data.website,
 			address: data.address,
@@ -164,6 +173,7 @@ export async function fetchTickerAIData(ticker: string): Promise<TickerAIData> {
 		// Transform the raw data to our interface format
 		return {
 			symbol: data.symbol || ticker,
+			companyName: data.company_name || data.companyName,
 			exchange: data.exchange || "",
 			industry: data.industry || "",
 			marketCap: data.market_cap || data.marketCap || 0,
@@ -171,6 +181,8 @@ export async function fetchTickerAIData(ticker: string): Promise<TickerAIData> {
 			outstandingShares: data.outstanding_shares || data.outstandingShares || 0,
 			revenue: data.revenue || 0,
 			netIncome: data.net_income || data.netIncome || 0,
+			totalAssets: data.total_assets || data.totalAssets || 0,
+			shareholdersEquity: data.shareholders_equity || data.shareholdersEquity || 0,
 			peRatio: data.pe_ratio || data.peRatio || 0,
 			pbRatio: data.pb_ratio || data.pbRatio || 0,
 			roe: data.roe || 0,
@@ -179,8 +191,8 @@ export async function fetchTickerAIData(ticker: string): Promise<TickerAIData> {
 			currentRatio: data.current_ratio || data.currentRatio || 0,
 			grossMargin: data.gross_margin || data.grossMargin || 0,
 			netMargin: data.net_margin || data.netMargin || 0,
-			description: data.description || data.company_description,
-			founded: data.founded || data.founded_year,
+			description: data.description || data.company_description || data.company_profile,
+			founded: data.founded || data.founded_year || data.established_year,
 			...data, // Include all other fields for AI context
 		};
 	} catch (error) {

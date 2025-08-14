@@ -13,6 +13,8 @@ import {
 	Building2,
 	FileText,
 	DollarSign,
+	ChevronDown,
+	ChevronUp,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -64,6 +66,11 @@ function TickerPage() {
 	
 	// State for ticker comparison - initialize from URL params
 	const [comparisonTickers, setComparisonTickers] = useState<string[]>(compare);
+	
+	// State for collapsible sections
+	const [isCompanyExpanded, setIsCompanyExpanded] = useState(false);
+	const [isBalanceSheetExpanded, setIsBalanceSheetExpanded] = useState(false);
+	const [isIncomeStatementExpanded, setIsIncomeStatementExpanded] = useState(false);
 
 	// Create date range configuration
 	const dateRangeConfig = createDateRangeConfig(range, startDate, endDate);
@@ -171,6 +178,9 @@ function TickerPage() {
 					</Link>
 					<div>
 						<h1 className="text-2xl md:text-3xl font-bold font-mono">{symbol}</h1>
+						{companyInfo?.companyName && (
+							<p className="text-sm md:text-base text-muted-foreground mb-1">{companyInfo.companyName}</p>
+						)}
 						<div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
 							{sector && (
 								<Link to="/sector/$sectorName" params={{ sectorName: sector }}>
@@ -470,13 +480,35 @@ function TickerPage() {
 										<div>
 											<h3 className="text-lg font-semibold mb-3">{t("companyInfo.shareholders")}</h3>
 											<div className="space-y-2">
-												{companyInfo.shareholders.map((shareholder, index) => (
+												{(isCompanyExpanded ? companyInfo.shareholders : companyInfo.shareholders.slice(0, 5)).map((shareholder, index) => (
 													<div key={index} className="flex justify-between items-center py-2 border-b border-muted">
 														<span className="text-sm">{shareholder.name}</span>
 														<span className="text-sm font-medium">{formatPercentage(shareholder.ownership)}</span>
 													</div>
 												))}
 											</div>
+											{companyInfo.shareholders.length > 5 && (
+												<div className="flex justify-center mt-4">
+													<Button
+														variant="ghost"
+														size="sm"
+														onClick={() => setIsCompanyExpanded(!isCompanyExpanded)}
+														className="text-sm"
+													>
+														{isCompanyExpanded ? (
+															<>
+																<ChevronUp className="h-4 w-4 mr-2" />
+																Show Less
+															</>
+														) : (
+															<>
+																<ChevronDown className="h-4 w-4 mr-2" />
+																Show More ({companyInfo.shareholders.length - 5} more shareholders)
+															</>
+														)}
+													</Button>
+												</div>
+											)}
 										</div>
 									)}
 
@@ -485,13 +517,35 @@ function TickerPage() {
 										<div>
 											<h3 className="text-lg font-semibold mb-3">{t("companyInfo.officers")}</h3>
 											<div className="space-y-2">
-												{companyInfo.officers.map((officer, index) => (
+												{(isCompanyExpanded ? companyInfo.officers : companyInfo.officers.slice(0, 5)).map((officer, index) => (
 													<div key={index} className="flex justify-between items-center py-2 border-b border-muted">
 														<span className="text-sm">{officer.name}</span>
 														<span className="text-sm text-muted-foreground">{officer.position}</span>
 													</div>
 												))}
 											</div>
+											{companyInfo.officers.length > 5 && (
+												<div className="flex justify-center mt-4">
+													<Button
+														variant="ghost"
+														size="sm"
+														onClick={() => setIsCompanyExpanded(!isCompanyExpanded)}
+														className="text-sm"
+													>
+														{isCompanyExpanded ? (
+															<>
+																<ChevronUp className="h-4 w-4 mr-2" />
+																Show Less
+															</>
+														) : (
+															<>
+																<ChevronDown className="h-4 w-4 mr-2" />
+																Show More ({companyInfo.officers.length - 5} more officers)
+															</>
+														)}
+													</Button>
+												</div>
+											)}
 										</div>
 									)}
 								</div>
@@ -526,25 +580,64 @@ function TickerPage() {
 												</tr>
 											</thead>
 											<tbody>
-												{financialInfo.balance_sheet
-													.slice(-10)
-													.filter(item => 
-														shouldDisplayFinancialValue(item.BSA96) || 
-														shouldDisplayFinancialValue(item.BSB96) || 
-														shouldDisplayFinancialValue(item.BSC96)
-													)
-													.map((item, index) => (
-													<tr key={index} className="border-b">
-														<td className="py-2">{item.yearReport || item.year}</td>
-														<td className="py-2">Q{item.lengthReport || item.report_length}</td>
-														<td className="py-2">{formatFinancialValue(item.BSA96 || 0)}</td>
-														<td className="py-2">{formatFinancialValue(item.BSB96 || 0)}</td>
-														<td className="py-2">{formatFinancialValue(item.BSC96 || 0)}</td>
-													</tr>
-												))}
+												{(() => {
+													const filteredData = financialInfo.balance_sheet
+														.filter(item => 
+															shouldDisplayFinancialValue(item.BSA96) || 
+															shouldDisplayFinancialValue(item.BSB96) || 
+															shouldDisplayFinancialValue(item.BSC96)
+														)
+														.sort((a, b) => (b.year || b.yearReport) - (a.year || a.yearReport));
+													
+													const displayData = isBalanceSheetExpanded ? filteredData : filteredData.slice(0, 5);
+													
+													return displayData.map((item, index) => (
+														<tr key={index} className="border-b">
+															<td className="py-2">{item.yearReport || item.year}</td>
+															<td className="py-2">Q{item.lengthReport || item.report_length}</td>
+															<td className="py-2">{formatFinancialValue(item.BSA96 || 0)}</td>
+															<td className="py-2">{formatFinancialValue(item.BSB96 || 0)}</td>
+															<td className="py-2">{formatFinancialValue(item.BSC96 || 0)}</td>
+														</tr>
+													));
+												})()}
 											</tbody>
 										</table>
 									</div>
+									{(() => {
+										const totalItems = financialInfo.balance_sheet
+											.filter(item => 
+												shouldDisplayFinancialValue(item.BSA96) || 
+												shouldDisplayFinancialValue(item.BSB96) || 
+												shouldDisplayFinancialValue(item.BSC96)
+											).length;
+										
+										if (totalItems > 5) {
+											return (
+												<div className="flex justify-center mt-4">
+													<Button
+														variant="ghost"
+														size="sm"
+														onClick={() => setIsBalanceSheetExpanded(!isBalanceSheetExpanded)}
+														className="text-sm"
+													>
+														{isBalanceSheetExpanded ? (
+															<>
+																<ChevronUp className="h-4 w-4 mr-2" />
+																Show Less
+															</>
+														) : (
+															<>
+																<ChevronDown className="h-4 w-4 mr-2" />
+																Show More ({totalItems - 5} more)
+															</>
+														)}
+													</Button>
+												</div>
+											);
+										}
+										return null;
+									})()}
 								</div>
 							) : (
 								<div className="flex items-center justify-center py-8">
@@ -578,27 +671,67 @@ function TickerPage() {
 												</tr>
 											</thead>
 											<tbody>
-												{financialInfo.income_statement
-													.slice(-10)
-													.filter(item => 
-														shouldDisplayFinancialValue(item.revenue) || 
-														shouldDisplayFinancialValue(item.netProfit) || 
-														shouldDisplayFinancialValue(item.grossMargin) || 
-														shouldDisplayFinancialValue(item.netProfitMargin)
-													)
-													.map((item, index) => (
-													<tr key={index} className="border-b">
-														<td className="py-2">{item.yearReport || item.year}</td>
-														<td className="py-2">Q{item.lengthReport || item.report_length}</td>
-														<td className="py-2">{formatFinancialValue(item.revenue || 0)}</td>
-														<td className="py-2">{formatFinancialValue(item.netProfit || 0)}</td>
-														<td className="py-2">{formatPercentage((item.grossMargin * 100) || 0)}</td>
-														<td className="py-2">{formatPercentage((item.netProfitMargin * 100) || 0)}</td>
-													</tr>
-												))}
+												{(() => {
+													const filteredData = financialInfo.income_statement
+														.filter(item => 
+															shouldDisplayFinancialValue(item.revenue) || 
+															shouldDisplayFinancialValue(item.netProfit) || 
+															shouldDisplayFinancialValue(item.grossMargin) || 
+															shouldDisplayFinancialValue(item.netProfitMargin)
+														)
+														.sort((a, b) => (b.year || b.yearReport) - (a.year || a.yearReport));
+													
+													const displayData = isIncomeStatementExpanded ? filteredData : filteredData.slice(0, 5);
+													
+													return displayData.map((item, index) => (
+														<tr key={index} className="border-b">
+															<td className="py-2">{item.yearReport || item.year}</td>
+															<td className="py-2">Q{item.lengthReport || item.report_length}</td>
+															<td className="py-2">{formatFinancialValue(item.revenue || 0)}</td>
+															<td className="py-2">{formatFinancialValue(item.netProfit || 0)}</td>
+															<td className="py-2">{formatPercentage((item.grossMargin * 100) || 0)}</td>
+															<td className="py-2">{formatPercentage((item.netProfitMargin * 100) || 0)}</td>
+														</tr>
+													));
+												})()}
 											</tbody>
 										</table>
 									</div>
+									{(() => {
+										const totalItems = financialInfo.income_statement
+											.filter(item => 
+												shouldDisplayFinancialValue(item.revenue) || 
+												shouldDisplayFinancialValue(item.netProfit) || 
+												shouldDisplayFinancialValue(item.grossMargin) || 
+												shouldDisplayFinancialValue(item.netProfitMargin)
+											).length;
+										
+										if (totalItems > 5) {
+											return (
+												<div className="flex justify-center mt-4">
+													<Button
+														variant="ghost"
+														size="sm"
+														onClick={() => setIsIncomeStatementExpanded(!isIncomeStatementExpanded)}
+														className="text-sm"
+													>
+														{isIncomeStatementExpanded ? (
+															<>
+																<ChevronUp className="h-4 w-4 mr-2" />
+																Show Less
+															</>
+														) : (
+															<>
+																<ChevronDown className="h-4 w-4 mr-2" />
+																Show More ({totalItems - 5} more)
+															</>
+														)}
+													</Button>
+												</div>
+											);
+										}
+										return null;
+									})()}
 								</div>
 							) : (
 								<div className="flex items-center justify-center py-8">
