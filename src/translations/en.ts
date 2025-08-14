@@ -345,6 +345,10 @@ export const en = {
     netMarginLabel: "Net Margin",
     margin: "Margin",
     showMorePeriodsIncome: "Show More ({count} more periods)",
+    
+    // Chart titles
+    balanceSheetTrends: "Balance Sheet Trends Over Time",
+    incomeStatementTrends: "Income Statement Trends Over Time",
   },
 
   // Sectors

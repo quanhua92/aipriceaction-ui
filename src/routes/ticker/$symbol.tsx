@@ -19,14 +19,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CandlestickChart, ComparisonChart } from "@/components/charts";
+import { CandlestickChart, ComparisonChart, FinancialChart } from "@/components/charts";
 import { DateRangeSelector } from "@/components/ui/DateRangeSelector";
 import { MultiTickerSearch } from "@/components/ui/TickerSearch";
 import { VPACard } from "@/components/vpa";
 import { AskAIButton } from "@/components/ask-ai";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useTickerGroups, useMultipleTickerData, useCompanyInfo, useFinancialInfo } from "@/lib/queries";
-import { formatFinancialValue, formatPercentage, formatCurrency, shouldDisplayFinancialValue } from "@/lib/company-data";
+import { formatFinancialValue, formatPercentage, formatCurrency, shouldDisplayFinancialValue, prepareBalanceSheetChartData, prepareIncomeStatementChartData } from "@/lib/company-data";
 import {
 	calculatePriceChange,
 	calculateRangeChange,
@@ -568,6 +568,28 @@ function TickerPage() {
 								<div className="space-y-6">
 									<h3 className="text-lg font-semibold">{t("financialInfo.balanceSheet")}</h3>
 									
+									{/* Balance Sheet Trend Chart */}
+									{(() => {
+										const chartData = prepareBalanceSheetChartData(financialInfo.balance_sheet);
+										if (chartData.length > 0) {
+											return (
+												<div className="bg-slate-50 rounded-lg p-4">
+													<FinancialChart
+														data={chartData}
+														metrics={[
+															{ key: "totalAssets", label: t("financialInfo.totalAssets"), color: "#3B82F6" },
+															{ key: "totalLiabilities", label: t("financialInfo.totalLiabilities"), color: "#EF4444" },
+															{ key: "totalEquity", label: t("financialInfo.totalEquity"), color: "#10B981" },
+														]}
+														height={300}
+														title={t("financialInfo.balanceSheetTrends")}
+													/>
+												</div>
+											);
+										}
+										return null;
+									})()}
+									
 									{/* Balance Sheet Summary */}
 									<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 										{(() => {
@@ -721,6 +743,29 @@ function TickerPage() {
 							) : financialInfo?.income_statement && financialInfo.income_statement.length > 0 ? (
 								<div className="space-y-6">
 									<h3 className="text-lg font-semibold">{t("financialInfo.incomeStatement")}</h3>
+									
+									{/* Income Statement Trend Chart */}
+									{(() => {
+										const chartData = prepareIncomeStatementChartData(financialInfo.income_statement);
+										if (chartData.length > 0) {
+											return (
+												<div className="bg-slate-50 rounded-lg p-4">
+													<FinancialChart
+														data={chartData}
+														metrics={[
+															{ key: "totalRevenue", label: t("financialInfo.totalRevenue"), color: "#3B82F6" },
+															{ key: "grossProfit", label: t("financialInfo.grossProfit"), color: "#8B5CF6" },
+															{ key: "operatingIncome", label: t("financialInfo.operatingIncome"), color: "#F59E0B" },
+															{ key: "netIncome", label: t("financialInfo.netIncome"), color: "#10B981" },
+														]}
+														height={300}
+														title={t("financialInfo.incomeStatementTrends")}
+													/>
+												</div>
+											);
+										}
+										return null;
+									})()}
 									
 									{/* Income Statement Summary */}
 									<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">

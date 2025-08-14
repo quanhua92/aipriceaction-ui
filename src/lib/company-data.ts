@@ -246,3 +246,42 @@ export function formatCurrency(value: number | string): string {
 		maximumFractionDigits: 0,
 	}).format(num);
 }
+
+// Helper functions for financial chart data preparation
+export function prepareBalanceSheetChartData(balanceSheetData: any[]): any[] {
+	if (!balanceSheetData || balanceSheetData.length === 0) return [];
+	
+	return balanceSheetData
+		.filter(item => 
+			shouldDisplayFinancialValue(item.BSA1) || 
+			shouldDisplayFinancialValue(item.BSA46) ||
+			shouldDisplayFinancialValue(item.BSA53)
+		)
+		.sort((a, b) => (a.year || a.yearReport) - (b.year || b.yearReport))
+		.map(item => ({
+			period: `${item.yearReport || item.year} Q${item.lengthReport || item.report_length}`,
+			totalAssets: item.BSA1 || 0,
+			totalLiabilities: item.BSA53 || 0,
+			totalEquity: item.BSA46 || 0,
+		}));
+}
+
+export function prepareIncomeStatementChartData(incomeStatementData: any[]): any[] {
+	if (!incomeStatementData || incomeStatementData.length === 0) return [];
+	
+	return incomeStatementData
+		.filter(item => 
+			shouldDisplayFinancialValue(item.ISA1 || item.revenue) || 
+			shouldDisplayFinancialValue(item.ISA5) ||
+			shouldDisplayFinancialValue(item.ISA11 || item.ISA16) ||
+			shouldDisplayFinancialValue(item.ISA20 || item.netProfit)
+		)
+		.sort((a, b) => (a.year || a.yearReport) - (b.year || b.yearReport))
+		.map(item => ({
+			period: `${item.yearReport || item.year} Q${item.lengthReport || item.report_length}`,
+			totalRevenue: item.ISA1 || item.revenue || 0,
+			grossProfit: item.ISA5 || 0,
+			operatingIncome: item.ISA11 || item.ISA16 || 0,
+			netIncome: item.ISA20 || item.netProfit || 0,
+		}));
+}

@@ -345,6 +345,10 @@ export const vn = {
     netMarginLabel: "Biên lợi nhuận ròng",
     margin: "Biên",
     showMorePeriodsIncome: "Xem thêm ({count} kỳ khác)",
+    
+    // Chart titles
+    balanceSheetTrends: "Xu hướng Bảng cân đối kế toán theo thời gian",
+    incomeStatementTrends: "Xu hướng Báo cáo kết quả kinh doanh theo thời gian",
   },
 
   // Sectors
