@@ -68,6 +68,14 @@ export const en = {
     marketRiskMonitoring: "Market risk monitoring",
     stocks: "stocks",
     majorSectors: "From 6 major sectors",
+    browseMarkets: "Browse Markets",
+    exploreMarketsDesc: "Explore sectors & stocks",
+    aiPoweredAnalysis: "AI-powered stock analysis",
+    stockPatternScanning: "Stock pattern scanning",
+    marketCrisisDetection: "Market crisis detection",
+    investmentPerformance: "Investment performance",
+    sideBySideAnalysis: "Side-by-side analysis",
+    marketExploration: "Market exploration",
     
     // Pre-Panic Monitor Widget
     prePanicMonitor: "Pre-Panic Monitor",

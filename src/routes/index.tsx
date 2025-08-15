@@ -344,16 +344,31 @@ function Dashboard() {
 					</div>
 				</div>
 
-				{/* Quick Navigation - 2 rows, 3 columns */}
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+				{/* Quick Navigation - 2 rows, 3 columns each */}
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+					{/* Row 1: Core Features */}
 					<Link to="/ask">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-36">
 							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<Brain className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("askAI.askAI")}</p>
 									<p className="text-sm text-muted-foreground">
-										AI-powered stock analysis
+										{t("home.aiPoweredAnalysis")}
+									</p>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
+
+					<Link to="/scan">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-36">
+							<CardContent className="flex items-center gap-3 p-4 h-full">
+								<Search className="h-8 w-8 text-primary" />
+								<div>
+									<p className="font-semibold">{t("nav.scan")}</p>
+									<p className="text-sm text-muted-foreground">
+										{t("home.stockPatternScanning")}
 									</p>
 								</div>
 							</CardContent>
@@ -361,49 +376,28 @@ function Dashboard() {
 					</Link>
 
 					<Link to="/panic">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-36">
 							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<AlertTriangle className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("nav.panicAnalysis")}</p>
-								</div>
-							</CardContent>
-						</Card>
-					</Link>
-
-					<Link to="/portfolio">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
-							<CardContent className="flex items-center gap-3 p-4 h-full">
-								<Target className="h-8 w-8 text-primary" />
-								<div>
-									<p className="font-semibold">{t("nav.portfolio")}</p>
-								</div>
-							</CardContent>
-						</Card>
-					</Link>
-
-					<Link to="/sectors">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
-							<CardContent className="flex items-center gap-3 p-4 h-full">
-								<Building2 className="h-8 w-8 text-primary" />
-								<div>
-									<p className="font-semibold">{t("home.sectors")}</p>
 									<p className="text-sm text-muted-foreground">
-										{sectorCount} {t("home.sectors").toLowerCase()}
+										{t("home.marketCrisisDetection")}
 									</p>
 								</div>
 							</CardContent>
 						</Card>
 					</Link>
 
-					<Link to="/tickers">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+					{/* Row 2: Analysis Tools */}
+					<Link to="/portfolio">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-36">
 							<CardContent className="flex items-center gap-3 p-4 h-full">
-								<Search className="h-8 w-8 text-primary" />
+								<Target className="h-8 w-8 text-primary" />
 								<div>
-									<p className="font-semibold">{t("nav.tickers")}</p>
+									<p className="font-semibold">{t("nav.portfolioAnalysis")}</p>
 									<p className="text-sm text-muted-foreground">
-										{totalTickers} {t("home.stocks")}
+										{t("home.investmentPerformance")}
 									</p>
 								</div>
 							</CardContent>
@@ -411,15 +405,44 @@ function Dashboard() {
 					</Link>
 
 					<Link to="/compare">
-						<Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
+						<Card className="cursor-pointer hover:shadow-md transition-shadow h-36">
 							<CardContent className="flex items-center gap-3 p-4 h-full">
 								<Grid3X3 className="h-8 w-8 text-primary" />
 								<div>
 									<p className="font-semibold">{t("nav.compareCharts")}</p>
+									<p className="text-sm text-muted-foreground">
+										{t("home.sideBySideAnalysis")}
+									</p>
 								</div>
 							</CardContent>
 						</Card>
 					</Link>
+
+					<Card className="cursor-pointer hover:shadow-md transition-shadow h-36">
+						<CardContent className="flex items-center justify-between gap-3 p-4 h-full">
+							<div className="flex items-center gap-3">
+								<Building2 className="h-8 w-8 text-primary" />
+								<div>
+									<p className="font-semibold">{t("home.browseMarkets")}</p>
+									<p className="text-sm text-muted-foreground">
+										{t("home.marketExploration")}
+									</p>
+								</div>
+							</div>
+							<div className="flex flex-col gap-2">
+								<Link to="/sectors">
+									<Button variant="outline" size="sm" className="w-full text-xs">
+										{sectorCount} {t("nav.sectors")}
+									</Button>
+								</Link>
+								<Link to="/tickers">
+									<Button variant="outline" size="sm" className="w-full text-xs">
+										{totalTickers} {t("home.stocks")}
+									</Button>
+								</Link>
+							</div>
+						</CardContent>
+					</Card>
 				</div>
 			</div>
 

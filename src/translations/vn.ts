@@ -68,6 +68,14 @@ export const vn = {
     marketRiskMonitoring: "Giám sát rủi ro thị trường",
     stocks: "cổ phiếu",
     majorSectors: "Từ 6 ngành chính",
+    browseMarkets: "Duyệt Thị trường",
+    exploreMarketsDesc: "Khám phá ngành & cổ phiếu",
+    aiPoweredAnalysis: "Phân tích cổ phiếu bằng AI",
+    stockPatternScanning: "Quét mẫu hình cổ phiếu",
+    marketCrisisDetection: "Phát hiện khủng hoảng thị trường",
+    investmentPerformance: "Hiệu suất đầu tư",
+    sideBySideAnalysis: "Phân tích so sánh",
+    marketExploration: "Khám phá thị trường",
     
     // Pre-Panic Monitor Widget
     prePanicMonitor: "Giám sát Tiền Hoảng loạn",
