@@ -1215,6 +1215,9 @@ export const vn = {
     bearMarket: "Thị trường Giảm",
     sideways: "Đi ngang", 
     sidewaysMarket: "Thị trường Đi ngang",
+    details: "Chi tiết",
+    viewDetails: "Xem Chi tiết",
+    hideDetails: "Ẩn Chi tiết",
     
     readyToScan: "Sẵn sàng Quét",
     clickStartToBegin: "Nhấn nút bắt đầu ở trên để bắt đầu phân tích mô hình lịch sử",
@@ -1293,6 +1296,25 @@ export const vn = {
       "bearMarketConditions": "Thị trường giảm tạo ra các cơ hội chọn lọc.",
       "noSignificantPatterns": "Không phát hiện mô hình nước rút đáng kể nào trong {period}. Thị trường cho thấy cơ hội động lực hạn chế.",
       "highActivityPeriod": "Giai đoạn hoạt động cao với {count} ứng viên nước rút. Động lực mạnh trên nhiều ngành."
+    },
+    
+    // Detailed analysis table translations
+    detailedAnalysis: {
+      qualifiedSprintCandidates: "Ứng viên Nước rút Đủ điều kiện",
+      topNonQualifiers: "Top Không Đủ điều kiện",
+      ticker: "Mã",
+      consecutive: "Liên tiếp",
+      maxDaily: "Tối đa Hàng ngày",
+      totalPeriod: "Tổng Kỳ",
+      qualifiedDays: "Ngày Đủ điều kiện",
+      whyFailed: "Tại sao Thất bại",
+      qualified: "Đủ điều kiện",
+      failed: "Thất bại",
+      totalAnalyzed: "Tổng Phân tích",
+      successRate: "Tỷ lệ Thành công",
+      needConsecutiveDays: "Cần {days} ngày liên tiếp",
+      maxGainBelow: "Tăng tối đa < {threshold}%",
+      other: "Khác"
     },
   },
 } as const;

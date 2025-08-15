@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
-import { History, Play, ArrowLeft, Calendar, TrendingUp, Download, Settings, ChevronDown, ChevronUp, Info, Filter, Target, BarChart3, Eye, EyeOff } from "lucide-react";
+import { History, Play, ArrowLeft, Calendar, TrendingUp, Download, Settings, ChevronDown, ChevronUp, Info, Filter, Target, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -198,17 +198,17 @@ function HistoricalPatternScanner() {
 					{qualifiedTickers.length > 0 && (
 						<div>
 							<h4 className="font-semibold text-green-700 mb-2 flex items-center">
-								✅ Qualified Sprint Candidates ({qualifiedTickers.length})
+								✅ {t("scan.detailedAnalysis.qualifiedSprintCandidates")} ({qualifiedTickers.length})
 							</h4>
 							<div className="overflow-x-auto">
 								<table className="w-full text-xs border border-green-200 rounded">
 									<thead className="bg-green-50">
 										<tr>
-											<th className="p-2 text-left font-medium">Ticker</th>
-											<th className="p-2 text-center font-medium">Consecutive</th>
-											<th className="p-2 text-center font-medium">Max Daily</th>
-											<th className="p-2 text-center font-medium">Total Period</th>
-											<th className="p-2 text-center font-medium">Qualified Days</th>
+											<th className="p-2 text-left font-medium">{t("scan.detailedAnalysis.ticker")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.consecutive")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.maxDaily")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.totalPeriod")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.qualifiedDays")}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -239,17 +239,17 @@ function HistoricalPatternScanner() {
 					{failedTickers.length > 0 && (
 						<div>
 							<h4 className="font-semibold text-orange-700 mb-2 flex items-center">
-								❌ Top Non-Qualifiers ({Math.min(failedTickers.length, 10)}/{failedTickers.length})
+								❌ {t("scan.detailedAnalysis.topNonQualifiers")} ({Math.min(failedTickers.length, 10)}/{failedTickers.length})
 							</h4>
 							<div className="overflow-x-auto">
 								<table className="w-full text-xs border border-orange-200 rounded">
 									<thead className="bg-orange-50">
 										<tr>
-											<th className="p-2 text-left font-medium">Ticker</th>
-											<th className="p-2 text-center font-medium">Consecutive</th>
-											<th className="p-2 text-center font-medium">Max Daily</th>
-											<th className="p-2 text-center font-medium">Total Period</th>
-											<th className="p-2 text-center font-medium">Why Failed</th>
+											<th className="p-2 text-left font-medium">{t("scan.detailedAnalysis.ticker")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.consecutive")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.maxDaily")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.totalPeriod")}</th>
+											<th className="p-2 text-center font-medium">{t("scan.detailedAnalysis.whyFailed")}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -270,10 +270,10 @@ function HistoricalPatternScanner() {
 												</td>
 												<td className="p-2 text-center text-red-600 text-xs">
 													{ticker.maxConsecutiveDays < config.minConsecutiveDays 
-														? `Need ${config.minConsecutiveDays}d consecutive`
+														? t("scan.detailedAnalysis.needConsecutiveDays", { days: config.minConsecutiveDays })
 														: ticker.maxDailyGain < config.minGainThreshold
-														? `Max gain < ${config.minGainThreshold}%`
-														: 'Other'
+														? t("scan.detailedAnalysis.maxGainBelow", { threshold: config.minGainThreshold })
+														: t("scan.detailedAnalysis.other")
 													}
 												</td>
 											</tr>
@@ -290,19 +290,19 @@ function HistoricalPatternScanner() {
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
 						<div className="space-y-1">
 							<div className="text-2xl font-bold text-green-600">{qualifiedTickers.length}</div>
-							<div className="text-xs text-muted-foreground">Qualified</div>
+							<div className="text-xs text-muted-foreground">{t("scan.detailedAnalysis.qualified")}</div>
 						</div>
 						<div className="space-y-1">
 							<div className="text-2xl font-bold text-orange-600">{failedTickers.length}</div>
-							<div className="text-xs text-muted-foreground">Failed</div>
+							<div className="text-xs text-muted-foreground">{t("scan.detailedAnalysis.failed")}</div>
 						</div>
 						<div className="space-y-1">
 							<div className="text-2xl font-bold">{allTickers.length}</div>
-							<div className="text-xs text-muted-foreground">Total Analyzed</div>
+							<div className="text-xs text-muted-foreground">{t("scan.detailedAnalysis.totalAnalyzed")}</div>
 						</div>
 						<div className="space-y-1">
 							<div className="text-2xl font-bold">{qualifiedTickers.length > 0 ? ((qualifiedTickers.length / allTickers.length) * 100).toFixed(1) : 0}%</div>
-							<div className="text-xs text-muted-foreground">Success Rate</div>
+							<div className="text-xs text-muted-foreground">{t("scan.detailedAnalysis.successRate")}</div>
 						</div>
 					</div>
 				</div>
@@ -709,7 +709,7 @@ function HistoricalPatternScanner() {
 									<TableHeader>
 										<TableRow>
 											<TableHead className="min-w-[100px]">{t("scan.period")}</TableHead>
-											<TableHead className="min-w-[80px] text-center">Details</TableHead>
+											<TableHead className="min-w-[100px] text-center">{t("scan.details")}</TableHead>
 											<TableHead className="min-w-[120px]">{t("scan.marketCondition")}</TableHead>
 											<TableHead className="text-right min-w-[100px]">{t("scan.vnIndexChange")}</TableHead>
 											<TableHead className="text-center min-w-[80px]">{t("scan.totalCandidates")}</TableHead>
@@ -747,15 +747,21 @@ function HistoricalPatternScanner() {
 													</TableCell>
 													<TableCell className="text-center">
 														<Button
-															variant="ghost"
+															variant="outline"
 															size="sm"
 															onClick={() => toggleRowExpansion(result.period)}
-															className="h-8 w-8 p-0"
+															className="text-xs px-2 py-1 h-7"
 														>
 															{expandedRows.has(result.period) ? (
-																<EyeOff className="h-4 w-4" />
+																<>
+																	<ChevronUp className="h-3 w-3 mr-1" />
+																	{t("scan.hideDetails")}
+																</>
 															) : (
-																<Eye className="h-4 w-4" />
+																<>
+																	<ChevronDown className="h-3 w-3 mr-1" />
+																	{t("scan.viewDetails")}
+																</>
 															)}
 														</Button>
 													</TableCell>

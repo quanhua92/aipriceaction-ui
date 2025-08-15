@@ -1216,6 +1216,9 @@ export const en = {
     bearMarket: "Bear Market", 
     sideways: "Sideways",
     sidewaysMarket: "Sideways Market",
+    details: "Details",
+    viewDetails: "View Details",
+    hideDetails: "Hide Details",
     
     readyToScan: "Ready to Scan",
     clickStartToBegin: "Click the start button above to begin historical pattern analysis",
@@ -1294,6 +1297,25 @@ export const en = {
       "bearMarketConditions": "Bear market created selective opportunities.",
       "noSignificantPatterns": "No significant sprint patterns detected in {period}. Market showed limited momentum opportunities.",
       "highActivityPeriod": "High activity period with {count} sprint candidates. Strong momentum across multiple sectors."
+    },
+    
+    // Detailed analysis table translations
+    detailedAnalysis: {
+      qualifiedSprintCandidates: "Qualified Sprint Candidates",
+      topNonQualifiers: "Top Non-Qualifiers",
+      ticker: "Ticker",
+      consecutive: "Consecutive",
+      maxDaily: "Max Daily",
+      totalPeriod: "Total Period",
+      qualifiedDays: "Qualified Days",
+      whyFailed: "Why Failed",
+      qualified: "Qualified",
+      failed: "Failed",
+      totalAnalyzed: "Total Analyzed",
+      successRate: "Success Rate",
+      needConsecutiveDays: "Need {days}d consecutive",
+      maxGainBelow: "Max gain < {threshold}%",
+      other: "Other"
     },
   },
 } as const;
