@@ -1208,5 +1208,35 @@ export const vn = {
     readyToScan: "Sẵn sàng Quét",
     clickStartToBegin: "Nhấn nút bắt đầu ở trên để bắt đầu phân tích mô hình lịch sử",
     selectSectors: "Chọn Ngành để Quét",
+    
+    // Methodology explanations
+    methodology: {
+      title: "Cách Thức Hoạt Động",
+      subtitle: "Nhấn để tìm hiểu về phương pháp và bộ lọc phát hiện",
+      howItWorks: "Quy Trình Phát Hiện",
+      step1: "Chia thời gian thành các kỳ (ngày, tuần, tháng, hoặc quý) từ phạm vi năm đã chọn",
+      step2: "Phân tích hiệu suất VN-Index cho mỗi kỳ để xác định tình trạng thị trường (Tăng >5%, Giảm <-5%, Đi ngang)",
+      step3: "Quét từng cổ phiếu trong các ngành đã chọn để tìm những ngày tăng liên tiếp trong mỗi kỳ",
+      step4: "Xác định 'ứng viên nước rút' - cổ phiếu có mô hình động lực và theo dõi những cổ phiếu tốt nhất",
+      
+      detectionFilters: "Bộ Lọc Phát Hiện Chính",
+      filter1Title: "Ngày Tăng Liên Tiếp",
+      filter1Description: "Tối thiểu 2 ngày liên tiếp với mức tăng ≥6% (có thể cấu hình)",
+      filter2Title: "Ngưỡng Tăng Giá",
+      filter2Description: "Mức tăng giá hàng ngày phải đạt hoặc vượt ngưỡng 6%",
+      filter3Title: "Bối Cảnh Thị Trường",
+      filter3Description: "Hiệu suất VN-Index được phân loại thành Tăng/Giảm/Đi ngang",
+      filter4Title: "Lựa Chọn Ngành",
+      filter4Description: "Tập trung vào các ngành cụ thể như Ngân hàng, Chứng khoán, Bất động sản",
+      
+      whyItWorks: "Tại Sao Hiệu Quả",
+      whyItWorksDescription1: "Những ngày tăng liên tiếp thường báo hiệu động lực mạnh và áp lực mua từ tổ chức.",
+      whyItWorksDescription2: "Phân tích mô hình lịch sử tiết lộ các chu kỳ thị trường và cơ hội luân chuyển ngành lặp lại.",
+      
+      whatToDo: "Cách Sử Dụng Kết Quả",
+      whatToDoDescription1: "Tìm các kỳ có hoạt động cao (nhiều ứng viên nước rút) để có cái nhìn về thời điểm thị trường.",
+      whatToDoDescription2: "Nghiên cứu những cổ phiếu tốt nhất trong mỗi kỳ để xác định mô hình dẫn đầu ngành.",
+      whatToDoDescription3: "Sử dụng dữ liệu lịch sử để hiểu cách điều kiện thị trường hiện tại so với các chu kỳ trước."
+    },
   },
 } as const;

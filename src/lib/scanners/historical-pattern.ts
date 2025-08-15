@@ -2,6 +2,8 @@ import type { StockDataPoint, TickerGroup } from '../stock-data';
 
 export interface HistoricalScanResult {
 	period: string; // "2024-01" or "2024-Q1" 
+	startDate: Date;
+	endDate: Date;
 	year: number;
 	month: number;
 	quarter?: number;
@@ -335,6 +337,8 @@ export async function scanHistoricalPeriod(
 
 	const result: HistoricalScanResult = {
 		period,
+		startDate: new Date(startDate),
+		endDate: new Date(endDate),
 		year: startDate.getFullYear(),
 		month: startDate.getMonth() + 1,
 		quarter: config.scanType === 'quarterly' ? Math.ceil((startDate.getMonth() + 1) / 3) : undefined,

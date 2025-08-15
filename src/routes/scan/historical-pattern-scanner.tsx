@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { History, Play, ArrowLeft, Calendar, TrendingUp, Download, Settings } from "lucide-react";
+import { History, Play, ArrowLeft, Calendar, TrendingUp, Download, Settings, ChevronDown, ChevronUp, Info, Filter, Target, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Link } from "@tanstack/react-router";
 import { useHistoricalPatternScan, useTickerGroups } from "@/lib/queries";
@@ -24,6 +25,7 @@ function HistoricalPatternScanner() {
 	
 	const [config, setConfig] = useState<HistoricalScanConfig>(DEFAULT_HISTORICAL_CONFIG);
 	const [showSettings, setShowSettings] = useState(false);
+	const [showMethodology, setShowMethodology] = useState(false);
 	
 	// Load ticker groups for sector selection
 	const { data: tickerGroups } = useTickerGroups();
@@ -111,6 +113,110 @@ function HistoricalPatternScanner() {
 						</p>
 					</div>
 				</div>
+
+				{/* Methodology Info Card */}
+				<Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+					<Collapsible open={showMethodology} onOpenChange={setShowMethodology}>
+						<CollapsibleTrigger asChild>
+							<CardHeader className="pb-3 cursor-pointer hover:bg-blue-100/50 transition-colors">
+								<div className="flex items-center justify-between">
+									<div className="flex items-center space-x-2">
+										<Info className="h-5 w-5 text-blue-600" />
+										<CardTitle className="text-lg text-blue-900">{t("scan.methodology.title")}</CardTitle>
+									</div>
+									{showMethodology ? (
+										<ChevronUp className="h-4 w-4 text-blue-600" />
+									) : (
+										<ChevronDown className="h-4 w-4 text-blue-600" />
+									)}
+								</div>
+								<CardDescription className="text-blue-700">
+									{t("scan.methodology.subtitle")}
+								</CardDescription>
+							</CardHeader>
+						</CollapsibleTrigger>
+						<CollapsibleContent>
+							<CardContent className="pt-0 space-y-4">
+								{/* How it Works */}
+								<div className="space-y-3">
+									<div className="flex items-center space-x-2">
+										<BarChart3 className="h-4 w-4 text-blue-600" />
+										<h4 className="font-semibold text-blue-900">{t("scan.methodology.howItWorks")}</h4>
+									</div>
+									<div className="space-y-2 text-sm text-gray-700">
+										<div className="flex items-start space-x-2">
+											<span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full mt-0.5">1</span>
+											<p>{t("scan.methodology.step1")}</p>
+										</div>
+										<div className="flex items-start space-x-2">
+											<span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full mt-0.5">2</span>
+											<p>{t("scan.methodology.step2")}</p>
+										</div>
+										<div className="flex items-start space-x-2">
+											<span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full mt-0.5">3</span>
+											<p>{t("scan.methodology.step3")}</p>
+										</div>
+										<div className="flex items-start space-x-2">
+											<span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full mt-0.5">4</span>
+											<p>{t("scan.methodology.step4")}</p>
+										</div>
+									</div>
+								</div>
+
+								{/* Detection Filters */}
+								<div className="space-y-3">
+									<div className="flex items-center space-x-2">
+										<Filter className="h-4 w-4 text-blue-600" />
+										<h4 className="font-semibold text-blue-900">{t("scan.methodology.detectionFilters")}</h4>
+									</div>
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+										<div className="bg-white/60 p-3 rounded-lg border border-blue-200">
+											<div className="font-medium text-blue-900 mb-1">{t("scan.methodology.filter1Title")}</div>
+											<div className="text-gray-600">{t("scan.methodology.filter1Description")}</div>
+										</div>
+										<div className="bg-white/60 p-3 rounded-lg border border-blue-200">
+											<div className="font-medium text-blue-900 mb-1">{t("scan.methodology.filter2Title")}</div>
+											<div className="text-gray-600">{t("scan.methodology.filter2Description")}</div>
+										</div>
+										<div className="bg-white/60 p-3 rounded-lg border border-blue-200">
+											<div className="font-medium text-blue-900 mb-1">{t("scan.methodology.filter3Title")}</div>
+											<div className="text-gray-600">{t("scan.methodology.filter3Description")}</div>
+										</div>
+										<div className="bg-white/60 p-3 rounded-lg border border-blue-200">
+											<div className="font-medium text-blue-900 mb-1">{t("scan.methodology.filter4Title")}</div>
+											<div className="text-gray-600">{t("scan.methodology.filter4Description")}</div>
+										</div>
+									</div>
+								</div>
+
+								{/* Why It Works & What To Do */}
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<div className="space-y-3">
+										<div className="flex items-center space-x-2">
+											<Target className="h-4 w-4 text-green-600" />
+											<h4 className="font-semibold text-green-900">{t("scan.methodology.whyItWorks")}</h4>
+										</div>
+										<div className="text-sm text-gray-700 space-y-2">
+											<p>{t("scan.methodology.whyItWorksDescription1")}</p>
+											<p>{t("scan.methodology.whyItWorksDescription2")}</p>
+										</div>
+									</div>
+									<div className="space-y-3">
+										<div className="flex items-center space-x-2">
+											<TrendingUp className="h-4 w-4 text-purple-600" />
+											<h4 className="font-semibold text-purple-900">{t("scan.methodology.whatToDo")}</h4>
+										</div>
+										<div className="text-sm text-gray-700 space-y-2">
+											<p>{t("scan.methodology.whatToDoDescription1")}</p>
+											<p>{t("scan.methodology.whatToDoDescription2")}</p>
+											<p>{t("scan.methodology.whatToDoDescription3")}</p>
+										</div>
+									</div>
+								</div>
+							</CardContent>
+						</CollapsibleContent>
+					</Collapsible>
+				</Card>
 
 				{/* Control Panel */}
 				<Card>
@@ -326,7 +432,19 @@ function HistoricalPatternScanner() {
 												<TableCell className="font-medium">
 													<div className="flex items-center space-x-2">
 														<Calendar className="h-4 w-4 text-muted-foreground" />
-														<span>{result.period}</span>
+														<div className="flex flex-col">
+															<span className="font-medium">{result.period}</span>
+															<span className="text-xs text-muted-foreground">
+																{result.startDate.toLocaleDateString('en-US', { 
+																	month: 'short', 
+																	day: 'numeric' 
+																})} - {result.endDate.toLocaleDateString('en-US', { 
+																	month: 'short', 
+																	day: 'numeric',
+																	year: result.startDate.getFullYear() !== result.endDate.getFullYear() ? 'numeric' : undefined
+																})}
+															</span>
+														</div>
 													</div>
 												</TableCell>
 												<TableCell>

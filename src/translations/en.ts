@@ -1209,5 +1209,35 @@ export const en = {
     readyToScan: "Ready to Scan",
     clickStartToBegin: "Click the start button above to begin historical pattern analysis",
     selectSectors: "Select Sectors to Scan",
+    
+    // Methodology explanations
+    methodology: {
+      title: "How This Scanner Works",
+      subtitle: "Click to learn about the detection methodology and filters",
+      howItWorks: "Detection Process",
+      step1: "Break down time into periods (daily, weekly, monthly, or quarterly) from your selected year range",
+      step2: "Analyze VN-Index performance for each period to determine market condition (Bull >5%, Bear <-5%, Sideways)",
+      step3: "Scan each stock in selected sectors for consecutive high-gain days within each period",
+      step4: "Identify 'sprint candidates' - stocks showing momentum patterns and track the best performers",
+      
+      detectionFilters: "Key Detection Filters",
+      filter1Title: "Consecutive Gain Days",
+      filter1Description: "Minimum 2 consecutive days with gains ≥6% (configurable)",
+      filter2Title: "Gain Threshold",  
+      filter2Description: "Daily price increase must meet or exceed 6% threshold",
+      filter3Title: "Market Context",
+      filter3Description: "VN-Index performance categorized as Bull/Bear/Sideways",
+      filter4Title: "Sector Selection",
+      filter4Description: "Focus on specific sectors like Banking, Securities, Real Estate",
+      
+      whyItWorks: "Why This Works",
+      whyItWorksDescription1: "Consecutive high-gain days often signal strong momentum and institutional buying pressure.",
+      whyItWorksDescription2: "Historical pattern analysis reveals recurring market cycles and sector rotation opportunities.",
+      
+      whatToDo: "How to Use Results",
+      whatToDoDescription1: "Look for periods with high activity (many sprint candidates) for market timing insights.",
+      whatToDoDescription2: "Study best performers in each period to identify sector leadership patterns.",
+      whatToDoDescription3: "Use historical data to understand how current market conditions compare to past cycles."
+    },
   },
 } as const;
