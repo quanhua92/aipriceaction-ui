@@ -438,14 +438,20 @@ function AskPage() {
 									<div className="space-y-2">
 										<Label htmlFor="context-date" className="text-sm font-medium">
 											{t("askAI.contextDate")}
+											<span className="text-xs text-muted-foreground font-normal ml-2">
+												(YYYY-MM-DD)
+											</span>
 										</Label>
 										<Input
 											id="context-date"
 											type="date"
 											value={contextDate}
-											onChange={(e) => setContextDate(e.target.value)}
-											className="w-full"
-											placeholder={t("askAI.contextDatePlaceholder")}
+											onChange={(e) => {
+												// HTML date inputs always provide YYYY-MM-DD format
+												setContextDate(e.target.value);
+											}}
+											className="w-full font-mono"
+											pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 										/>
 										<p className="text-xs text-muted-foreground">
 											{t("askAI.contextDateDesc")}
