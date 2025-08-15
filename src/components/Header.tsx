@@ -36,7 +36,7 @@ export default function Header() {
 			icon: Brain,
 		},
 		{
-			label: "Analysis",
+			label: t("nav.analysis"),
 			icon: TrendingUp,
 			children: [
 				{
@@ -57,7 +57,7 @@ export default function Header() {
 			],
 		},
 		{
-			label: "Tools",
+			label: t("nav.tools"),
 			icon: Grid3X3,
 			children: [
 				{

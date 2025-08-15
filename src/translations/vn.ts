@@ -9,6 +9,8 @@ export const vn = {
     compareCharts: "So sánh biểu đồ",
     portfolioAnalysis: "Phân tích danh mục",
     scan: "Quét",
+    analysis: "Phân tích",
+    tools: "Công cụ",
   },
 
   // Common

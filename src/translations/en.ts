@@ -9,6 +9,8 @@ export const en = {
     compareCharts: "Compare Charts",
     portfolioAnalysis: "Portfolio Analysis",
     scan: "Scan",
+    analysis: "Analysis",
+    tools: "Tools",
   },
 
   // Common
