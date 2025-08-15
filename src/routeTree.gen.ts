@@ -15,9 +15,12 @@ import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AskRouteImport } from './routes/ask'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectorsIndexRouteImport } from './routes/sectors/index'
+import { Route as ScanIndexRouteImport } from './routes/scan/index'
 import { Route as PanicIndexRouteImport } from './routes/panic/index'
 import { Route as TickerSymbolRouteImport } from './routes/ticker/$symbol'
 import { Route as SectorSectorNameRouteImport } from './routes/sector/$sectorName'
+import { Route as ScanHistoricalPatternScannerRouteImport } from './routes/scan/historical-pattern-scanner'
+import { Route as ScanFinalSprintScannerRouteImport } from './routes/scan/final-sprint-scanner'
 import { Route as PanicAnalyzeRouteImport } from './routes/panic/analyze'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
 
@@ -51,6 +54,11 @@ const SectorsIndexRoute = SectorsIndexRouteImport.update({
   path: '/sectors/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScanIndexRoute = ScanIndexRouteImport.update({
+  id: '/scan/',
+  path: '/scan/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PanicIndexRoute = PanicIndexRouteImport.update({
   id: '/panic/',
   path: '/panic/',
@@ -64,6 +72,17 @@ const TickerSymbolRoute = TickerSymbolRouteImport.update({
 const SectorSectorNameRoute = SectorSectorNameRouteImport.update({
   id: '/sector/$sectorName',
   path: '/sector/$sectorName',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanHistoricalPatternScannerRoute =
+  ScanHistoricalPatternScannerRouteImport.update({
+    id: '/scan/historical-pattern-scanner',
+    path: '/scan/historical-pattern-scanner',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ScanFinalSprintScannerRoute = ScanFinalSprintScannerRouteImport.update({
+  id: '/scan/final-sprint-scanner',
+  path: '/scan/final-sprint-scanner',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PanicAnalyzeRoute = PanicAnalyzeRouteImport.update({
@@ -85,9 +104,12 @@ export interface FileRoutesByFullPath {
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/panic/analyze': typeof PanicAnalyzeRoute
+  '/scan/final-sprint-scanner': typeof ScanFinalSprintScannerRoute
+  '/scan/historical-pattern-scanner': typeof ScanHistoricalPatternScannerRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
   '/ticker/$symbol': typeof TickerSymbolRoute
   '/panic': typeof PanicIndexRoute
+  '/scan': typeof ScanIndexRoute
   '/sectors': typeof SectorsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -98,9 +120,12 @@ export interface FileRoutesByTo {
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/panic/analyze': typeof PanicAnalyzeRoute
+  '/scan/final-sprint-scanner': typeof ScanFinalSprintScannerRoute
+  '/scan/historical-pattern-scanner': typeof ScanHistoricalPatternScannerRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
   '/ticker/$symbol': typeof TickerSymbolRoute
   '/panic': typeof PanicIndexRoute
+  '/scan': typeof ScanIndexRoute
   '/sectors': typeof SectorsIndexRoute
 }
 export interface FileRoutesById {
@@ -112,9 +137,12 @@ export interface FileRoutesById {
   '/tickers': typeof TickersRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/panic/analyze': typeof PanicAnalyzeRoute
+  '/scan/final-sprint-scanner': typeof ScanFinalSprintScannerRoute
+  '/scan/historical-pattern-scanner': typeof ScanHistoricalPatternScannerRoute
   '/sector/$sectorName': typeof SectorSectorNameRoute
   '/ticker/$symbol': typeof TickerSymbolRoute
   '/panic/': typeof PanicIndexRoute
+  '/scan/': typeof ScanIndexRoute
   '/sectors/': typeof SectorsIndexRoute
 }
 export interface FileRouteTypes {
@@ -127,9 +155,12 @@ export interface FileRouteTypes {
     | '/tickers'
     | '/demo/tanstack-query'
     | '/panic/analyze'
+    | '/scan/final-sprint-scanner'
+    | '/scan/historical-pattern-scanner'
     | '/sector/$sectorName'
     | '/ticker/$symbol'
     | '/panic'
+    | '/scan'
     | '/sectors'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -140,9 +171,12 @@ export interface FileRouteTypes {
     | '/tickers'
     | '/demo/tanstack-query'
     | '/panic/analyze'
+    | '/scan/final-sprint-scanner'
+    | '/scan/historical-pattern-scanner'
     | '/sector/$sectorName'
     | '/ticker/$symbol'
     | '/panic'
+    | '/scan'
     | '/sectors'
   id:
     | '__root__'
@@ -153,9 +187,12 @@ export interface FileRouteTypes {
     | '/tickers'
     | '/demo/tanstack-query'
     | '/panic/analyze'
+    | '/scan/final-sprint-scanner'
+    | '/scan/historical-pattern-scanner'
     | '/sector/$sectorName'
     | '/ticker/$symbol'
     | '/panic/'
+    | '/scan/'
     | '/sectors/'
   fileRoutesById: FileRoutesById
 }
@@ -167,9 +204,12 @@ export interface RootRouteChildren {
   TickersRoute: typeof TickersRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   PanicAnalyzeRoute: typeof PanicAnalyzeRoute
+  ScanFinalSprintScannerRoute: typeof ScanFinalSprintScannerRoute
+  ScanHistoricalPatternScannerRoute: typeof ScanHistoricalPatternScannerRoute
   SectorSectorNameRoute: typeof SectorSectorNameRoute
   TickerSymbolRoute: typeof TickerSymbolRoute
   PanicIndexRoute: typeof PanicIndexRoute
+  ScanIndexRoute: typeof ScanIndexRoute
   SectorsIndexRoute: typeof SectorsIndexRoute
 }
 
@@ -217,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SectorsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scan/': {
+      id: '/scan/'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/panic/': {
       id: '/panic/'
       path: '/panic'
@@ -236,6 +283,20 @@ declare module '@tanstack/react-router' {
       path: '/sector/$sectorName'
       fullPath: '/sector/$sectorName'
       preLoaderRoute: typeof SectorSectorNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan/historical-pattern-scanner': {
+      id: '/scan/historical-pattern-scanner'
+      path: '/scan/historical-pattern-scanner'
+      fullPath: '/scan/historical-pattern-scanner'
+      preLoaderRoute: typeof ScanHistoricalPatternScannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan/final-sprint-scanner': {
+      id: '/scan/final-sprint-scanner'
+      path: '/scan/final-sprint-scanner'
+      fullPath: '/scan/final-sprint-scanner'
+      preLoaderRoute: typeof ScanFinalSprintScannerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/panic/analyze': {
@@ -263,9 +324,12 @@ const rootRouteChildren: RootRouteChildren = {
   TickersRoute: TickersRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   PanicAnalyzeRoute: PanicAnalyzeRoute,
+  ScanFinalSprintScannerRoute: ScanFinalSprintScannerRoute,
+  ScanHistoricalPatternScannerRoute: ScanHistoricalPatternScannerRoute,
   SectorSectorNameRoute: SectorSectorNameRoute,
   TickerSymbolRoute: TickerSymbolRoute,
   PanicIndexRoute: PanicIndexRoute,
+  ScanIndexRoute: ScanIndexRoute,
   SectorsIndexRoute: SectorsIndexRoute,
 }
 export const routeTree = rootRouteImport

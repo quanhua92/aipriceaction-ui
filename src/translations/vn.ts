@@ -8,6 +8,7 @@ export const vn = {
     tickers: "Mã chứng khoán",
     compareCharts: "So sánh biểu đồ",
     portfolioAnalysis: "Phân tích danh mục",
+    scan: "Quét",
   },
 
   // Common
@@ -1093,5 +1094,119 @@ export const vn = {
     includeFinancialRatiosDesc: "P/E, P/B, ROE, ROA, tỷ lệ nợ, biên lợi nhuận",
     includeDescription: "Bao gồm mô tả công ty",
     includeDescriptionDesc: "Mô tả kinh doanh và hồ sơ công ty",
+  },
+
+  // Scan Feature
+  scan: {
+    title: "Bộ quét Cổ phiếu",
+    subtitle: "Công cụ mạnh mẽ để khám phá cơ hội giao dịch đà tăng cao trên các ngành Việt Nam",
+    
+    // Final Sprint Scanner
+    finalSprintScanner: {
+      title: "Bộ lọc pha nước rút",
+      description: "Công cụ sàng lọc cổ phiếu mạnh mẽ được thiết kế để phát hiện các giai đoạn đột phá đà tăng cao trên các ngành. Nó xác định các cổ phiếu—đặc biệt trong ngân hàng hoặc các ngành quan trọng khác—đang bước vào giai đoạn \"nước rút cuối\", được đặc trưng bởi các lần tăng liên tiếp đạt trần, khối lượng tăng vọt và hành động giá tăng tốc. Hoàn hảo cho các nhà giao dịch tìm kiếm cơ hội ngắn hạn bùng nổ trước đỉnh tiềm năng.",
+      
+      // Detection criteria
+      detectionCriteria: "Tiêu chí Phát hiện",
+      criteria: {
+        dailyGains: "Tăng hàng ngày ≥6.5%",
+        consecutiveDays: "2+ ngày mạnh liên tiếp",
+        volumeSurge: "Khối lượng >150% TB",
+        momentum: "Gia tốc đà tăng",
+      },
+      
+      // Sector descriptions
+      bankingDescription: "Quét cổ phiếu ngân hàng hàng đầu để tìm cơ hội đà tăng trần",
+      securitiesDescription: "Xác định công ty chứng khoán có tiềm năng đột phá bùng nổ",
+      realEstateDescription: "Tìm cổ phiếu bất động sản trong giai đoạn nước rút cuối",
+      
+      // Features
+      features: {
+        ceilingLimit: "Phát hiện tăng trần liên tiếp",
+        volumeSurge: "Xác định tăng vọt khối lượng", 
+        momentum: "Phân tích hành động giá tăng tốc",
+      },
+    },
+
+    // Historical Pattern Scanner
+    historicalPatternScanner: {
+      title: "Bộ quét Mô hình Lịch sử",
+      description: "Nghiên cứu và phân tích các mô hình thị trường lịch sử từ 2017 đến nay. Quét qua từng tháng/quý để xác định các mô hình đà tăng lặp lại, chu kỳ thị trường và cơ hội luân chuyển ngành trong lịch sử thị trường chứng khoán Việt Nam.",
+      
+      // Features
+      features: {
+        timeAnalysis: "Phân tích mô hình theo thời gian (2017-nay)",
+        patternDetection: "Phát hiện chu kỳ thị trường và đà tăng",
+        marketContext: "Bối cảnh và thông tin lịch sử",
+      },
+    },
+    
+    // General scanning terms
+    startScanning: "Bắt đầu Quét",
+    scanSector: "Quét Ngành",
+    scanning: "Đang quét...",
+    targetSectors: "Ngành Mục tiêu",
+    targetTickers: "Mã CK Mục tiêu",
+    keyFeatures: "Tính năng Chính",
+    moreScanners: "Thêm Bộ quét Sắp ra mắt",
+    moreScannersSoon: "Các bộ quét chuyên biệt bổ sung sẽ có sẵn trong các cập nhật tương lai",
+    
+    // Results
+    sprintCandidates: "Ứng viên Nước rút",
+    noSprintCandidates: "Không tìm thấy ứng viên nước rút trong ngành này",
+    lastScanned: "Quét lần cuối",
+    momentumScore: "Điểm Đà tăng",
+    consecutiveDays: "Ngày Liên tiếp",
+    volumeRatio: "Tỷ lệ Khối lượng",
+    errorScanning: "Lỗi quét ngành",
+    
+    // Risk levels
+    riskLevel: {
+      high: "Rủi ro Cao",
+      medium: "Rủi ro Trung bình",
+      low: "Rủi ro Thấp",
+    },
+    
+    // Sectors
+    sectors: {
+      banking: "Ngân hàng",
+      securities: "Chứng khoán",
+      realEstate: "Bất động sản",
+    },
+
+    // Historical scanning terms
+    timePeriods: "Thời gian",
+    patternAnalysis: "Phân tích Mô hình",
+    marketContext: "Bối cảnh Thị trường", 
+    scanConfiguration: "Cấu hình Quét",
+    configureScanParameters: "Cấu hình tham số quét và khoảng thời gian",
+    settings: "Cài đặt",
+    exportCSV: "Xuất CSV",
+    yearsToScan: "Năm cần Quét",
+    periodsToScan: "Kỳ cần Quét", 
+    sectorsToAnalyze: "Ngành cần Phân tích",
+    gainThreshold: "Ngưỡng Tăng",
+    advancedSettings: "Cài đặt Nâng cao",
+    startYear: "Năm Bắt đầu",
+    endYear: "Năm Kết thúc",
+    scanType: "Loại Quét",
+    daily: "Hàng ngày",
+    weekly: "Hàng tuần",
+    monthly: "Hàng tháng",
+    quarterly: "Hàng quý",
+    scanningHistory: "Đang quét lịch sử...",
+    startHistoricalScan: "Bắt đầu Quét Lịch sử",
+    historicalResults: "Kết quả Quét Lịch sử",
+    foundResults: "Tìm thấy {count} kết quả từ {startYear} đến {endYear}",
+    period: "Kỳ",
+    marketCondition: "Tình trạng Thị trường",
+    vnIndexChange: "Thay đổi VN-Index",
+    totalCandidates: "Tổng Ứng viên",
+    bestPerformer: "Tốt nhất",
+    patterns: "Mô hình",
+    notes: "Ghi chú",
+    readyToScan: "Sẵn sàng Quét",
+    clickStartToBegin: "Nhấn nút bắt đầu ở trên để bắt đầu phân tích mô hình lịch sử",
+    selectSectors: "Chọn Ngành để Quét",
   },
 } as const;

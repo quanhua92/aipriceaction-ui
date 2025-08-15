@@ -8,6 +8,7 @@ export const en = {
     tickers: "Tickers",
     compareCharts: "Compare Charts",
     portfolioAnalysis: "Portfolio Analysis",
+    scan: "Scan",
   },
 
   // Common
@@ -1094,5 +1095,119 @@ export const en = {
     includeFinancialRatiosDesc: "P/E, P/B, ROE, ROA, debt ratios, margins",
     includeDescription: "Include Company Description",
     includeDescriptionDesc: "Business description and company profile",
+  },
+
+  // Scan Feature
+  scan: {
+    title: "Stock Scanners",
+    subtitle: "Powerful tools to discover high-momentum trading opportunities across Vietnamese sectors",
+    
+    // Final Sprint Scanner
+    finalSprintScanner: {
+      title: "Final Sprint Scanner",
+      description: "A powerful stock screening tool designed to detect high-momentum breakout phases across sectors. It identifies stocks—especially in banking or other key industries—that are entering a \"final sprint\" phase, characterized by consecutive ceiling-limit gains, volume surges, and accelerated price action. Perfect for traders seeking explosive short-term opportunities before a potential peak.",
+      
+      // Detection criteria
+      detectionCriteria: "Detection Criteria",
+      criteria: {
+        dailyGains: "Daily gains ≥6.5%",
+        consecutiveDays: "2+ consecutive strong days",
+        volumeSurge: "Volume >150% avg",
+        momentum: "Momentum acceleration",
+      },
+      
+      // Sector descriptions
+      bankingDescription: "Scan top banking stocks for ceiling-limit momentum plays",
+      securitiesDescription: "Identify securities firms with explosive breakout potential",
+      realEstateDescription: "Find real estate stocks in final sprint phases",
+      
+      // Features
+      features: {
+        ceilingLimit: "Consecutive ceiling-limit gains detection",
+        volumeSurge: "Volume surge identification",
+        momentum: "Accelerated price action analysis",
+      },
+    },
+
+    // Historical Pattern Scanner
+    historicalPatternScanner: {
+      title: "Historical Pattern Scanner",
+      description: "Research and analyze historical market patterns from 2017 to present. Scan through each month/quarter to identify recurring momentum patterns, market cycles, and sector rotation opportunities across Vietnamese stock market history.",
+      
+      // Features
+      features: {
+        timeAnalysis: "Time-based pattern analysis (2017-now)",
+        patternDetection: "Market cycle and momentum detection",
+        marketContext: "Historical context and insights",
+      },
+    },
+    
+    // General scanning terms
+    startScanning: "Start Scanning",
+    scanSector: "Scan Sector",
+    scanning: "Scanning...",
+    targetSectors: "Target Sectors",
+    targetTickers: "Target Tickers",
+    keyFeatures: "Key Features",
+    moreScanners: "More Scanners Coming Soon",
+    moreScannersSoon: "Additional specialized scanners will be available in future updates",
+    
+    // Results
+    sprintCandidates: "Sprint Candidates",
+    noSprintCandidates: "No sprint candidates found in this sector",
+    lastScanned: "Last scanned",
+    momentumScore: "Momentum Score",
+    consecutiveDays: "Consecutive Days",
+    volumeRatio: "Volume Ratio",
+    errorScanning: "Error scanning sector",
+    
+    // Risk levels
+    riskLevel: {
+      high: "High Risk",
+      medium: "Medium Risk",
+      low: "Low Risk",
+    },
+    
+    // Sectors
+    sectors: {
+      banking: "Banking",
+      securities: "Securities", 
+      realEstate: "Real Estate",
+    },
+
+    // Historical scanning terms
+    timePeriods: "Time Periods",
+    patternAnalysis: "Pattern Analysis", 
+    marketContext: "Market Context",
+    scanConfiguration: "Scan Configuration",
+    configureScanParameters: "Configure scan parameters and time range",
+    settings: "Settings",
+    exportCSV: "Export CSV",
+    yearsToScan: "Years to Scan",
+    periodsToScan: "Periods to Scan",
+    sectorsToAnalyze: "Sectors to Analyze",
+    gainThreshold: "Gain Threshold",
+    advancedSettings: "Advanced Settings",
+    startYear: "Start Year",
+    endYear: "End Year",
+    scanType: "Scan Type",
+    daily: "Daily",
+    weekly: "Weekly",
+    monthly: "Monthly",
+    quarterly: "Quarterly",
+    scanningHistory: "Scanning history...",
+    startHistoricalScan: "Start Historical Scan",
+    historicalResults: "Historical Scan Results",
+    foundResults: "Found {count} results from {startYear} to {endYear}",
+    period: "Period",
+    marketCondition: "Market Condition",
+    vnIndexChange: "VN-Index Change",
+    totalCandidates: "Total Candidates",
+    bestPerformer: "Best Performer",
+    patterns: "Patterns",
+    notes: "Notes",
+    readyToScan: "Ready to Scan",
+    clickStartToBegin: "Click the start button above to begin historical pattern analysis",
+    selectSectors: "Select Sectors to Scan",
   },
 } as const;

@@ -12,6 +12,7 @@ import {
 	Languages,
 	AlertTriangle,
 	Brain,
+	Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -32,6 +33,11 @@ export default function Header() {
 			to: "/ask",
 			icon: Brain,
 			label: t("askAI.askAI"),
+		},
+		{
+			to: "/scan",
+			icon: Search,
+			label: t("nav.scan"),
 		},
 		{
 			to: "/panic",
