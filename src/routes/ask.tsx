@@ -163,8 +163,8 @@ function AskPage() {
 		return language === "vn" ? multipleTickerTemplatesVN : multipleTickerTemplatesEN;
 	}, [language]);
 
-	// Data fetching for single ticker
-	const dateRangeConfig = useMemo(() => createDateRangeConfig("3M"), []);
+	// Data fetching for single ticker - use ALL data for context date filtering
+	const dateRangeConfig = useMemo(() => createDateRangeConfig("ALL"), []);
 	const { data: singleTickerData } = useTickerData(defaultTicker, dateRangeConfig);
 	const { data: singleVPAData } = useVPAData(defaultTicker, !!defaultTicker);
 	const { data: singleTickerAIData } = useTickerAIData(defaultTicker);

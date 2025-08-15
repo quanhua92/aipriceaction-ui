@@ -4,9 +4,9 @@ test('context date filtering works correctly', async ({ page }) => {
 	await page.goto('/ask');
 	await page.waitForLoadState('networkidle');
 	
-	// Set context date directly in localStorage
+	// Set context date to 2024-12-31 (should have historical data)
 	await page.evaluate(() => {
-		localStorage.setItem('askAI.contextDate', '2025-08-01');
+		localStorage.setItem('askAI.contextDate', '2024-12-31');
 	});
 	
 	// Reload to apply settings
