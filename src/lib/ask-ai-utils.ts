@@ -47,10 +47,7 @@ export function formatChartContext(ticker: string, data: StockDataPoint[], maxDa
 	// Filter data by context date if provided
 	let filteredData = data;
 	if (contextDate) {
-		console.log(`Filtering ${ticker} data for context date: ${contextDate}`);
-		console.log(`Original data length: ${data.length}, first date: ${data[0]?.time}, last date: ${data[data.length - 1]?.time}`);
 		filteredData = data.filter(point => point.time <= contextDate);
-		console.log(`Filtered data length: ${filteredData.length}, last date: ${filteredData[filteredData.length - 1]?.time}`);
 	}
 
 	// Get last N trading days based on configuration
@@ -93,8 +90,6 @@ export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: n
 
 	// Filter by context date if provided
 	if (contextDate) {
-		console.log(`Filtering ${ticker} VPA data for context date: ${contextDate}`);
-		const originalLength = dataLines.length;
 		dataLines = dataLines.filter(line => {
 			const dateMatch = line.match(/(\d{4}-\d{2}-\d{2})/);
 			if (dateMatch) {
@@ -102,7 +97,6 @@ export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: n
 			}
 			return true; // Keep lines without dates
 		});
-		console.log(`VPA filtered: ${originalLength} -> ${dataLines.length} lines`);
 	}
 
 	// Get last N relevant lines based on configuration
