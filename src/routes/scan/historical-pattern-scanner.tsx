@@ -14,7 +14,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Link } from "@tanstack/react-router";
 import { useHistoricalPatternScan, useTickerGroups } from "@/lib/queries";
 import type { HistoricalScanResult, HistoricalScanConfig } from "@/lib/scanners/historical-pattern";
-import { DEFAULT_HISTORICAL_CONFIG } from "@/lib/scanners/historical-pattern";
+import { DEFAULT_HISTORICAL_CONFIG, getDefaultMarketThresholds } from "@/lib/scanners/historical-pattern";
 
 export const Route = createFileRoute("/scan/historical-pattern-scanner")({
 	component: HistoricalPatternScanner,
@@ -23,7 +23,14 @@ export const Route = createFileRoute("/scan/historical-pattern-scanner")({
 function HistoricalPatternScanner() {
 	const { t } = useTranslation();
 	
-	const [config, setConfig] = useState<HistoricalScanConfig>(DEFAULT_HISTORICAL_CONFIG);
+	const [config, setConfig] = useState<HistoricalScanConfig>(() => {
+		const thresholds = getDefaultMarketThresholds(DEFAULT_HISTORICAL_CONFIG.scanType);
+		return {
+			...DEFAULT_HISTORICAL_CONFIG,
+			bullMarketThreshold: thresholds.bull,
+			bearMarketThreshold: thresholds.bear
+		};
+	});
 	const [showSettings, setShowSettings] = useState(false);
 	const [showMethodology, setShowMethodology] = useState(false);
 	
@@ -402,7 +409,15 @@ function HistoricalPatternScanner() {
 										<Label>{t("scan.scanType")}</Label>
 										<Select
 											value={config.scanType}
-											onValueChange={(value: 'daily' | 'weekly' | 'monthly' | 'quarterly') => setConfig({...config, scanType: value})}
+											onValueChange={(value: 'daily' | 'weekly' | 'monthly' | 'quarterly') => {
+												const thresholds = getDefaultMarketThresholds(value);
+												setConfig({
+													...config, 
+													scanType: value,
+													bullMarketThreshold: thresholds.bull,
+													bearMarketThreshold: thresholds.bear
+												});
+											}}
 										>
 											<SelectTrigger>
 												<SelectValue />
@@ -425,6 +440,35 @@ function HistoricalPatternScanner() {
 											min={1}
 											max={20}
 										/>
+									</div>
+								</div>
+
+								{/* Market Condition Thresholds */}
+								<div className="space-y-3">
+									<Label className="text-sm font-medium">{t("scan.marketConditionThresholds")}</Label>
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+										<div className="space-y-2">
+											<Label>{t("scan.bullMarketThreshold")} (%)</Label>
+											<Input
+												type="number"
+												value={config.bullMarketThreshold}
+												onChange={(e) => setConfig({...config, bullMarketThreshold: parseFloat(e.target.value)})}
+												step={0.1}
+												min={0.1}
+												max={20}
+											/>
+										</div>
+										<div className="space-y-2">
+											<Label>{t("scan.bearMarketThreshold")} (%)</Label>
+											<Input
+												type="number"
+												value={config.bearMarketThreshold}
+												onChange={(e) => setConfig({...config, bearMarketThreshold: parseFloat(e.target.value)})}
+												step={0.1}
+												min={-20}
+												max={-0.1}
+											/>
+										</div>
 									</div>
 								</div>
 							</div>

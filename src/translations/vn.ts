@@ -1186,6 +1186,9 @@ export const vn = {
     periodsToScan: "Kỳ cần Quét", 
     sectorsToAnalyze: "Ngành cần Phân tích",
     gainThreshold: "Ngưỡng Tăng",
+    bullMarketThreshold: "Ngưỡng Thị trường Tăng",
+    bearMarketThreshold: "Ngưỡng Thị trường Giảm", 
+    marketConditionThresholds: "Ngưỡng Tình trạng Thị trường",
     advancedSettings: "Cài đặt Nâng cao",
     startYear: "Năm Bắt đầu",
     endYear: "Năm Kết thúc",
@@ -1222,7 +1225,7 @@ export const vn = {
       subtitle: "Nhấn để tìm hiểu về phương pháp và bộ lọc phát hiện",
       howItWorks: "Quy Trình Phát Hiện",
       step1: "Chia thời gian thành các kỳ (ngày, tuần, tháng, hoặc quý) từ phạm vi năm đã chọn",
-      step2: "Phân tích hiệu suất VN-Index cho mỗi kỳ để xác định tình trạng thị trường (Tăng >5%, Giảm <-5%, Đi ngang)",
+      step2: "Phân tích hiệu suất VN-Index cho mỗi kỳ để xác định tình trạng thị trường sử dụng ngưỡng có thể cấu hình (mặc định: Hàng ngày 2.5%/-2.5%, Hàng tháng 5%/-5%)",
       step3: "Quét từng cổ phiếu trong các ngành đã chọn để tìm những ngày tăng liên tiếp trong mỗi kỳ",
       step4: "Xác định 'ứng viên nước rút' - cổ phiếu có mô hình động lực và theo dõi những cổ phiếu tốt nhất",
       
@@ -1232,7 +1235,7 @@ export const vn = {
       filter2Title: "Ngưỡng Tăng Giá",
       filter2Description: "Mức tăng giá hàng ngày phải đạt hoặc vượt ngưỡng 6%",
       filter3Title: "Bối Cảnh Thị Trường",
-      filter3Description: "Hiệu suất VN-Index được phân loại thành Tăng/Giảm/Đi ngang",
+      filter3Description: "Hiệu suất VN-Index được phân loại thành Tăng/Giảm/Đi ngang sử dụng ngưỡng có thể cấu hình (điều chỉnh trong cài đặt)",
       filter4Title: "Lựa Chọn Ngành",
       filter4Description: "Tập trung vào các ngành cụ thể như Ngân hàng, Chứng khoán, Bất động sản",
       

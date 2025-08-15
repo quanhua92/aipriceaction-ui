@@ -1187,6 +1187,9 @@ export const en = {
     periodsToScan: "Periods to Scan",
     sectorsToAnalyze: "Sectors to Analyze",
     gainThreshold: "Gain Threshold",
+    bullMarketThreshold: "Bull Market Threshold",
+    bearMarketThreshold: "Bear Market Threshold",
+    marketConditionThresholds: "Market Condition Thresholds",
     advancedSettings: "Advanced Settings",
     startYear: "Start Year",
     endYear: "End Year",
@@ -1223,7 +1226,7 @@ export const en = {
       subtitle: "Click to learn about the detection methodology and filters",
       howItWorks: "Detection Process",
       step1: "Break down time into periods (daily, weekly, monthly, or quarterly) from your selected year range",
-      step2: "Analyze VN-Index performance for each period to determine market condition (Bull >5%, Bear <-5%, Sideways)",
+      step2: "Analyze VN-Index performance for each period to determine market condition using configurable thresholds (defaults: Daily 2.5%/-2.5%, Monthly 5%/-5%)",
       step3: "Scan each stock in selected sectors for consecutive high-gain days within each period",
       step4: "Identify 'sprint candidates' - stocks showing momentum patterns and track the best performers",
       
@@ -1233,7 +1236,7 @@ export const en = {
       filter2Title: "Gain Threshold",  
       filter2Description: "Daily price increase must meet or exceed 6% threshold",
       filter3Title: "Market Context",
-      filter3Description: "VN-Index performance categorized as Bull/Bear/Sideways",
+      filter3Description: "VN-Index performance categorized as Bull/Bear/Sideways using configurable thresholds (adjustable in settings)",
       filter4Title: "Sector Selection",
       filter4Description: "Focus on specific sectors like Banking, Securities, Real Estate",
       

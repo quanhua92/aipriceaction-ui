@@ -28,6 +28,26 @@ export interface HistoricalScanConfig {
 	minGainThreshold: number;
 	minConsecutiveDays: number;
 	minVolumeRatio: number;
+	bullMarketThreshold: number; // VN-Index change % to be considered bull market
+	bearMarketThreshold: number; // VN-Index change % to be considered bear market (negative value)
+}
+
+/**
+ * Get appropriate market condition thresholds based on scan type
+ */
+export function getDefaultMarketThresholds(scanType: 'daily' | 'weekly' | 'monthly' | 'quarterly'): { bull: number; bear: number } {
+	switch (scanType) {
+		case 'daily':
+			return { bull: 2.5, bear: -2.5 }; // Daily: 2.5% is significant for VN-Index
+		case 'weekly':
+			return { bull: 3.5, bear: -3.5 }; // Weekly: 3.5% is reasonable
+		case 'monthly':
+			return { bull: 5.0, bear: -5.0 }; // Monthly: Original 5% threshold
+		case 'quarterly':
+			return { bull: 8.0, bear: -8.0 }; // Quarterly: Higher threshold for longer periods
+		default:
+			return { bull: 5.0, bear: -5.0 };
+	}
 }
 
 // Default historical scan configuration
@@ -39,6 +59,8 @@ export const DEFAULT_HISTORICAL_CONFIG: HistoricalScanConfig = {
 	minGainThreshold: 6.0,
 	minConsecutiveDays: 2,
 	minVolumeRatio: 1.5,
+	bullMarketThreshold: 5.0, // Will be updated based on scanType
+	bearMarketThreshold: -5.0, // Will be updated based on scanType
 };
 
 /**
@@ -154,7 +176,11 @@ export function generateTimePeriods(config: HistoricalScanConfig): Array<{period
 /**
  * Calculate market condition based on VN-Index performance
  */
-function analyzeMarketCondition(vnIndexData: StockDataPoint[]): {condition: 'bull' | 'bear' | 'sideways', change: number} {
+function analyzeMarketCondition(
+	vnIndexData: StockDataPoint[], 
+	bullThreshold: number, 
+	bearThreshold: number
+): {condition: 'bull' | 'bear' | 'sideways', change: number} {
 	if (vnIndexData.length < 2) {
 		return { condition: 'sideways', change: 0 };
 	}
@@ -164,9 +190,9 @@ function analyzeMarketCondition(vnIndexData: StockDataPoint[]): {condition: 'bul
 	const change = ((lastPrice - firstPrice) / firstPrice) * 100;
 	
 	let condition: 'bull' | 'bear' | 'sideways';
-	if (change > 5) {
+	if (change > bullThreshold) {
 		condition = 'bull';
-	} else if (change < -5) {
+	} else if (change < bearThreshold) {
 		condition = 'bear';
 	} else {
 		condition = 'sideways';
@@ -358,7 +384,11 @@ export async function scanHistoricalPeriod(
 			point.date >= startDate && point.date <= endDate
 		);
 		
-		const marketAnalysis = analyzeMarketCondition(periodVnIndexData);
+		const marketAnalysis = analyzeMarketCondition(
+			periodVnIndexData,
+			config.bullMarketThreshold,
+			config.bearMarketThreshold
+		);
 		result.marketCondition = marketAnalysis.condition;
 		result.vnIndexChange = marketAnalysis.change;
 		
