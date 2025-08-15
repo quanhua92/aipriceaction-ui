@@ -1,5 +1,17 @@
 import type { StockDataPoint, TickerGroup } from '../stock-data';
 
+export interface TickerAnalysis {
+	ticker: string;
+	sector: string;
+	maxConsecutiveDays: number;
+	maxDailyGain: number;
+	totalPeriodGain: number;
+	avgDailyGain: number;
+	qualifiedDays: number; // days above threshold
+	totalDays: number;
+	qualified: boolean;
+}
+
 export interface HistoricalScanResult {
 	period: string; // "2024-01" or "2024-Q1" 
 	startDate: Date;
@@ -8,6 +20,7 @@ export interface HistoricalScanResult {
 	month: number;
 	quarter?: number;
 	sprintCandidates: Record<string, string[]>; // Dynamic based on selected sectors
+	tickerAnalysis: Record<string, TickerAnalysis>; // Detailed analysis for debugging
 	marketCondition: 'bull' | 'bear' | 'sideways';
 	vnIndexChange: number;
 	totalCandidates: number;
@@ -412,6 +425,7 @@ export async function scanHistoricalPeriod(
 		month: startDate.getMonth() + 1,
 		quarter: config.scanType === 'quarterly' ? Math.ceil((startDate.getMonth() + 1) / 3) : undefined,
 		sprintCandidates,
+		tickerAnalysis: {},
 		marketCondition: 'sideways',
 		vnIndexChange: 0,
 		totalCandidates: 0,
@@ -458,6 +472,8 @@ export async function scanHistoricalPeriod(
 					let currentConsecutive = 0;
 					let maxGain = 0;
 					let totalPeriodGain = 0;
+					let qualifiedDays = 0;
+					let totalGainSum = 0;
 					
 					// Calculate total period performance
 					if (sortedData.length > 0) {
@@ -472,10 +488,12 @@ export async function scanHistoricalPeriod(
 						const previous = sortedData[i - 1];
 						const dailyGain = ((current.close - previous.close) / previous.close) * 100;
 						
+						totalGainSum += dailyGain;
 						
 						if (dailyGain >= config.minGainThreshold) {
 							currentConsecutive++;
 							maxGain = Math.max(maxGain, dailyGain);
+							qualifiedDays++;
 						} else {
 							maxConsecutiveDays = Math.max(maxConsecutiveDays, currentConsecutive);
 							currentConsecutive = 0;
@@ -483,9 +501,24 @@ export async function scanHistoricalPeriod(
 					}
 					maxConsecutiveDays = Math.max(maxConsecutiveDays, currentConsecutive);
 					
+					const avgDailyGain = sortedData.length > 1 ? totalGainSum / (sortedData.length - 1) : 0;
+					const qualified = maxConsecutiveDays >= config.minConsecutiveDays;
+					
+					// Store detailed analysis for this ticker
+					result.tickerAnalysis[ticker] = {
+						ticker,
+						sector,
+						maxConsecutiveDays,
+						maxDailyGain: maxGain,
+						totalPeriodGain,
+						avgDailyGain,
+						qualifiedDays,
+						totalDays: sortedData.length,
+						qualified
+					};
 					
 					// Check if this ticker qualifies as a sprint candidate
-					if (maxConsecutiveDays >= config.minConsecutiveDays) {
+					if (qualified) {
 						result.sprintCandidates[sector].push(ticker);
 						
 						// Track best performer using total period gain if it's higher than max daily gain

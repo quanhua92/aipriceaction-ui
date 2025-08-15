@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { History, Play, ArrowLeft, Calendar, TrendingUp, Download, Settings, ChevronDown, ChevronUp, Info, Filter, Target, BarChart3 } from "lucide-react";
+import React, { useState } from "react";
+import { History, Play, ArrowLeft, Calendar, TrendingUp, Download, Settings, ChevronDown, ChevronUp, Info, Filter, Target, BarChart3, Eye, EyeOff } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +34,7 @@ function HistoricalPatternScanner() {
 	});
 	const [showSettings, setShowSettings] = useState(false);
 	const [showMethodology, setShowMethodology] = useState(false);
+	const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 	
 	// Load ticker groups for sector selection
 	const { data: tickerGroups } = useTickerGroups();
@@ -119,6 +121,193 @@ function HistoricalPatternScanner() {
 		if (count <= 3) return <Badge className="bg-yellow-100 text-yellow-800">{count}</Badge>;
 		if (count <= 7) return <Badge className="bg-blue-100 text-blue-800">{count}</Badge>;
 		return <Badge className="bg-purple-100 text-purple-800">{count}</Badge>;
+	};
+
+	// Helper function to create ticker tooltip content with detailed debugging info
+	const getTickerTooltip = (ticker: string, sector: string, result: HistoricalScanResult) => {
+		const sectorName = t(`sectorNames.${sector}`) || sector;
+		const isBestPerformer = result.bestPerformer?.ticker === ticker;
+		const analysis = result.tickerAnalysis?.[ticker];
+		
+		return (
+			<div className="space-y-2 text-sm">
+				<div className="font-semibold text-base">{ticker}</div>
+				<div className="text-muted-foreground">{sectorName}</div>
+				
+				{analysis && (
+					<div className="border-t pt-2 space-y-1">
+						<div className="grid grid-cols-2 gap-x-3 gap-y-1">
+							<div>Max Consecutive: <span className="font-mono font-medium">{analysis.maxConsecutiveDays}d</span></div>
+							<div>Required: <span className="font-mono font-medium">{config.minConsecutiveDays}d</span></div>
+							<div>Max Daily Gain: <span className="font-mono font-medium text-green-600">+{analysis.maxDailyGain.toFixed(1)}%</span></div>
+							<div>Threshold: <span className="font-mono font-medium">{config.minGainThreshold}%</span></div>
+							<div>Total Period: <span className={`font-mono font-medium ${analysis.totalPeriodGain >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+								{analysis.totalPeriodGain >= 0 ? '+' : ''}{analysis.totalPeriodGain.toFixed(1)}%
+							</span></div>
+							<div>Avg Daily: <span className={`font-mono font-medium ${analysis.avgDailyGain >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+								{analysis.avgDailyGain >= 0 ? '+' : ''}{analysis.avgDailyGain.toFixed(1)}%
+							</span></div>
+							<div>Qualified Days: <span className="font-mono font-medium">{analysis.qualifiedDays}/{analysis.totalDays}</span></div>
+							<div>Status: <span className={`font-mono font-medium ${analysis.qualified ? 'text-green-600' : 'text-red-600'}`}>
+								{analysis.qualified ? '✅ PASS' : '❌ FAIL'}
+							</span></div>
+						</div>
+					</div>
+				)}
+				
+				<div className="border-t pt-2 space-y-1">
+					<div>Period: <span className="font-mono">{result.period}</span></div>
+					<div>Market: <span className="font-medium">{t(`scan.${result.marketCondition}Market`)}</span> 
+						<span className={`font-mono ml-1 ${result.vnIndexChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+							({result.vnIndexChange >= 0 ? '+' : ''}{result.vnIndexChange.toFixed(1)}%)
+						</span>
+					</div>
+					{isBestPerformer && result.bestPerformer && (
+						<div className="text-green-600 font-medium">
+							🏆 Best Performer: +{result.bestPerformer.gain.toFixed(1)}%
+						</div>
+					)}
+				</div>
+			</div>
+		);
+	};
+
+	// Helper functions for row expansion
+	const toggleRowExpansion = (period: string) => {
+		const newExpandedRows = new Set(expandedRows);
+		if (newExpandedRows.has(period)) {
+			newExpandedRows.delete(period);
+		} else {
+			newExpandedRows.add(period);
+		}
+		setExpandedRows(newExpandedRows);
+	};
+
+	// Detailed analysis component for expanded rows
+	const DetailedAnalysisTable = ({ result }: { result: HistoricalScanResult }) => {
+		if (!result.tickerAnalysis) return null;
+
+		const allTickers = Object.values(result.tickerAnalysis);
+		const qualifiedTickers = allTickers.filter(t => t.qualified);
+		const failedTickers = allTickers.filter(t => !t.qualified);
+
+		return (
+			<div className="p-4 bg-muted/30 space-y-4">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+					{/* Qualified Tickers */}
+					{qualifiedTickers.length > 0 && (
+						<div>
+							<h4 className="font-semibold text-green-700 mb-2 flex items-center">
+								✅ Qualified Sprint Candidates ({qualifiedTickers.length})
+							</h4>
+							<div className="overflow-x-auto">
+								<table className="w-full text-xs border border-green-200 rounded">
+									<thead className="bg-green-50">
+										<tr>
+											<th className="p-2 text-left font-medium">Ticker</th>
+											<th className="p-2 text-center font-medium">Consecutive</th>
+											<th className="p-2 text-center font-medium">Max Daily</th>
+											<th className="p-2 text-center font-medium">Total Period</th>
+											<th className="p-2 text-center font-medium">Qualified Days</th>
+										</tr>
+									</thead>
+									<tbody>
+										{qualifiedTickers.map(ticker => (
+											<tr key={ticker.ticker} className="border-t border-green-100">
+												<td className="p-2 font-medium">{ticker.ticker}</td>
+												<td className="p-2 text-center font-mono">
+													{ticker.maxConsecutiveDays}d
+												</td>
+												<td className="p-2 text-center font-mono text-green-600">
+													+{ticker.maxDailyGain.toFixed(1)}%
+												</td>
+												<td className={`p-2 text-center font-mono ${ticker.totalPeriodGain >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+													{ticker.totalPeriodGain >= 0 ? '+' : ''}{ticker.totalPeriodGain.toFixed(1)}%
+												</td>
+												<td className="p-2 text-center font-mono">
+													{ticker.qualifiedDays}/{ticker.totalDays}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					)}
+
+					{/* Failed Tickers (showing top performers that didn't qualify) */}
+					{failedTickers.length > 0 && (
+						<div>
+							<h4 className="font-semibold text-orange-700 mb-2 flex items-center">
+								❌ Top Non-Qualifiers ({Math.min(failedTickers.length, 10)}/{failedTickers.length})
+							</h4>
+							<div className="overflow-x-auto">
+								<table className="w-full text-xs border border-orange-200 rounded">
+									<thead className="bg-orange-50">
+										<tr>
+											<th className="p-2 text-left font-medium">Ticker</th>
+											<th className="p-2 text-center font-medium">Consecutive</th>
+											<th className="p-2 text-center font-medium">Max Daily</th>
+											<th className="p-2 text-center font-medium">Total Period</th>
+											<th className="p-2 text-center font-medium">Why Failed</th>
+										</tr>
+									</thead>
+									<tbody>
+										{failedTickers
+											.sort((a, b) => b.maxConsecutiveDays - a.maxConsecutiveDays || b.maxDailyGain - a.maxDailyGain)
+											.slice(0, 10)
+											.map(ticker => (
+											<tr key={ticker.ticker} className="border-t border-orange-100">
+												<td className="p-2 font-medium">{ticker.ticker}</td>
+												<td className={`p-2 text-center font-mono ${ticker.maxConsecutiveDays < config.minConsecutiveDays ? 'text-red-600' : ''}`}>
+													{ticker.maxConsecutiveDays}d
+												</td>
+												<td className={`p-2 text-center font-mono ${ticker.maxDailyGain < config.minGainThreshold ? 'text-red-600' : 'text-green-600'}`}>
+													+{ticker.maxDailyGain.toFixed(1)}%
+												</td>
+												<td className={`p-2 text-center font-mono ${ticker.totalPeriodGain >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+													{ticker.totalPeriodGain >= 0 ? '+' : ''}{ticker.totalPeriodGain.toFixed(1)}%
+												</td>
+												<td className="p-2 text-center text-red-600 text-xs">
+													{ticker.maxConsecutiveDays < config.minConsecutiveDays 
+														? `Need ${config.minConsecutiveDays}d consecutive`
+														: ticker.maxDailyGain < config.minGainThreshold
+														? `Max gain < ${config.minGainThreshold}%`
+														: 'Other'
+													}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					)}
+				</div>
+
+				{/* Summary Stats */}
+				<div className="border-t pt-4">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+						<div className="space-y-1">
+							<div className="text-2xl font-bold text-green-600">{qualifiedTickers.length}</div>
+							<div className="text-xs text-muted-foreground">Qualified</div>
+						</div>
+						<div className="space-y-1">
+							<div className="text-2xl font-bold text-orange-600">{failedTickers.length}</div>
+							<div className="text-xs text-muted-foreground">Failed</div>
+						</div>
+						<div className="space-y-1">
+							<div className="text-2xl font-bold">{allTickers.length}</div>
+							<div className="text-xs text-muted-foreground">Total Analyzed</div>
+						</div>
+						<div className="space-y-1">
+							<div className="text-2xl font-bold">{qualifiedTickers.length > 0 ? ((qualifiedTickers.length / allTickers.length) * 100).toFixed(1) : 0}%</div>
+							<div className="text-xs text-muted-foreground">Success Rate</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
 	};
 
 	const exportToCSV = () => {
@@ -520,6 +709,7 @@ function HistoricalPatternScanner() {
 									<TableHeader>
 										<TableRow>
 											<TableHead className="min-w-[100px]">{t("scan.period")}</TableHead>
+											<TableHead className="min-w-[80px] text-center">Details</TableHead>
 											<TableHead className="min-w-[120px]">{t("scan.marketCondition")}</TableHead>
 											<TableHead className="text-right min-w-[100px]">{t("scan.vnIndexChange")}</TableHead>
 											<TableHead className="text-center min-w-[80px]">{t("scan.totalCandidates")}</TableHead>
@@ -535,25 +725,40 @@ function HistoricalPatternScanner() {
 									</TableHeader>
 									<TableBody>
 										{results.map((result: HistoricalScanResult) => (
-											<TableRow key={result.period}>
-												<TableCell className="font-medium">
-													<div className="flex items-center space-x-2">
-														<Calendar className="h-4 w-4 text-muted-foreground" />
-														<div className="flex flex-col">
-															<span className="font-medium">{result.period}</span>
-															<span className="text-xs text-muted-foreground">
-																{result.startDate.toLocaleDateString('en-US', { 
-																	month: 'short', 
-																	day: 'numeric' 
-																})} - {result.endDate.toLocaleDateString('en-US', { 
-																	month: 'short', 
-																	day: 'numeric',
-																	year: result.startDate.getFullYear() !== result.endDate.getFullYear() ? 'numeric' : undefined
-																})}
-															</span>
+											<React.Fragment key={result.period}>
+												<TableRow>
+													<TableCell className="font-medium">
+														<div className="flex items-center space-x-2">
+															<Calendar className="h-4 w-4 text-muted-foreground" />
+															<div className="flex flex-col">
+																<span className="font-medium">{result.period}</span>
+																<span className="text-xs text-muted-foreground">
+																	{result.startDate.toLocaleDateString('en-US', { 
+																		month: 'short', 
+																		day: 'numeric' 
+																	})} - {result.endDate.toLocaleDateString('en-US', { 
+																		month: 'short', 
+																		day: 'numeric',
+																		year: result.startDate.getFullYear() !== result.endDate.getFullYear() ? 'numeric' : undefined
+																	})}
+																</span>
+															</div>
 														</div>
-													</div>
-												</TableCell>
+													</TableCell>
+													<TableCell className="text-center">
+														<Button
+															variant="ghost"
+															size="sm"
+															onClick={() => toggleRowExpansion(result.period)}
+															className="h-8 w-8 p-0"
+														>
+															{expandedRows.has(result.period) ? (
+																<EyeOff className="h-4 w-4" />
+															) : (
+																<Eye className="h-4 w-4" />
+															)}
+														</Button>
+													</TableCell>
 												<TableCell>
 													{getMarketConditionBadge(result.marketCondition)}
 												</TableCell>
@@ -569,9 +774,23 @@ function HistoricalPatternScanner() {
 													<TableCell key={sector}>
 														<div className="flex flex-wrap gap-1">
 															{(result.sprintCandidates[sector] || []).map(ticker => (
-																<Badge key={ticker} variant="outline" className="text-xs">
-																	{ticker}
-																</Badge>
+																<TooltipProvider key={ticker}>
+																	<Tooltip>
+																		<TooltipTrigger asChild>
+																			<div className="inline-block">
+																				<Badge 
+																					variant="outline" 
+																					className="text-xs cursor-help hover:bg-muted/50 transition-colors"
+																				>
+																					{ticker}
+																				</Badge>
+																			</div>
+																		</TooltipTrigger>
+																		<TooltipContent side="top" className="max-w-[250px]">
+																			{getTickerTooltip(ticker, sector, result)}
+																		</TooltipContent>
+																	</Tooltip>
+																</TooltipProvider>
 															))}
 														</div>
 													</TableCell>
@@ -611,6 +830,14 @@ function HistoricalPatternScanner() {
 													</div>
 												</TableCell>
 											</TableRow>
+											{expandedRows.has(result.period) && (
+												<TableRow>
+													<TableCell colSpan={6 + config.selectedSectors.length} className="p-0">
+														<DetailedAnalysisTable result={result} />
+													</TableCell>
+												</TableRow>
+											)}
+										</React.Fragment>
 										))}
 									</TableBody>
 								</Table>

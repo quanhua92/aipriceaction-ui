@@ -1213,8 +1213,9 @@ export const en = {
     
     // Market condition translations
     bullMarket: "Bull Market",
-    bearMarket: "Bear Market",
+    bearMarket: "Bear Market", 
     sideways: "Sideways",
+    sidewaysMarket: "Sideways Market",
     
     readyToScan: "Ready to Scan",
     clickStartToBegin: "Click the start button above to begin historical pattern analysis",
