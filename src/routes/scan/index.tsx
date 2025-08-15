@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search, TrendingUp, Target, Grid3X3 } from "lucide-react";
+import { Search, Target, Grid3X3 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -12,19 +12,6 @@ function ScanOverview() {
 	const { t } = useTranslation();
 
 	const scanners = [
-		{
-			id: "final-sprint-scanner",
-			title: t("scan.finalSprintScanner.title"),
-			description: t("scan.finalSprintScanner.description"),
-			icon: TrendingUp,
-			sectors: [t("scan.sectors.banking"), t("scan.sectors.securities"), t("scan.sectors.realEstate")],
-			features: [
-				t("scan.finalSprintScanner.features.ceilingLimit"),
-				t("scan.finalSprintScanner.features.volumeSurge"),
-				t("scan.finalSprintScanner.features.momentum"),
-			],
-			route: "/scan/final-sprint-scanner",
-		},
 		{
 			id: "historical-pattern-scanner",
 			title: t("scan.historicalPatternScanner.title"),

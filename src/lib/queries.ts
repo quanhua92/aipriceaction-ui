@@ -13,11 +13,6 @@ import {
 	fetchTickerAIData,
 } from "./company-data";
 import {
-	scanSectorForFinalSprint,
-	getAvailableSectors,
-	type FinalSprintResult,
-} from "./scanners/final-sprint";
-import {
 	scanHistoricalPeriods,
 	type HistoricalScanResult,
 	type HistoricalScanConfig,
@@ -133,37 +128,6 @@ export function useTickerAIData(ticker: string) {
 	});
 }
 
-// Final Sprint Scanner hooks
-export function useFinalSprintScan(sector: string, enabled: boolean = false) {
-	return useQuery({
-		queryKey: ["final-sprint-scan", sector],
-		queryFn: async (): Promise<FinalSprintResult[]> => {
-			const getTickerData = async (ticker: string): Promise<StockDataPoint[]> => {
-				const data = await fetchTickerData(ticker);
-				// Get last 30 days for analysis
-				const cutoffDate = new Date();
-				cutoffDate.setDate(cutoffDate.getDate() - 30);
-				return data.filter(point => point.date >= cutoffDate);
-			};
-
-			return scanSectorForFinalSprint(sector, getTickerData);
-		},
-		enabled: enabled && !!sector,
-		staleTime: 1000 * 60 * 30, // 30 minutes cache for scan results
-		gcTime: 1000 * 60 * 60, // 1 hour
-		retry: 2,
-		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 15000),
-	});
-}
-
-export function useAvailableSectors() {
-	return useQuery({
-		queryKey: ["available-sectors"],
-		queryFn: getAvailableSectors,
-		staleTime: 1000 * 60 * 60 * 24, // 24 hours (sectors don't change often)
-		gcTime: 1000 * 60 * 60 * 24, // 24 hours
-	});
-}
 
 // Historical Pattern Scanner hooks
 export function useHistoricalPatternScan(config: HistoricalScanConfig, enabled: boolean = false) {
