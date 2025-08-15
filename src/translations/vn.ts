@@ -1195,6 +1195,7 @@ export const vn = {
     monthly: "Hàng tháng",
     quarterly: "Hàng quý",
     scanningHistory: "Đang quét lịch sử...",
+    scanningProgress: "Tiến Độ Quét",
     startHistoricalScan: "Bắt đầu Quét Lịch sử",
     historicalResults: "Kết quả Quét Lịch sử",
     foundResults: "Tìm thấy {count} kết quả từ {startYear} đến {endYear}",

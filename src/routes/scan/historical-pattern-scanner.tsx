@@ -32,9 +32,16 @@ function HistoricalPatternScanner() {
 	
 	// Manual trigger for scanning (not auto-triggered by config changes)
 	const [scanTrigger, setScanTrigger] = useState(0);
-	const { data: results, isLoading, error } = useHistoricalPatternScan(config, scanTrigger);
+	const [progress, setProgress] = useState({ completed: 0, total: 0 });
+	
+	const handleProgress = (completed: number, total: number) => {
+		setProgress({ completed, total });
+	};
+	
+	const { data: results, isLoading, error } = useHistoricalPatternScan(config, scanTrigger, handleProgress);
 
 	const handleStartScan = () => {
+		setProgress({ completed: 0, total: 0 });
 		setScanTrigger(prev => prev + 1);
 	};
 
@@ -444,6 +451,22 @@ function HistoricalPatternScanner() {
 								)}
 							</Button>
 						</div>
+
+						{/* Progress Bar */}
+						{isLoading && progress.total > 0 && (
+							<div className="space-y-2">
+								<div className="flex justify-between text-sm text-muted-foreground">
+									<span>{t("scan.scanningProgress")}</span>
+									<span>{progress.completed} / {progress.total}</span>
+								</div>
+								<div className="relative h-3 w-full overflow-hidden rounded-full bg-green-100">
+									<div 
+										className="h-full bg-green-600 transition-all duration-300 ease-out"
+										style={{ width: `${(progress.completed / progress.total) * 100}%` }}
+									/>
+								</div>
+							</div>
+						)}
 					</CardContent>
 				</Card>
 

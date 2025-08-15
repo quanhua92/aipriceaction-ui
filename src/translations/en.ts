@@ -1196,6 +1196,7 @@ export const en = {
     monthly: "Monthly",
     quarterly: "Quarterly",
     scanningHistory: "Scanning history...",
+    scanningProgress: "Scanning Progress",
     startHistoricalScan: "Start Historical Scan",
     historicalResults: "Historical Scan Results",
     foundResults: "Found {count} results from {startYear} to {endYear}",

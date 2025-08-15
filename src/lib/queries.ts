@@ -130,7 +130,11 @@ export function useTickerAIData(ticker: string) {
 
 
 // Historical Pattern Scanner hooks
-export function useHistoricalPatternScan(config: HistoricalScanConfig, scanId: number = 0) {
+export function useHistoricalPatternScan(
+	config: HistoricalScanConfig, 
+	scanId: number = 0, 
+	onProgress?: (completed: number, total: number) => void
+) {
 	return useQuery({
 		queryKey: ["historical-pattern-scan", scanId, config],
 		queryFn: async (): Promise<HistoricalScanResult[]> => {
@@ -145,7 +149,7 @@ export function useHistoricalPatternScan(config: HistoricalScanConfig, scanId: n
 			// Load ticker groups from GitHub
 			const tickerGroups = await loadTickerGroups();
 
-			return scanHistoricalPeriods(config, getTickerData, getVnIndexData, tickerGroups);
+			return scanHistoricalPeriods(config, getTickerData, getVnIndexData, tickerGroups, onProgress);
 		},
 		enabled: scanId > 0,
 		staleTime: 1000 * 60 * 60, // 1 hour cache for historical results
