@@ -52,7 +52,7 @@ export function getDefaultMarketThresholds(scanType: 'daily' | 'weekly' | 'month
 
 // Default historical scan configuration
 export const DEFAULT_HISTORICAL_CONFIG: HistoricalScanConfig = {
-	startYear: 2024,
+	startYear: 2025,
 	endYear: new Date().getFullYear(),
 	scanType: 'monthly',
 	selectedSectors: ['NGAN_HANG', 'CHUNG_KHOAN', 'BAT_DONG_SAN'], // Default to banking, securities, real estate
@@ -62,6 +62,49 @@ export const DEFAULT_HISTORICAL_CONFIG: HistoricalScanConfig = {
 	bullMarketThreshold: 5.0, // Will be updated based on scanType
 	bearMarketThreshold: -5.0, // Will be updated based on scanType
 };
+
+/**
+ * Calculate the actual number of periods that will be generated
+ */
+export function calculatePeriodCount(config: HistoricalScanConfig): number {
+	const now = new Date();
+	let count = 0;
+	
+	if (config.scanType === 'daily') {
+		for (let year = config.startYear; year <= config.endYear; year++) {
+			const yearStart = new Date(year, 0, 1);
+			const yearEnd = year === now.getFullYear() ? now : new Date(year, 11, 31);
+			const daysDiff = Math.floor((yearEnd.getTime() - yearStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+			count += daysDiff;
+		}
+	} else if (config.scanType === 'weekly') {
+		for (let year = config.startYear; year <= config.endYear; year++) {
+			const yearStart = new Date(year, 0, 1);
+			const yearEnd = year === now.getFullYear() ? now : new Date(year, 11, 31);
+			// Rough calculation: weeks in year
+			const weeksDiff = Math.ceil((yearEnd.getTime() - yearStart.getTime()) / (1000 * 60 * 60 * 24 * 7));
+			count += weeksDiff;
+		}
+	} else if (config.scanType === 'monthly') {
+		for (let year = config.startYear; year <= config.endYear; year++) {
+			if (year === config.endYear && year === now.getFullYear()) {
+				count += now.getMonth() + 1; // Current month (0-indexed + 1)
+			} else {
+				count += 12;
+			}
+		}
+	} else if (config.scanType === 'quarterly') {
+		for (let year = config.startYear; year <= config.endYear; year++) {
+			if (year === config.endYear && year === now.getFullYear()) {
+				count += Math.ceil((now.getMonth() + 1) / 3); // Current quarter
+			} else {
+				count += 4;
+			}
+		}
+	}
+	
+	return count;
+}
 
 /**
  * Generate time periods for scanning

@@ -14,7 +14,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Link } from "@tanstack/react-router";
 import { useHistoricalPatternScan, useTickerGroups } from "@/lib/queries";
 import type { HistoricalScanResult, HistoricalScanConfig } from "@/lib/scanners/historical-pattern";
-import { DEFAULT_HISTORICAL_CONFIG, getDefaultMarketThresholds } from "@/lib/scanners/historical-pattern";
+import { DEFAULT_HISTORICAL_CONFIG, getDefaultMarketThresholds, calculatePeriodCount } from "@/lib/scanners/historical-pattern";
 
 export const Route = createFileRoute("/scan/historical-pattern-scanner")({
 	component: HistoricalPatternScanner,
@@ -321,16 +321,7 @@ function HistoricalPatternScanner() {
 							</div>
 							<div className="space-y-1">
 								<p className="text-2xl font-bold">
-									{(() => {
-										const years = config.endYear - config.startYear + 1;
-										switch (config.scanType) {
-											case 'daily': return years * 365;
-											case 'weekly': return years * 52;
-											case 'monthly': return years * 12;
-											case 'quarterly': return years * 4;
-											default: return years * 12;
-										}
-									})()}
+									{calculatePeriodCount(config)}
 								</p>
 								<p className="text-sm text-muted-foreground">{t("scan.periodsToScan")}</p>
 							</div>

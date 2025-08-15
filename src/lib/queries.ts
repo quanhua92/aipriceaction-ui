@@ -136,7 +136,7 @@ export function useHistoricalPatternScan(
 	onProgress?: (completed: number, total: number) => void
 ) {
 	return useQuery({
-		queryKey: ["historical-pattern-scan", scanId, config],
+		queryKey: ["historical-pattern-scan", scanId], // Only scanId triggers new scan, not config changes
 		queryFn: async (): Promise<HistoricalScanResult[]> => {
 			const getTickerData = async (ticker: string): Promise<StockDataPoint[]> => {
 				return await fetchTickerData(ticker);
