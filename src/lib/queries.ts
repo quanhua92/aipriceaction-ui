@@ -130,9 +130,9 @@ export function useTickerAIData(ticker: string) {
 
 
 // Historical Pattern Scanner hooks
-export function useHistoricalPatternScan(config: HistoricalScanConfig, enabled: boolean = false) {
+export function useHistoricalPatternScan(config: HistoricalScanConfig, scanId: number = 0) {
 	return useQuery({
-		queryKey: ["historical-pattern-scan", config],
+		queryKey: ["historical-pattern-scan", scanId, config],
 		queryFn: async (): Promise<HistoricalScanResult[]> => {
 			const getTickerData = async (ticker: string): Promise<StockDataPoint[]> => {
 				return await fetchTickerData(ticker);
@@ -147,7 +147,7 @@ export function useHistoricalPatternScan(config: HistoricalScanConfig, enabled: 
 
 			return scanHistoricalPeriods(config, getTickerData, getVnIndexData, tickerGroups);
 		},
-		enabled: enabled,
+		enabled: scanId > 0,
 		staleTime: 1000 * 60 * 60, // 1 hour cache for historical results
 		gcTime: 1000 * 60 * 60 * 2, // 2 hours
 		retry: 1,

@@ -1238,5 +1238,50 @@ export const vn = {
       whatToDoDescription2: "Nghiên cứu những cổ phiếu tốt nhất trong mỗi kỳ để xác định mô hình dẫn đầu ngành.",
       whatToDoDescription3: "Sử dụng dữ liệu lịch sử để hiểu cách điều kiện thị trường hiện tại so với các chu kỳ trước."
     },
+    
+    // Pattern translations
+    patternNames: {
+      "High momentum period": "Giai đoạn động lực cao",
+      "Banking sector strength": "Sức mạnh ngành ngân hàng",
+      "Securities sector boom": "Bùng nổ ngành chứng khoán",
+      "Real estate rally": "Tăng trưởng bất động sản",
+      "Energy sector surge": "Tăng mạnh ngành năng lượng",
+      "Technology momentum": "Động lực công nghệ",
+      "Consumer goods strength": "Sức mạnh hàng tiêu dùng",
+      "Services sector rally": "Tăng trưởng ngành dịch vụ",
+      "Construction boom": "Bùng nổ xây dựng",
+      "Steel sector strength": "Sức mạnh ngành thép",
+      "Automotive distribution rally": "Tăng trưởng phân phối ô tô",
+      "Textile momentum": "Động lực dệt may",
+      "Chemical sector strength": "Sức mạnh ngành hóa chất",
+      "Plastics momentum": "Động lực ngành nhựa",
+      "Seafood sector rally": "Tăng trưởng thủy sản",
+      "Wood industry strength": "Sức mạnh công nghiệp gỗ",
+      "Footwear momentum": "Động lực ngành giày dép",
+      "Coal sector surge": "Tăng mạnh ngành than",
+      "Sugar sector rally": "Tăng trưởng ngành đường",
+      "Rubber momentum": "Động lực cao su",
+      "Port services strength": "Sức mạnh dịch vụ cảng",
+      "Aviation rally": "Tăng trưởng hàng không",
+      "Logistics momentum": "Động lực logistics",
+      "Insurance strength": "Sức mạnh bảo hiểm",
+      "Consulting services rally": "Tăng trưởng dịch vụ tư vấn",
+      "Bull market sprint phase": "Giai đoạn nước rút thị trường tăng",
+      "Counter-trend momentum": "Động lực ngược xu hướng",
+      "Strong market surge": "Tăng mạnh thị trường",
+      "Market correction period": "Giai đoạn điều chỉnh thị trường",
+      "Cross-sector momentum": "Động lực liên ngành",
+      "Low momentum period": "Giai đoạn động lực thấp"
+    },
+    
+    // Notes translations
+    noteTemplates: {
+      "moderateActivity": "Hoạt động vừa phải với {count} ứng viên nước rút.",
+      "strongPerformanceIn": "Hiệu suất mạnh trong các ngành {sectors}.",
+      "bullMarketConditions": "Điều kiện thị trường tăng hỗ trợ các động thái động lực.",
+      "bearMarketConditions": "Thị trường giảm tạo ra các cơ hội chọn lọc.",
+      "noSignificantPatterns": "Không phát hiện mô hình nước rút đáng kể nào trong {period}. Thị trường cho thấy cơ hội động lực hạn chế.",
+      "highActivityPeriod": "Giai đoạn hoạt động cao với {count} ứng viên nước rút. Động lực mạnh trên nhiều ngành."
+    },
   },
 } as const;

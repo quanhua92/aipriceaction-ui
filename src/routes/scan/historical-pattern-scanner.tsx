@@ -32,10 +32,59 @@ function HistoricalPatternScanner() {
 	
 	// Manual trigger for scanning (not auto-triggered by config changes)
 	const [scanTrigger, setScanTrigger] = useState(0);
-	const { data: results, isLoading, error } = useHistoricalPatternScan(config, scanTrigger > 0);
+	const { data: results, isLoading, error } = useHistoricalPatternScan(config, scanTrigger);
 
 	const handleStartScan = () => {
 		setScanTrigger(prev => prev + 1);
+	};
+
+	// Helper function to translate patterns
+	const translatePattern = (pattern: string): string => {
+		const patternKey = `scan.patternNames.${pattern}` as any;
+		return t(patternKey) || pattern;
+	};
+
+	// Helper function to translate notes with complex logic
+	const translateNotes = (notes: string): string => {
+		// Simple approach: try to identify and translate key phrases
+		if (notes.includes('Moderate activity with') && notes.includes('sprint candidates')) {
+			// Extract count and sectors from the original note
+			const countMatch = notes.match(/(\d+) sprint candidates/);
+			const sectorsMatch = notes.match(/Strong performance in ([^.]+) sectors/);
+			const bullMatch = notes.includes('Bull market conditions');
+			const bearMatch = notes.includes('Bear market created selective');
+			
+			let translatedNote = '';
+			if (countMatch) {
+				translatedNote = t('scan.noteTemplates.moderateActivity', { count: countMatch[1] });
+			}
+			if (sectorsMatch) {
+				translatedNote += ' ' + t('scan.noteTemplates.strongPerformanceIn', { sectors: sectorsMatch[1] });
+			}
+			if (bullMatch) {
+				translatedNote += ' ' + t('scan.noteTemplates.bullMarketConditions');
+			}
+			if (bearMatch) {
+				translatedNote += ' ' + t('scan.noteTemplates.bearMarketConditions');
+			}
+			return translatedNote.trim();
+		}
+		
+		if (notes.includes('No significant sprint patterns detected')) {
+			const periodMatch = notes.match(/detected in ([^.]+)\./);
+			if (periodMatch) {
+				return t('scan.noteTemplates.noSignificantPatterns', { period: periodMatch[1] });
+			}
+		}
+		
+		if (notes.includes('High activity period with')) {
+			const countMatch = notes.match(/(\d+) sprint candidates/);
+			if (countMatch) {
+				return t('scan.noteTemplates.highActivityPeriod', { count: countMatch[1] });
+			}
+		}
+		
+		return notes; // Fallback to original if no translation pattern matches
 	};
 
 	const getMarketConditionBadge = (condition: string) => {
@@ -488,7 +537,7 @@ function HistoricalPatternScanner() {
 													<div className="space-y-1">
 														{result.patterns.slice(0, 3).map((pattern, index) => (
 															<Badge key={index} variant="secondary" className="text-xs mr-1">
-																{pattern}
+																{translatePattern(pattern)}
 															</Badge>
 														))}
 														{result.patterns.length > 3 && (
@@ -500,7 +549,7 @@ function HistoricalPatternScanner() {
 												</TableCell>
 												<TableCell>
 													<div className="max-w-[300px] text-sm text-muted-foreground">
-														{result.notes}
+														{translateNotes(result.notes)}
 													</div>
 												</TableCell>
 											</TableRow>

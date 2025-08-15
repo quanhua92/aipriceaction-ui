@@ -1239,5 +1239,50 @@ export const en = {
       whatToDoDescription2: "Study best performers in each period to identify sector leadership patterns.",
       whatToDoDescription3: "Use historical data to understand how current market conditions compare to past cycles."
     },
+    
+    // Pattern translations
+    patternNames: {
+      "High momentum period": "High momentum period",
+      "Banking sector strength": "Banking sector strength",
+      "Securities sector boom": "Securities sector boom", 
+      "Real estate rally": "Real estate rally",
+      "Energy sector surge": "Energy sector surge",
+      "Technology momentum": "Technology momentum",
+      "Consumer goods strength": "Consumer goods strength",
+      "Services sector rally": "Services sector rally",
+      "Construction boom": "Construction boom",
+      "Steel sector strength": "Steel sector strength",
+      "Automotive distribution rally": "Automotive distribution rally",
+      "Textile momentum": "Textile momentum",
+      "Chemical sector strength": "Chemical sector strength",
+      "Plastics momentum": "Plastics momentum",
+      "Seafood sector rally": "Seafood sector rally",
+      "Wood industry strength": "Wood industry strength",
+      "Footwear momentum": "Footwear momentum",
+      "Coal sector surge": "Coal sector surge",
+      "Sugar sector rally": "Sugar sector rally",
+      "Rubber momentum": "Rubber momentum",
+      "Port services strength": "Port services strength",
+      "Aviation rally": "Aviation rally",
+      "Logistics momentum": "Logistics momentum",
+      "Insurance strength": "Insurance strength",
+      "Consulting services rally": "Consulting services rally",
+      "Bull market sprint phase": "Bull market sprint phase",
+      "Counter-trend momentum": "Counter-trend momentum",
+      "Strong market surge": "Strong market surge",
+      "Market correction period": "Market correction period",
+      "Cross-sector momentum": "Cross-sector momentum",
+      "Low momentum period": "Low momentum period"
+    },
+    
+    // Notes translations  
+    noteTemplates: {
+      "moderateActivity": "Moderate activity with {count} sprint candidates.",
+      "strongPerformanceIn": "Strong performance in {sectors} sectors.",
+      "bullMarketConditions": "Bull market conditions supported momentum plays.",
+      "bearMarketConditions": "Bear market created selective opportunities.",
+      "noSignificantPatterns": "No significant sprint patterns detected in {period}. Market showed limited momentum opportunities.",
+      "highActivityPeriod": "High activity period with {count} sprint candidates. Strong momentum across multiple sectors."
+    },
   },
 } as const;
