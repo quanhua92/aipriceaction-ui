@@ -1206,6 +1206,12 @@ export const vn = {
     bestPerformer: "Tốt nhất",
     patterns: "Mô hình",
     notes: "Ghi chú",
+    
+    // Market condition translations
+    bullMarket: "Thị trường Tăng",
+    bearMarket: "Thị trường Giảm",
+    sideways: "Đi ngang",
+    
     readyToScan: "Sẵn sàng Quét",
     clickStartToBegin: "Nhấn nút bắt đầu ở trên để bắt đầu phân tích mô hình lịch sử",
     selectSectors: "Chọn Ngành để Quét",

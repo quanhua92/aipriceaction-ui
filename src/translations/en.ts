@@ -1207,6 +1207,12 @@ export const en = {
     bestPerformer: "Best Performer",
     patterns: "Patterns",
     notes: "Notes",
+    
+    // Market condition translations
+    bullMarket: "Bull Market",
+    bearMarket: "Bear Market",
+    sideways: "Sideways",
+    
     readyToScan: "Ready to Scan",
     clickStartToBegin: "Click the start button above to begin historical pattern analysis",
     selectSectors: "Select Sectors to Scan",

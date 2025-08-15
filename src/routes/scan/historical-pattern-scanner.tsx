@@ -97,11 +97,11 @@ function HistoricalPatternScanner() {
 	const getMarketConditionBadge = (condition: string) => {
 		switch (condition) {
 			case 'bull':
-				return <Badge className="bg-green-100 text-green-800">Bull Market</Badge>;
+				return <Badge className="bg-green-100 text-green-800">{t("scan.bullMarket")}</Badge>;
 			case 'bear':
-				return <Badge className="bg-red-100 text-red-800">Bear Market</Badge>;
+				return <Badge className="bg-red-100 text-red-800">{t("scan.bearMarket")}</Badge>;
 			case 'sideways':
-				return <Badge className="bg-gray-100 text-gray-800">Sideways</Badge>;
+				return <Badge className="bg-gray-100 text-gray-800">{t("scan.sideways")}</Badge>;
 			default:
 				return <Badge variant="secondary">{condition}</Badge>;
 		}
