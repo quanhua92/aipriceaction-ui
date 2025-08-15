@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
-import { History, Play, ArrowLeft, Calendar, TrendingUp, Download, Settings, ChevronDown, ChevronUp, Info, Filter, Target, BarChart3 } from "lucide-react";
+import { History, Play, ArrowLeft, Calendar, TrendingUp, Settings, ChevronDown, ChevronUp, Info, Filter, Target, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -310,37 +310,6 @@ function HistoricalPatternScanner() {
 		);
 	};
 
-	const exportToCSV = () => {
-		if (!results) return;
-		
-		const headers = ['Period', 'Market Condition', 'VN-Index Change %', 'Total Candidates', 'Banking', 'Securities', 'Real Estate', 'Best Performer', 'Patterns', 'Notes'];
-		
-		const csvData = results.map(result => [
-			result.period,
-			result.marketCondition,
-			result.vnIndexChange.toFixed(2),
-			result.totalCandidates.toString(),
-			result.sprintCandidates.banking.join(';'),
-			result.sprintCandidates.securities.join(';'),
-			result.sprintCandidates.realEstate.join(';'),
-			result.bestPerformer ? `${result.bestPerformer.ticker} (+${result.bestPerformer.gain.toFixed(1)}%)` : '',
-			result.patterns.join(';'),
-			result.notes,
-		]);
-		
-		const csvContent = [headers, ...csvData]
-			.map(row => row.map(cell => `"${cell}"`).join(','))
-			.join('\n');
-		
-		const blob = new Blob([csvContent], { type: 'text/csv' });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = `historical-pattern-scan-${config.startYear}-${config.endYear}.csv`;
-		a.click();
-		URL.revokeObjectURL(url);
-	};
-
 	return (
 		<div className="container mx-auto p-2 md:p-6">
 			<div className="space-y-6">
@@ -487,16 +456,6 @@ function HistoricalPatternScanner() {
 									<Settings className="h-4 w-4 mr-2" />
 									{t("scan.settings")}
 								</Button>
-								{results && results.length > 0 && (
-									<Button
-										variant="outline"
-										size="sm"
-										onClick={exportToCSV}
-									>
-										<Download className="h-4 w-4 mr-2" />
-										{t("scan.exportCSV")}
-									</Button>
-								)}
 							</div>
 						</div>
 					</CardHeader>
