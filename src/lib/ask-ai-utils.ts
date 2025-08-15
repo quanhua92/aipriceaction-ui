@@ -47,10 +47,7 @@ export function formatChartContext(ticker: string, data: StockDataPoint[], maxDa
 	// Filter data by context date if provided
 	let filteredData = data;
 	if (contextDate) {
-		console.log(`[DEBUG] Filtering ${ticker} data for context date: ${contextDate}`);
-		console.log(`[DEBUG] Original data: ${data.length} points, range: ${data[0]?.time} to ${data[data.length - 1]?.time}`);
 		filteredData = data.filter(point => point.time <= contextDate);
-		console.log(`[DEBUG] Filtered data: ${filteredData.length} points, last: ${filteredData[filteredData.length - 1]?.time}`);
 	}
 
 	// Get last N trading days based on configuration

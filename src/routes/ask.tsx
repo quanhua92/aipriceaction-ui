@@ -165,13 +165,13 @@ function AskPage() {
 
 	// Data fetching for single ticker - use ALL data for context date filtering
 	const dateRangeConfig = useMemo(() => createDateRangeConfig("ALL"), []);
-	const { data: singleTickerData } = useTickerData(defaultTicker, dateRangeConfig);
+	const { data: singleTickerData } = useTickerData(defaultTicker, dateRangeConfig, 10000); // Increased for full historical data
 	const { data: singleVPAData } = useVPAData(defaultTicker, !!defaultTicker);
 	const { data: singleTickerAIData } = useTickerAIData(defaultTicker);
 
 	// Data fetching for multiple tickers (only when on multi tab)
 	const multiTickersForFetch = activeTab === "multi" ? selectedTickers : [];
-	const { data: multipleTickerData } = useMultipleTickerData(multiTickersForFetch, dateRangeConfig);
+	const { data: multipleTickerData } = useMultipleTickerData(multiTickersForFetch, dateRangeConfig, 10000); // Increased for full historical data
 	
 	// VPA data for multi tab (fixed number of hooks to avoid violations)
 	const vpaQueries = [
