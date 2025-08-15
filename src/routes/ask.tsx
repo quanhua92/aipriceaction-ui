@@ -444,14 +444,33 @@ function AskPage() {
 										</Label>
 										<Input
 											id="context-date"
-											type="date"
+											type="text"
 											value={contextDate}
 											onChange={(e) => {
-												// HTML date inputs always provide YYYY-MM-DD format
-												setContextDate(e.target.value);
+												const value = e.target.value;
+												// Allow only digits and hyphens
+												const cleaned = value.replace(/[^\d-]/g, '');
+												
+												// Auto-format as YYYY-MM-DD while typing
+												let formatted = cleaned;
+												if (cleaned.length === 4 && !cleaned.includes('-')) {
+													formatted = cleaned + '-';
+												} else if (cleaned.length === 6 && cleaned.split('-').length === 2) {
+													formatted = cleaned + '-';
+												} else if (cleaned.length > 4 && !cleaned.includes('-')) {
+													// Insert hyphens at correct positions
+													formatted = cleaned.slice(0, 4) + '-' + cleaned.slice(4, 6) + (cleaned.length > 6 ? '-' + cleaned.slice(6, 8) : '');
+												}
+												
+												// Only allow valid partial or complete dates
+												if (formatted === '' || /^\d{0,4}(-\d{0,2}(-\d{0,2})?)?$/.test(formatted)) {
+													setContextDate(formatted);
+												}
 											}}
 											className="w-full font-mono"
+											placeholder="YYYY-MM-DD"
 											pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+											maxLength={10}
 										/>
 										<p className="text-xs text-muted-foreground">
 											{t("askAI.contextDateDesc")}
