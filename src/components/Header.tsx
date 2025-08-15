@@ -13,6 +13,7 @@ import {
 	AlertTriangle,
 	Brain,
 	Search,
+	ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -23,7 +24,62 @@ export default function Header() {
 	const { language, setLanguage } = useLanguage();
 	const { t } = useTranslation();
 
-	const navigationLinks = [
+	const navigationMenu = [
+		{
+			label: t("nav.dashboard"),
+			to: "/",
+			icon: BarChart3,
+		},
+		{
+			label: t("askAI.askAI"),
+			to: "/ask",
+			icon: Brain,
+		},
+		{
+			label: "Analysis",
+			icon: TrendingUp,
+			children: [
+				{
+					to: "/scan",
+					icon: Search,
+					label: t("nav.scan"),
+				},
+				{
+					to: "/panic",
+					icon: AlertTriangle,
+					label: t("nav.panicAnalysis"),
+				},
+				{
+					to: "/portfolio",
+					icon: Target,
+					label: t("nav.portfolioAnalysis"),
+				},
+			],
+		},
+		{
+			label: "Tools",
+			icon: Grid3X3,
+			children: [
+				{
+					to: "/compare",
+					icon: Grid3X3,
+					label: t("nav.compareCharts"),
+				},
+				{
+					to: "/sectors",
+					icon: Building2,
+					label: t("nav.sectors"),
+				},
+				{
+					to: "/tickers",
+					icon: Users,
+					label: t("nav.tickers"),
+				},
+			],
+		},
+	];
+
+	const allNavigationLinks = [
 		{
 			to: "/",
 			icon: BarChart3,
@@ -75,7 +131,7 @@ export default function Header() {
 
 	return (
 		<header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-			<div className="container flex h-16 items-center justify-between px-4">
+			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Logo - always visible */}
 				<Link
 					to="/"
@@ -87,21 +143,55 @@ export default function Header() {
 				</Link>
 
 				{/* Desktop Navigation - hidden on mobile */}
-				<nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
-					{navigationLinks.map((link) => {
-						const Icon = link.icon;
-						return (
-							<Link
-								key={link.to}
-								to={link.to}
-								className="transition-colors hover:text-foreground/80 text-foreground/60 [&.active]:text-foreground"
-							>
-								<div className="flex items-center space-x-2">
-									<Icon className="h-4 w-4" />
-									<span>{link.label}</span>
+				<nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+					{navigationMenu.map((item) => {
+						const Icon = item.icon;
+						
+						if (item.children) {
+							// Dropdown menu item
+							return (
+								<div key={item.label} className="relative group">
+									<button className="flex items-center space-x-2 transition-colors hover:text-foreground/80 text-foreground/60 px-3 py-2 rounded-md">
+										<Icon className="h-4 w-4" />
+										<span>{item.label}</span>
+										<ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
+									</button>
+									
+									{/* Dropdown Menu */}
+									<div className="absolute top-full left-0 mt-1 w-48 bg-background border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+										<div className="py-2">
+											{item.children.map((child) => {
+												const ChildIcon = child.icon;
+												return (
+													<Link
+														key={child.to}
+														to={child.to}
+														className="flex items-center space-x-3 px-4 py-2 text-sm transition-colors hover:bg-muted text-foreground/80 hover:text-foreground [&.active]:text-foreground [&.active]:bg-muted"
+													>
+														<ChildIcon className="h-4 w-4" />
+														<span>{child.label}</span>
+													</Link>
+												);
+											})}
+										</div>
+									</div>
 								</div>
-							</Link>
-						);
+							);
+						} else {
+							// Regular menu item
+							return (
+								<Link
+									key={item.to}
+									to={item.to}
+									className="transition-colors hover:text-foreground/80 text-foreground/60 [&.active]:text-foreground px-3 py-2 rounded-md"
+								>
+									<div className="flex items-center space-x-2">
+										<Icon className="h-4 w-4" />
+										<span>{item.label}</span>
+									</div>
+								</Link>
+							);
+						}
 					})}
 					
 					{/* Language Toggle - Desktop */}
@@ -150,8 +240,8 @@ export default function Header() {
 			{/* Mobile Navigation Menu - slides down when open */}
 			{mobileMenuOpen && (
 				<div className="md:hidden border-t bg-background/95 backdrop-blur">
-					<nav className="container px-4 py-4 space-y-2">
-						{navigationLinks.map((link) => {
+					<nav className="container mx-auto px-4 py-4 space-y-2">
+						{allNavigationLinks.map((link) => {
 							const Icon = link.icon;
 							return (
 								<Link
