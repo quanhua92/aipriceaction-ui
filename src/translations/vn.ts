@@ -1104,6 +1104,10 @@ export const vn = {
     includeFinancialRatiosDesc: "P/E, P/B, ROE, ROA, tỷ lệ nợ, biên lợi nhuận",
     includeDescription: "Bao gồm mô tả công ty",
     includeDescriptionDesc: "Mô tả kinh doanh và hồ sơ công ty",
+    contextDate: "Ngày ngữ cảnh (Ghi đè 'hôm nay')",
+    contextDateDesc: "Đặt một ngày cụ thể để sử dụng làm 'hôm nay' cho tất cả dữ liệu ngữ cảnh (để trống cho hôm nay thực tế)",
+    contextDatePlaceholder: "YYYY-MM-DD (ví dụ: 2023-12-31)",
+    contextDateWarning: "⚠️ Ngày ngữ cảnh được đặt là {date} - tất cả dữ liệu sẽ bị giới hạn đến ngày này và trước đó",
   },
 
   // Scan Feature

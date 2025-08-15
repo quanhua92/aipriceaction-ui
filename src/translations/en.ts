@@ -1105,6 +1105,10 @@ export const en = {
     includeFinancialRatiosDesc: "P/E, P/B, ROE, ROA, debt ratios, margins",
     includeDescription: "Include Company Description",
     includeDescriptionDesc: "Business description and company profile",
+    contextDate: "Context Date (Override 'today')",
+    contextDateDesc: "Set a specific date to use as 'today' for all context data (leave empty for actual today)",
+    contextDatePlaceholder: "YYYY-MM-DD (e.g., 2023-12-31)",
+    contextDateWarning: "⚠️ Context date is set to {date} - all data will be limited to this date and earlier",
   },
 
   // Scan Feature

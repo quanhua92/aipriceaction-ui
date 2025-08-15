@@ -98,6 +98,10 @@ function AskPage() {
 		const saved = localStorage.getItem('askAI.includeDescription');
 		return saved ? JSON.parse(saved) : true;
 	});
+	const [contextDate, setContextDate] = useState(() => {
+		const saved = localStorage.getItem('askAI.contextDate');
+		return saved || '';
+	});
 
 	// Save settings to localStorage when changed
 	useEffect(() => {
@@ -119,6 +123,10 @@ function AskPage() {
 	useEffect(() => {
 		localStorage.setItem('askAI.includeDescription', JSON.stringify(includeDescription));
 	}, [includeDescription]);
+
+	useEffect(() => {
+		localStorage.setItem('askAI.contextDate', contextDate);
+	}, [contextDate]);
 
 	// Update search params function
 	const updateSearchParams = (updates: Partial<SearchParams>) => {
@@ -214,6 +222,7 @@ function AskPage() {
 		setIncludeBasicInfo(true);
 		setIncludeFinancialRatios(true);
 		setIncludeDescription(true);
+		setContextDate('');
 		
 		// Clear localStorage
 		localStorage.removeItem('askAI.chartContextDays');
@@ -221,6 +230,7 @@ function AskPage() {
 		localStorage.removeItem('askAI.includeBasicInfo');
 		localStorage.removeItem('askAI.includeFinancialRatios');
 		localStorage.removeItem('askAI.includeDescription');
+		localStorage.removeItem('askAI.contextDate');
 	};
 
 	// Get same-sector tickers for quick actions
@@ -249,9 +259,10 @@ function AskPage() {
 			vpaContextDays,
 			includeBasicInfo,
 			includeFinancialRatios,
-			includeDescription
+			includeDescription,
+			contextDate || undefined
 		);
-	}, [defaultTicker, singleTickerData, singleVPAData, singleTickerAIData, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription]);
+	}, [defaultTicker, singleTickerData, singleVPAData, singleTickerAIData, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription, contextDate]);
 
 	const multipleTickersContext = useMemo(() => {
 		if (activeTab !== "multi" || selectedTickers.length === 0 || !multipleTickerData) return "";
@@ -263,8 +274,8 @@ function AskPage() {
 			tickerAIData: tickerAIQueries[index]?.data
 		}));
 
-		return buildMultipleTickersContext(tickersData, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription);
-	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries, tickerAIQueries, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription]);
+		return buildMultipleTickersContext(tickersData, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription, contextDate || undefined);
+	}, [activeTab, selectedTickers, multipleTickerData, vpaQueries, tickerAIQueries, chartContextDays, vpaContextDays, includeBasicInfo, includeFinancialRatios, includeDescription, contextDate]);
 
 	// Handle single ticker change
 	const handleSingleTickerChange = (newTicker: string) => {
@@ -339,6 +350,15 @@ function AskPage() {
 				</p>
 			</div>
 
+			{/* Context Date Warning */}
+			{contextDate && (
+				<div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+					<p className="text-sm text-amber-800">
+						{t("askAI.contextDateWarning", { date: contextDate })}
+					</p>
+				</div>
+			)}
+
 			{/* Configuration Section */}
 			<div className="mb-6">
 				<div className="flex justify-end">
@@ -412,6 +432,23 @@ function AskPage() {
 										/>
 										<p className="text-xs text-muted-foreground">
 											{t("askAI.vpaContextDaysDesc")}
+										</p>
+									</div>
+									
+									<div className="space-y-2">
+										<Label htmlFor="context-date" className="text-sm font-medium">
+											{t("askAI.contextDate")}
+										</Label>
+										<Input
+											id="context-date"
+											type="date"
+											value={contextDate}
+											onChange={(e) => setContextDate(e.target.value)}
+											className="w-full"
+											placeholder={t("askAI.contextDatePlaceholder")}
+										/>
+										<p className="text-xs text-muted-foreground">
+											{t("askAI.contextDateDesc")}
 										</p>
 									</div>
 								</div>

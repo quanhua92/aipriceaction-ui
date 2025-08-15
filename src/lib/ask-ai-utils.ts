@@ -39,13 +39,19 @@ export interface AskAIContextData {
 }
 
 // Format chart data to context string
-export function formatChartContext(ticker: string, data: StockDataPoint[], maxDays: number = 10): string {
+export function formatChartContext(ticker: string, data: StockDataPoint[], maxDays: number = 10, contextDate?: string): string {
 	if (!data || data.length === 0 || maxDays === 0) {
 		return maxDays === 0 ? "" : `${ticker}: No chart data available`;
 	}
 
+	// Filter data by context date if provided
+	let filteredData = data;
+	if (contextDate) {
+		filteredData = data.filter(point => point.time <= contextDate);
+	}
+
 	// Get last N trading days based on configuration
-	const recentData = data.slice(-maxDays);
+	const recentData = filteredData.slice(-maxDays);
 	
 	const contextLines = recentData.map((point, index) => {
 		// Use the time string directly (already in YYYY-MM-DD format)
@@ -66,7 +72,7 @@ export function formatChartContext(ticker: string, data: StockDataPoint[], maxDa
 }
 
 // Format VPA data to context string
-export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: number = 5): string {
+export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: number = 5, contextDate?: string): string {
 	if (!vpaContent || maxDays === 0) {
 		return maxDays === 0 ? "" : `${ticker} VPA: No VPA data available`;
 	}
@@ -76,11 +82,22 @@ export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: n
 	const lines = vpaContent.split('\n').filter(line => line.trim());
 	
 	// Find lines that look like data rows (contain pipes or are structured)
-	const dataLines = lines.filter(line => 
+	let dataLines = lines.filter(line => 
 		line.includes('|') || 
 		(line.includes('Date') && line.includes('Action')) ||
 		line.match(/\d{4}-\d{2}-\d{2}/)
 	);
+
+	// Filter by context date if provided
+	if (contextDate) {
+		dataLines = dataLines.filter(line => {
+			const dateMatch = line.match(/(\d{4}-\d{2}-\d{2})/);
+			if (dateMatch) {
+				return dateMatch[1] <= contextDate;
+			}
+			return true; // Keep lines without dates
+		});
+	}
 
 	// Get last N relevant lines based on configuration
 	const recentVPA = dataLines.slice(-maxDays);
@@ -192,10 +209,11 @@ export function buildSingleTickerContext(
 	vpaContextDays: number = 5,
 	includeBasicInfo: boolean = true,
 	includeFinancialRatios: boolean = true,
-	includeDescription: boolean = true
+	includeDescription: boolean = true,
+	contextDate?: string
 ): string {
-	const chartContext = formatChartContext(ticker, chartData, chartContextDays);
-	const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
+	const chartContext = formatChartContext(ticker, chartData, chartContextDays, contextDate);
+	const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays, contextDate);
 	const tickerContext = formatTickerAIContext(ticker, tickerAIData, includeBasicInfo, includeFinancialRatios, includeDescription);
 	
 	// Filter out empty contexts
@@ -219,11 +237,12 @@ export function buildMultipleTickersContext(
 	vpaContextDays: number = 5,
 	includeBasicInfo: boolean = true,
 	includeFinancialRatios: boolean = true,
-	includeDescription: boolean = true
+	includeDescription: boolean = true,
+	contextDate?: string
 ): string {
 	const contexts = tickersData.map(({ ticker, chartData, vpaContent, tickerAIData }) => {
-		const chartContext = formatChartContext(ticker, chartData, chartContextDays);
-		const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays);
+		const chartContext = formatChartContext(ticker, chartData, chartContextDays, contextDate);
+		const vpaContext = formatVPAContext(ticker, vpaContent, vpaContextDays, contextDate);
 		const tickerContext = formatTickerAIContext(ticker, tickerAIData, includeBasicInfo, includeFinancialRatios, includeDescription);
 		
 		// Filter out empty contexts
