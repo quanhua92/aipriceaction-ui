@@ -102,6 +102,7 @@ function AskPage() {
 		const saved = localStorage.getItem('askAI.contextDate');
 		return saved || '';
 	});
+	const [contextDateError, setContextDateError] = useState<string>('');
 
 	// Save settings to localStorage when changed
 	useEffect(() => {
@@ -215,6 +216,31 @@ function AskPage() {
 		}
 	};
 
+	// Validate date format (YYYY-MM-DD)
+	const validateContextDate = (date: string): string => {
+		if (!date) return '';
+		
+		const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+		if (!datePattern.test(date)) {
+			return 'Date must be in YYYY-MM-DD format';
+		}
+		
+		const parsedDate = new Date(date);
+		if (isNaN(parsedDate.getTime())) {
+			return 'Invalid date';
+		}
+		
+		// Check if the date components match the input (catches invalid dates like 2023-02-30)
+		const [year, month, day] = date.split('-').map(Number);
+		if (parsedDate.getFullYear() !== year || 
+			parsedDate.getMonth() + 1 !== month || 
+			parsedDate.getDate() !== day) {
+			return 'Invalid date';
+		}
+		
+		return '';
+	};
+
 	// Reset configuration to defaults
 	const handleResetConfiguration = () => {
 		setChartContextDays(10);
@@ -223,6 +249,7 @@ function AskPage() {
 		setIncludeFinancialRatios(true);
 		setIncludeDescription(true);
 		setContextDate('');
+		setContextDateError('');
 		
 		// Clear localStorage
 		localStorage.removeItem('askAI.chartContextDays');
@@ -447,34 +474,29 @@ function AskPage() {
 											type="text"
 											value={contextDate}
 											onChange={(e) => {
-												const value = e.target.value;
-												// Allow only digits and hyphens
-												const cleaned = value.replace(/[^\d-]/g, '');
-												
-												// Auto-format as YYYY-MM-DD while typing
-												let formatted = cleaned;
-												if (cleaned.length === 4 && !cleaned.includes('-')) {
-													formatted = cleaned + '-';
-												} else if (cleaned.length === 6 && cleaned.split('-').length === 2) {
-													formatted = cleaned + '-';
-												} else if (cleaned.length > 4 && !cleaned.includes('-')) {
-													// Insert hyphens at correct positions
-													formatted = cleaned.slice(0, 4) + '-' + cleaned.slice(4, 6) + (cleaned.length > 6 ? '-' + cleaned.slice(6, 8) : '');
-												}
-												
-												// Only allow valid partial or complete dates
-												if (formatted === '' || /^\d{0,4}(-\d{0,2}(-\d{0,2})?)?$/.test(formatted)) {
-													setContextDate(formatted);
+												setContextDate(e.target.value);
+												// Clear error when user starts typing
+												if (contextDateError) {
+													setContextDateError('');
 												}
 											}}
-											className="w-full font-mono"
+											onBlur={(e) => {
+												const error = validateContextDate(e.target.value);
+												setContextDateError(error);
+											}}
+											className={`w-full font-mono ${contextDateError ? 'border-red-500 focus:border-red-500' : ''}`}
 											placeholder="YYYY-MM-DD"
-											pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
 											maxLength={10}
 										/>
-										<p className="text-xs text-muted-foreground">
-											{t("askAI.contextDateDesc")}
-										</p>
+										{contextDateError ? (
+											<p className="text-xs text-red-600 font-medium">
+												{contextDateError}
+											</p>
+										) : (
+											<p className="text-xs text-muted-foreground">
+												{t("askAI.contextDateDesc")}
+											</p>
+										)}
 									</div>
 								</div>
 								
