@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { CalendarDays, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Input } from "@/components/ui/input";
+import { DateInput } from "@/components/ui/date-input";
 import { Label } from "@/components/ui/label";
 import {
 	Popover,
@@ -179,51 +179,31 @@ export function DateRangeSelector({
 									<Label htmlFor="start-date" className="text-right">
 										From
 									</Label>
-									<Input
-										id="start-date"
-										type="text"
-										placeholder="2024-01-15"
-										value={customStartDate}
-										onChange={(e) => {
-											let value = e.target.value.replace(/[^0-9-]/g, '');
-											// Auto-format as user types: 2024-01-15
-											if (value.length === 4 && !value.includes('-')) {
-												value = value + '-';
-											} else if (value.length === 7 && value.split('-').length === 2) {
-												value = value + '-';
-											}
-											if (value.length <= 10) {
-												setCustomStartDate(value);
-											}
-										}}
-										className="col-span-3 font-mono text-sm"
-										maxLength={10}
-									/>
+									<div className="col-span-3">
+										<DateInput
+											id="start-date"
+											placeholder="2024-01-15"
+											value={customStartDate}
+											onChange={setCustomStartDate}
+											className="font-mono text-sm"
+											showError={false}
+										/>
+									</div>
 								</div>
 								<div className="grid grid-cols-4 items-center gap-4">
 									<Label htmlFor="end-date" className="text-right">
 										To
 									</Label>
-									<Input
-										id="end-date"
-										type="text"
-										placeholder="2024-08-15"
-										value={customEndDate}
-										onChange={(e) => {
-											let value = e.target.value.replace(/[^0-9-]/g, '');
-											// Auto-format as user types: 2024-01-15
-											if (value.length === 4 && !value.includes('-')) {
-												value = value + '-';
-											} else if (value.length === 7 && value.split('-').length === 2) {
-												value = value + '-';
-											}
-											if (value.length <= 10) {
-												setCustomEndDate(value);
-											}
-										}}
-										className="col-span-3 font-mono text-sm"
-										maxLength={10}
-									/>
+									<div className="col-span-3">
+										<DateInput
+											id="end-date"
+											placeholder="2024-08-15"
+											value={customEndDate}
+											onChange={setCustomEndDate}
+											className="font-mono text-sm"
+											showError={false}
+										/>
+									</div>
 								</div>
 							</div>
 
