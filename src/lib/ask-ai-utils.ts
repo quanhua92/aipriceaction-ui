@@ -81,21 +81,36 @@ export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: n
 	// VPA files typically contain tables with analysis data
 	const lines = vpaContent.split('\n').filter(line => line.trim());
 	
-	// Find lines that look like data rows (contain pipes or are structured)
+	// Find lines that look like data rows (contain pipes, dates, or structured content)
 	let dataLines = lines.filter(line => 
 		line.includes('|') || 
 		(line.includes('Date') && line.includes('Action')) ||
-		line.match(/\d{4}-\d{2}-\d{2}/)
+		line.match(/\d{4}-\d{2}-\d{2}/) ||
+		line.includes('Ngày') || // Vietnamese date format
+		line.includes('VNINDEX') // Include VNINDEX analysis lines
 	);
 
 	// Filter by context date if provided
 	if (contextDate) {
 		dataLines = dataLines.filter(line => {
-			const dateMatch = line.match(/(\d{4}-\d{2}-\d{2})/);
-			if (dateMatch) {
-				return dateMatch[1] <= contextDate;
+			// Try multiple date patterns for Vietnamese VPA content
+			const datePatterns = [
+				/(\d{4}-\d{2}-\d{2})/, // Standard YYYY-MM-DD
+				/Ngày\s+(\d{4}-\d{2}-\d{2})/, // Vietnamese "Ngày YYYY-MM-DD"
+				/\*\*Ngày\s+(\d{4}-\d{2}-\d{2})/, // Bold Vietnamese "**Ngày YYYY-MM-DD"
+			];
+			
+			for (const pattern of datePatterns) {
+				const dateMatch = line.match(pattern);
+				if (dateMatch) {
+					const lineDate = dateMatch[1];
+					return lineDate <= contextDate;
+				}
 			}
-			return true; // Keep lines without dates
+			
+			// Keep lines without dates only if they are related headers or summaries
+			// But exclude them from dated context filtering to maintain consistency
+			return !line.match(/\d{4}-\d{2}-\d{2}/);
 		});
 	}
 
