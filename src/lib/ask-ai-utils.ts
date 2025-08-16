@@ -114,15 +114,29 @@ export function formatVPAContext(ticker: string, vpaContent?: string, maxDays: n
 		});
 	}
 
+	// Apply context date filtering to ALL lines if contextDate is provided
+	let finalLines = dataLines;
+	if (finalLines.length === 0) {
+		// If no structured data found, use all lines but still apply context date filtering
+		finalLines = lines;
+		if (contextDate) {
+			finalLines = lines.filter(line => {
+				const dateMatch = line.match(/(\d{4}-\d{2}-\d{2})/);
+				if (dateMatch) {
+					const lineDate = dateMatch[1];
+					return lineDate <= contextDate;
+				}
+				// Keep non-dated lines when using fallback
+				return true;
+			});
+		}
+	}
+
 	// Get last N relevant lines based on configuration
-	const recentVPA = dataLines.slice(-maxDays);
+	const recentVPA = finalLines.slice(-maxDays);
 	
 	if (recentVPA.length === 0) {
-		// If no structured data found, get last N non-empty lines
-		const lastLines = lines.slice(-maxDays);
-		// Add TICKER: prefix to each line
-		const prefixedLines = lastLines.map(line => `${ticker}: ${line}`);
-		return `${ticker} VPA:\n${prefixedLines.join('\n')}`;
+		return `${ticker} VPA: No VPA data available${contextDate ? ` for dates on or before ${contextDate}` : ''}`;
 	}
 
 	// Add TICKER: prefix to each VPA data line
