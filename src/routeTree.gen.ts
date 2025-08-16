@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TickersRouteImport } from './routes/tickers'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as CompareRouteImport } from './routes/compare'
+import { Route as ChartRouteImport } from './routes/chart'
 import { Route as AskRouteImport } from './routes/ask'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SectorsIndexRouteImport } from './routes/sectors/index'
@@ -36,6 +37,11 @@ const PortfolioRoute = PortfolioRouteImport.update({
 const CompareRoute = CompareRouteImport.update({
   id: '/compare',
   path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChartRoute = ChartRouteImport.update({
+  id: '/chart',
+  path: '/chart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AskRoute = AskRouteImport.update({
@@ -93,6 +99,7 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ask': typeof AskRoute
+  '/chart': typeof ChartRoute
   '/compare': typeof CompareRoute
   '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ask': typeof AskRoute
+  '/chart': typeof ChartRoute
   '/compare': typeof CompareRoute
   '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ask': typeof AskRoute
+  '/chart': typeof ChartRoute
   '/compare': typeof CompareRoute
   '/portfolio': typeof PortfolioRoute
   '/tickers': typeof TickersRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/ask'
+    | '/chart'
     | '/compare'
     | '/portfolio'
     | '/tickers'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ask'
+    | '/chart'
     | '/compare'
     | '/portfolio'
     | '/tickers'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/ask'
+    | '/chart'
     | '/compare'
     | '/portfolio'
     | '/tickers'
@@ -187,6 +199,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AskRoute: typeof AskRoute
+  ChartRoute: typeof ChartRoute
   CompareRoute: typeof CompareRoute
   PortfolioRoute: typeof PortfolioRoute
   TickersRoute: typeof TickersRoute
@@ -221,6 +234,13 @@ declare module '@tanstack/react-router' {
       path: '/compare'
       fullPath: '/compare'
       preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chart': {
+      id: '/chart'
+      path: '/chart'
+      fullPath: '/chart'
+      preLoaderRoute: typeof ChartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ask': {
@@ -299,6 +319,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AskRoute: AskRoute,
+  ChartRoute: ChartRoute,
   CompareRoute: CompareRoute,
   PortfolioRoute: PortfolioRoute,
   TickersRoute: TickersRoute,

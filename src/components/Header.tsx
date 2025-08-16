@@ -14,6 +14,7 @@ import {
 	Brain,
 	Search,
 	ChevronDown,
+	LineChart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -61,6 +62,11 @@ export default function Header() {
 			icon: Grid3X3,
 			children: [
 				{
+					to: "/chart",
+					icon: LineChart,
+					label: "Chart Debug",
+				},
+				{
 					to: "/compare",
 					icon: Grid3X3,
 					label: t("nav.compareCharts"),
@@ -104,6 +110,11 @@ export default function Header() {
 			to: "/portfolio",
 			icon: Target,
 			label: t("nav.portfolioAnalysis"),
+		},
+		{
+			to: "/chart",
+			icon: LineChart,
+			label: "Chart Debug",
 		},
 		{
 			to: "/compare",
