@@ -175,30 +175,30 @@ function AskPage() {
 	
 	// VPA data for multi tab (fixed number of hooks to avoid violations)
 	const vpaQueries = [
-		useVPAData(activeTab === "multi" && selectedTickers[0] ? selectedTickers[0] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[1] ? selectedTickers[1] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[2] ? selectedTickers[2] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[3] ? selectedTickers[3] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[4] ? selectedTickers[4] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[5] ? selectedTickers[5] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[6] ? selectedTickers[6] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[7] ? selectedTickers[7] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[8] ? selectedTickers[8] : ''),
-		useVPAData(activeTab === "multi" && selectedTickers[9] ? selectedTickers[9] : ''),
+		useVPAData(selectedTickers[0] || '', activeTab === "multi" && !!selectedTickers[0]),
+		useVPAData(selectedTickers[1] || '', activeTab === "multi" && !!selectedTickers[1]),
+		useVPAData(selectedTickers[2] || '', activeTab === "multi" && !!selectedTickers[2]),
+		useVPAData(selectedTickers[3] || '', activeTab === "multi" && !!selectedTickers[3]),
+		useVPAData(selectedTickers[4] || '', activeTab === "multi" && !!selectedTickers[4]),
+		useVPAData(selectedTickers[5] || '', activeTab === "multi" && !!selectedTickers[5]),
+		useVPAData(selectedTickers[6] || '', activeTab === "multi" && !!selectedTickers[6]),
+		useVPAData(selectedTickers[7] || '', activeTab === "multi" && !!selectedTickers[7]),
+		useVPAData(selectedTickers[8] || '', activeTab === "multi" && !!selectedTickers[8]),
+		useVPAData(selectedTickers[9] || '', activeTab === "multi" && !!selectedTickers[9]),
 	];
 
 	// Ticker AI data for multi tab (fixed number of hooks to avoid violations)
 	const tickerAIQueries = [
-		useTickerAIData(activeTab === "multi" && selectedTickers[0] ? selectedTickers[0] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[1] ? selectedTickers[1] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[2] ? selectedTickers[2] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[3] ? selectedTickers[3] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[4] ? selectedTickers[4] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[5] ? selectedTickers[5] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[6] ? selectedTickers[6] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[7] ? selectedTickers[7] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[8] ? selectedTickers[8] : ''),
-		useTickerAIData(activeTab === "multi" && selectedTickers[9] ? selectedTickers[9] : ''),
+		useTickerAIData(selectedTickers[0] || ''),
+		useTickerAIData(selectedTickers[1] || ''),
+		useTickerAIData(selectedTickers[2] || ''),
+		useTickerAIData(selectedTickers[3] || ''),
+		useTickerAIData(selectedTickers[4] || ''),
+		useTickerAIData(selectedTickers[5] || ''),
+		useTickerAIData(selectedTickers[6] || ''),
+		useTickerAIData(selectedTickers[7] || ''),
+		useTickerAIData(selectedTickers[8] || ''),
+		useTickerAIData(selectedTickers[9] || ''),
 	];
 
 	// Handle copy with visual feedback
