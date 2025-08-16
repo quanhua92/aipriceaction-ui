@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MultiTickerSearch, TickerSearch } from "@/components/ui/TickerSearch";
+import { DateInput } from "@/components/ui/date-input";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTickerData, useMultipleTickerData, useTickerAIData, useTickerGroups } from "@/lib/queries";
 import { useVPAData } from "@/hooks/useVPAData";
@@ -102,7 +103,6 @@ function AskPage() {
 		const saved = localStorage.getItem('askAI.contextDate');
 		return saved || '';
 	});
-	const [contextDateError, setContextDateError] = useState<string>('');
 
 	// Save settings to localStorage when changed
 	useEffect(() => {
@@ -216,30 +216,6 @@ function AskPage() {
 		}
 	};
 
-	// Validate date format (YYYY-MM-DD)
-	const validateContextDate = (date: string): string => {
-		if (!date) return '';
-		
-		const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-		if (!datePattern.test(date)) {
-			return 'Date must be in YYYY-MM-DD format';
-		}
-		
-		const parsedDate = new Date(date);
-		if (isNaN(parsedDate.getTime())) {
-			return 'Invalid date';
-		}
-		
-		// Check if the date components match the input (catches invalid dates like 2023-02-30)
-		const [year, month, day] = date.split('-').map(Number);
-		if (parsedDate.getFullYear() !== year || 
-			parsedDate.getMonth() + 1 !== month || 
-			parsedDate.getDate() !== day) {
-			return 'Invalid date';
-		}
-		
-		return '';
-	};
 
 	// Reset configuration to defaults
 	const handleResetConfiguration = () => {
@@ -249,7 +225,6 @@ function AskPage() {
 		setIncludeFinancialRatios(true);
 		setIncludeDescription(true);
 		setContextDate('');
-		setContextDateError('');
 		
 		// Clear localStorage
 		localStorage.removeItem('askAI.chartContextDays');
@@ -469,34 +444,13 @@ function AskPage() {
 												(YYYY-MM-DD)
 											</span>
 										</Label>
-										<Input
+										<DateInput
 											id="context-date"
-											type="text"
 											value={contextDate}
-											onChange={(e) => {
-												setContextDate(e.target.value);
-												// Clear error when user starts typing
-												if (contextDateError) {
-													setContextDateError('');
-												}
-											}}
-											onBlur={(e) => {
-												const error = validateContextDate(e.target.value);
-												setContextDateError(error);
-											}}
-											className={`w-full font-mono ${contextDateError ? 'border-red-500 focus:border-red-500' : ''}`}
-											placeholder="YYYY-MM-DD"
-											maxLength={10}
+											onChange={setContextDate}
+											helpText={t("askAI.contextDateDesc")}
+											className="w-full"
 										/>
-										{contextDateError ? (
-											<p className="text-xs text-red-600 font-medium">
-												{contextDateError}
-											</p>
-										) : (
-											<p className="text-xs text-muted-foreground">
-												{t("askAI.contextDateDesc")}
-											</p>
-										)}
 									</div>
 								</div>
 								
